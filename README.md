@@ -25,20 +25,20 @@ yarn
 yarn dev
 ```
 
-<!-- ### To do
+### To do
 
 - [x] Criar estrutura inicial do projeto
 - [x] Implementação de Theme e style components
 
   ### Pages
-  - [] Home
-  - [] New project
-  - [] Eddit project
+  - [ ] Home
+  - [ ] New project
+  - [ ] Edit project
 
   ### Components
-      - [] Header
-      - [] Card
-      - [] Step
-      - [] Modal
-      - [] Button
-      - [] Inputs
+     - [ ] Card
+     - [ ] Step
+     - [ ] Modal
+     - [ ] Header
+     - [ ] Button
+     - [ ] Inputs
