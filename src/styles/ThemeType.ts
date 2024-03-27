@@ -1,13 +1,13 @@
-import "styled-components";
-import { ColorShades, TypographyType } from "./interfaces";
+import 'styled-components';
+import { ColorShades, feedbackShades, TypographyType } from './interfaces';
 
-declare module "styled-components" {
+declare module 'styled-components' {
   export interface DefaultTheme {
     palette: {
       color: ColorShades;
-      error: ColorShades;
-      success?: ColorShades;
-      warning?: ColorShades;
+      error: feedbackShades;
+      success?: feedbackShades;
+      warning?: feedbackShades;
       background: ColorShades;
     };
     typography: TypographyType;

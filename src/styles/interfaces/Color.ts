@@ -6,3 +6,6 @@ export type ColorShades = {
   default: string;
   disable?: string;
 };
+export type feedbackShades = {
+  default: string;
+};

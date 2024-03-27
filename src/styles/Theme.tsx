@@ -1,31 +1,32 @@
-import { DefaultTheme } from "styled-components";
+import { DefaultTheme } from 'styled-components';
 
 const Theme: DefaultTheme = {
   palette: {
     color: {
-      default: "",
-      disable: "",
-      dark: "",
-      light: "",
-      regular: "",
+      dark: '',
+      light: '',
+      medium: '',
+      regular: '',
+      default: '',
+      disable: ''
     },
 
     background: {
-      light: "",
-      medium: "",
-      default: "",
-      regular: "",
-      disable: "",
+      dark: '',
+      light: '',
+      medium: '',
+      regular: '',
+      default: ''
     },
     error: {
-      default: "#d32f2f",
+      default: '#d32f2f'
     },
     success: {
-      default: "#6EBA19",
+      default: '#6EBA19'
     },
     warning: {
-      default: "#121A3D",
-    },
+      default: '#121A3D'
+    }
   },
   typography: {
     fontSize: 1.6,
@@ -34,11 +35,11 @@ const Theme: DefaultTheme = {
     fontSizeMedium: 1.4,
     fontWeightBold: 700,
     fontSizeRegular: 2.2,
-    htmlFontSize: "10px",
+    htmlFontSize: '10px',
     fontWeightLight: 400,
     fontWeightBolder: 900,
-    fontWeightRegular: 500,
-  },
+    fontWeightRegular: 500
+  }
 };
 
 export default Theme;

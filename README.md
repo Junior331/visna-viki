@@ -1,5 +1,9 @@
 # Visna Viki
 
+## App
+
+- https://visna-viki.vercel.app/
+
 ## Principais Tecnologias utilizadas
 
 - Vite
