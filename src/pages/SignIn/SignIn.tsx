@@ -59,7 +59,7 @@ export const SignIn = () => {
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
           <S.Label>
             Password{' '}
-            <S.Link onClick={() => navigate('/signUp')}>
+            <S.Link onClick={() => navigate('/forgotpassword')}>
               Forgot Password?
             </S.Link>
           </S.Label>
@@ -101,7 +101,7 @@ export const SignIn = () => {
         </S.ContainerButtons>
         <S.Footer>
           <S.Text>New on our platform?</S.Text>
-          <S.Link onClick={() => navigate('/signUp')}>Create an account</S.Link>
+          <S.Link onClick={() => navigate('/signup')}>Create an account</S.Link>
         </S.Footer>
       </S.Form>
     </LayoutAbstract>
