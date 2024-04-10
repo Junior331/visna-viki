@@ -22,7 +22,6 @@ export const Text = styled.p`
   color: ${({ theme }) => theme.palette.color.medium};
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
 `;
-
 export const Form = styled.form`
   gap: 15px;
   width: 100%;
@@ -37,16 +36,15 @@ export const Form = styled.form`
     margin: 0px;
   }
 `;
-
 export const Label = styled.label`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
   color: ${({ theme }) => theme.palette.color.medium};
   font-size: ${({ theme }) => theme.typography.fontSize}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightLight};
 `;
-
+export const ContainerTerms = styled(GenericContainer)`
+  gap: 5px;
+  align-items: center;
+`;
 export const ContainerButtons = styled(GenericContainer)`
   flex-wrap: wrap;
   align-items: center;
