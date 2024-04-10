@@ -18,10 +18,10 @@ export const Title = styled.h2`
   font-size: ${({ theme }) => theme.typography.fontSizeRegular + 0.2}rem;
 `;
 export const Text = styled.p`
+  max-width: 380px;
   color: ${({ theme }) => theme.palette.color.medium};
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
 `;
-
 export const Form = styled.form`
   gap: 15px;
   width: 100%;
@@ -36,7 +36,6 @@ export const Form = styled.form`
     margin: 0px;
   }
 `;
-
 export const Label = styled.label`
   color: ${({ theme }) => theme.palette.color.medium};
   font-size: ${({ theme }) => theme.typography.fontSize}rem;
