@@ -57,7 +57,12 @@ export const SignIn = () => {
           />
         </FormControl>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-          <S.Label>Password</S.Label>
+          <S.Label>
+            Password{' '}
+            <S.Link onClick={() => navigate('/signUp')}>
+              Forgot Password?
+            </S.Link>
+          </S.Label>
           <Input
             id="password"
             variant="outlined"
