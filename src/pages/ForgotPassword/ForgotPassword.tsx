@@ -25,7 +25,7 @@ export const ForgotPassword = () => {
     <LayoutAbstract>
       <S.Form onSubmit={handleSubmit}>
         <S.ContainerText>
-          <S.Title>Welcome to Visna! 👋🏻</S.Title>
+          <S.Title>Forgot Password? 🔑</S.Title>
           <S.Text>
             Enter your email and we'll send you instructions to reset your
             password.
