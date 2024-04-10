@@ -1,11 +1,11 @@
-// import logo from "./Logo.png";
+import Illustration from './Illustration.svg';
 
 interface IImage<TValue> {
   [id: string]: TValue;
 }
 
 const images: IImage<string> = {
-  // logo,
+  Illustration
 };
 
 export const getImage = (id: string) => images[id];
