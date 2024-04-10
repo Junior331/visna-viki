@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const GenericContainer = styled.div`
   width: 100%;
@@ -14,6 +14,6 @@ export const HomeContainer = styled(GenericContainer)`
 
 export const Title = styled.h2`
   letter-spacing: 1px;
-  color: ${({ theme }) => theme.palette.color.light};
+  color: ${({ theme }) => theme.palette.color.default};
   font-size: ${({ theme }) => theme.typography.fontSizeRegular}rem;
 `;

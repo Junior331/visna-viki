@@ -5,8 +5,10 @@ export const GlobalStyles = createGlobalStyle`
   *{
     margin: 0;
     padding: 0;
+    font-style: normal;
     box-sizing: border-box;
-    font-family: 'Lilita One', sans-serif;
+    font-optical-sizing: auto;
+    font-family: "Montserrat", sans-serif !important;
     font-weight: ${({ theme }) => theme.typography.fontWeightLight};
   }
 
@@ -20,7 +22,16 @@ export const GlobalStyles = createGlobalStyle`
   body {
     width: 100%;
     height: auto;
+    .MuiFormHelperText-root, .Mui-error {
+      margin: 0;
+      color: ${({ theme }) => theme.palette.error.default};
+      font-size:${({ theme }) => theme.typography.fontSize - 0.2}rem;
+    }
+    .MuiInputBase-root {
+      color: ${({ theme }) => theme.palette.color.light};
+    }
   }
+
   
   .content{
     width: 100%;

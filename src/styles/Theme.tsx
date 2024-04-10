@@ -3,19 +3,19 @@ import { DefaultTheme } from 'styled-components';
 const Theme: DefaultTheme = {
   palette: {
     color: {
-      dark: '',
-      light: '',
-      medium: '',
-      regular: '',
-      default: '',
+      dark: '#000000',
+      light: '#B9B9C3',
+      medium: '#6E6B7B',
+      regular: '#5E5873',
+      default: '#ffffff',
       disable: ''
     },
 
     background: {
       dark: '',
       light: '',
-      medium: '',
-      regular: '',
+      medium: '#5a51bd',
+      regular: '#7367f0',
       default: ''
     },
     error: {

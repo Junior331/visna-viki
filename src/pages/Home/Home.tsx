@@ -1,4 +1,4 @@
-import * as S from "./HomeStyled";
+import * as S from './HomeStyled';
 
 export const Home = () => {
   return (
