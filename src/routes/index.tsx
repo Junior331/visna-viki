@@ -6,7 +6,7 @@ export const AppRoutes = () => {
     <Routes>
       <Route index element={<SignIn />} />
       <Route path="/home" element={<Home />} />
-      <Route path="/signUp" element={<SignUp />} />
+      <Route path="/signup" element={<SignUp />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route path="*" element={<Navigate to="/" />} />
