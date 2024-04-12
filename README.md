@@ -31,14 +31,26 @@ yarn dev
 - [x] Implementação de Theme e style components
 
   ### Pages
-  - [ ] Home
+
+  - [x] Home
+  - [x] Sign In
+  - [x] Sign Up
   - [ ] New project
   - [ ] Edit project
+  - [x] Forgot Password
+  - [x] Reset Password
 
   ### Components
-     - [ ] Card
-     - [ ] Step
-     - [ ] Modal
-     - [ ] Header
-     - [ ] Button
-     - [ ] Inputs
+
+  ### Modules
+
+  - [ ] Card
+  - [ ] Step
+  - [ ] Modal
+  - [ ] Header
+  - [x] LayoutAbstract
+
+  ### Elements
+
+  - [x] Button
+  - [x] Inputs
