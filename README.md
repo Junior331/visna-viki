@@ -41,19 +41,19 @@ yarn dev
   - [x] Reset Password
 
   ### Components
-
-  ### Modules
-
-  - [ ] Card
-  - [ ] Step
-  - [ ] Modal
-  - [ ] Header
-  - [x] LayoutAbstract
-
-  ### Elements
-
-  - [x] Button
-  - [x] Inputs
+    ### Elements
+    - [x] Input
+    - [x] Button
+    - [x] Checkbox
+    ### Organism
+    - [ ] Menu
+    - [x] LayoutAbstract
+    ### Modules
+    - [ ] Card
+    - [ ] Step
+    - [ ] Modal
+    - [ ] Header
+  
 
 ### Description of the project structure
 
@@ -81,7 +81,6 @@ yarn dev
 
     ├── src/
     │   ├── assets/
-    │   │   ├── images/
     │   │   ├── icons/
     │   │   │   ├── index
     │   │   └── images/
@@ -128,8 +127,8 @@ yarn dev
     │   │   ├── globalStyled
     │   │   ├── Theme
     │   │   └── ThemeType
-    └── public/
-        └── favicon.png
+    ├── public/
+    │   └── favicon.png
 
 - O diretório src/ contém todos os componentes do projeto, organizados de acordo com o padrão atomic.
   Cada componente é classificado como átomo (atom), molécula (molecule) ou organismo (organism), conforme
