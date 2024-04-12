@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import { FormControl } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ForgotPasswordSchema from './ForgotPasswordSchema';
-import { LayoutAbstract } from '@/components/modules';
+import { LayoutAbstract } from '@/components/organism';
 import { Button, Input } from '@/components/elements';
 import * as S from './ForgotPasswordStyled';
 import icons from '@/assets/images/icons';
