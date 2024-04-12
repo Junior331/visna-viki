@@ -55,7 +55,7 @@ yarn dev
     - [ ] Header
   
 
-### Description of the project structure
+### Descrição da estrutura do projeto
 
 - ```Átomo (elements)```: Os átomos são componentes básicos e individuais, como botões, inputs, ícones, etc. Um menu lateral geralmente é composto por diversos elementos, como ícones, textos, talvez até mesmo botões para navegação, e cada um desses elementos pode ser considerado um átomo. No entanto, o menu lateral como um todo é mais complexo do que apenas um único átomo.
 
@@ -77,7 +77,7 @@ yarn dev
 
 - ```Styles (Breakpoints)```:O globalStyled fornece uma base sólida para a estilização global da aplicação, garantindo que todos os elementos sejam estilizados de forma consistente e seguindo as diretrizes de design da aplicação. Ele é uma parte essencial do estilo da aplicação, proporcionando uma experiência visual coesa e agradável para os usuários.
 
-### Project Structure
+### Estrutura do projeto
 
     ├── src/
     │   ├── assets/
