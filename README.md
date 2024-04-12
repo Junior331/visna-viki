@@ -130,6 +130,6 @@ yarn dev
     ├── public/
     │   └── favicon.png
 
-- O diretório src/ contém todos os componentes do projeto, organizados de acordo com o padrão atomic.
-  Cada componente é classificado como átomo (atom), molécula (molecule) ou organismo (organism), conforme
+- O diretório ```src/``` contém todos os componentes do projeto, organizados de acordo com o padrão atomic.
+  Cada componente é classificado como ```átomo (atom)```, ```molécula (molecule)``` ou ```organismo (organism)```, conforme
   sua complexidade e reutilização.
