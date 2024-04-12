@@ -10,7 +10,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import signInSchema from './SignInSchema';
-import { LayoutAbstract } from '@/components/modules';
+import { LayoutAbstract } from '@/components/organism';
 import { Button, Checkbox, Input } from '@/components/elements';
 import * as S from './SignInStyled';
 

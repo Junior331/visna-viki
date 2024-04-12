@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import ResetPasswordSchema from './ResetPasswordSchema';
-import { LayoutAbstract } from '@/components/modules';
+import { LayoutAbstract } from '@/components/organism';
 import { Button, Input } from '@/components/elements';
 import icons from '@/assets/images/icons';
 import * as S from './ResetPasswordStyled';
