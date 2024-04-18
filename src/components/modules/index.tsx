@@ -1,5 +1,6 @@
 import { Card } from './Card';
-import { Modal } from './Modal';
 import { Header } from './Header';
+import { ProgressBar } from './ProgressBar';
+// import { Modal } from './Modal';
 
-export { Card, Modal, Header };
+export { Card, Header, ProgressBar };
