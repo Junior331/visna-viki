@@ -46,13 +46,13 @@ yarn dev
     - [x] Button
     - [x] Checkbox
     ### Organism
-    - [ ] Menu
+    - [x] Menu
     - [x] LayoutAbstract
     ### Modules
-    - [ ] Card
+    - [x] Card
     - [ ] Step
     - [ ] Modal
-    - [ ] Header
+    - [x] Header
   
 
 ### Descrição da estrutura do projeto
@@ -94,15 +94,19 @@ yarn dev
     │   │   │   └── Checkbox
     │   │   ├── modules/
     │   │   │   ├── card
-    │   │   │   ├── Modal
-    │   │   │   └── header
+    │   │   │   ├── step
+    │   │   │   ├── modal
+    │   │   │   ├── header
+    │   │   │   └── progressBar
     │   │   └── organism/
-    │   │   │   ├── menu/
+    │   │   │   ├── menu
+    │   │   │   ├── Layout
     │   │   │   └── LayoutAbstract
     │   ├── contexts/
-    │   │   └── ...
+    │   │   ├── menu
+    │   │   └── userDate
     │   ├── hooks/
-    │   │   └── ...
+    │   │   └── lightenColo
     │   ├── pages/
     │   │   ├── Home
     │   │   ├── SignUp
@@ -113,16 +117,17 @@ yarn dev
     │   │   └── index
     │   ├── services/
     │   │   ├── mocks/
-    │   │   │   └── ....
+    │   │   │   ├── index
+    │   │   │   └── projects
     │   │   └── services
     │   ├── state/
     │   │   ├── provider
     │   │   └── ....
     │   ├── styles/
     │   │   ├── interfaces
-    │   │   │   ├── Color
+    │   │   │   ├── color
     │   │   │   ├── index
-    │   │   │   └── Typography
+    │   │   │   └── typography
     │   │   ├── breakpoints
     │   │   ├── globalStyled
     │   │   ├── Theme
