@@ -25,6 +25,7 @@ export const SignUp = () => {
     },
     onSubmit: ({ email, username, password, confirmPassword }) => {
       console.log({ email, username, password, confirmPassword });
+      navigate('/');
     },
     validationSchema: SignUpSchema
   });
@@ -39,13 +40,11 @@ export const SignUp = () => {
     <LayoutAbstract>
       <S.Form onSubmit={handleSubmit}>
         <S.ContainerText>
-          <S.Title>Welcome to Visna! 👋🏻</S.Title>
-          <S.Text>
-            Please sign-up to your account and start the adventure
-          </S.Text>
+          <S.Title>Bem vindo ao Visna 👋🏻</S.Title>
+          <S.Text>Faça o registro com sua conta e comece a experiência</S.Text>
         </S.ContainerText>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-          <S.Label>Username</S.Label>
+          <S.Label>Nome</S.Label>
           <Input
             id="username"
             value={values.username}
@@ -74,7 +73,7 @@ export const SignUp = () => {
           />
         </FormControl>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-          <S.Label>Password</S.Label>
+          <S.Label>Senha</S.Label>
           <Input
             id="password"
             variant="outlined"
@@ -104,7 +103,7 @@ export const SignUp = () => {
           )}
         </FormControl>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-          <S.Label>Confirm Password</S.Label>
+          <S.Label>Confirmar senha</S.Label>
           <Input
             id="confirmPassword"
             variant="outlined"

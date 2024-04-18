@@ -23,6 +23,7 @@ export const SignIn = () => {
     },
     onSubmit: ({ email, password }) => {
       console.log({ email, password });
+      navigate('/home');
     },
     validationSchema: signInSchema
   });
@@ -35,10 +36,8 @@ export const SignIn = () => {
     <LayoutAbstract>
       <S.Form onSubmit={handleSubmit}>
         <S.ContainerText>
-          <S.Title>Welcome to Visna! 👋🏻</S.Title>
-          <S.Text>
-            Please sign-in to your account and start the adventure
-          </S.Text>
+          <S.Title>Bem vindo ao Visna 👋🏻</S.Title>
+          <S.Text>Faça login em sua conta e comece a experiência</S.Text>
         </S.ContainerText>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
           <S.Label>Email</S.Label>
@@ -92,7 +91,7 @@ export const SignIn = () => {
           )}
         </FormControl>
 
-        <Checkbox label="Remember me" />
+        <Checkbox label="Lembre-me" />
 
         <S.ContainerButtons>
           <Button type="submit" size="large">
@@ -100,8 +99,8 @@ export const SignIn = () => {
           </Button>
         </S.ContainerButtons>
         <S.Footer>
-          <S.Text>New on our platform?</S.Text>
-          <S.Link onClick={() => navigate('/signup')}>Create an account</S.Link>
+          <S.Text>Novo em nossa plataforma?</S.Text>
+          <S.Link onClick={() => navigate('/signup')}>Crie uma conta</S.Link>
         </S.Footer>
       </S.Form>
     </LayoutAbstract>
