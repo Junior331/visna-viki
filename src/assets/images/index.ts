@@ -1,17 +1,17 @@
 import DefaultAvatar from './Image.svg';
 import ProjectTest from './project_test.svg';
 import Illustration from './Illustration.svg';
+import fallback from './image_not_found.png';
 
-interface IImage<TValue> {
-  [id: string]: TValue;
-}
-
-const images: IImage<string> = {
+export const images = {
+  fallback,
   ProjectTest,
   Illustration,
   DefaultAvatar
 };
 
-export const getImage = (id: string) => images[id];
+type IImage = keyof typeof images;
 
-export default images;
+export const getImage = (id: IImage) => {
+  return images[id] ?? images.fallback;
+};
