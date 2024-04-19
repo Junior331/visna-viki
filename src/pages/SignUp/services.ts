@@ -29,7 +29,8 @@ export const signUp = async ({
     );
     return response.data;
   } catch (error) {
-    console.error('Erro ao criar usuário:', error);
-    throw error;
+    if (error instanceof Error) {
+      throw error;
+    }
   }
 };

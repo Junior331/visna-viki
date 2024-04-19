@@ -8,7 +8,8 @@ export const getProjects = async () => {
     );
     return response.data;
   } catch (error) {
-    console.error('Erro ao tentar listar os projetos:', error);
-    throw error;
+    if (error instanceof Error) {
+      throw error;
+    }
   }
 };

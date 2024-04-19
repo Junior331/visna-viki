@@ -52,7 +52,6 @@ export const SignIn = () => {
             horizontal: 'left',
             message: error.message
           });
-          console.log('Erro :', error.message);
         }
       }
     },

@@ -11,7 +11,8 @@ export const forgotPassword = async (email: string) => {
     );
     return response.data;
   } catch (error) {
-    console.error('Erro ao enviar link ao usuário:', error);
-    throw error;
+    if (error instanceof Error) {
+      throw error;
+    }
   }
 };
