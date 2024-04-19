@@ -1,4 +1,3 @@
-import images from '@/assets/images';
 import { ReactNode, createContext, useMemo, useState } from 'react';
 
 type User = {
@@ -14,21 +13,21 @@ type UserContextType = {
   setUser: (userData: User) => void;
 };
 
-const defaultUser: User = {
+const initialState: User = {
   id: '',
-  role: 'Admin',
-  email: 'test@gmail.com',
-  avatar: images.DefaultAvatar,
-  username: 'John Doe'
+  role: '',
+  email: '',
+  avatar: '',
+  username: ''
 };
 
 export const UserContext = createContext<UserContextType>({
-  user: defaultUser,
+  user: initialState,
   setUser: () => {}
 });
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User>(defaultUser);
+  const [user, setUser] = useState<User>(initialState);
 
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
 

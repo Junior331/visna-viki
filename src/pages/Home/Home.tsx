@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useContext, useEffect, useState } from 'react';
 import { Search } from '@mui/icons-material';
 import {
   Select,
@@ -7,16 +9,39 @@ import {
   InputAdornment,
   FormControl
 } from '@mui/material';
-import { useState } from 'react';
 import { Header } from '@/components/modules';
 import { Layout } from '@/components/organism';
 import { Card } from '@/components/modules';
 import { mocks } from '@/services/mocks';
 import { Button, Input } from '@/components/elements';
+import { SnackbarContext } from '@/contexts/Snackbar';
+import { getProjects } from './services';
 import * as S from './HomeStyled';
 
 export const Home = () => {
   const [option, setOption] = useState('');
+  const { setSnackbar } = useContext(SnackbarContext);
+
+  const listProjects = async () => {
+    try {
+      const result = await getProjects();
+      console.log('result ::', result);
+    } catch (error) {
+      if (error instanceof Error) {
+        setSnackbar({
+          isOpen: true,
+          severity: 'error',
+          vertical: 'bottom',
+          horizontal: 'left',
+          message: error.message
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    listProjects();
+  }, []);
 
   return (
     <Layout>

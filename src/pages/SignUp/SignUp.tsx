@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useFormik } from 'formik';
 import {
   IconButton,
@@ -9,13 +9,17 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import SignUpSchema from './SignUpSchema';
 import { LayoutAbstract } from '@/components/organism';
 import { Button, Checkbox, Input } from '@/components/elements';
+import { SnackbarContext } from '@/contexts/Snackbar';
+import { signUp } from './services';
+import SignUpSchema from './SignUpSchema';
 import * as S from './SignUpStyled';
 
 export const SignUp = () => {
   const navigate = useNavigate();
+  const { setSnackbar } = useContext(SnackbarContext);
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -23,9 +27,22 @@ export const SignUp = () => {
       password: '',
       confirmPassword: ''
     },
-    onSubmit: ({ email, username, password, confirmPassword }) => {
-      console.log({ email, username, password, confirmPassword });
-      navigate('/');
+    onSubmit: async ({ email, username, password }) => {
+      try {
+        const result = await signUp({ email, username, password });
+        console.log('result ::', result);
+        // navigate('/');
+      } catch (error) {
+        if (error instanceof Error) {
+          setSnackbar({
+            isOpen: true,
+            severity: 'error',
+            vertical: 'bottom',
+            horizontal: 'left',
+            message: error.message
+          });
+        }
+      }
     },
     validationSchema: SignUpSchema
   });
@@ -50,7 +67,7 @@ export const SignUp = () => {
             value={values.username}
             onChange={handleChange}
             aria-describedby="username"
-            placeholder="Enter a username"
+            placeholder="Digite seu nome"
             inputProps={{ style: { fontSize: '1.4rem' } }}
             helperText={touched.username && errors.username}
             error={touched.username && Boolean(errors.username)}
@@ -63,7 +80,7 @@ export const SignUp = () => {
             value={values.email}
             onChange={handleChange}
             aria-describedby="email"
-            placeholder="Enter a email"
+            placeholder="Digite seu email"
             inputProps={{ style: { fontSize: '1.4rem' } }}
             helperText={touched.email && errors.email}
             error={touched.email && Boolean(errors.email)}
@@ -80,7 +97,7 @@ export const SignUp = () => {
             value={values.password}
             onChange={handleChange}
             typeElement={OutlinedInput}
-            placeholder="*******************"
+            placeholder="Digite sua senha"
             inputProps={{ style: { fontSize: '1.4rem' } }}
             type={`${passwordShow ? 'text' : 'password'}`}
             error={touched.password && Boolean(errors.password)}
@@ -110,7 +127,7 @@ export const SignUp = () => {
             onChange={handleChange}
             typeElement={OutlinedInput}
             value={values.confirmPassword}
-            placeholder="*******************"
+            placeholder="Confirme sua senha"
             inputProps={{ style: { fontSize: '1.4rem' } }}
             type={`${passwordConfirmShow ? 'text' : 'password'}`}
             error={touched.confirmPassword && Boolean(errors.confirmPassword)}
@@ -143,8 +160,10 @@ export const SignUp = () => {
           </Button>
         </S.ContainerButtons>
         <S.Footer>
-          <S.Text>Already have an account?</S.Text>
-          <S.Link onClick={() => navigate('/')}>Sign in</S.Link>
+          <S.Text>
+            Already have an account?{' '}
+            <S.Link onClick={() => navigate('/')}>Sign in</S.Link>
+          </S.Text>
         </S.Footer>
       </S.Form>
     </LayoutAbstract>
