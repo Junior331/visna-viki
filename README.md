@@ -1,8 +1,10 @@
 # Visna Viki
 
 ## App
-
-- https://visna-viki.vercel.app/
+ ### Main
+   - https://visna-viki.vercel.app/
+ ### Develop
+   - visna-viki-git-develop-junior331s-projects.vercel.app
 
 ## Principais Tecnologias utilizadas
 
