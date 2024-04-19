@@ -11,7 +11,8 @@ export const resetPassword = async (password: string) => {
     );
     return response.data;
   } catch (error) {
-    console.error('Erro ao tentar trocar á senha do usuário:', error);
-    throw error;
+    if (error instanceof Error) {
+      throw error;
+    }
   }
 };

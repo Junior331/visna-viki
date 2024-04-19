@@ -13,7 +13,8 @@ export const signIn = async ({ email, password }: signInProps) => {
     );
     return response.data;
   } catch (error) {
-    console.error('Erro ao tentar logar:', error);
-    throw error;
+    if (error instanceof Error) {
+      throw error;
+    }
   }
 };
