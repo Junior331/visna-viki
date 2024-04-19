@@ -1,20 +1,38 @@
+import { useContext } from 'react';
 import { useFormik } from 'formik';
 import { FormControl } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import ForgotPasswordSchema from './ForgotPasswordSchema';
+import { icons } from '@/assets/images/icons';
 import { LayoutAbstract } from '@/components/organism';
 import { Button, Input } from '@/components/elements';
+import { SnackbarContext } from '@/contexts/Snackbar';
+import { forgotPassword } from './services';
+import ForgotPasswordSchema from './ForgotPasswordSchema';
 import * as S from './ForgotPasswordStyled';
-import icons from '@/assets/images/icons';
 
 export const ForgotPassword = () => {
   const navigate = useNavigate();
+  const { setSnackbar } = useContext(SnackbarContext);
+
   const formik = useFormik({
     initialValues: {
       email: ''
     },
-    onSubmit: ({ email }) => {
-      console.log({ email });
+    onSubmit: async ({ email }) => {
+      try {
+        const result = await forgotPassword(email);
+        console.log('result ::', result);
+      } catch (error) {
+        if (error instanceof Error) {
+          setSnackbar({
+            isOpen: true,
+            severity: 'error',
+            vertical: 'bottom',
+            horizontal: 'left',
+            message: error.message
+          });
+        }
+      }
     },
     validationSchema: ForgotPasswordSchema
   });
@@ -25,10 +43,10 @@ export const ForgotPassword = () => {
     <LayoutAbstract>
       <S.Form onSubmit={handleSubmit}>
         <S.ContainerText>
-          <S.Title>Forgot Password? 🔑</S.Title>
+          <S.Title>Esqueci minha senha? 🔑</S.Title>
           <S.Text>
-            Enter your email and we'll send you instructions to reset your
-            password.
+            Digite seu e-mail e nós lhe enviaremos instruções para redefinir sua
+            senha.
           </S.Text>
         </S.ContainerText>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
@@ -38,7 +56,7 @@ export const ForgotPassword = () => {
             value={values.email}
             onChange={handleChange}
             aria-describedby="email"
-            placeholder="Enter a email"
+            placeholder="Digite seu email"
             helperText={touched.email && errors.email}
             error={touched.email && Boolean(errors.email)}
             inputProps={{ style: { fontSize: '1.4rem' } }}
@@ -50,7 +68,7 @@ export const ForgotPassword = () => {
 
         <S.ContainerButtons>
           <Button type="submit" size="large">
-            Send link
+            Enviar link
           </Button>
         </S.ContainerButtons>
         <S.Footer>

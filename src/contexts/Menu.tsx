@@ -1,15 +1,17 @@
-import { ReactNode, createContext, useMemo, useState } from "react";
+import { ReactNode, createContext, useMemo, useState } from 'react';
 
 type IMenuProps = {
   isOpen: boolean;
   setIsOpen: (status: boolean) => void;
 };
 
-const defaultMenu: IMenuProps = {
+const initialState: IMenuProps = {
   isOpen: false,
-  setIsOpen: () => {},
+  setIsOpen: () => {}
 };
-export const MenuContext = createContext<IMenuProps>(defaultMenu as IMenuProps);
+export const MenuContext = createContext<IMenuProps>(
+  initialState as IMenuProps
+);
 
 export const MenuProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);

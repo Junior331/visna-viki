@@ -18,6 +18,9 @@ export const Title = styled.h2`
   font-size: ${({ theme }) => theme.typography.fontSizeRegular + 0.2}rem;
 `;
 export const Text = styled.p`
+  gap: 5px;
+  display: flex;
+  flex-wrap: wrap;
   max-width: 380px;
   color: ${({ theme }) => theme.palette.color.medium};
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;

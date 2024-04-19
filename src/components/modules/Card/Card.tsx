@@ -1,6 +1,6 @@
-import images from '@/assets/images';
 import * as S from './CardStyled';
 import { Props } from './@types';
+import { images } from '@/assets/images';
 import { ProgressBar } from '../ProgressBar';
 import { statusColor } from '@/utils/types';
 import useColorManipulation from '@/hooks/lightenColo';

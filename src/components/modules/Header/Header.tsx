@@ -4,7 +4,7 @@ import { MenuOutlined } from '@mui/icons-material';
 import { Menu } from '@/components/organism';
 import { MenuContext } from '@/contexts/Menu';
 import { UserContext } from '@/contexts/UserDate';
-import images from '@/assets/images';
+import { images } from '@/assets/images';
 import * as S from './HeaderStyled';
 
 const Header = () => {

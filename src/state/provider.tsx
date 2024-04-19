@@ -1,6 +1,7 @@
 import React from 'react';
 import { MenuProvider } from '@/contexts/Menu';
 import { UserProvider } from '@/contexts/UserDate';
+import { SnackbarProvider } from '@/contexts/Snackbar';
 
 type ProviderType = {
   children: React.ReactElement | React.ReactElement[];
@@ -9,7 +10,9 @@ type ProviderType = {
 const Provider: React.FC<ProviderType> = ({ children }) => {
   return (
     <UserProvider>
-      <MenuProvider>{children}</MenuProvider>
+      <SnackbarProvider>
+        <MenuProvider>{children}</MenuProvider>
+      </SnackbarProvider>
     </UserProvider>
   );
 };

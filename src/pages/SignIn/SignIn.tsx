@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useFormik } from 'formik';
 import {
   IconButton,
@@ -12,18 +12,49 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import signInSchema from './SignInSchema';
 import { LayoutAbstract } from '@/components/organism';
 import { Button, Checkbox, Input } from '@/components/elements';
+import { UserContext } from '@/contexts/UserDate';
+import { SnackbarContext } from '@/contexts/Snackbar';
+import { images } from '@/assets/images';
+import { signIn } from './services';
 import * as S from './SignInStyled';
 
 export const SignIn = () => {
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
+  const { setSnackbar } = useContext(SnackbarContext);
+
   const formik = useFormik({
     initialValues: {
       email: '',
       password: ''
     },
-    onSubmit: ({ email, password }) => {
-      console.log({ email, password });
-      navigate('/home');
+    onSubmit: async ({ email, password }) => {
+      try {
+        const result = await signIn({ email, password });
+
+        console.log('result ::', result);
+        if (result) {
+          setUser({
+            id: '',
+            role: 'Admin',
+            email: 'test@gmail.com',
+            avatar: images.DefaultAvatar,
+            username: 'John Doe'
+          });
+          navigate('/home');
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          setSnackbar({
+            isOpen: true,
+            severity: 'error',
+            vertical: 'bottom',
+            horizontal: 'left',
+            message: error.message
+          });
+          console.log('Erro :', error.message);
+        }
+      }
     },
     validationSchema: signInSchema
   });
@@ -46,7 +77,7 @@ export const SignIn = () => {
             value={values.email}
             onChange={handleChange}
             aria-describedby="email"
-            placeholder="Enter a email"
+            placeholder="Digite seu email"
             inputProps={{ style: { fontSize: '1.4rem' } }}
             helperText={touched.email && errors.email}
             error={touched.email && Boolean(errors.email)}
@@ -68,7 +99,7 @@ export const SignIn = () => {
             value={values.password}
             onChange={handleChange}
             typeElement={OutlinedInput}
-            placeholder="*******************"
+            placeholder="Digite sua senha"
             inputProps={{ style: { fontSize: '1.4rem' } }}
             type={`${passwordShow ? 'text' : 'password'}`}
             error={touched.password && Boolean(errors.password)}
@@ -99,8 +130,10 @@ export const SignIn = () => {
           </Button>
         </S.ContainerButtons>
         <S.Footer>
-          <S.Text>Novo em nossa plataforma?</S.Text>
-          <S.Link onClick={() => navigate('/signup')}>Crie uma conta</S.Link>
+          <S.Text>
+            Novo em nossa plataforma?{' '}
+            <S.Link onClick={() => navigate('/signup')}>Crie uma conta</S.Link>
+          </S.Text>
         </S.Footer>
       </S.Form>
     </LayoutAbstract>
