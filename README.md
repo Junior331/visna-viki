@@ -47,13 +47,15 @@ yarn dev
     - [x] Checkbox
     ### Organism
     - [x] Menu
+    - [x] Layout
     - [x] LayoutAbstract
     ### Modules
     - [x] Card
     - [ ] Step
     - [ ] Modal
     - [x] Header
-  
+    - [x] Snackbar
+    - [x] progressBar
 
 ### Descrição da estrutura do projeto
 
@@ -97,6 +99,7 @@ yarn dev
     │   │   │   ├── step
     │   │   │   ├── modal
     │   │   │   ├── header
+    │   │   │   ├── snackbar
     │   │   │   └── progressBar
     │   │   └── organism/
     │   │   │   ├── menu
@@ -104,6 +107,7 @@ yarn dev
     │   │   │   └── LayoutAbstract
     │   ├── contexts/
     │   │   ├── menu
+    │   │   ├── snackbar
     │   │   └── userDate
     │   ├── hooks/
     │   │   └── lightenColo
@@ -132,6 +136,11 @@ yarn dev
     │   │   ├── globalStyled
     │   │   ├── Theme
     │   │   └── ThemeType
+    │   ├── utils/
+    │   │   ├── utils
+    │   │   ├── types
+    │   │   ├── endpoints
+    │   │   └── renderCustom
     ├── public/
     │   └── favicon.png
 
