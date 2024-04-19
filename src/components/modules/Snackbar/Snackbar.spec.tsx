@@ -1,10 +1,10 @@
 import { screen } from '@testing-library/react';
 import { renderCustom } from '@/utils/renderCustom';
-import { Header } from './Header';
+import { Snackbar } from './Snackbar';
 
 describe('Header component', () => {
   test('should render without crashing', () => {
-    renderCustom(<Header />);
-    expect(screen.getByText('header')).toBeTruthy();
+    renderCustom(<Snackbar />);
+    expect(screen.getByText('Snackbar')).toBeTruthy();
   });
 });
