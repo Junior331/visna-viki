@@ -19,6 +19,7 @@ import * as S from './ResetPasswordStyled';
 
 export const ResetPassword = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
   const [passwordShow, setPasswordShow] = useState<boolean>(false);
   const [passwordConfirmShow, setPasswordConfirmShow] =
@@ -29,11 +30,14 @@ export const ResetPassword = () => {
       confirmPassword: ''
     },
     onSubmit: async ({ password }) => {
+      setLoading(true);
       try {
         const result = await resetPassword(password);
         console.log('result ::', result);
+        setLoading(false);
       } catch (error) {
         if (error instanceof Error) {
+          setLoading(false);
           setSnackbar({
             isOpen: true,
             severity: 'error',
@@ -118,7 +122,12 @@ export const ResetPassword = () => {
         </FormControl>
 
         <S.ContainerButtons>
-          <Button type="submit" size="large">
+          <Button
+            size="large"
+            type="submit"
+            loading={loading}
+            disabled={loading}
+          >
             Confirm
           </Button>
         </S.ContainerButtons>

@@ -5,3 +5,11 @@ export enum statusColor {
   'In Review' = '#00CFE8',
   'In Progress' = '#7367F0'
 }
+
+export type projectType = {
+  id: string;
+  name: string;
+  text: string;
+  status: string;
+  progress: number;
+};

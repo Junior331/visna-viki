@@ -1,3 +1,8 @@
+import {
+  Header as CardHeader,
+  CardContainer,
+  ContainerProgress
+} from '@/components/modules/Card/CardStyled';
 import styled from 'styled-components';
 
 export const GenericContainer = styled.div`
@@ -50,6 +55,9 @@ export const ContainerCards = styled(GenericContainer)`
   border-radius: 6px;
   background-color: #f0f8ff;
 `;
+export const StackSkeleton = styled(CardContainer)``;
+export const HeaderSkeleton = styled(CardHeader)``;
+export const FooterSkeleton = styled(ContainerProgress)``;
 export const ContainerSearch = styled(GenericContainer)`
   background-color: #f0f8ff;
 `;

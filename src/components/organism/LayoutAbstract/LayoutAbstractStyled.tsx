@@ -1,3 +1,4 @@
+import media from '@/styles/breakpoints';
 import styled from 'styled-components';
 
 export const LayoutContainer = styled.div`
@@ -23,11 +24,17 @@ export const LayoutContent = styled.div`
     height: 100%;
     padding: 0px 70px;
   }
+  ${media.lessThan('regular')`
+    width: 100%;
+  `}
 `;
 export const ContainerAbstract = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  ${media.lessThan('regular')`
+    display: none;
+  `}
 `;
 export const Img = styled.img`
   width: 60%;

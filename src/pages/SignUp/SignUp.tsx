@@ -18,6 +18,7 @@ import * as S from './SignUpStyled';
 
 export const SignUp = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
 
   const formik = useFormik({
@@ -28,12 +29,15 @@ export const SignUp = () => {
       confirmPassword: ''
     },
     onSubmit: async ({ email, username, password }) => {
+      setLoading(true);
       try {
         const result = await signUp({ email, username, password });
         console.log('result ::', result);
         // navigate('/');
+        setLoading(false);
       } catch (error) {
         if (error instanceof Error) {
+          setLoading(false);
           setSnackbar({
             isOpen: true,
             severity: 'error',
@@ -155,7 +159,12 @@ export const SignUp = () => {
         </S.ContainerTerms>
 
         <S.ContainerButtons>
-          <Button type="submit" size="large">
+          <Button
+            size="large"
+            type="submit"
+            loading={loading}
+            disabled={loading}
+          >
             Sign Up
           </Button>
         </S.ContainerButtons>

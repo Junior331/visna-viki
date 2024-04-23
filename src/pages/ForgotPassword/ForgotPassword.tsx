@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useFormik } from 'formik';
 import { FormControl } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ import * as S from './ForgotPasswordStyled';
 
 export const ForgotPassword = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
 
   const formik = useFormik({
@@ -19,11 +20,16 @@ export const ForgotPassword = () => {
       email: ''
     },
     onSubmit: async ({ email }) => {
+      setLoading(true);
+
       try {
         const result = await forgotPassword(email);
         console.log('result ::', result);
+        setLoading(false);
       } catch (error) {
         if (error instanceof Error) {
+          setLoading(false);
+
           setSnackbar({
             isOpen: true,
             severity: 'error',
@@ -67,7 +73,12 @@ export const ForgotPassword = () => {
         </FormControl>
 
         <S.ContainerButtons>
-          <Button type="submit" size="large">
+          <Button
+            size="large"
+            type="submit"
+            loading={loading}
+            disabled={loading}
+          >
             Enviar link
           </Button>
         </S.ContainerButtons>

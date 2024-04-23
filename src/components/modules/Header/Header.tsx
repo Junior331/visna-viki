@@ -4,7 +4,6 @@ import { MenuOutlined } from '@mui/icons-material';
 import { Menu } from '@/components/organism';
 import { MenuContext } from '@/contexts/Menu';
 import { UserContext } from '@/contexts/UserDate';
-import { images } from '@/assets/images';
 import * as S from './HeaderStyled';
 
 const Header = () => {
@@ -30,7 +29,7 @@ const Header = () => {
           <S.Title>{user.username}</S.Title>
           <S.Text>{user.role}</S.Text>
         </S.ContainerText>
-        <S.Avatar src={images.DefaultAvatar} alt="User image" />
+        <S.Avatar src={user.avatar} alt="User image" />
       </S.InfoUser>
     </S.Header>
   );

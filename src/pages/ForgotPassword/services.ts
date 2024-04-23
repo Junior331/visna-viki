@@ -4,7 +4,7 @@ import { ENDPOINTS } from '@/utils/endpoints';
 export const forgotPassword = async (email: string) => {
   try {
     const response = await axios.post(
-      `${ENDPOINTS.BASE_URL}/${ENDPOINTS.USER.FORGOT_PASSWORD}`,
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.USER.FORGOT_PASSWORD}`,
       {
         email
       }
