@@ -13,7 +13,7 @@ export const signUp = async ({
 }: signUpProps) => {
   try {
     const response = await axios.post(
-      `${ENDPOINTS.BASE_URL}/${ENDPOINTS.USER.POST_USER}`,
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.USER.POST_USER}`,
       {
         email,
         password,

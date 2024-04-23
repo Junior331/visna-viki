@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useMemo, useState } from 'react';
 
-type Snackbar = {
+export type Snackbar = {
   isOpen: boolean;
   message: string;
   vertical: 'top' | 'bottom';

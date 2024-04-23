@@ -7,40 +7,39 @@ import {
   IconButton,
   OutlinedInput,
   InputAdornment,
-  FormControl
+  FormControl,
+  Skeleton
 } from '@mui/material';
+import { mocks } from '@/services/mocks';
+import { Card } from '@/components/modules';
+import { projectType } from '@/utils/types';
+import { emptyProject } from '@/utils/emptys';
 import { Header } from '@/components/modules';
 import { Layout } from '@/components/organism';
-import { Card } from '@/components/modules';
-import { mocks } from '@/services/mocks';
+import { SearchContext } from '@/contexts/Search';
 import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
-import { getProjects } from './services';
+import { listProjects, handleFilterAndSearch } from './utils';
 import * as S from './HomeStyled';
 
 export const Home = () => {
   const [option, setOption] = useState('');
   const { setSnackbar } = useContext(SnackbarContext);
-
-  const listProjects = async () => {
-    try {
-      const result = await getProjects();
-      console.log('result ::', result);
-    } catch (error) {
-      if (error instanceof Error) {
-        setSnackbar({
-          isOpen: true,
-          severity: 'error',
-          vertical: 'bottom',
-          horizontal: 'left',
-          message: error.message
-        });
-      }
-    }
-  };
+  const [loading, setLoading] = useState<boolean>(true);
+  const { setContentActive } = useContext(SearchContext);
+  const [list, setList] = useState<Array<projectType>>([emptyProject]);
+  const [filteredList, setFilterList] = useState<Array<projectType>>(list);
 
   useEffect(() => {
-    listProjects();
+    handleFilterAndSearch({ option, list, setFilterList });
+  }, [option]);
+
+  useEffect(() => {
+    setFilterList(list);
+  }, [list]);
+
+  useEffect(() => {
+    listProjects({ setList, setLoading, setSnackbar });
   }, []);
 
   return (
@@ -58,20 +57,27 @@ export const Home = () => {
                   inputProps={{ 'aria-label': 'Without label' }}
                   onChange={(event) => setOption(event.target.value)}
                 >
-                  <MenuItem value="" disabled>
-                    Select filter
-                  </MenuItem>
-                  <MenuItem value={1}>Ten</MenuItem>
-                  <MenuItem value={2}>Twenty</MenuItem>
-                  <MenuItem value={3}>Thirty</MenuItem>
+                  <MenuItem value={''}>All</MenuItem>
+                  <MenuItem value={'Block'}>Block</MenuItem>
+                  <MenuItem value={'Done'}>Done</MenuItem>
+                  <MenuItem value={'To Do'}>To Do</MenuItem>
+                  <MenuItem value={'In Review'}>In Review</MenuItem>
+                  <MenuItem value={'In Progress'}>In Progress</MenuItem>
                 </Select>
               </FormControl>
               <Input
                 fullWidth
                 id="search"
                 variant="outlined"
-                // value={values.password}
-                // onChange={handleChange}
+                onChange={({ target }) =>
+                  handleFilterAndSearch({
+                    list,
+                    option,
+                    setFilterList,
+                    setContentActive,
+                    value: target.value
+                  })
+                }
                 typeElement={OutlinedInput}
                 placeholder="Digite aqui...."
                 inputProps={{ style: { fontSize: '1.4rem' } }}
@@ -91,15 +97,52 @@ export const Home = () => {
             </S.ContainerFilter>
           </S.Header>
           <S.ContainerCards>
-            {mocks.projects.map((data) => (
-              <Card
-                key={data.id}
-                name={data.name}
-                text={data.text}
-                status={data.status}
-                progress={data.progress}
-              />
-            ))}
+            {loading ? (
+              <>
+                {mocks.projects.slice(0, 7).map(() => (
+                  <S.StackSkeleton>
+                    <S.HeaderSkeleton>
+                      <Skeleton
+                        width={100}
+                        title="Jaja"
+                        variant="text"
+                        sx={{ fontSize: '1rem', maxWidth: '30%' }}
+                      />
+                      <Skeleton
+                        width={100}
+                        variant="text"
+                        sx={{ fontSize: '1rem', maxWidth: '20%' }}
+                      />
+                    </S.HeaderSkeleton>
+
+                    <Skeleton height={124} width={'100%'} variant="rounded" />
+
+                    <Skeleton height={80} width={'100%'} variant="rounded" />
+
+                    <S.FooterSkeleton>
+                      <Skeleton
+                        width={100}
+                        variant="text"
+                        sx={{ fontSize: '1rem', maxWidth: '50%' }}
+                      />
+                      <Skeleton variant="rounded" width={'100%'} height={10} />
+                    </S.FooterSkeleton>
+                  </S.StackSkeleton>
+                ))}
+              </>
+            ) : (
+              <>
+                {filteredList.map((data) => (
+                  <Card
+                    key={data.id}
+                    name={data.name}
+                    text={data.text}
+                    status={data.status}
+                    progress={data.progress}
+                  />
+                ))}
+              </>
+            )}
           </S.ContainerCards>
         </S.Content>
       </S.HomeContainer>

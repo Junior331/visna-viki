@@ -1,6 +1,7 @@
+import { images } from '@/assets/images';
 import { ReactNode, createContext, useMemo, useState } from 'react';
 
-type User = {
+export type User = {
   id: string;
   role: string;
   email: string;
@@ -17,8 +18,8 @@ const initialState: User = {
   id: '',
   role: '',
   email: '',
-  avatar: '',
-  username: ''
+  username: '',
+  avatar: images.fallback
 };
 
 export const UserContext = createContext<UserContextType>({

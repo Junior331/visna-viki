@@ -14,13 +14,13 @@ import { LayoutAbstract } from '@/components/organism';
 import { Button, Checkbox, Input } from '@/components/elements';
 import { UserContext } from '@/contexts/UserDate';
 import { SnackbarContext } from '@/contexts/Snackbar';
-import { images } from '@/assets/images';
-import { signIn } from './services';
+import { getInfoUser, signIn } from './services';
 import * as S from './SignInStyled';
 
 export const SignIn = () => {
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
 
   const formik = useFormik({
@@ -29,22 +29,18 @@ export const SignIn = () => {
       password: ''
     },
     onSubmit: async ({ email, password }) => {
+      setLoading(true);
       try {
-        const result = await signIn({ email, password });
+        const { accessToken } = await signIn({ email, password });
+        setLoading(false);
+        if (accessToken) {
+          getInfoUser({ setUser, accessToken });
 
-        console.log('result ::', result);
-        if (result) {
-          setUser({
-            id: '',
-            role: 'Admin',
-            email: 'test@gmail.com',
-            avatar: images.DefaultAvatar,
-            username: 'John Doe'
-          });
           navigate('/home');
         }
       } catch (error) {
         if (error instanceof Error) {
+          setLoading(false);
           setSnackbar({
             isOpen: true,
             severity: 'error',
@@ -124,7 +120,12 @@ export const SignIn = () => {
         <Checkbox label="Lembre-me" />
 
         <S.ContainerButtons>
-          <Button type="submit" size="large">
+          <Button
+            size="large"
+            type="submit"
+            loading={loading}
+            disabled={loading}
+          >
             Login
           </Button>
         </S.ContainerButtons>

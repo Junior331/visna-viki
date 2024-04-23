@@ -28,7 +28,10 @@ export const ContainerText = styled(ContainerGeneric)`
 `;
 
 export const Avatar = styled.img`
-  max-width: 78px;
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 40px;
 `;
 
 export const Title = styled.h2`

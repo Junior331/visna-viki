@@ -38,4 +38,9 @@ export const Button = styled.button<StyledButtonProps>`
     }
     return size || 'max-content';
   }};
+
+  .MuiCircularProgress-svg {
+    padding: 10px;
+    color: ${({ theme }) => theme.palette.color.default};
+  }
 `;
