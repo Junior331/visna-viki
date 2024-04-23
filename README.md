@@ -17,7 +17,7 @@
   ```
   git clone https://github.com/Junior331/visna-viki.git
   ```
-- É necessario ter o Node 16 ou superior instalado
+- É necessario ter o Node 18 ou superior instalado
 - Para iniciar o servidor de desenvolvimento rode os comandos abaixo
 
 ```
