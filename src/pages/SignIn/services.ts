@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { getInfoUserProps, signInProps } from './@types';
 import { ENDPOINTS } from '@/utils/endpoints';
+import { images } from '@/assets/images';
 
 export const signIn = async ({ email, password }: signInProps) => {
   try {
@@ -11,6 +12,7 @@ export const signIn = async ({ email, password }: signInProps) => {
         password
       }
     );
+    console.log();
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
@@ -18,19 +20,25 @@ export const signIn = async ({ email, password }: signInProps) => {
     }
   }
 };
-export const getInfoUser = async ({ setUser }: getInfoUserProps) => {
+export const getInfoUser = async ({
+  setUser,
+  accessToken
+}: getInfoUserProps) => {
   try {
-    const response = await axios.post(
+    const response = await axios.get(
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.USER.GET_AUTH_USER}`,
-      {}
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      }
     );
-    console.log('response ::', response);
     setUser({
-      id: '',
-      role: '',
-      email: '',
-      avatar: '',
-      username: ''
+      avatar: images.fallback,
+      id: response.data.iduser,
+      role: response.data.role,
+      email: response.data.email,
+      username: response.data.username
     });
     return response.data;
   } catch (error) {

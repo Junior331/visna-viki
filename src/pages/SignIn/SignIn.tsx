@@ -31,10 +31,10 @@ export const SignIn = () => {
     onSubmit: async ({ email, password }) => {
       setLoading(true);
       try {
-        const result = await signIn({ email, password });
+        const { accessToken } = await signIn({ email, password });
         setLoading(false);
-        if (result) {
-          getInfoUser({ setUser });
+        if (accessToken) {
+          getInfoUser({ setUser, accessToken });
 
           navigate('/home');
         }

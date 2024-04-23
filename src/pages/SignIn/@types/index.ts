@@ -5,5 +5,6 @@ export type signInProps = {
   password: string;
 };
 export type getInfoUserProps = {
+  accessToken: string;
   setUser: (userData: User) => void;
 };

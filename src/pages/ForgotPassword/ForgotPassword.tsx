@@ -23,8 +23,7 @@ export const ForgotPassword = () => {
       setLoading(true);
 
       try {
-        const result = await forgotPassword(email);
-        console.log('result ::', result);
+        await forgotPassword(email);
         setLoading(false);
       } catch (error) {
         if (error instanceof Error) {

@@ -32,8 +32,7 @@ export const ResetPassword = () => {
     onSubmit: async ({ password }) => {
       setLoading(true);
       try {
-        const result = await resetPassword(password);
-        console.log('result ::', result);
+        await resetPassword(password);
         setLoading(false);
       } catch (error) {
         if (error instanceof Error) {
