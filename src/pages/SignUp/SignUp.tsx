@@ -31,9 +31,8 @@ export const SignUp = () => {
     onSubmit: async ({ email, username, password }) => {
       setLoading(true);
       try {
-        const result = await signUp({ email, username, password });
-        console.log('result ::', result);
-        // navigate('/');
+        await signUp({ email, username, password });
+        navigate('/');
         setLoading(false);
       } catch (error) {
         if (error instanceof Error) {

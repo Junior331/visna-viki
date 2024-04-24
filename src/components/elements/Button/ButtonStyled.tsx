@@ -12,6 +12,7 @@ export const Button = styled.button<StyledButtonProps>`
   justify-content: center;
   transition: 0.2s color ease;
   color: ${({ theme }) => theme.palette.color.default};
+  cursor: ${({ disabled }) => (disabled ? 'no-drop' : 'pointer')};
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
   background-color: ${({ theme }) => theme.palette.background.regular};
@@ -24,6 +25,23 @@ export const Button = styled.button<StyledButtonProps>`
     noActive &&
     css`
       cursor: no-drop;
+      background-color: ${({ theme }) => theme.palette.background.light};
+      &:hover {
+        background-color: ${({ theme }) => theme.palette.background.light};
+      }
+    `};
+
+  ${({ isOutline }) =>
+    isOutline &&
+    css`
+      background-color: transparent;
+      color: ${({ theme }) => theme.palette.background.regular};
+      border: 1px solid ${({ theme }) => theme.palette.background.regular};
+      &:hover {
+        border: none;
+        color: ${({ theme }) => theme.palette.color.default};
+        background-color: ${({ theme }) => theme.palette.background.medium};
+      }
     `};
 
   width: ${({ size }) => {

@@ -5,6 +5,7 @@ export type Props = {
   loading?: boolean;
   disabled?: boolean;
   noActive?: boolean;
+  isOutline?: boolean;
   children?: ReactNode;
   onClick?: (e: MouseEvent) => void;
   size: 'small' | 'medium' | 'large' | string;

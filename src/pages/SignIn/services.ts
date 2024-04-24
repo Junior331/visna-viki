@@ -12,7 +12,6 @@ export const signIn = async ({ email, password }: signInProps) => {
         password
       }
     );
-    console.log();
     return response.data;
   } catch (error) {
     if (error instanceof Error) {

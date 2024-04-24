@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { Search } from '@mui/icons-material';
 import {
@@ -23,6 +23,7 @@ import { listProjects, handleFilterAndSearch } from './utils';
 import * as S from './HomeStyled';
 
 export const Home = () => {
+  const navigate = useNavigate();
   const [option, setOption] = useState('');
   const { setSnackbar } = useContext(SnackbarContext);
   const [loading, setLoading] = useState<boolean>(true);
@@ -32,7 +33,7 @@ export const Home = () => {
 
   useEffect(() => {
     handleFilterAndSearch({ option, list, setFilterList });
-  }, [option]);
+  }, [list, option]);
 
   useEffect(() => {
     setFilterList(list);
@@ -93,7 +94,10 @@ export const Home = () => {
                   </InputAdornment>
                 }
               />
-              <Button size="200px"> Novo Projeto</Button>
+              <Button size="200px" onClick={() => navigate('/create')}>
+                {' '}
+                Novo Projeto
+              </Button>
             </S.ContainerFilter>
           </S.Header>
           <S.ContainerCards>
