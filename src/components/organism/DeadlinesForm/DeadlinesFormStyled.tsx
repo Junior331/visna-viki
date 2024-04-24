@@ -1,4 +1,3 @@
-import media from '@/styles/breakpoints';
 import { Grid } from '@mui/material';
 import styled from 'styled-components';
 
