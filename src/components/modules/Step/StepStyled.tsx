@@ -9,6 +9,7 @@ export const StepContainer = styled(ContainerGeneric)`
   gap: 6px;
   width: 100%;
   height: auto;
+  flex-direction: column;
 
   .indexedStep {
     color: rgb(190, 190, 190);
@@ -24,6 +25,13 @@ export const StepContainer = styled(ContainerGeneric)`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    > span:last-child {
+      top: 35px;
+      z-index: 1;
+      width: auto;
+      color: black;
+      position: absolute;
+    }
   }
 
   .indexedStep.accomplished {
@@ -85,5 +93,6 @@ export const StepContainer = styled(ContainerGeneric)`
     }
   }
 `;
-export const ContainerStep = styled(ContainerGeneric)``;
-export const Label = styled.label``;
+export const ContainerStep = styled(ContainerGeneric)`
+  flex-direction: column;
+`;

@@ -9,7 +9,7 @@ const StepProgress = ({ page, onPageNumberClick }: Props) => {
   } else if (page === 2) {
     stepPercentage = 35;
   } else if (page === 3) {
-    stepPercentage = 70;
+    stepPercentage = 68;
   } else if (page === 4) {
     stepPercentage = 100;
   } else {
@@ -25,33 +25,30 @@ const StepProgress = ({ page, onPageNumberClick }: Props) => {
               className={`indexedStep ${accomplished ? 'accomplished' : null}`}
               onClick={() => onPageNumberClick(1)}
             >
-              {index + 1}
+              <span>{index + 1}</span>
+              <span>Terreno</span>
             </div>
           )}
-          <div>
-            <S.Label>Jaja</S.Label>
-          </div>
         </Step>
-        {/* <S.ContainerStep> */}
         <Step>
           {({ accomplished, index }: stepProps) => (
             <div
               className={`indexedStep ${accomplished ? 'accomplished' : null}`}
               onClick={() => onPageNumberClick(2)}
             >
-              {index + 1}
+              <span>{index + 1}</span>
+              <span>Unidades</span>
             </div>
           )}
         </Step>
-        {/* <S.Label>Jaja</S.Label>
-        </S.ContainerStep> */}
         <Step>
           {({ accomplished, index }: stepProps) => (
             <div
               className={`indexedStep ${accomplished ? 'accomplished' : null}`}
               onClick={() => onPageNumberClick(3)}
             >
-              {index + 1}
+              <span>{index + 1}</span>
+              <span>Prazos</span>
             </div>
           )}
         </Step>
@@ -61,7 +58,8 @@ const StepProgress = ({ page, onPageNumberClick }: Props) => {
               className={`indexedStep ${accomplished ? 'accomplished' : null}`}
               onClick={() => onPageNumberClick(4)}
             >
-              {index + 1}
+              <span>{index + 1}</span>
+              <span>Final</span>
             </div>
           )}
         </Step>
