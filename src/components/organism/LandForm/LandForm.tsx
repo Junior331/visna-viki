@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useFormik } from 'formik';
 import {
   FormControl,
@@ -9,10 +8,11 @@ import {
 } from '@mui/material';
 import landFormSchema from './LandFormSchema';
 import { Button, Input } from '@/components/elements';
+import { Props } from './@types';
 import * as S from './LandFormStyled';
+import { useEffect } from 'react';
 
-const LandForm = () => {
-  const [isShow, setIsShow] = useState(false);
+const LandForm = ({ date, isShow, setDate, setIsShow, setIsValid }: Props) => {
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -42,14 +42,32 @@ const LandForm = () => {
         },
         projectId: 0 // projectId
       };
+      setDate({
+        ...date,
+        lands: {
+          ...payload
+        }
+      });
+      setIsValid(true);
       console.log('values ::', values);
       console.log('payload ::', payload);
     },
     validationSchema: landFormSchema
   });
 
-  const { values, touched, errors, handleSubmit, handleChange } = formik;
+  const {
+    values,
+    touched,
+    errors,
+    isValid,
+    handleBlur,
+    handleSubmit,
+    handleChange
+  } = formik;
 
+  useEffect(() => {
+    setIsValid(!isValid && Boolean(values.name));
+  }, [values, isValid, setIsValid]);
   return (
     <S.LandFormContainer>
       <S.Form onSubmit={handleSubmit}>
@@ -71,6 +89,7 @@ const LandForm = () => {
                 <Input
                   id="name"
                   value={values.name}
+                  onBlur={handleBlur}
                   onChange={handleChange}
                   aria-describedby="name"
                   placeholder="Nome do projeto"

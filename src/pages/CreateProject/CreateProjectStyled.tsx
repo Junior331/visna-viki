@@ -30,3 +30,13 @@ export const Content = styled(GenericContainer)`
     }
   }
 `;
+export const ContainerSteps = styled(GenericContainer)`
+  gap: 20px;
+  padding: 0px 25px;
+  align-items: center;
+`;
+export const ContainerButtons = styled(GenericContainer)`
+  gap: 20px;
+  align-items: center;
+  justify-content: flex-end;
+`;

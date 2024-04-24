@@ -6,11 +6,13 @@ import {
   MenuItem,
   Select
 } from '@mui/material';
+import { Props } from './@types';
 import UnitsFormSchema from './UnitsFormSchema';
 import { Button, Input } from '@/components/elements';
 import * as S from './UnitsFormStyled';
+import { useEffect } from 'react';
 
-const UnitsForm = () => {
+const UnitsForm = ({ date, setDate, setIsValid }: Props) => {
   const formik = useFormik({
     initialValues: {
       unitTypeId: 0,
@@ -43,13 +45,24 @@ const UnitsForm = () => {
         },
         projectId: 0 //
       };
+      setDate({
+        ...date,
+        units: {
+          ...payload
+        }
+      });
       console.log('values ::', values);
       console.log('payload ::', payload);
     },
     validationSchema: UnitsFormSchema
   });
 
-  const { values, touched, errors, handleSubmit, handleChange } = formik;
+  const { values, touched, isValid, errors, handleSubmit, handleChange } =
+    formik;
+
+  useEffect(() => {
+    setIsValid(!isValid);
+  }, [values, isValid, setIsValid]);
 
   return (
     <S.UnitsFormContainer>

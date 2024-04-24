@@ -1,37 +1,38 @@
 import { useFormik } from 'formik';
 import { FormControl, Grid, InputAdornment } from '@mui/material';
-import deadlinesFormSchema from './DeadlinesFormSchema';
+import { Props } from './@types';
 import { Input } from '@/components/elements';
+import deadlinesFormSchema from './DeadlinesFormSchema';
 import * as S from './DeadlinesFormStyled';
+import { useEffect } from 'react';
 
-const DeadlinesForm = () => {
+const DeadlinesForm = ({ date, setDate, setIsValid }: Props) => {
   const formik = useFormik({
     initialValues: {
       startDate: '',
-      projectApproval: '',
-      executionWork: '',
-      totalTime: ''
+      totalDeadlineInMonth: '',
+      approvalDeadlineInMonth: '',
+      constructionDeadlineInMonth: ''
     },
     onSubmit: async (values) => {
-      const payload = {
-        id: 0, //
-        projectId: 0, //
-        totalDeadlineInMonth: 0, // Prazo total
-        approvalDeadlineInMonth: 0, // Aprovação do projeto
-        constructionDeadlineInMonth: 0, // Execução da obra
-        startDate: '', // Data de início
-        projectLaunchDeadlineInMonth: 0, //
-        endDate: '' //
-      };
+      setDate({
+        ...date,
+        deadline: {
+          ...values
+        }
+      });
 
       console.log('values ::', values);
-      console.log('payload ::', payload);
     },
     validationSchema: deadlinesFormSchema
   });
 
-  const { values, touched, errors, handleSubmit, handleChange } = formik;
+  const { values, touched, isValid, errors, handleSubmit, handleChange } =
+    formik;
 
+  useEffect(() => {
+    setIsValid(!isValid);
+  }, [values, isValid, setIsValid]);
   return (
     <S.DeadlinesFormContainer>
       <S.Form onSubmit={handleSubmit}>
@@ -61,15 +62,19 @@ const DeadlinesForm = () => {
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <S.Label>Aprovação do projeto </S.Label>
                 <Input
-                  id="projectApproval"
-                  value={values.projectApproval}
                   onChange={handleChange}
-                  aria-describedby="projectApproval"
+                  id="approvalDeadlineInMonth"
                   placeholder="Digite os meses"
+                  value={values.approvalDeadlineInMonth}
+                  aria-describedby="approvalDeadlineInMonth"
                   inputProps={{ style: { fontSize: '1.4rem' } }}
-                  helperText={touched.projectApproval && errors.projectApproval}
+                  helperText={
+                    touched.approvalDeadlineInMonth &&
+                    errors.approvalDeadlineInMonth
+                  }
                   error={
-                    touched.projectApproval && Boolean(errors.projectApproval)
+                    touched.approvalDeadlineInMonth &&
+                    Boolean(errors.approvalDeadlineInMonth)
                   }
                   InputProps={{
                     endAdornment: (
@@ -83,14 +88,20 @@ const DeadlinesForm = () => {
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <S.Label>Execução da obra </S.Label>
                 <Input
-                  id="executionWork"
-                  value={values.executionWork}
                   onChange={handleChange}
-                  aria-describedby="executionWork"
                   placeholder="Digite os meses"
+                  id="constructionDeadlineInMonth"
+                  value={values.constructionDeadlineInMonth}
+                  aria-describedby="constructionDeadlineInMonth"
                   inputProps={{ style: { fontSize: '1.4rem' } }}
-                  helperText={touched.executionWork && errors.executionWork}
-                  error={touched.executionWork && Boolean(errors.executionWork)}
+                  helperText={
+                    touched.constructionDeadlineInMonth &&
+                    errors.constructionDeadlineInMonth
+                  }
+                  error={
+                    touched.constructionDeadlineInMonth &&
+                    Boolean(errors.constructionDeadlineInMonth)
+                  }
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">mes</InputAdornment>
@@ -103,14 +114,19 @@ const DeadlinesForm = () => {
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <S.Label>Prazo total</S.Label>
                 <Input
-                  id="totalTime"
-                  value={values.totalTime}
                   onChange={handleChange}
-                  aria-describedby="totalTime"
+                  id="totalDeadlineInMonth"
                   placeholder="Digite os meses"
+                  value={values.totalDeadlineInMonth}
+                  aria-describedby="totalDeadlineInMonth"
                   inputProps={{ style: { fontSize: '1.4rem' } }}
-                  helperText={touched.totalTime && errors.totalTime}
-                  error={touched.totalTime && Boolean(errors.totalTime)}
+                  helperText={
+                    touched.totalDeadlineInMonth && errors.totalDeadlineInMonth
+                  }
+                  error={
+                    touched.totalDeadlineInMonth &&
+                    Boolean(errors.totalDeadlineInMonth)
+                  }
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">mes</InputAdornment>

@@ -1,5 +1,5 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import StepProgressBar from 'react-step-progress';
 import {
   Layout,
   LandForm,
@@ -7,49 +7,42 @@ import {
   SummaryForm,
   DeadlinesForm
 } from '@/components/organism';
+import { emptyProjectDate, projectDateType } from '@/utils/types';
 import { Button } from '@/components/elements';
-// import { StepProgress } from '@/components/modules';
+import { StepProgress } from '@/components/modules';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import { breadCrumbsItems } from './utils';
 import * as S from './CreateProjectStyled';
 
 export const CreateProject = () => {
   const navigate = useNavigate();
-  // const [page, setPage] = useState(1);
+  const [isShow, setIsShow] = useState(false);
+  const [isValid, setIsValid] = useState(false);
+  const [stepActive, setStepActive] = useState(1);
+  const [date, setDate] = useState<projectDateType>(emptyProjectDate);
 
-  const step1Content = <LandForm />;
-  const step2Content = <UnitsForm />;
-  const step3Content = <DeadlinesForm />;
-  const step4Content = <SummaryForm />;
-
-  const onFormSubmit = () => {
-    console.log('Projeto criado');
+  const nextPage = (page: number) => {
+    if (page > 0 && page < 5) setStepActive(page);
   };
 
-  // const nextPage = (page: number) => {
-  //   console.log('page ::', page);
-  //   console.log('page handle ::', page > 1);
-  //   if (page > 0 && page < 5) setPage(page);
-  // };
-
-  // const nextPageNumber = (pageNumber: number) => {
-  //   switch (pageNumber) {
-  //     case 1:
-  //       setPage(1);
-  //       break;
-  //     case 2:
-  //       setPage(2);
-  //       break;
-  //     case 3:
-  //       setPage(3);
-  //       break;
-  //     case 4:
-  //       setPage(4);
-  //       break;
-  //     default:
-  //       setPage(1);
-  //   }
-  // };
+  const nextPageNumber = (pageNumber: number) => {
+    switch (pageNumber) {
+      case 1:
+        setStepActive(1);
+        break;
+      case 2:
+        setStepActive(2);
+        break;
+      case 3:
+        setStepActive(3);
+        break;
+      case 4:
+        setStepActive(4);
+        break;
+      default:
+        setStepActive(1);
+    }
+  };
 
   return (
     <Layout>
@@ -61,49 +54,54 @@ export const CreateProject = () => {
           </Button>
         </S.Header>
         <S.Content>
-          {/* <StepProgress
-            page={page}
+          <StepProgress
+            page={stepActive}
             onPageNumberClick={nextPageNumber}
             steps={0}
           />
-          <div>
-            <Button isOutline size="200px" onClick={() => nextPage(page - 1)}>
-              Voltar
+          <S.ContainerSteps>
+            {stepActive === 1 && (
+              <LandForm
+                date={date}
+                isShow={isShow}
+                setDate={setDate}
+                setIsShow={setIsShow}
+                setIsValid={setIsValid}
+              />
+            )}
+            {stepActive === 2 && (
+              <UnitsForm
+                date={date}
+                setDate={setDate}
+                setIsValid={setIsValid}
+              />
+            )}
+            {stepActive === 3 && (
+              <DeadlinesForm
+                date={date}
+                setDate={setDate}
+                setIsValid={setIsValid}
+              />
+            )}
+            {stepActive === 4 && <SummaryForm />}
+          </S.ContainerSteps>
+          <S.ContainerButtons>
+            <Button
+              isOutline
+              size="80px"
+              onClick={() => nextPage(stepActive - 1)}
+            >
+              {stepActive > 1 ? 'Voltar' : 'Cancelar '}
             </Button>
-            <Button isOutline size="200px" onClick={() => nextPage(page + 1)}>
-              Proximo
+            <Button
+              size="100px"
+              disabled={isValid}
+              noActive={isValid}
+              onClick={() => nextPage(stepActive + 1)}
+            >
+              {stepActive < 4 ? 'Proximo ' : 'Finalizar'}
             </Button>
-          </div> */}
-
-          <StepProgressBar
-            startingStep={0}
-            nextBtnName="Próximo"
-            previousBtnName="Voltar"
-            submitBtnName="Finalizar"
-            onSubmit={onFormSubmit}
-            steps={[
-              {
-                label: 'Terreno',
-                name: 'land',
-                content: step1Content
-              },
-              {
-                label: 'Unidades',
-                name: 'Units',
-                content: step2Content
-              },
-              {
-                label: 'Prazos',
-                name: 'deadlines',
-                content: step3Content
-              },
-              {
-                label: 'Final',
-                name: 'final',
-                content: step4Content
-              }
-            ]}
-          />
+          </S.ContainerButtons>
         </S.Content>
       </S.CreateProjectContainer>
     </Layout>

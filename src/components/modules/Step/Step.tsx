@@ -1,6 +1,6 @@
 import { ProgressBar, Step } from 'react-step-progress-bar';
-import * as S from './StepStyled';
 import { Props, stepProps } from './@types';
+import * as S from './StepStyled';
 
 const StepProgress = ({ page, onPageNumberClick }: Props) => {
   let stepPercentage = 0;
@@ -28,6 +28,9 @@ const StepProgress = ({ page, onPageNumberClick }: Props) => {
               {index + 1}
             </div>
           )}
+          <div>
+            <S.Label>Jaja</S.Label>
+          </div>
         </Step>
         {/* <S.ContainerStep> */}
         <Step>
