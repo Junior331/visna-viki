@@ -1,9 +1,6 @@
 import * as yup from 'yup';
 
 const forgotPasswordSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email('Invalid e-mail.')
-    .required('Mandatory e-mail field')
+  email: yup.string().email('E-mail inválido.').required('Campo obrigatório')
 });
 export default forgotPasswordSchema;

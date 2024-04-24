@@ -13,7 +13,7 @@ const Theme: DefaultTheme = {
 
     background: {
       dark: '',
-      light: '',
+      light: '#e7e6e6',
       medium: '#5a51bd',
       regular: '#7367f0',
       default: ''

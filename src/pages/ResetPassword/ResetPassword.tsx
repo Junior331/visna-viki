@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -9,14 +9,18 @@ import {
   OutlinedInput
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import ResetPasswordSchema from './ResetPasswordSchema';
+import { SnackbarContext } from '@/contexts/Snackbar';
 import { LayoutAbstract } from '@/components/organism';
 import { Button, Input } from '@/components/elements';
-import icons from '@/assets/images/icons';
+import { icons } from '@/assets/images/icons';
+import { resetPassword } from './services';
+import ResetPasswordSchema from './ResetPasswordSchema';
 import * as S from './ResetPasswordStyled';
 
 export const ResetPassword = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const { setSnackbar } = useContext(SnackbarContext);
   const [passwordShow, setPasswordShow] = useState<boolean>(false);
   const [passwordConfirmShow, setPasswordConfirmShow] =
     useState<boolean>(false);
@@ -25,8 +29,23 @@ export const ResetPassword = () => {
       password: '',
       confirmPassword: ''
     },
-    onSubmit: ({ password, confirmPassword }) => {
-      console.log({ password, confirmPassword });
+    onSubmit: async ({ password }) => {
+      setLoading(true);
+      try {
+        await resetPassword(password);
+        setLoading(false);
+      } catch (error) {
+        if (error instanceof Error) {
+          setLoading(false);
+          setSnackbar({
+            isOpen: true,
+            severity: 'error',
+            vertical: 'bottom',
+            horizontal: 'left',
+            message: error.message
+          });
+        }
+      }
     },
     validationSchema: ResetPasswordSchema
   });
@@ -35,20 +54,20 @@ export const ResetPassword = () => {
     <LayoutAbstract>
       <S.Form onSubmit={handleSubmit}>
         <S.ContainerText>
-          <S.Title>Reset Password 🔐</S.Title>
+          <S.Title>Redefinir senha 🔐</S.Title>
           <S.Text>
-            Your new password must be different from previously used passwords
+            Sua nova senha deve ser diferente das senhas usadas anteriormente
           </S.Text>
         </S.ContainerText>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-          <S.Label>New Password</S.Label>
+          <S.Label>Nova senha</S.Label>
           <Input
             id="password"
             variant="outlined"
             value={values.password}
             onChange={handleChange}
             typeElement={OutlinedInput}
-            placeholder="*******************"
+            placeholder="Digite sua senha"
             inputProps={{ style: { fontSize: '1.4rem' } }}
             type={`${passwordShow ? 'text' : 'password'}`}
             error={touched.password && Boolean(errors.password)}
@@ -71,14 +90,14 @@ export const ResetPassword = () => {
           )}
         </FormControl>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-          <S.Label>Confirm Password</S.Label>
+          <S.Label>Confirmar senha</S.Label>
           <Input
             id="confirmPassword"
             variant="outlined"
             onChange={handleChange}
             typeElement={OutlinedInput}
             value={values.confirmPassword}
-            placeholder="*******************"
+            placeholder="Confirme sua senha"
             inputProps={{ style: { fontSize: '1.4rem' } }}
             type={`${passwordConfirmShow ? 'text' : 'password'}`}
             error={touched.confirmPassword && Boolean(errors.confirmPassword)}
@@ -102,7 +121,12 @@ export const ResetPassword = () => {
         </FormControl>
 
         <S.ContainerButtons>
-          <Button type="submit" size="large">
+          <Button
+            size="large"
+            type="submit"
+            loading={loading}
+            disabled={loading}
+          >
             Confirm
           </Button>
         </S.ContainerButtons>

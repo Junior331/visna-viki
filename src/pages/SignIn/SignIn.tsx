@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useFormik } from 'formik';
 import {
   IconButton,
@@ -12,17 +12,44 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import signInSchema from './SignInSchema';
 import { LayoutAbstract } from '@/components/organism';
 import { Button, Checkbox, Input } from '@/components/elements';
+import { UserContext } from '@/contexts/UserDate';
+import { SnackbarContext } from '@/contexts/Snackbar';
+import { getInfoUser, signIn } from './services';
 import * as S from './SignInStyled';
 
 export const SignIn = () => {
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
+  const { setSnackbar } = useContext(SnackbarContext);
+
   const formik = useFormik({
     initialValues: {
       email: '',
       password: ''
     },
-    onSubmit: ({ email, password }) => {
-      console.log({ email, password });
+    onSubmit: async ({ email, password }) => {
+      setLoading(true);
+      try {
+        const { accessToken } = await signIn({ email, password });
+        setLoading(false);
+        if (accessToken) {
+          getInfoUser({ setUser, accessToken });
+
+          navigate('/home');
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          setLoading(false);
+          setSnackbar({
+            isOpen: true,
+            severity: 'error',
+            vertical: 'bottom',
+            horizontal: 'left',
+            message: error.message
+          });
+        }
+      }
     },
     validationSchema: signInSchema
   });
@@ -35,10 +62,8 @@ export const SignIn = () => {
     <LayoutAbstract>
       <S.Form onSubmit={handleSubmit}>
         <S.ContainerText>
-          <S.Title>Welcome to Visna! 👋🏻</S.Title>
-          <S.Text>
-            Please sign-in to your account and start the adventure
-          </S.Text>
+          <S.Title>Bem vindo ao Visna 👋🏻</S.Title>
+          <S.Text>Faça login em sua conta e comece a experiência</S.Text>
         </S.ContainerText>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
           <S.Label>Email</S.Label>
@@ -47,7 +72,7 @@ export const SignIn = () => {
             value={values.email}
             onChange={handleChange}
             aria-describedby="email"
-            placeholder="Enter a email"
+            placeholder="Digite seu email"
             inputProps={{ style: { fontSize: '1.4rem' } }}
             helperText={touched.email && errors.email}
             error={touched.email && Boolean(errors.email)}
@@ -69,7 +94,7 @@ export const SignIn = () => {
             value={values.password}
             onChange={handleChange}
             typeElement={OutlinedInput}
-            placeholder="*******************"
+            placeholder="Digite sua senha"
             inputProps={{ style: { fontSize: '1.4rem' } }}
             type={`${passwordShow ? 'text' : 'password'}`}
             error={touched.password && Boolean(errors.password)}
@@ -92,16 +117,23 @@ export const SignIn = () => {
           )}
         </FormControl>
 
-        <Checkbox label="Remember me" />
+        <Checkbox label="Lembre-me" />
 
         <S.ContainerButtons>
-          <Button type="submit" size="large">
+          <Button
+            size="large"
+            type="submit"
+            loading={loading}
+            disabled={loading}
+          >
             Login
           </Button>
         </S.ContainerButtons>
         <S.Footer>
-          <S.Text>New on our platform?</S.Text>
-          <S.Link onClick={() => navigate('/signup')}>Create an account</S.Link>
+          <S.Text>
+            Novo em nossa plataforma?{' '}
+            <S.Link onClick={() => navigate('/signup')}>Crie uma conta</S.Link>
+          </S.Text>
         </S.Footer>
       </S.Form>
     </LayoutAbstract>

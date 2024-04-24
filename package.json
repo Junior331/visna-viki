@@ -11,7 +11,8 @@
     "test:coverage": "vitest --coverage",
     "test:one": "vitest --file src/App.test.tsx",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "aws s3 sync dist/ s3://visna.viki.com"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -26,6 +27,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
+    "react-step-progress-bar": "^1.0.3",
     "styled-components": "^6.1.8",
     "styled-media-query": "^2.1.2",
     "uuid": "^9.0.1",

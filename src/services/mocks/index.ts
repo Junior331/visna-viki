@@ -1,5 +1,5 @@
-// import { rows } from "..";
+import { projects } from './projects';
 
-// export const mocks = {
-//   rows,
-// };
+export const mocks = {
+  projects
+};
