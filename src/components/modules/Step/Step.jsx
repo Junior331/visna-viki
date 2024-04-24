@@ -1,8 +1,7 @@
 import { ProgressBar, Step } from 'react-step-progress-bar';
-import { Props, stepProps } from './@types';
 import * as S from './StepStyled';
 
-const StepProgress = ({ page, onPageNumberClick }: Props) => {
+export const StepProgress = ({ page, onPageNumberClick }) => {
   let stepPercentage = 0;
   if (page === 1) {
     stepPercentage = 1;
@@ -20,7 +19,7 @@ const StepProgress = ({ page, onPageNumberClick }: Props) => {
     <S.StepContainer>
       <ProgressBar percent={stepPercentage}>
         <Step>
-          {({ accomplished, index }: stepProps) => (
+          {({ accomplished, index }) => (
             <div
               className={`indexedStep ${accomplished ? 'accomplished' : null}`}
               onClick={() => onPageNumberClick(1)}
@@ -31,7 +30,7 @@ const StepProgress = ({ page, onPageNumberClick }: Props) => {
           )}
         </Step>
         <Step>
-          {({ accomplished, index }: stepProps) => (
+          {({ accomplished, index }) => (
             <div
               className={`indexedStep ${accomplished ? 'accomplished' : null}`}
               onClick={() => onPageNumberClick(2)}
@@ -42,7 +41,7 @@ const StepProgress = ({ page, onPageNumberClick }: Props) => {
           )}
         </Step>
         <Step>
-          {({ accomplished, index }: stepProps) => (
+          {({ accomplished, index }) => (
             <div
               className={`indexedStep ${accomplished ? 'accomplished' : null}`}
               onClick={() => onPageNumberClick(3)}
@@ -53,7 +52,7 @@ const StepProgress = ({ page, onPageNumberClick }: Props) => {
           )}
         </Step>
         <Step>
-          {({ accomplished, index }: stepProps) => (
+          {({ accomplished, index }) => (
             <div
               className={`indexedStep ${accomplished ? 'accomplished' : null}`}
               onClick={() => onPageNumberClick(4)}
@@ -67,5 +66,3 @@ const StepProgress = ({ page, onPageNumberClick }: Props) => {
     </S.StepContainer>
   );
 };
-
-export { StepProgress };

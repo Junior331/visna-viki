@@ -54,11 +54,7 @@ export const CreateProject = () => {
           </Button>
         </S.Header>
         <S.Content>
-          <StepProgress
-            page={stepActive}
-            onPageNumberClick={nextPageNumber}
-            steps={0}
-          />
+          <StepProgress page={stepActive} onPageNumberClick={nextPageNumber} />
           <S.ContainerSteps>
             {stepActive === 1 && (
               <LandForm
