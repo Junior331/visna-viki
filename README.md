@@ -2,7 +2,13 @@
 
 ## App
 
+### Main
+
 - https://visna-viki.vercel.app/
+
+### Develop
+
+- https://visna-viki-git-develop-junior331s-projects.vercel.app
 
 ## Principais Tecnologias utilizadas
 
@@ -57,7 +63,7 @@ yarn dev
   ### Modules
 
   - [x] Card
-  - [x] Step
+  - [ ] Step
   - [ ] Modal
   - [x] Header
   - [x] Snackbar
