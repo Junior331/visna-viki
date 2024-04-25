@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction } from 'react';
 export type Props = {
   isShow: boolean;
   date: projectDateType;
+  handleStep: (step: number) => void;
   setIsShow: Dispatch<SetStateAction<boolean>>;
-  setIsValid: Dispatch<SetStateAction<boolean>>;
   setDate: Dispatch<SetStateAction<projectDateType>>;
 };

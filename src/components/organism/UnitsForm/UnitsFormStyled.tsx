@@ -33,6 +33,11 @@ export const Form = styled.form`
       margin-left: 10px;
     }
   }
+  > div:first-child {
+    overflow-y: auto;
+    max-height: 500px;
+    padding: 30px 20px 0px;
+  }
 `;
 
 export const ContainerInputs = styled(Grid)`
@@ -59,4 +64,11 @@ export const Label = styled.label`
   color: ${({ theme }) => theme.palette.color.medium};
   font-size: ${({ theme }) => theme.typography.fontSize}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightLight};
+`;
+export const ContainerButtons = styled(ContainerGeneric)`
+  gap: 20px;
+  width: 100%;
+  height: auto;
+  align-items: center;
+  justify-content: flex-end;
 `;

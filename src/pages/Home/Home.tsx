@@ -30,6 +30,7 @@ export const Home = () => {
   const { setContentActive } = useContext(SearchContext);
   const [list, setList] = useState<Array<projectType>>([emptyProject]);
   const [filteredList, setFilterList] = useState<Array<projectType>>(list);
+  const token = window.sessionStorage.getItem('TOKEN') || '';
 
   useEffect(() => {
     handleFilterAndSearch({ option, list, setFilterList });
@@ -40,7 +41,8 @@ export const Home = () => {
   }, [list]);
 
   useEffect(() => {
-    listProjects({ setList, setLoading, setSnackbar });
+    listProjects({ setList, setLoading, setSnackbar, token });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -95,7 +97,6 @@ export const Home = () => {
                 }
               />
               <Button size="200px" onClick={() => navigate('/create')}>
-                {' '}
                 Novo Projeto
               </Button>
             </S.ContainerFilter>

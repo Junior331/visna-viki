@@ -1,7 +1,17 @@
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/material';
+import { Props } from './@types';
+import { MaskType } from '@/utils/types';
+import { Button } from '@/components/elements';
+import { handleCreateProject } from './services';
+import { SnackbarContext } from '@/contexts/Snackbar';
+import { formatCurrency, typeMask } from '@/utils/utils';
 import * as S from './SummaryFormStyled';
 
-const SummaryForm = () => {
+const SummaryForm = ({ date, handleStep }: Props) => {
+  const navigate = useNavigate();
+  const { setSnackbar } = useContext(SnackbarContext);
   return (
     <S.SummaryFormContainer>
       <S.Section>
@@ -17,7 +27,7 @@ const SummaryForm = () => {
                     Terreno:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    Projeto teste
+                    {date.lands.name}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -27,7 +37,7 @@ const SummaryForm = () => {
                     Endereço:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    Rua Vasco Lima
+                    {date.lands.street}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -37,7 +47,7 @@ const SummaryForm = () => {
                     Bairro:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    Guaratiba
+                    {date.lands.neighborhood}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -47,7 +57,7 @@ const SummaryForm = () => {
                     País:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    Brasil
+                    {date.lands.country}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -59,7 +69,7 @@ const SummaryForm = () => {
                     Estado:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    Rio de Janeiro
+                    {date.lands.state}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -69,7 +79,7 @@ const SummaryForm = () => {
                     Número:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    02
+                    {date.lands.number}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -79,7 +89,7 @@ const SummaryForm = () => {
                     Cep:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    05263-030
+                    {typeMask(MaskType.CEP, date.lands.zipCode)}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -89,7 +99,7 @@ const SummaryForm = () => {
                     Área total (m²):
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    240m²
+                    {date.lands.area}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -101,7 +111,7 @@ const SummaryForm = () => {
                     Testada:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    160m²
+                    {date.lands.frontage}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -111,7 +121,7 @@ const SummaryForm = () => {
                     Topografia
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    Plano
+                    {date.lands.topographyTypeId}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -121,7 +131,7 @@ const SummaryForm = () => {
                     Valor (m²):
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    R$ 31,00
+                    R$ {formatCurrency(date.lands.amountPerMeter.toString())}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -131,7 +141,7 @@ const SummaryForm = () => {
                     Valor total:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    R$ 43,596,397,38
+                    R$ {formatCurrency(date.lands.totalAmount.toString())}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -143,7 +153,7 @@ const SummaryForm = () => {
                     Zoneamento:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    Zoneamento (ZM)
+                    {date.lands.zoning}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -157,102 +167,94 @@ const SummaryForm = () => {
         </S.Title>
         <S.ContainerInfo>
           <Grid container spacing={{ xs: 0, sm: 0 }} rowGap={2} columnGap={1}>
-            <S.ContainerInfo>
-              <Grid container rowGap={2}>
-                <Grid item xs={12} sm={12} md={3} minWidth={222}>
-                  <S.ContainerText>
-                    <S.Title variant="h6" gutterBottom>
-                      Tipo da unidade:
-                    </S.Title>
-                    <S.Text variant="body2" gutterBottom>
-                      Residencial
-                    </S.Text>
-                  </S.ContainerText>
+            {date.units.unit.map((unit) => (
+              <S.ContainerInfo key={unit.id}>
+                <Grid container rowGap={2}>
+                  <Grid item xs={12} sm={12} md={3} minWidth={222}>
+                    <S.ContainerText>
+                      <S.Title variant="h6" gutterBottom>
+                        Tipo da unidade:
+                      </S.Title>
+                      <S.Text variant="body2" gutterBottom>
+                        {unit.unitTypeId}
+                      </S.Text>
+                    </S.ContainerText>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={3} minWidth={270}>
+                    <S.ContainerText>
+                      <S.Title variant="h6" gutterBottom>
+                        Quantidade:
+                      </S.Title>
+                      <S.Text variant="body2" gutterBottom>
+                        {unit.unitQuantity}
+                      </S.Text>
+                    </S.ContainerText>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={3} minWidth={175}>
+                    <S.ContainerText>
+                      <S.Title variant="h6" gutterBottom>
+                        Area média:
+                      </S.Title>
+                      <S.Text variant="body2" gutterBottom>
+                        {unit.averageArea}
+                      </S.Text>
+                    </S.ContainerText>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={3} minWidth={110}>
+                    <S.ContainerText>
+                      <S.Title variant="h6" gutterBottom>
+                        A. Privativa total:
+                      </S.Title>
+                      <S.Text variant="body2" gutterBottom>
+                        {unit.areaPrivativaTotal}
+                      </S.Text>
+                    </S.ContainerText>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3} minWidth={270}>
-                  <S.ContainerText>
-                    <S.Title variant="h6" gutterBottom>
-                      Quantidade:
-                    </S.Title>
-                    <S.Text variant="body2" gutterBottom>
-                      160
-                    </S.Text>
-                  </S.ContainerText>
+                <Grid container rowGap={2}>
+                  <Grid item xs={12} sm={12} md={3} minWidth={222}>
+                    <S.ContainerText>
+                      <S.Title variant="h6" gutterBottom>
+                        Qtd permutas:
+                      </S.Title>
+                      <S.Text variant="body2" gutterBottom>
+                        {unit.exchangeQuantity}
+                      </S.Text>
+                    </S.ContainerText>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={3} minWidth={270}>
+                    <S.ContainerText>
+                      <S.Title variant="h6" gutterBottom>
+                        Área total permutada:
+                      </S.Title>
+                      <S.Text variant="body2" gutterBottom>
+                        {unit.totalExchangeArea}
+                      </S.Text>
+                    </S.ContainerText>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={3} minWidth={175}>
+                    <S.ContainerText>
+                      <S.Title variant="h6" gutterBottom>
+                        Valor de mercado
+                      </S.Title>
+                      <S.Text variant="body2" gutterBottom>
+                        R$ {formatCurrency(unit.marketAmount)}
+                      </S.Text>
+                    </S.ContainerText>
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={3} minWidth={110}>
+                    <S.ContainerText>
+                      <S.Title variant="h6" gutterBottom>
+                        VGV líquido:
+                      </S.Title>
+                      <S.Text variant="body2" gutterBottom>
+                        R$ {formatCurrency(unit.netAmount)}
+                      </S.Text>
+                    </S.ContainerText>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3} minWidth={175}>
-                  <S.ContainerText>
-                    <S.Title variant="h6" gutterBottom>
-                      Area média:
-                    </S.Title>
-                    <S.Text variant="body2" gutterBottom>
-                      160m²
-                    </S.Text>
-                  </S.ContainerText>
-                </Grid>
-                <Grid item xs={12} sm={12} md={3} minWidth={110}>
-                  <S.ContainerText>
-                    <S.Title variant="h6" gutterBottom>
-                      A. Privativa total:
-                    </S.Title>
-                    <S.Text variant="body2" gutterBottom>
-                      160m²
-                    </S.Text>
-                  </S.ContainerText>
-                </Grid>
-              </Grid>
-              <Grid container rowGap={2}>
-                <Grid item xs={12} sm={12} md={1.2} minWidth={150}>
-                  <S.ContainerText>
-                    <S.Title variant="h6" gutterBottom>
-                      Área:
-                    </S.Title>
-                    <S.Text variant="body2" gutterBottom>
-                      160m²
-                    </S.Text>
-                  </S.ContainerText>
-                </Grid>
-                <Grid item xs={12} sm={12} md={1.8} minWidth={230}>
-                  <S.ContainerText>
-                    <S.Title variant="h6" gutterBottom>
-                      Qtd permutas:
-                    </S.Title>
-                    <S.Text variant="body2" gutterBottom>
-                      4000
-                    </S.Text>
-                  </S.ContainerText>
-                </Grid>
-                <Grid item xs={12} sm={12} md={3} minWidth={110}>
-                  <S.ContainerText>
-                    <S.Title variant="h6" gutterBottom>
-                      Area permutas:
-                    </S.Title>
-                    <S.Text variant="body2" gutterBottom>
-                      606m²
-                    </S.Text>
-                  </S.ContainerText>
-                </Grid>
-                <Grid item xs={12} sm={12} md={3} minWidth={110}>
-                  <S.ContainerText>
-                    <S.Title variant="h6" gutterBottom>
-                      Valor de mercado
-                    </S.Title>
-                    <S.Text variant="body2" gutterBottom>
-                      R$ 32.000
-                    </S.Text>
-                  </S.ContainerText>
-                </Grid>
-                <Grid item xs={12} sm={12} md={3} minWidth={110}>
-                  <S.ContainerText>
-                    <S.Title variant="h6" gutterBottom>
-                      VGV líquido:
-                    </S.Title>
-                    <S.Text variant="body2" gutterBottom>
-                      R$ 43.760.192
-                    </S.Text>
-                  </S.ContainerText>
-                </Grid>
-              </Grid>
-            </S.ContainerInfo>
+              </S.ContainerInfo>
+            ))}
 
             <Grid container rowGap={2} columnGap={1}>
               <Grid item xs={12} sm={12} md={1.7} minWidth={180}>
@@ -376,17 +378,17 @@ const SummaryForm = () => {
                     Data de início:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    13/05/2024
+                    {date.deadline.startDate}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
               <Grid item xs={12} sm={12} md={2.9} minWidth={345}>
                 <S.ContainerText>
                   <S.Title variant="h6" gutterBottom>
-                    Aprovação do projeto :
+                    Aprovação do projeto:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    12 mes
+                    {date.deadline.approvalDeadlineInMonth} meses
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -396,7 +398,7 @@ const SummaryForm = () => {
                     Execução da obra:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    20 mes
+                    {date.deadline.constructionDeadlineInMonth} meses
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -406,7 +408,7 @@ const SummaryForm = () => {
                     Prazo total:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    32 mes
+                    {date.deadline.totalDeadlineInMonth} meses
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -414,6 +416,17 @@ const SummaryForm = () => {
           </Grid>
         </S.ContainerInfo>
       </S.Section>
+      <S.ContainerButtons>
+        <Button isOutline size="80px" onClick={() => handleStep(3)}>
+          Voltar
+        </Button>
+        <Button
+          size="100px"
+          onClick={() => handleCreateProject(date, navigate, setSnackbar)}
+        >
+          Finalizar
+        </Button>
+      </S.ContainerButtons>
     </S.SummaryFormContainer>
   );
 };

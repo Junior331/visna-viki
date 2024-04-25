@@ -1,7 +1,7 @@
 import { ProgressBar, Step } from 'react-step-progress-bar';
 import * as S from './StepStyled';
 
-export const StepProgress = ({ page, onPageNumberClick }) => {
+export const StepProgress = ({ page }) => {
   let stepPercentage = 0;
   if (page === 1) {
     stepPercentage = 1;
@@ -22,7 +22,6 @@ export const StepProgress = ({ page, onPageNumberClick }) => {
           {({ accomplished, index }) => (
             <div
               className={`indexedStep ${accomplished ? 'accomplished' : null}`}
-              onClick={() => onPageNumberClick(1)}
             >
               <span>{index + 1}</span>
               <span>Terreno</span>
@@ -33,7 +32,6 @@ export const StepProgress = ({ page, onPageNumberClick }) => {
           {({ accomplished, index }) => (
             <div
               className={`indexedStep ${accomplished ? 'accomplished' : null}`}
-              onClick={() => onPageNumberClick(2)}
             >
               <span>{index + 1}</span>
               <span>Unidades</span>
@@ -44,7 +42,6 @@ export const StepProgress = ({ page, onPageNumberClick }) => {
           {({ accomplished, index }) => (
             <div
               className={`indexedStep ${accomplished ? 'accomplished' : null}`}
-              onClick={() => onPageNumberClick(3)}
             >
               <span>{index + 1}</span>
               <span>Prazos</span>
@@ -55,7 +52,6 @@ export const StepProgress = ({ page, onPageNumberClick }) => {
           {({ accomplished, index }) => (
             <div
               className={`indexedStep ${accomplished ? 'accomplished' : null}`}
-              onClick={() => onPageNumberClick(4)}
             >
               <span>{index + 1}</span>
               <span>Final</span>

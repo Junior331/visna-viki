@@ -32,6 +32,18 @@ export const GlobalStyles = createGlobalStyle`
     }
   }
 
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #484d57;
+  }
+
+
   
   .content{
     width: 100%;

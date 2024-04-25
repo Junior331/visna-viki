@@ -7,11 +7,18 @@ const Button = ({
   onClick,
   loading,
   children,
+  className,
   disabled = false,
   ...rest
 }: Props) => {
   return (
-    <S.Button onClick={onClick} disabled={disabled} type={type} {...rest}>
+    <S.Button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={className}
+      {...rest}
+    >
       {loading ? <CircularProgress /> : <>{children}</>}
     </S.Button>
   );

@@ -1,9 +1,17 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export enum statusColor {
   'Done' = '#28c76f',
   'To Do' = '#FF9F43',
   'Block' = '#EA5455',
   'In Review' = '#00CFE8',
   'In Progress' = '#7367F0'
+}
+
+export enum MaskType {
+  CEP = 'CEP',
+  DATE = 'DATE',
+  NUMBER = 'NUMBER'
 }
 
 export type projectType = {
@@ -29,29 +37,31 @@ export type landType = {
   amountPerMeter: number;
   topographyTypeId: number;
 };
-export type unitType = {
-  area: string;
-  flooring: string;
+
+export type unitSummaryType = {
+  id: string;
+  isRemove?: boolean;
   netAmount: string;
+  unitTypeId: number;
+  averageArea: string;
+  unitQuantity: string;
+  marketAmount: string;
+  exchangeQuantity: string;
+  totalExchangeArea: string;
+  areaPrivativaTotal: string;
+};
+
+export type unitType = {
+  flooring: string;
   underground: string;
   unitPerFloor: string;
-  unitQuantity: string;
-  totalBuiltArea: string;
-  totalPrivateArea: string;
-  exchangeQuantity: string;
   averageSaleValue: string;
-  totalExchangeArea: string;
   totalToBeBuiltArea: string;
-  areaPrivativaTotal: string;
   totalValueNoExchange: string;
   totalUnitsInDevelopment: string;
-  totalPrivateAreaQuantity: string;
-  unit: {
-    unitTypeId: number;
-    averageArea: string;
-    marketAmount: string;
-  };
+  unit: unitSummaryType[];
 };
+
 export type deadlineType = {
   startDate: string;
   totalDeadlineInMonth: string;
@@ -62,10 +72,26 @@ export type deadlineType = {
 export type projectDateType = {
   lands: landType;
   units: unitType;
+  projectId: number;
   deadline: deadlineType;
 };
 
+export type Country = {
+  name: string;
+  fifa: string;
+  capital: string;
+  population: number;
+};
+
+export type State = {
+  name: string;
+  fifa: string;
+  capital: string;
+  population: number;
+};
+
 export const emptyProjectDate: projectDateType = {
+  projectId: 0,
   lands: {
     area: 0,
     name: '',
@@ -82,27 +108,26 @@ export const emptyProjectDate: projectDateType = {
     topographyTypeId: 0
   },
   units: {
-    area: '',
     flooring: '',
-    netAmount: '',
     underground: '',
     unitPerFloor: '',
-    unitQuantity: '',
-    totalBuiltArea: '',
-    totalPrivateArea: '',
     averageSaleValue: '',
-    exchangeQuantity: '',
-    totalExchangeArea: '',
-    areaPrivativaTotal: '',
     totalToBeBuiltArea: '',
     totalValueNoExchange: '',
     totalUnitsInDevelopment: '',
-    totalPrivateAreaQuantity: '',
-    unit: {
-      unitTypeId: 0,
-      averageArea: '',
-      marketAmount: ''
-    }
+    unit: [
+      {
+        id: '',
+        netAmount: '',
+        unitTypeId: 0,
+        averageArea: '',
+        unitQuantity: '',
+        marketAmount: '',
+        exchangeQuantity: '',
+        totalExchangeArea: '',
+        areaPrivativaTotal: ''
+      }
+    ]
   },
   deadline: {
     startDate: '',
@@ -110,4 +135,16 @@ export const emptyProjectDate: projectDateType = {
     approvalDeadlineInMonth: '',
     constructionDeadlineInMonth: ''
   }
+};
+
+export const emptyUnitSummary: unitSummaryType = {
+  id: uuidv4(),
+  netAmount: '',
+  unitTypeId: 0,
+  averageArea: '',
+  unitQuantity: '',
+  marketAmount: '',
+  exchangeQuantity: '',
+  totalExchangeArea: '',
+  areaPrivativaTotal: ''
 };

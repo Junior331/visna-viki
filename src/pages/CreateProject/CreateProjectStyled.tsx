@@ -35,8 +35,3 @@ export const ContainerSteps = styled(GenericContainer)`
   padding: 0px 25px;
   align-items: center;
 `;
-export const ContainerButtons = styled(GenericContainer)`
-  gap: 20px;
-  align-items: center;
-  justify-content: flex-end;
-`;

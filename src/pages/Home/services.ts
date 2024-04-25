@@ -4,7 +4,12 @@ import { mocks } from '@/services/mocks';
 
 const generateMockData = () => mocks.projects;
 
-export const getProjects = async (isMock: boolean) => {
+export const getAllProjects = async (
+  isMock: boolean,
+  page: number,
+  perPage: number,
+  token: string
+) => {
   try {
     if (isMock) {
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -12,7 +17,12 @@ export const getProjects = async (isMock: boolean) => {
       return mockData;
     } else {
       const response = await axios.get(
-        `${ENDPOINTS.BASE_URL}${ENDPOINTS.PROJECTS.GET_PROJECT}`
+        `${ENDPOINTS.BASE_URL}${ENDPOINTS.PROJECTS.BASE_URL}?page=${page}&perPage=${perPage}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
       );
       return response.data;
     }

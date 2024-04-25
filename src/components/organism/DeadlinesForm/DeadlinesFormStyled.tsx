@@ -65,3 +65,10 @@ export const Label = styled.label`
   font-size: ${({ theme }) => theme.typography.fontSize}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightLight};
 `;
+export const ContainerButtons = styled(ContainerGeneric)`
+  gap: 20px;
+  width: 100%;
+  height: auto;
+  align-items: center;
+  justify-content: flex-end;
+`;

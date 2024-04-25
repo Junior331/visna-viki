@@ -12,9 +12,15 @@ export const ENDPOINTS = {
     GET_AUTH_USER: 'auth/user'
   },
   PROJECTS: {
-    GET_PROJECT: '',
-    PUT_PROJECT: '',
-    POST_PROJECT: '',
-    DELETE_PROJECT: ''
+    BASE_URL: 'project'
+  },
+  LANDS: {
+    BASE_URL: 'lands'
+  },
+  UNITS: {
+    BASE_URL: 'units'
+  },
+  DEADLINE: {
+    BASE_URL: 'deadline'
   }
 };

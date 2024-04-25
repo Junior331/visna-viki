@@ -4,6 +4,7 @@ export type Props = {
   type?: string;
   loading?: boolean;
   disabled?: boolean;
+  className?: string;
   noActive?: boolean;
   isOutline?: boolean;
   children?: ReactNode;

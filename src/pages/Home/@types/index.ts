@@ -3,6 +3,7 @@ import { projectType } from '@/utils/types';
 import { Dispatch, SetStateAction } from 'react';
 
 export type listProjectsProps = {
+  token: string;
   setSnackbar: (snackbarData: Snackbar) => void;
   setList: Dispatch<SetStateAction<projectType[]>>;
   setLoading: Dispatch<React.SetStateAction<boolean>>;

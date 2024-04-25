@@ -3,6 +3,6 @@ import { projectDateType } from '@/utils/types';
 
 export type Props = {
   date: projectDateType;
-  setIsValid: Dispatch<SetStateAction<boolean>>;
+  handleStep: (step: number) => void;
   setDate: Dispatch<SetStateAction<projectDateType>>;
 };

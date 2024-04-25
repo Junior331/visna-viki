@@ -12,19 +12,19 @@ export const StepContainer = styled(ContainerGeneric)`
   flex-direction: column;
 
   .indexedStep {
-    color: rgb(190, 190, 190);
     width: 30px;
     height: 30px;
+    display: flex;
     font-size: 12px;
-    background-color: rgb(255, 255, 255);
+    border-width: 1px;
     border-radius: 50%;
     border-style: solid;
-    border-width: 1px;
-    border-color: rgb(206, 206, 206);
-    display: flex;
-    justify-content: center;
     align-items: center;
-    cursor: pointer;
+    cursor: context-menu;
+    justify-content: center;
+    color: rgb(190, 190, 190);
+    border-color: rgb(206, 206, 206);
+    background-color: rgb(255, 255, 255);
     > span:last-child {
       top: 35px;
       z-index: 1;

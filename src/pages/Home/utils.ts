@@ -1,14 +1,32 @@
 import { listProjectsProps, handleFilterAndSearchProps } from './@types';
-import { getProjects } from './services';
+import { getAllProjects } from './services';
 
 export const listProjects = async ({
+  token,
   setList,
   setLoading,
   setSnackbar
 }: listProjectsProps) => {
   try {
-    const result = await getProjects(true);
-    setList(result);
+    const result = await getAllProjects(false, 1, 10000, token);
+
+    const newList = result.items.map(
+      (obj: {
+        id: number;
+        status: string;
+        progress: string;
+        description: string;
+        projectName: string;
+      }) => ({
+        id: obj.id,
+        name: obj.projectName,
+        text: obj.description || 'O projeto não possui descrição.',
+        status: obj.status || 'In Progress',
+        progress: obj.progress || 0
+      })
+    );
+
+    setList(newList);
     setLoading(false);
   } catch (error) {
     if (error instanceof Error) {

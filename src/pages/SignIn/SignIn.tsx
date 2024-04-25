@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import {
   IconButton,
@@ -32,6 +32,8 @@ export const SignIn = () => {
       setLoading(true);
       try {
         const { accessToken } = await signIn({ email, password });
+        window.sessionStorage.setItem('TOKEN', accessToken);
+
         setLoading(false);
         if (accessToken) {
           getInfoUser({ setUser, accessToken });
@@ -57,6 +59,10 @@ export const SignIn = () => {
     formik;
 
   const [passwordShow, setPasswordShow] = useState<boolean>(false);
+
+  useEffect(() => {
+    window.sessionStorage.removeItem('TOKEN');
+  }, []);
 
   return (
     <LayoutAbstract>
@@ -129,12 +135,12 @@ export const SignIn = () => {
             Login
           </Button>
         </S.ContainerButtons>
-        <S.Footer>
+        {/* <S.Footer>
           <S.Text>
             Novo em nossa plataforma?{' '}
             <S.Link onClick={() => navigate('/signup')}>Crie uma conta</S.Link>
           </S.Text>
-        </S.Footer>
+        </S.Footer> */}
       </S.Form>
     </LayoutAbstract>
   );

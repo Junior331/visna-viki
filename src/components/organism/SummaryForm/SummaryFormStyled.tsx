@@ -49,3 +49,10 @@ export const Title = styled(Typography)`
 export const Text = styled(Typography)`
   font-size: ${({ theme }) => theme.typography.fontSize}rem !important;
 `;
+export const ContainerButtons = styled(ContainerGeneric)`
+  gap: 20px;
+  width: 100%;
+  height: auto;
+  align-items: center;
+  justify-content: flex-end;
+`;

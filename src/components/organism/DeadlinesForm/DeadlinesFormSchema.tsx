@@ -1,13 +1,9 @@
 import * as yup from 'yup';
 
 const deadlinesFormSchema = yup.object().shape({
-  name: yup
-    .string()
-    .min(5, 'Nome inválido, deve ter 5 ou mais caracteres')
-    .required('Campo obrigatório')
-  // name: yup
-  //   .string()
-  //   .min(5, 'Nome inválido, deve ter 3 ou mais caracteres')
-  //   .required('Campo obrigatório'),
+  startDate: yup.string().required('Campo obrigatório'),
+  totalDeadlineInMonth: yup.string().required('Campo obrigatório'),
+  approvalDeadlineInMonth: yup.string().required('Campo obrigatório'),
+  constructionDeadlineInMonth: yup.string().required('Campo obrigatório')
 });
 export default deadlinesFormSchema;
