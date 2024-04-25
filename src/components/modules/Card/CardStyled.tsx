@@ -8,7 +8,7 @@ export const ContainerGeneric = styled.div`
 `;
 export const CardContainer = styled(ContainerGeneric)`
   gap: 6px;
-  width: 255px;
+  width: 254px;
   height: auto;
   min-height: 367px;
   border-radius: 6px;
