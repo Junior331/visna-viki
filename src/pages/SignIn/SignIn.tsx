@@ -135,12 +135,12 @@ export const SignIn = () => {
             Login
           </Button>
         </S.ContainerButtons>
-        <S.Footer>
+        {/* <S.Footer>
           <S.Text>
             Novo em nossa plataforma?{' '}
             <S.Link onClick={() => navigate('/signup')}>Crie uma conta</S.Link>
           </S.Text>
-        </S.Footer>
+        </S.Footer> */}
       </S.Form>
     </LayoutAbstract>
   );
