@@ -112,7 +112,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
         setFieldValue('averageSaleValue', result / listUnit.length); // Valor médio de venda (m²)
       }
     }
-  }, [listUnit, setFieldValue]);
+  }, [listUnit, setFieldValue, values.unitQuantity]);
 
   useEffect(() => {
     if (date.units.flooring) {

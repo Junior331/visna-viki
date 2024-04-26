@@ -76,6 +76,7 @@ export const EditProject = () => {
   const [listUnit, setListUnit] = useState<Array<unitSummaryType>>([
     emptyUnitSummary
   ]);
+  console.log('date ::', date);
 
   const formikLand = useFormik({
     initialValues: {
