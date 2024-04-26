@@ -1,10 +1,9 @@
-import { User } from '@/contexts/UserDate';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type signInProps = {
   email: string;
   password: string;
 };
 export type getInfoUserProps = {
   accessToken: string;
-  setUser: (userData: User) => void;
+  dispatch: any;
 };

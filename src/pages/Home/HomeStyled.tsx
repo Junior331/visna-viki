@@ -24,6 +24,7 @@ export const Content = styled(GenericContainer)`
 export const Header = styled(GenericContainer)`
   gap: 10px;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
 `;
 

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { getInfoUserProps, signInProps } from './@types';
 import { ENDPOINTS } from '@/utils/endpoints';
+import { Actions } from '@/state/user/@types/actions';
 import { images } from '@/assets/images';
 
 export const signIn = async ({ email, password }: signInProps) => {
@@ -20,7 +21,7 @@ export const signIn = async ({ email, password }: signInProps) => {
   }
 };
 export const getInfoUser = async ({
-  setUser,
+  dispatch,
   accessToken
 }: getInfoUserProps) => {
   try {
@@ -32,12 +33,15 @@ export const getInfoUser = async ({
         }
       }
     );
-    setUser({
-      avatar: images.fallback,
-      id: response.data.iduser,
-      role: response.data.role,
-      email: response.data.email,
-      username: response.data.username
+    dispatch({
+      type: Actions.SET_USER_DATA,
+      payload: {
+        avatar: images.fallback,
+        id: response.data.iduser,
+        role: response.data.role,
+        email: response.data.email,
+        username: response.data.username
+      }
     });
     return response.data;
   } catch (error) {

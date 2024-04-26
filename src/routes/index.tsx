@@ -1,11 +1,12 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import {
   Home,
   SignIn,
   SignUp,
   ResetPassword,
   CreateProject,
-  ForgotPassword
+  ForgotPassword,
+  EditProject
 } from '@/pages';
 
 export const AppRoutes = () => {
@@ -15,9 +16,9 @@ export const AppRoutes = () => {
       <Route path="/home" element={<Home />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/create" element={<CreateProject />} />
+      <Route path="/edit" element={<EditProject />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
-      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 };

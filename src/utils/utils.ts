@@ -47,3 +47,12 @@ export const formatCurrency = (value: string): string => {
 
   return formattedValue;
 };
+
+export const convertToParams = (
+  data:
+    | string
+    | string[][]
+    | Record<string, string>
+    | URLSearchParams
+    | undefined
+) => data && new URLSearchParams(data).toString();

@@ -16,12 +16,12 @@ export type handleChangeUnitProps = {
 };
 
 export type handleSumValuesProps = {
-  id: string;
   type: string;
   value1: string;
   value2: string;
   value3?: string;
   fieldName: string;
+  id: string | number;
   setListUnit: Dispatch<React.SetStateAction<unitSummaryType[]>>;
   setFieldValue?: (field: string, value: any) => void;
 };

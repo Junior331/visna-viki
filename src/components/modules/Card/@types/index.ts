@@ -2,6 +2,7 @@ export type Props = {
   text: string;
   name: string;
   progress: number;
+  handleClick: () => void;
   status: 'Done' | 'In Progress' | 'To Do' | 'In Review' | 'Block' | string;
 };
 export type styledProps = {

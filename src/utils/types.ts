@@ -37,6 +37,27 @@ export type landType = {
   amountPerMeter: number;
   topographyTypeId: number;
 };
+export type landSummaryType = {
+  id: number;
+  area: number;
+  frontage: number;
+  projectId: number;
+  addressId: number;
+  totalAmount: number;
+  amountPerMeter: number;
+  topographyTypeId: number;
+  zoning: string;
+  address: {
+    id: number;
+    zipCode: string;
+    street: string;
+    number: string;
+    neighborhood: string;
+    city: null;
+    state: string;
+    country: string;
+  };
+};
 
 export type unitSummaryType = {
   id: string;
@@ -51,6 +72,19 @@ export type unitSummaryType = {
   areaPrivativaTotal: string;
 };
 
+export type unitHubSummaryType = {
+  id: number;
+  netAmount: number;
+  unitHubId: number;
+  unitTypeId: number;
+  averageArea: number;
+  marketAmount: number;
+  unitQuantity: number;
+  exchangeQuantity: number;
+  totalExchangeArea: number;
+  areaPrivativaTotal: number;
+};
+
 export type unitType = {
   flooring: string;
   underground: string;
@@ -62,11 +96,35 @@ export type unitType = {
   unit: unitSummaryType[];
 };
 
+export type unitHubType = {
+  id: number;
+  flooring: number;
+  projectId: number;
+  underground: number;
+  unitPerFloor: number;
+  averageSaleValue: number;
+  totalToBeBuiltArea: number;
+  totalValueNoExchange: number;
+  totalUnitsInDevelopment: number;
+  unit: unitHubSummaryType[];
+};
+
 export type deadlineType = {
   startDate: string;
   totalDeadlineInMonth: string;
   approvalDeadlineInMonth: string;
   constructionDeadlineInMonth: string;
+};
+
+export type deadlineSummaryType = {
+  id: number;
+  endDate: null;
+  projectId: number;
+  startDate: string;
+  totalDeadlineInMonth: number;
+  approvalDeadlineInMonth: number;
+  constructionDeadlineInMonth: number;
+  projectLaunchDeadlineInMonth: null;
 };
 
 export type projectDateType = {
@@ -88,6 +146,14 @@ export type State = {
   fifa: string;
   capital: string;
   population: number;
+};
+
+export type projectInfoType = {
+  id: number;
+  projectName: string;
+  unitHub: unitHubType;
+  land: landSummaryType;
+  deadline: deadlineSummaryType;
 };
 
 export const emptyProjectDate: projectDateType = {
@@ -147,4 +213,65 @@ export const emptyUnitSummary: unitSummaryType = {
   exchangeQuantity: '',
   totalExchangeArea: '',
   areaPrivativaTotal: ''
+};
+
+export const emptyProjectInfo: projectInfoType = {
+  id: 0,
+  projectName: '',
+  unitHub: {
+    id: 0,
+    flooring: 0,
+    projectId: 0,
+    underground: 0,
+    unitPerFloor: 0,
+    totalValueNoExchange: 0,
+    totalUnitsInDevelopment: 0,
+    totalToBeBuiltArea: 0,
+    averageSaleValue: 0,
+    unit: [
+      {
+        id: 0,
+        unitTypeId: 0,
+        averageArea: 0,
+        marketAmount: 0,
+        netAmount: 0,
+        unitQuantity: 0,
+        exchangeQuantity: 0,
+        totalExchangeArea: 0,
+        areaPrivativaTotal: 0,
+        unitHubId: 0
+      }
+    ]
+  },
+  land: {
+    id: 0,
+    addressId: 0,
+    topographyTypeId: 0,
+    area: 0,
+    frontage: 0,
+    amountPerMeter: 0,
+    totalAmount: 0,
+    projectId: 0,
+    zoning: '',
+    address: {
+      id: 0,
+      zipCode: '',
+      street: '',
+      number: '',
+      neighborhood: '',
+      city: null,
+      state: '',
+      country: ''
+    }
+  },
+  deadline: {
+    id: 0,
+    projectId: 0,
+    totalDeadlineInMonth: 0,
+    approvalDeadlineInMonth: 0,
+    constructionDeadlineInMonth: 0,
+    projectLaunchDeadlineInMonth: null,
+    startDate: '',
+    endDate: null
+  }
 };

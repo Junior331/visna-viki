@@ -10,6 +10,7 @@ export const CardContainer = styled(ContainerGeneric)`
   gap: 6px;
   width: 254px;
   height: auto;
+  cursor: pointer;
   min-height: 367px;
   border-radius: 6px;
   padding: 12px 10px;

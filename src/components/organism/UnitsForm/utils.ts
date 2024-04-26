@@ -52,11 +52,10 @@ export const handleSumValues = ({
     }
   }
   if (type === 'mult') {
-    const sum =
-      parseFloat(parsedValue1) *
-      (parseFloat(parsedValue2) - parseFloat(parsedValue3));
-
-    sum.toFixed(2);
+    const sum1 = parseFloat(parsedValue1.replace(/\./g, '').replace(',', '.'));
+    const sum2 = parseFloat(parsedValue2.replace(/\./g, '').replace(',', '.'));
+    const sum3 = parseFloat(parsedValue3.replace(/\./g, '').replace(',', '.'));
+    const sum = sum1 * (sum2 - sum3);
 
     setListUnit((prevList) =>
       prevList.map((unit) => {
@@ -76,6 +75,14 @@ export const handleSumValues = ({
       (parseFloat(parsedValue2) - parseFloat(parsedValue3));
 
     sum.toFixed(2);
+    setFieldValue?.(fieldName, sum);
+  }
+  if (type === 'sumLand') {
+    const sum1 = parseFloat(parsedValue1.replace(/\./g, '').replace(',', '.'));
+    const sum2 = parseFloat(parsedValue2.replace(/\./g, '').replace(',', '.'));
+
+    const sum = sum1 * sum2;
+
     setFieldValue?.(fieldName, sum);
   }
 };

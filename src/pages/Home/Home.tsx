@@ -11,7 +11,7 @@ import {
   Skeleton
 } from '@mui/material';
 import { mocks } from '@/services/mocks';
-import { Card } from '@/components/modules';
+import { Card, GenericModal } from '@/components/modules';
 import { projectType } from '@/utils/types';
 import { emptyProject } from '@/utils/emptys';
 import { Header } from '@/components/modules';
@@ -19,12 +19,17 @@ import { Layout } from '@/components/organism';
 import { SearchContext } from '@/contexts/Search';
 import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
-import { listProjects, handleFilterAndSearch } from './utils';
+import {
+  listProjects,
+  handleFilterAndSearch,
+  handleChangeProject
+} from './utils';
 import * as S from './HomeStyled';
 
 export const Home = () => {
   const navigate = useNavigate();
   const [option, setOption] = useState('');
+  const [openModal, setOpenModal] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
   const [loading, setLoading] = useState<boolean>(true);
   const { setContentActive } = useContext(SearchContext);
@@ -144,6 +149,13 @@ export const Home = () => {
                     text={data.text}
                     status={data.status}
                     progress={data.progress}
+                    handleClick={() =>
+                      handleChangeProject({
+                        navigate,
+                        id: data.id,
+                        name: data.name
+                      })
+                    }
                   />
                 ))}
               </>
@@ -151,6 +163,10 @@ export const Home = () => {
           </S.ContainerCards>
         </S.Content>
       </S.HomeContainer>
+
+      <GenericModal open={openModal} setOpen={setOpenModal}>
+        Modal
+      </GenericModal>
     </Layout>
   );
 };

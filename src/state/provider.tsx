@@ -1,6 +1,6 @@
 import React from 'react';
+import UserProvider from './user/state';
 import { MenuProvider } from '@/contexts/Menu';
-import { UserProvider } from '@/contexts/UserDate';
 import { SnackbarProvider } from '@/contexts/Snackbar';
 import { SearchProvider } from '@/contexts/Search';
 

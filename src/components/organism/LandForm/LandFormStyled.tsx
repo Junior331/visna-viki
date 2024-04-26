@@ -31,11 +31,7 @@ export const Form = styled.form`
       height: 53px;
     }
   }
-  .SelectComponent {
-    height: 53px;
-  }
 `;
-
 export const ContainerInputs = styled(Grid)`
   margin-top: 40px;
   border-radius: 8px;

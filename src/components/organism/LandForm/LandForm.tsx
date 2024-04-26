@@ -13,18 +13,18 @@ import { Button, Input } from '@/components/elements';
 import { formatCurrency, typeMask } from '@/utils/utils';
 import { landFormSchema, projectNameFormSchema } from './Schema';
 import * as S from './LandFormStyled';
+import { useNavigate } from 'react-router-dom';
+import { handleSumValues } from '../UnitsForm/utils';
 
 const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
+  const navigate = useNavigate();
+
   const formikProjectName = useFormik({
     initialValues: {
       name: ''
     },
     onSubmit: async (values) => {
-      // const result = await createProject(values.name);
-      // if (result.id) {
       setIsShow(true);
-      // setDisabled(true);
-
       setDate({
         ...date,
         projectId: 0,
@@ -33,7 +33,6 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
           name: values.name
         }
       });
-      // }
     },
     validationSchema: projectNameFormSchema
   });
@@ -135,7 +134,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     formikProjectName.handleChange(e);
                   }}
                   aria-describedby="name"
-                  placeholder="Nome do projeto"
+                  placeholder="Cadastrar nome do projeto"
                   helperText={
                     formikProjectName.touched.name &&
                     formikProjectName.errors.name
@@ -271,6 +270,17 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                   <Input
                     id="area"
                     required
+                    onBlur={(e) => {
+                      handleSumValues({
+                        id: '',
+                        setFieldValue,
+                        type: 'sumLand',
+                        setListUnit: () => {},
+                        value1: e.target.value,
+                        fieldName: 'totalAmount',
+                        value2: values.amountPerMeter.toString()
+                      });
+                    }}
                     onChange={handleChange}
                     aria-describedby="area"
                     placeholder="Digite a Área total"
@@ -327,7 +337,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                       <em>Selecione a opção </em>
                     </MenuItem>
                     <MenuItem value={1}>Plano</MenuItem>
-                    <MenuItem value={2}>Decline</MenuItem>
+                    <MenuItem value={2}>Declive</MenuItem>
                     <MenuItem value={3}>Aclive</MenuItem>
                   </Select>
                 </FormControl>
@@ -338,6 +348,17 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                   <Input
                     required
                     id="amountPerMeter"
+                    onBlur={(e) => {
+                      handleSumValues({
+                        id: '',
+                        setFieldValue,
+                        type: 'sumLand',
+                        setListUnit: () => {},
+                        value2: e.target.value,
+                        value1: values.area.toString(),
+                        fieldName: 'totalAmount'
+                      });
+                    }}
                     onChange={handleChange}
                     placeholder="Digite o valor"
                     value={formatCurrency(values.amountPerMeter.toString())}
@@ -360,6 +381,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                   <S.Label>Valor total</S.Label>
                   <Input
                     required
+                    disabled
                     id="totalAmount"
                     onChange={handleChange}
                     aria-describedby="totalAmount"
@@ -401,7 +423,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
             </S.ContainerInputs>
           )}
           <S.ContainerButtons>
-            <Button isOutline size="80px" onClick={() => handleStep(2)}>
+            <Button isOutline size="80px" onClick={() => navigate('/home')}>
               Cancelar
             </Button>
             <Button

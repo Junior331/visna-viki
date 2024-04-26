@@ -5,13 +5,13 @@ import { ProgressBar } from '../ProgressBar';
 import { statusColor } from '@/utils/types';
 import useColorManipulation from '@/hooks/lightenColo';
 
-const Card = ({ text, name, status, progress }: Props) => {
+const Card = ({ text, name, status, progress, handleClick }: Props) => {
   const { lighterColor } = useColorManipulation({
     color: statusColor[status as keyof typeof statusColor]
   });
 
   return (
-    <S.CardContainer>
+    <S.CardContainer onClick={handleClick}>
       <S.Header>
         <S.Title>{name}</S.Title>
         <S.Status

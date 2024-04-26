@@ -12,14 +12,14 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import signInSchema from './SignInSchema';
 import { LayoutAbstract } from '@/components/organism';
 import { Button, Checkbox, Input } from '@/components/elements';
-import { UserContext } from '@/contexts/UserDate';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import { getInfoUser, signIn } from './services';
 import * as S from './SignInStyled';
+import { UserContext } from '@/state/user/state';
 
 export const SignIn = () => {
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
+  const { dispatch } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
 
@@ -36,7 +36,7 @@ export const SignIn = () => {
 
         setLoading(false);
         if (accessToken) {
-          getInfoUser({ setUser, accessToken });
+          getInfoUser({ dispatch, accessToken });
 
           navigate('/home');
         }
@@ -135,12 +135,12 @@ export const SignIn = () => {
             Login
           </Button>
         </S.ContainerButtons>
-        {/* <S.Footer>
+        <S.Footer>
           <S.Text>
             Novo em nossa plataforma?{' '}
             <S.Link onClick={() => navigate('/signup')}>Crie uma conta</S.Link>
           </S.Text>
-        </S.Footer> */}
+        </S.Footer>
       </S.Form>
     </LayoutAbstract>
   );

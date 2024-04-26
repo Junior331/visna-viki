@@ -28,7 +28,33 @@ export const GlobalStyles = createGlobalStyle`
       font-size:${({ theme }) => theme.typography.fontSize - 0.2}rem;
     }
     .MuiInputBase-root {
-      color: ${({ theme }) => theme.palette.color.light};
+      color: ${({ theme }) => theme.palette.color.dark};
+      ::placeholder {
+        color:#000000ab;
+        opacity: 1; 
+      }
+      
+      ::-ms-input-placeholder { 
+        color:#000000ab;
+      }
+    }
+    .Mui-disabled {
+      -webkit-text-fill-color: rgb(0 0 0 / 70%) !important; 
+      color: ${({ theme }) => theme.palette.color.dark} !important;
+    }
+
+    .SelectComponent {
+      height: 53px;
+
+    }
+
+    .MuiModal-root {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .MuiBackdrop-root{
+      background-color: rgb(0 0 0 / 60%);
     }
   }
 

@@ -1,4 +1,9 @@
-import { listProjectsProps, handleFilterAndSearchProps } from './@types';
+import { convertToParams } from '@/utils/utils';
+import {
+  listProjectsProps,
+  handleFilterAndSearchProps,
+  handleChangeProjectProps
+} from './@types';
 import { getAllProjects } from './services';
 
 export const listProjects = async ({
@@ -69,4 +74,12 @@ export const handleFilterAndSearch = ({
 
     setFilterList(newList);
   }
+};
+
+export const handleChangeProject = ({
+  id,
+  name,
+  navigate
+}: handleChangeProjectProps) => {
+  navigate(`/edit?${convertToParams({ id, name })}`); // Navegue para a rota "/edit" com os parâmetros id e name
 };

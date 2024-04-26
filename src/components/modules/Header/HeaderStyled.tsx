@@ -20,6 +20,13 @@ export const Header = styled(ContainerGeneric)`
 `;
 export const InfoUser = styled(ContainerGeneric)`
   gap: 10px;
+
+  .MuiAvatar-root {
+    border: 2px solid #ffff;
+    background-color: #b9b3f7;
+    box-shadow: 0px 0px 10px rgb(0 0 0 / 19%);
+    font-size: ${({ theme }) => theme.typography.fontSizeRegular}rem;
+  }
 `;
 export const ContainerText = styled(ContainerGeneric)`
   width: auto;

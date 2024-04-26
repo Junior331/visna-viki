@@ -1,18 +1,43 @@
 import { Grid } from '@mui/material';
 import styled from 'styled-components';
 
-export const ContainerGeneric = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-export const UnitsFormContainer = styled(ContainerGeneric)`
+export const GenericContainer = styled.div`
   width: 100%;
   height: auto;
-  margin-top: 40px;
-  border-radius: 6px;
-  padding: 12px 10px;
-  background: #ffffff;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+`;
+export const EditProjectContainer = styled(GenericContainer)`
+  gap: 21px;
+  padding: 20px;
+  flex-direction: column;
+`;
+export const Header = styled(GenericContainer)`
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ebe9f1;
+  justify-content: space-between;
+`;
+export const Content = styled(GenericContainer)`
+  gap: 20px;
+  align-items: center;
+  flex-direction: column;
+  .MuiBox-root {
+  }
+  > div {
+    > div {
+      > .MuiBox-root {
+        padding: 35px 0px 0 15px !important;
+      }
+    }
+  }
+  .MuiTypography-root {
+    color: ${({ theme }) => theme.palette.color.dark};
+    font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
+    font-weight: ${({ theme }) => theme.typography.fontWeightLight};
+  }
 `;
 export const Form = styled.form`
   gap: 15px;
@@ -30,11 +55,7 @@ export const Form = styled.form`
   .MuiGrid-root {
     > button {
       height: 53px;
-      margin-left: 10px;
     }
-  }
-  > div:first-child {
-    padding: 30px 20px 0px;
   }
 `;
 
@@ -66,7 +87,7 @@ export const Label = styled.label`
   font-size: ${({ theme }) => theme.typography.fontSize}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightLight};
 `;
-export const ContainerButtons = styled(ContainerGeneric)`
+export const ContainerButtons = styled(GenericContainer)`
   gap: 20px;
   width: 100%;
   height: auto;
