@@ -10,7 +10,7 @@ describe('Card component', () => {
     text: `Lorem Ipsum'is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever.`
   };
   test('should render without crashing', () => {
-    renderCustom(<Card {...mockProps} />);
+    renderCustom(<Card handleClick={() => {}} {...mockProps} />);
     expect(screen.getByText('Card')).toBeTruthy();
   });
 });
