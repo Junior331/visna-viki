@@ -3,7 +3,13 @@ import { Props } from './@types';
 import { icons } from '@/assets/images/icons';
 import * as S from './GenericModalStyled';
 
-export const GenericModal = ({ children, open, setOpen }: Props) => {
+export const GenericModal = ({
+  open,
+  setOpen,
+  children,
+  maxWidth,
+  maxHeight
+}: Props) => {
   return (
     <Modal
       open={open}
@@ -17,7 +23,7 @@ export const GenericModal = ({ children, open, setOpen }: Props) => {
         }
       }}
     >
-      <S.ModalContainer>
+      <S.ModalContainer maxWidth={maxWidth} maxHeight={maxHeight}>
         <S.Button onClick={() => setOpen(!open)}>
           <S.Icon src={icons.close} alt="Icon close" />
         </S.Button>

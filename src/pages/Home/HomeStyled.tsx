@@ -55,6 +55,17 @@ export const ContainerCards = styled(GenericContainer)`
   flex-wrap: wrap;
   border-radius: 6px;
   background-color: #f0f8ff;
+  .MuiPagination-root {
+    width: 100%;
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    .MuiButtonBase-root {
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
 `;
 export const StackSkeleton = styled(CardContainer)``;
 export const HeaderSkeleton = styled(CardHeader)``;
@@ -68,4 +79,30 @@ export const Title = styled.h2`
   color: ${({ theme }) => theme.palette.color.dark};
   font-size: ${({ theme }) => theme.typography.fontSizeRegular}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
+`;
+export const ContainerMessage = styled(ContainerProgress)`
+  align-items: center;
+  justify-content: center;
+  > div {
+    > button:first-child {
+      background-color: #e73d3e;
+      &:hover {
+        background-color: #c33334;
+      }
+    }
+  }
+`;
+export const Text = styled.p`
+  color: ${({ theme }) => theme.palette.color.medium};
+  font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
+`;
+export const Icon = styled.img`
+  margin-bottom: 20px;
+`;
+export const ContainerButtons = styled(ContainerProgress)`
+  gap: 30px;
+  margin-top: 30px;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
 `;

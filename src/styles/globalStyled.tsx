@@ -69,6 +69,12 @@ export const GlobalStyles = createGlobalStyle`
     background: #484d57;
   }
 
+  .MuiTypography-body1 {
+    color: ${({ theme }) => theme.palette.color.dark} !important;
+    font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem !important;
+    font-weight: ${({ theme }) => theme.typography.fontWeightLight} !important;
+  }
+
 
   
   .content{

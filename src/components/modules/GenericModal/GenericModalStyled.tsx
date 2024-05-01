@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import media from 'styled-media-query';
+import { styledProps } from './@types';
 
 const GenericContainer = styled.div`
   width: 100%;
@@ -9,15 +10,15 @@ const GenericContainer = styled.div`
   justify-content: flex-start;
 `;
 
-export const ModalContainer = styled(GenericContainer)`
+export const ModalContainer = styled(GenericContainer)<styledProps>`
   gap: 20px;
   height: 100%;
   position: sticky;
-  max-width: 900px;
-  max-height: 450px;
   border-radius: 5px;
   background: #ffffff;
   box-shadow: -2px 2px 25px 2px rgb(0 0 0 / 12%);
+  max-width: ${({ maxWidth }) => maxWidth || '900px'};
+  max-height: ${({ maxHeight }) => maxHeight || '450px'};
 
   > button:first-child {
     top: -10px;

@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch, SetStateAction } from 'react';
-import { projectDateType, unitSummaryType } from '@/utils/types';
+import { projectDateType, unitSummaryType, unitType } from '@/utils/types';
+
+export type genericProps = {
+  values: unitType;
+  setFieldValue: (
+    field: string,
+    value: any,
+    shouldValidate?: boolean | undefined
+  ) => void;
+};
 
 export type Props = {
   date: projectDateType;
@@ -22,6 +31,9 @@ export type handleSumValuesProps = {
   value3?: string;
   fieldName: string;
   id: string | number;
-  setListUnit: Dispatch<React.SetStateAction<unitSummaryType[]>>;
-  setFieldValue?: (field: string, value: any) => void;
+  setFieldValue: (
+    field: string,
+    value: any,
+    shouldValidate?: boolean | undefined
+  ) => void;
 };

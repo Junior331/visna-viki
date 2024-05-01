@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Layout,
@@ -7,17 +7,22 @@ import {
   SummaryForm,
   DeadlinesForm
 } from '@/components/organism';
-import { emptyProjectDate, projectDateType } from '@/utils/types';
+import { breadCrumbsItems, handleSaveInfosByStep } from './utils';
+import { icons } from '@/assets/images/icons';
 import { Button } from '@/components/elements';
-import { StepProgress } from '@/components/modules';
 import { HeaderBreadcrumbs } from '@/components/organism';
-import { breadCrumbsItems } from './utils';
+import { StepsIsDoneContext } from '@/contexts/StepIsDone';
+
+import { emptyProjectDate, projectDateType } from '@/utils/types';
+import { GenericModal, StepProgress } from '@/components/modules';
 import * as S from './CreateProjectStyled';
 
 export const CreateProject = () => {
   const navigate = useNavigate();
   const [isShow, setIsShow] = useState(false);
   const [stepActive, setStepActive] = useState(1);
+  const [openModal, setOpenModal] = useState(false);
+  const { stepsIsDone } = useContext(StepsIsDoneContext);
   const [date, setDate] = useState<projectDateType>(emptyProjectDate);
 
   const handleStep = (step: number) => {
@@ -29,7 +34,7 @@ export const CreateProject = () => {
       <S.CreateProjectContainer>
         <S.Header>
           <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems(date.lands.name)} />
-          <Button isOutline size="200px" onClick={() => navigate('/home')}>
+          <Button isOutline size="200px" onClick={() => setOpenModal(true)}>
             Cancelar
           </Button>
         </S.Header>
@@ -65,6 +70,38 @@ export const CreateProject = () => {
           </S.ContainerSteps>
         </S.Content>
       </S.CreateProjectContainer>
+
+      <GenericModal
+        maxWidth={'650px'}
+        maxHeight={'300px'}
+        open={openModal}
+        setOpen={setOpenModal}
+      >
+        <S.ContainerMessage>
+          <S.Icon src={icons.AlertTriangle} alt="Icon alert triangle" />
+          <S.Title>
+            {stepsIsDone.length ? 'Salvar alterações' : 'Cancelar'}{' '}
+          </S.Title>
+          <S.Text>
+            {stepsIsDone.length
+              ? `Deseja salvar as alterações das etapas (${stepsIsDone.join(
+                  ' - '
+                )}) que foram concluidas ?`
+              : 'Você perderá as alterações que ainda não foram salvas'}
+          </S.Text>
+          <S.ContainerButtons>
+            <Button size="100px" onClick={() => navigate('/home')}>
+              Não
+            </Button>
+            <Button
+              size="100px"
+              onClick={() => handleSaveInfosByStep({ date, stepsIsDone })}
+            >
+              Sim
+            </Button>
+          </S.ContainerButtons>
+        </S.ContainerMessage>
+      </GenericModal>
     </Layout>
   );
 };

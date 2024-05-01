@@ -2,6 +2,12 @@ import { Snackbar } from '@/contexts/Snackbar';
 import { projectInfoType } from '@/utils/types';
 import { Dispatch, SetStateAction } from 'react';
 
+export type tabPanelProps = {
+  value: number;
+  index: number;
+  children?: React.ReactNode;
+};
+
 export type handleTabsProps = {
   newValue: number;
   setValue: Dispatch<React.SetStateAction<number>>;

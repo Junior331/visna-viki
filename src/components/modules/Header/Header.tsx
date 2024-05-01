@@ -1,3 +1,5 @@
+/* eslint-disable no-irregular-whitespace */
+import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import {
@@ -8,24 +10,54 @@ import {
   Menu as MuiMenu,
   MenuItem,
   Divider,
-  ListItemIcon
+  ListItemIcon,
+  Grid,
+  FormControl,
+  OutlinedInput,
+  InputAdornment,
+  Select
 } from '@mui/material';
-import { Logout, MenuOutlined, PersonAdd } from '@mui/icons-material';
+import {
+  Logout,
+  MenuOutlined,
+  PersonAdd,
+  Visibility,
+  VisibilityOff
+} from '@mui/icons-material';
 import { Menu } from '@/components/organism';
 import { MenuContext } from '@/contexts/Menu';
 import UseInitials from '@/hooks/useInitials';
 import { UserContext } from '@/state/user/state';
 import { handleClick, handleClose, handleLogout } from './utils';
+import { GenericModal } from '../GenericModal';
+import { Button, Input } from '@/components/elements';
 import * as S from './HeaderStyled';
 
 const Header = () => {
   const navigate = useNavigate();
   const { state } = useContext(UserContext);
-  const { isOpen, setIsOpen } = useContext(MenuContext);
   const [avatarImg, setAvatar] = useState('J');
+  const [openModal, setOpenModal] = useState(false);
+  const { isOpen, setIsOpen } = useContext(MenuContext);
+  const [passwordShow, setPasswordShow] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
   const open = Boolean(anchorEl);
   const initials = UseInitials(avatarImg);
+
+  const formik = useFormik({
+    initialValues: {
+      role: '',
+      email: '',
+      status: '',
+      username: '',
+      passwordHash: ''
+    },
+    onSubmit: async (values) => {
+      console.log('values ::', values);
+    }
+  });
+  const { values, handleSubmit, setFieldValue, handleChange } = formik;
 
   useEffect(() => {
     setAvatar(state.user.username);
@@ -106,12 +138,19 @@ const Header = () => {
             <Avatar /> Profile
           </MenuItem>
           <Divider />
-          <MenuItem onClick={() => handleClose({ setAnchorEl })}>
-            <ListItemIcon>
-              <PersonAdd fontSize="small" />
-            </ListItemIcon>
-            Add another account
-          </MenuItem>
+          {state.user.role === 'ADMIN' && (
+            <MenuItem
+              onClick={() => {
+                setOpenModal(true);
+                handleClose({ setAnchorEl });
+              }}
+            >
+              <ListItemIcon>
+                <PersonAdd fontSize="small" />
+              </ListItemIcon>
+              Create another account
+            </MenuItem>
+          )}
           <MenuItem onClick={() => handleLogout({ setAnchorEl, navigate })}>
             <ListItemIcon>
               <Logout fontSize="small" />
@@ -120,6 +159,139 @@ const Header = () => {
           </MenuItem>
         </MuiMenu>
       </S.InfoUser>
+
+      <GenericModal
+        maxWidth={'1000px'}
+        maxHeight={'560px'}
+        open={openModal}
+        setOpen={setOpenModal}
+      >
+        <S.ContainerMessage>
+          <S.Title>Novo usuario</S.Title>
+          <S.Text>
+            Bem-vindo ao processo de criação de novos usuários. Este modal
+            permite que um administrador adicione novos usuários. Ao preencher
+            os campos abaixo, você estará concedendo acesso aos recursos e
+            funcionalidades do sistema.
+          </S.Text>
+          <S.Form onSubmit={handleSubmit}>
+            <Grid container spacing={{ xs: 0, sm: 0 }} margin={0}>
+              <S.ContainerInputs container spacing={{ xs: 0, sm: 0 }}>
+                <Grid item xs={12} sm={5.8} md={5.8} minWidth={250}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Nome</S.Label>
+                    <Input
+                      required
+                      id="username"
+                      value={values.username}
+                      onChange={handleChange}
+                      aria-describedby="username"
+                      placeholder="Digite seu nome"
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={5.8} md={5.8} minWidth={250}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Email</S.Label>
+                    <Input
+                      required
+                      id="email"
+                      value={values.email}
+                      onChange={handleChange}
+                      aria-describedby="email"
+                      placeholder="Digite seu email"
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                      onKeyUp={() => {
+                        setFieldValue(
+                          'email',
+                          values.email.replace('/s/g', '')
+                        );
+                      }}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={5.8} md={5.8} minWidth={250}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Status</S.Label>
+                    <Select
+                      required
+                      id="status"
+                      displayEmpty
+                      name="status"
+                      value={values.status}
+                      onChange={handleChange}
+                      className="SelectComponent"
+                      inputProps={{ 'aria-label': 'Without label' }}
+                    >
+                      <MenuItem value={''} disabled>
+                        <em>Selecione a opção </em>
+                      </MenuItem>
+                      <MenuItem value={'ACTIVE'}>Ativo</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={5.8} md={5.8} minWidth={250}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Permissão</S.Label>
+                    <Select
+                      required
+                      id="role"
+                      displayEmpty
+                      name="role"
+                      value={values.role}
+                      onChange={handleChange}
+                      className="SelectComponent"
+                      inputProps={{ 'aria-label': 'Without label' }}
+                    >
+                      <MenuItem value={''} disabled>
+                        <em>Selecione a opção </em>
+                      </MenuItem>
+                      <MenuItem value={'ADMIN'}>Admin</MenuItem>
+                      <MenuItem value={'USER'}>User</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={12} md={12} minWidth={250}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Senha</S.Label>
+                    <Input
+                      required
+                      id="passwordHash"
+                      variant="outlined"
+                      onChange={handleChange}
+                      typeElement={OutlinedInput}
+                      value={values.passwordHash}
+                      placeholder="Digite sua senha"
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                      type={`${passwordShow ? 'text' : 'password'}`}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            edge="end"
+                            aria-label="toggle password visibility"
+                            onClick={() => setPasswordShow(!passwordShow)}
+                          >
+                            {passwordShow ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
+                </Grid>
+              </S.ContainerInputs>
+            </Grid>
+            <S.ContainerButtons>
+              <Button isOutline size="80px" onClick={() => setOpenModal(false)}>
+                Cancelar
+              </Button>
+              <Button size="100px" type="submit">
+                Criar
+              </Button>
+            </S.ContainerButtons>
+          </S.Form>
+        </S.ContainerMessage>
+      </GenericModal>
     </S.Header>
   );
 };

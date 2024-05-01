@@ -8,10 +8,10 @@ import {
   OutlinedInput,
   InputAdornment,
   FormControl,
-  Skeleton
+  Skeleton,
+  Pagination
 } from '@mui/material';
 import { mocks } from '@/services/mocks';
-import { Card, GenericModal } from '@/components/modules';
 import { projectType } from '@/utils/types';
 import { emptyProject } from '@/utils/emptys';
 import { Header } from '@/components/modules';
@@ -19,23 +19,28 @@ import { Layout } from '@/components/organism';
 import { SearchContext } from '@/contexts/Search';
 import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
+import { Card } from '@/components/modules';
 import {
   listProjects,
   handleFilterAndSearch,
-  handleChangeProject
+  handleChangeProject,
+  handleChangePage
 } from './utils';
 import * as S from './HomeStyled';
+import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 
 export const Home = () => {
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
   const [option, setOption] = useState('');
-  const [openModal, setOpenModal] = useState(false);
+  const [totalPage, setTotalPage] = useState(0);
   const { setSnackbar } = useContext(SnackbarContext);
   const [loading, setLoading] = useState<boolean>(true);
   const { setContentActive } = useContext(SearchContext);
+  const { setStepsIsDone } = useContext(StepsIsDoneContext);
+  const token = window.sessionStorage.getItem('TOKEN') || '';
   const [list, setList] = useState<Array<projectType>>([emptyProject]);
   const [filteredList, setFilterList] = useState<Array<projectType>>(list);
-  const token = window.sessionStorage.getItem('TOKEN') || '';
 
   useEffect(() => {
     handleFilterAndSearch({ option, list, setFilterList });
@@ -46,9 +51,17 @@ export const Home = () => {
   }, [list]);
 
   useEffect(() => {
-    listProjects({ setList, setLoading, setSnackbar, token });
+    setStepsIsDone([]);
+    listProjects({
+      page,
+      token,
+      setList,
+      setLoading,
+      setSnackbar,
+      setTotalPage
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [page]);
 
   return (
     <Layout>
@@ -158,15 +171,20 @@ export const Home = () => {
                     }
                   />
                 ))}
+                <Pagination
+                  color="primary"
+                  showLastButton
+                  showFirstButton
+                  count={totalPage}
+                  onChange={(_e, index) => {
+                    handleChangePage({ newPage: index, setPage });
+                  }}
+                />
               </>
             )}
           </S.ContainerCards>
         </S.Content>
       </S.HomeContainer>
-
-      <GenericModal open={openModal} setOpen={setOpenModal}>
-        Modal
-      </GenericModal>
     </Layout>
   );
 };

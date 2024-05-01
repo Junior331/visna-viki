@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 
 export enum statusColor {
   'Done' = '#28c76f',
@@ -60,9 +60,9 @@ export type landSummaryType = {
 };
 
 export type unitSummaryType = {
-  id: string;
-  isRemove?: boolean;
+  id: number;
   netAmount: string;
+  isRemove?: boolean;
   unitTypeId: number;
   averageArea: string;
   unitQuantity: string;
@@ -93,6 +93,7 @@ export type unitType = {
   totalToBeBuiltArea: string;
   totalValueNoExchange: string;
   totalUnitsInDevelopment: string;
+  totalPrivateAreaQuantity: string;
   unit: unitSummaryType[];
 };
 
@@ -106,6 +107,7 @@ export type unitHubType = {
   totalToBeBuiltArea: number;
   totalValueNoExchange: number;
   totalUnitsInDevelopment: number;
+  totalPrivateAreaQuantity: number;
   unit: unitHubSummaryType[];
 };
 
@@ -181,9 +183,10 @@ export const emptyProjectDate: projectDateType = {
     totalToBeBuiltArea: '',
     totalValueNoExchange: '',
     totalUnitsInDevelopment: '',
+    totalPrivateAreaQuantity: '',
     unit: [
       {
-        id: '',
+        id: 0,
         netAmount: '',
         unitTypeId: 0,
         averageArea: '',
@@ -204,7 +207,7 @@ export const emptyProjectDate: projectDateType = {
 };
 
 export const emptyUnitSummary: unitSummaryType = {
-  id: uuidv4(),
+  id: 0,
   netAmount: '',
   unitTypeId: 0,
   averageArea: '',
@@ -228,6 +231,7 @@ export const emptyProjectInfo: projectInfoType = {
     totalUnitsInDevelopment: 0,
     totalToBeBuiltArea: 0,
     averageSaleValue: 0,
+    totalPrivateAreaQuantity: 0,
     unit: [
       {
         id: 0,
