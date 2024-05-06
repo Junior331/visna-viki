@@ -136,26 +136,20 @@ export type projectDateType = {
   deadline: deadlineType;
 };
 
-export type Country = {
-  name: string;
-  fifa: string;
-  capital: string;
-  population: number;
-};
-
-export type State = {
-  name: string;
-  fifa: string;
-  capital: string;
-  population: number;
-};
-
 export type projectInfoType = {
   id: number;
   projectName: string;
   unitHub: unitHubType;
   land: landSummaryType;
   deadline: deadlineSummaryType;
+};
+
+export type payloadUserType = {
+  role: string;
+  email: string;
+  status: string;
+  username: string;
+  passwordHash: string;
 };
 
 export const emptyProjectDate: projectDateType = {

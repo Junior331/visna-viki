@@ -41,7 +41,8 @@ yarn dev
   - [x] Home
   - [x] Sign In
   - [x] Sign Up
-  - [ ] New project
+  - [ ] Accounts
+  - [x] New project
   - [ ] Edit project
   - [x] Forgot Password
   - [x] Reset Password
@@ -63,8 +64,8 @@ yarn dev
   ### Modules
 
   - [x] Card
-  - [ ] Step
-  - [ ] Modal
+  - [x] Step
+  - [x] Modal
   - [x] Header
   - [x] Snackbar
   - [x] progressBar

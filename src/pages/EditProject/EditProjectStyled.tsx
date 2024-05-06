@@ -97,7 +97,25 @@ export const ContainerButtons = styled(GenericContainer)`
   width: 100%;
   height: auto;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+
+  > .btnDelete {
+    border: none;
+    background-color: transparent;
+    color: ${({ theme }) => theme.palette.error.default};
+    border: 1px solid ${({ theme }) => theme.palette.error.default};
+    &:hover {
+      color: ${({ theme }) => theme.palette.color.default};
+      background-color: ${({ theme }) => theme.palette.error.default};
+    }
+  }
+
+  > div {
+    gap: 20px;
+    width: auto;
+    display: flex;
+    align-items: center;
+  }
 `;
 export const Title = styled.h2`
   letter-spacing: 1px;

@@ -24,7 +24,7 @@ import { Layout } from '@/components/organism';
 import { GenericModal } from '@/components/modules';
 import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
-import { breadCrumbsItems, handleTabs } from './utils';
+import { breadCrumbsItems, handleDeleteProject, handleTabs } from './utils';
 import { formatCurrency, typeMask } from '@/utils/utils';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import { MaskType, emptyProjectInfo, projectInfoType } from '@/utils/types';
@@ -62,6 +62,8 @@ export const EditProject = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState(0);
   const [searchParams] = useSearchParams();
+  const [isLoad, setIsLoad] = useState(true);
+  const [isDelete, setIsDelete] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
   const { id, name } = Object.fromEntries([...searchParams]);
@@ -81,6 +83,7 @@ export const EditProject = () => {
     },
     validationSchema: unitsFormSchema
   });
+
   const formikDeadline = useFormik({
     initialValues: date.deadline,
     onSubmit: async (values) => {
@@ -518,13 +521,26 @@ export const EditProject = () => {
                   <Button
                     isOutline
                     size="80px"
-                    onClick={() => setOpenModal(true)}
+                    className="btnDelete"
+                    onClick={() => {
+                      setIsDelete(true);
+                      setOpenModal(true);
+                    }}
                   >
-                    Cancelar
+                    Deletar
                   </Button>
-                  <Button size="100px" type="submit">
-                    Salvar
-                  </Button>
+                  <div>
+                    <Button
+                      isOutline
+                      size="80px"
+                      onClick={() => setOpenModal(true)}
+                    >
+                      Cancelar
+                    </Button>
+                    <Button size="100px" type="submit">
+                      Salvar
+                    </Button>
+                  </div>
                 </S.ContainerButtons>
               </S.Form>
             </CustomTabPanel>
@@ -1198,13 +1214,26 @@ export const EditProject = () => {
                     <Button
                       isOutline
                       size="80px"
-                      onClick={() => setOpenModal(true)}
+                      className="btnDelete"
+                      onClick={() => {
+                        setIsDelete(true);
+                        setOpenModal(true);
+                      }}
                     >
-                      Cancelar
+                      Deletar
                     </Button>
-                    <Button size="100px" type="submit">
-                      Salvar
-                    </Button>
+                    <div>
+                      <Button
+                        isOutline
+                        size="80px"
+                        onClick={() => setOpenModal(true)}
+                      >
+                        Cancelar
+                      </Button>
+                      <Button size="100px" type="submit">
+                        Salvar
+                      </Button>
+                    </div>
                   </S.ContainerButtons>
                 </S.Form>
               </FormikProvider>
@@ -1315,13 +1344,26 @@ export const EditProject = () => {
                   <Button
                     isOutline
                     size="80px"
-                    onClick={() => setOpenModal(true)}
+                    className="btnDelete"
+                    onClick={() => {
+                      setIsDelete(true);
+                      setOpenModal(true);
+                    }}
                   >
-                    Cancelar
+                    Deletar
                   </Button>
-                  <Button size="100px" type="submit">
-                    Salvar
-                  </Button>
+                  <div>
+                    <Button
+                      isOutline
+                      size="80px"
+                      onClick={() => setOpenModal(true)}
+                    >
+                      Cancelar
+                    </Button>
+                    <Button size="100px" type="submit">
+                      Salvar
+                    </Button>
+                  </div>
                 </S.ContainerButtons>
               </S.Form>
             </CustomTabPanel>
@@ -1345,13 +1387,40 @@ export const EditProject = () => {
       >
         <S.ContainerMessage>
           <S.Icon src={icons.AlertTriangle} alt="Icon alert triangle" />
-          <S.Title>Cancelar</S.Title>
-          <S.Text>Você perderá as alterações que ainda não foram salvas</S.Text>
+          <S.Title>{isDelete ? 'Deletar' : 'Cancelar'}</S.Title>
+          <S.Text>
+            {isDelete
+              ? 'Tem certeza de que deseja excluir este projeto?"'
+              : 'Todas as alterações não salvas serão perdidas.'}
+          </S.Text>
           <S.ContainerButtons>
-            <Button size="100px" onClick={() => setOpenModal(false)}>
+            <Button
+              size="100px"
+              disabled={isLoad}
+              onClick={() => {
+                setIsDelete(false);
+                setOpenModal(false);
+              }}
+            >
               Não
             </Button>
-            <Button size="100px" onClick={() => navigate('/home')}>
+            <Button
+              loading={isLoad}
+              disabled={isLoad}
+              size="100px"
+              onClick={() =>
+                isDelete
+                  ? handleDeleteProject({
+                      id,
+                      navigate,
+                      setIsLoad,
+                      setIsDelete,
+                      setSnackbar,
+                      setOpenModal
+                    })
+                  : navigate('/home')
+              }
+            >
               Sim
             </Button>
           </S.ContainerButtons>

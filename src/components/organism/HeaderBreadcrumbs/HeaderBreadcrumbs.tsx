@@ -7,7 +7,9 @@ const HeaderBreadcrumbs = ({ breadcrumbs }: HeaderBreadcrumbsProps) => {
   const navigate = useNavigate();
 
   const handleBreadcrumbClick = (path: string) => {
-    navigate(path);
+    if (!path) {
+      navigate(path);
+    }
   };
   const emptyComponent = (index: number, path: string) => {
     if (index === breadcrumbs.length - 1 || !path) {

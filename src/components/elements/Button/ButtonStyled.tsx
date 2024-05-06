@@ -21,6 +21,12 @@ export const Button = styled.button<StyledButtonProps>`
     background-color: ${({ theme }) => theme.palette.background.medium};
   }
 
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      filter: opacity(0.5);
+    `};
+
   ${({ noActive }) =>
     noActive &&
     css`

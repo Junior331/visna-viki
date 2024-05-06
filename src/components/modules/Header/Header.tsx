@@ -27,10 +27,12 @@ import {
 import { Menu } from '@/components/organism';
 import { MenuContext } from '@/contexts/Menu';
 import UseInitials from '@/hooks/useInitials';
-import { UserContext } from '@/state/user/state';
-import { handleClick, handleClose, handleLogout } from './utils';
+import { handleCreateUser } from './services';
 import { GenericModal } from '../GenericModal';
+import { UserContext } from '@/state/user/state';
 import { Button, Input } from '@/components/elements';
+import { SnackbarContext } from '@/contexts/Snackbar';
+import { handleClick, handleClose, handleLogout } from './utils';
 import * as S from './HeaderStyled';
 
 const Header = () => {
@@ -38,6 +40,7 @@ const Header = () => {
   const { state } = useContext(UserContext);
   const [avatarImg, setAvatar] = useState('J');
   const [openModal, setOpenModal] = useState(false);
+  const { setSnackbar } = useContext(SnackbarContext);
   const { isOpen, setIsOpen } = useContext(MenuContext);
   const [passwordShow, setPasswordShow] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -54,7 +57,7 @@ const Header = () => {
       passwordHash: ''
     },
     onSubmit: async (values) => {
-      console.log('values ::', values);
+      handleCreateUser({ values, setOpenModal, setSnackbar });
     }
   });
   const { values, handleSubmit, setFieldValue, handleChange } = formik;
