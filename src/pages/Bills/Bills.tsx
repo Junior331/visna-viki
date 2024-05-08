@@ -180,7 +180,12 @@ export const Bills = () => {
                       <Divider />
                       <MenuItem
                         onClick={() =>
-                          handleView({ id: billActive.id, name, navigate })
+                          handleView({
+                            name,
+                            navigate,
+                            idProject: id,
+                            id: billActive.id
+                          })
                         }
                       >
                         Ver detalhes

@@ -16,8 +16,8 @@ export const breadCrumbsItems = (name: string) => [
 export const handleEdit = ({ id, idProject, name, navigate }: handleProps) => {
   navigate(`/details?isEdit=true&${convertToParams({ idProject, name, id })}`);
 };
-export const handleView = ({ id, name, navigate }: handleProps) => {
-  navigate(`/details?${convertToParams({ id, name })}`);
+export const handleView = ({ id, idProject, name, navigate }: handleProps) => {
+  navigate(`/details?${convertToParams({ idProject, name, id })}`);
 };
 export const handleDelete = () => {};
 
