@@ -1,13 +1,15 @@
 import { rows } from './rows';
-import { rowsV2 } from './rows';
 import { bills } from './bills';
 import { columns } from './columns';
+import { rowsExpense } from './rows';
 import { projects } from './projects';
+import { columnsExpense } from './columns';
 
 export const mocks = {
   rows,
   bills,
-  rowsV2,
   columns,
-  projects
+  projects,
+  rowsExpense,
+  columnsExpense
 };

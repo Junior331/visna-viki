@@ -27,7 +27,7 @@ const Menu = () => {
   const handleClick = () => {
     setOpen(false);
     setIsOpen(false);
-    navigate('/home');
+    navigate('/listbills');
   };
 
   return (

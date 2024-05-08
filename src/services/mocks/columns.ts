@@ -17,3 +17,18 @@ export const columns: columnType[] = [
     label: 'Valor Total'
   }
 ];
+
+export const columnsExpense: columnType[] = [
+  {
+    label: 'nome'
+  },
+  {
+    label: 'Tipos de custo '
+  },
+  {
+    label: 'Tipos de despesa '
+  },
+  {
+    label: 'AÇÃO'
+  }
+];

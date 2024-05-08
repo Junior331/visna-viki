@@ -8,7 +8,8 @@ import {
   ResetPassword,
   CreateProject,
   ForgotPassword,
-  DetailsBills
+  DetailsBills,
+  ListBills
 } from '@/pages';
 
 export const AppRoutes = () => {
@@ -19,6 +20,7 @@ export const AppRoutes = () => {
       <Route path="/bills" element={<Bills />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/edit" element={<EditProject />} />
+      <Route path="/listbills" element={<ListBills />} />
       <Route path="/details" element={<DetailsBills />} />
       <Route path="/create" element={<CreateProject />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
