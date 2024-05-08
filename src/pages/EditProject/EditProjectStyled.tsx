@@ -57,6 +57,11 @@ export const Form = styled.form`
       height: 53px;
     }
   }
+  .containerUnits {
+    > div {
+      background-color: #f0f8ff61;
+    }
+  }
 `;
 
 export const ContainerInputs = styled(Grid)`
@@ -92,5 +97,58 @@ export const ContainerButtons = styled(GenericContainer)`
   width: 100%;
   height: auto;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+
+  > .btnDelete {
+    border: none;
+    background-color: transparent;
+    color: ${({ theme }) => theme.palette.error.default};
+    border: 1px solid ${({ theme }) => theme.palette.error.default};
+    &:hover {
+      color: ${({ theme }) => theme.palette.color.default};
+      background-color: ${({ theme }) => theme.palette.error.default};
+    }
+  }
+
+  > div {
+    gap: 20px;
+    width: auto;
+    display: flex;
+    align-items: center;
+  }
+`;
+export const Title = styled.h2`
+  letter-spacing: 1px;
+  color: ${({ theme }) => theme.palette.color.dark};
+  font-size: ${({ theme }) => theme.typography.fontSizeRegular}rem;
+  font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
+`;
+
+export const ContainerMessage = styled(GenericContainer)`
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  > img {
+    margin-bottom: 20px;
+  }
+  > div {
+    gap: 30px;
+    margin-top: 30px;
+    align-items: center;
+    justify-content: center;
+    > button:first-child {
+      background-color: #e73d3e;
+      &:hover {
+        background-color: #c33334;
+      }
+    }
+  }
+`;
+export const Text = styled.p`
+  margin-top: 5px;
+  color: ${({ theme }) => theme.palette.color.dark};
+  font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
+`;
+export const Icon = styled.img`
+  margin-bottom: 20px;
 `;

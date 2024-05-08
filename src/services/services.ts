@@ -1,65 +1,15 @@
 import axios from 'axios';
 import {
-  Country,
-  State,
   deadlineType,
   landType,
+  payloadUserType,
   unitType
 } from '@/utils/types';
 import { ENDPOINTS } from '@/utils/endpoints';
 
 const token = window.sessionStorage.getItem('TOKEN');
 
-export async function getCountries(): Promise<Country[]> {
-  try {
-    const response = await axios.get('https://restcountries.com/v3.1/all');
-    const countriesData = response.data;
-
-    const countries: Country[] = countriesData
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .map((country: any) => ({
-        fifa: country.fifa,
-        name: country.name.common,
-        capital: country.capital?.[0] || 'N/A',
-        population: country.population || 0
-      }))
-      .sort((a: { name: string }, b: { name: string }) =>
-        a.name.localeCompare(b.name)
-      );
-
-    return countries;
-  } catch (error) {
-    console.error('Erro ao obter dados dos países:', error);
-    throw error;
-  }
-}
-
-export async function getStatesByCountry(
-  countryName: string
-): Promise<State[]> {
-  try {
-    const response = await axios.get(
-      `https://api.first.org/data/v1/countries/${countryName}/states`
-    );
-
-    const statesData = response.data;
-    const states: State[] = statesData
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .map((state: any) => ({
-        name: state.name
-      }))
-      .sort((a: { name: string }, b: { name: string }) =>
-        a.name.localeCompare(b.name)
-      );
-
-    return states;
-  } catch (error) {
-    console.error(`Erro ao obter os estados de ${countryName}:`, error);
-    throw error;
-  }
-}
-
-// crud Units done
+// crud Units
 export const createUnits = async (projectId: number, payload: unitType) => {
   const formattedUnits = payload.unit.map((unit) => ({
     unitTypeId: unit.unitTypeId,
@@ -358,12 +308,11 @@ export const listDeadline = async (deadlineId: number) => {
   }
 };
 
-// crud project done
+// crud project
 export const createProject = async (name: string) => {
   const payload = {
     projectName: name
   };
-  const tokenV2 = window.sessionStorage.getItem('TOKEN');
 
   try {
     const response = await axios.post(
@@ -371,7 +320,7 @@ export const createProject = async (name: string) => {
       payload,
       {
         headers: {
-          Authorization: `Bearer ${tokenV2}`
+          Authorization: `Bearer ${token}`
         }
       }
     );
@@ -399,7 +348,6 @@ export const deleteProject = async (projectId: number) => {
     }
   }
 };
-
 export const editProject = async (projectId: number, name: string) => {
   const payload = {
     projectName: name
@@ -425,6 +373,96 @@ export const listProject = async (projectId: number) => {
   try {
     const response = await axios.get(
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.PROJECTS.BASE_URL}/${projectId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+
+// crud user
+export const createUser = async (payload: payloadUserType) => {
+  try {
+    const response = await axios.post(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.USER.BASE_URL}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const deleteUser = async (userId: number) => {
+  try {
+    const response = await axios.delete(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.USER.BASE_URL}/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const editUser = async (userId: number) => {
+  const payload = {};
+  try {
+    const response = await axios.patch(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.USER.BASE_URL}/${userId}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const listUser = async (userId: number) => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.USER.BASE_URL}/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const listAllUser = async () => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.USER.BASE_URL}`,
       {
         headers: {
           Authorization: `Bearer ${token}`

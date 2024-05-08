@@ -2,18 +2,29 @@ import { convertToParams } from '@/utils/utils';
 import {
   listProjectsProps,
   handleFilterAndSearchProps,
-  handleChangeProjectProps
+  handleChangeProjectProps,
+  handleChangePageProps
 } from './@types';
 import { getAllProjects } from './services';
 
+export const handleChangePage = ({
+  setPage,
+  newPage
+}: handleChangePageProps) => {
+  setPage(newPage);
+};
+
 export const listProjects = async ({
+  page,
   token,
   setList,
+  limit = 10,
   setLoading,
-  setSnackbar
+  setSnackbar,
+  setTotalPage
 }: listProjectsProps) => {
   try {
-    const result = await getAllProjects(false, 1, 10000, token);
+    const result = await getAllProjects(false, page, limit, token);
 
     const newList = result.items.map(
       (obj: {
@@ -30,7 +41,7 @@ export const listProjects = async ({
         progress: obj.progress || 0
       })
     );
-
+    setTotalPage(result.lastPage);
     setList(newList);
     setLoading(false);
   } catch (error) {
@@ -81,5 +92,5 @@ export const handleChangeProject = ({
   name,
   navigate
 }: handleChangeProjectProps) => {
-  navigate(`/edit?${convertToParams({ id, name })}`); // Navegue para a rota "/edit" com os parâmetros id e name
+  navigate(`/edit?${convertToParams({ id, name })}`);
 };

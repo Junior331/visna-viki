@@ -1,4 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
+
+import { Dispatch, MouseEvent } from 'react';
 
 export enum statusColor {
   'Done' = '#28c76f',
@@ -37,6 +39,7 @@ export type landType = {
   amountPerMeter: number;
   topographyTypeId: number;
 };
+
 export type landSummaryType = {
   id: number;
   area: number;
@@ -60,9 +63,9 @@ export type landSummaryType = {
 };
 
 export type unitSummaryType = {
-  id: string;
-  isRemove?: boolean;
+  id: number;
   netAmount: string;
+  isRemove?: boolean;
   unitTypeId: number;
   averageArea: string;
   unitQuantity: string;
@@ -93,6 +96,7 @@ export type unitType = {
   totalToBeBuiltArea: string;
   totalValueNoExchange: string;
   totalUnitsInDevelopment: string;
+  totalPrivateAreaQuantity: string;
   unit: unitSummaryType[];
 };
 
@@ -106,6 +110,7 @@ export type unitHubType = {
   totalToBeBuiltArea: number;
   totalValueNoExchange: number;
   totalUnitsInDevelopment: number;
+  totalPrivateAreaQuantity: number;
   unit: unitHubSummaryType[];
 };
 
@@ -134,20 +139,6 @@ export type projectDateType = {
   deadline: deadlineType;
 };
 
-export type Country = {
-  name: string;
-  fifa: string;
-  capital: string;
-  population: number;
-};
-
-export type State = {
-  name: string;
-  fifa: string;
-  capital: string;
-  population: number;
-};
-
 export type projectInfoType = {
   id: number;
   projectName: string;
@@ -156,122 +147,18 @@ export type projectInfoType = {
   deadline: deadlineSummaryType;
 };
 
-export const emptyProjectDate: projectDateType = {
-  projectId: 0,
-  lands: {
-    area: 0,
-    name: '',
-    state: '',
-    zoning: '',
-    street: '',
-    number: '',
-    zipCode: '',
-    country: '',
-    frontage: 0,
-    totalAmount: 0,
-    neighborhood: '',
-    amountPerMeter: 0,
-    topographyTypeId: 0
-  },
-  units: {
-    flooring: '',
-    underground: '',
-    unitPerFloor: '',
-    averageSaleValue: '',
-    totalToBeBuiltArea: '',
-    totalValueNoExchange: '',
-    totalUnitsInDevelopment: '',
-    unit: [
-      {
-        id: '',
-        netAmount: '',
-        unitTypeId: 0,
-        averageArea: '',
-        unitQuantity: '',
-        marketAmount: '',
-        exchangeQuantity: '',
-        totalExchangeArea: '',
-        areaPrivativaTotal: ''
-      }
-    ]
-  },
-  deadline: {
-    startDate: '',
-    totalDeadlineInMonth: '',
-    approvalDeadlineInMonth: '',
-    constructionDeadlineInMonth: ''
-  }
+export type payloadUserType = {
+  role: string;
+  email: string;
+  status: string;
+  username: string;
+  passwordHash: string;
 };
 
-export const emptyUnitSummary: unitSummaryType = {
-  id: uuidv4(),
-  netAmount: '',
-  unitTypeId: 0,
-  averageArea: '',
-  unitQuantity: '',
-  marketAmount: '',
-  exchangeQuantity: '',
-  totalExchangeArea: '',
-  areaPrivativaTotal: ''
+export type handleProps = {
+  setAnchorEl: Dispatch<React.SetStateAction<HTMLElement | null>>;
 };
 
-export const emptyProjectInfo: projectInfoType = {
-  id: 0,
-  projectName: '',
-  unitHub: {
-    id: 0,
-    flooring: 0,
-    projectId: 0,
-    underground: 0,
-    unitPerFloor: 0,
-    totalValueNoExchange: 0,
-    totalUnitsInDevelopment: 0,
-    totalToBeBuiltArea: 0,
-    averageSaleValue: 0,
-    unit: [
-      {
-        id: 0,
-        unitTypeId: 0,
-        averageArea: 0,
-        marketAmount: 0,
-        netAmount: 0,
-        unitQuantity: 0,
-        exchangeQuantity: 0,
-        totalExchangeArea: 0,
-        areaPrivativaTotal: 0,
-        unitHubId: 0
-      }
-    ]
-  },
-  land: {
-    id: 0,
-    addressId: 0,
-    topographyTypeId: 0,
-    area: 0,
-    frontage: 0,
-    amountPerMeter: 0,
-    totalAmount: 0,
-    projectId: 0,
-    zoning: '',
-    address: {
-      id: 0,
-      zipCode: '',
-      street: '',
-      number: '',
-      neighborhood: '',
-      city: null,
-      state: '',
-      country: ''
-    }
-  },
-  deadline: {
-    id: 0,
-    projectId: 0,
-    totalDeadlineInMonth: 0,
-    approvalDeadlineInMonth: 0,
-    constructionDeadlineInMonth: 0,
-    projectLaunchDeadlineInMonth: null,
-    startDate: '',
-    endDate: null
-  }
+export type handleClickProps = handleProps & {
+  event: MouseEvent<HTMLElement>;
 };

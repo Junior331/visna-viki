@@ -9,15 +9,16 @@ export const ContainerBreadcrumbs = styled.div`
 
   .MuiTypography-root {
     cursor: context-menu;
-    color: ${({ theme }) => theme.palette.color.light};
-    font-size: ${({ theme }) => theme.typography.fontSizeRegular}rem;
+    color: ${({ theme }) => theme.palette.color.light} !important;
+    font-size: ${({ theme }) => theme.typography.fontSize}rem !important;
   }
   > nav {
     > ol {
       > li:last-child {
         > span {
-          color: ${({ theme }) => theme.palette.color.dark};
-          font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
+          color: ${({ theme }) => theme.palette.color.dark}!important;
+          font-weight: ${({ theme }) =>
+            theme.typography.fontWeightRegular}!important;
         }
       }
     }

@@ -1,27 +1,30 @@
-import { useEffect } from 'react';
 import { useFormik } from 'formik';
+import { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
-  FormControl,
   Grid,
-  InputAdornment,
+  Select,
   MenuItem,
-  Select
+  FormControl,
+  InputAdornment
 } from '@mui/material';
+import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { Props } from './@types';
 import { MaskType } from '@/utils/types';
+import { handleSumValues } from '../UnitsForm/utils';
 import { Button, Input } from '@/components/elements';
 import { formatCurrency, typeMask } from '@/utils/utils';
+import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import { landFormSchema, projectNameFormSchema } from './Schema';
 import * as S from './LandFormStyled';
-import { useNavigate } from 'react-router-dom';
-import { handleSumValues } from '../UnitsForm/utils';
 
 const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
   const navigate = useNavigate();
+  const { stepsIsDone, setStepsIsDone } = useContext(StepsIsDoneContext);
 
   const formikProjectName = useFormik({
     initialValues: {
-      name: ''
+      name: date.lands.name
     },
     onSubmit: async (values) => {
       setIsShow(true);
@@ -38,21 +41,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
   });
 
   const formik = useFormik({
-    initialValues: {
-      name: '',
-      street: '',
-      neighborhood: '',
-      country: '',
-      state: '',
-      number: '',
-      zipCode: '',
-      area: 0,
-      frontage: 0,
-      topographyTypeId: 0,
-      amountPerMeter: 0,
-      totalAmount: 0,
-      zoning: 'ZM'
-    },
+    initialValues: date.lands,
     onSubmit: async (values) => {
       const payload = {
         ...values,
@@ -64,7 +53,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
           number: values.number,
           zipCode: values.zipCode
         },
-        projectId: 0 // projectId
+        projectId: 0
       };
       setDate({
         ...date,
@@ -72,6 +61,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
           ...payload
         }
       });
+      setStepsIsDone([...stepsIsDone, '1']);
       handleStep(2);
     },
     validationSchema: landFormSchema
@@ -275,7 +265,6 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                         id: '',
                         setFieldValue,
                         type: 'sumLand',
-                        setListUnit: () => {},
                         value1: e.target.value,
                         fieldName: 'totalAmount',
                         value2: values.amountPerMeter.toString()
@@ -331,6 +320,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     onChange={handleChange}
                     className="SelectComponent"
                     value={values.topographyTypeId}
+                    IconComponent={KeyboardArrowDownRounded}
                     inputProps={{ 'aria-label': 'Without label' }}
                   >
                     <MenuItem value={0} disabled>
@@ -353,7 +343,6 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                         id: '',
                         setFieldValue,
                         type: 'sumLand',
-                        setListUnit: () => {},
                         value2: e.target.value,
                         value1: values.area.toString(),
                         fieldName: 'totalAmount'
@@ -408,6 +397,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     value={values.zoning}
                     onChange={handleChange}
                     className="SelectComponent"
+                    IconComponent={KeyboardArrowDownRounded}
                     inputProps={{ 'aria-label': 'Without label' }}
                   >
                     <MenuItem value={''} disabled>

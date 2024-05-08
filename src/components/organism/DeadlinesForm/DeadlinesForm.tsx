@@ -1,21 +1,19 @@
 import { useFormik } from 'formik';
-import { FormControl, Grid, InputAdornment } from '@mui/material';
+import { useContext, useEffect } from 'react';
 import { Props } from './@types';
-import { Button, Input } from '@/components/elements';
-import deadlinesFormSchema from './DeadlinesFormSchema';
-import * as S from './DeadlinesFormStyled';
-import { useEffect } from 'react';
+import { FormControl, Grid, InputAdornment } from '@mui/material';
 import { MaskType } from '@/utils/types';
 import { typeMask } from '@/utils/utils';
+import { Button, Input } from '@/components/elements';
+import deadlinesFormSchema from './DeadlinesFormSchema';
+import { StepsIsDoneContext } from '@/contexts/StepIsDone';
+import * as S from './DeadlinesFormStyled';
 
 const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
+  const { stepsIsDone, setStepsIsDone } = useContext(StepsIsDoneContext);
+
   const formik = useFormik({
-    initialValues: {
-      startDate: '',
-      totalDeadlineInMonth: '',
-      approvalDeadlineInMonth: '',
-      constructionDeadlineInMonth: ''
-    },
+    initialValues: date.deadline,
     onSubmit: async (values) => {
       setDate({
         ...date,
@@ -23,6 +21,8 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
           ...values
         }
       });
+      setStepsIsDone([...stepsIsDone, '3']);
+
       handleStep(4);
     },
     validationSchema: deadlinesFormSchema
@@ -67,11 +67,6 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                   inputProps={{ style: { fontSize: '1.4rem' } }}
                   helperText={touched.startDate && errors.startDate}
                   error={touched.startDate && Boolean(errors.startDate)}
-                  // InputProps={{
-                  //   endAdornment: (
-                  //     <InputAdornment position="end">(m²)</InputAdornment>
-                  //   )
-                  // }}
                 />
               </FormControl>
             </Grid>

@@ -56,6 +56,66 @@ export const GlobalStyles = createGlobalStyle`
     .MuiBackdrop-root{
       background-color: rgb(0 0 0 / 60%);
     }
+    .MuiBackdrop-root{
+      background-color: rgb(0 0 0 / 60%);
+    }
+    
+    .billsMenu {
+      .MuiBackdrop-root{
+        background-color: rgb(0 0 0 / 37%);
+      }
+    }
+    .detailsBillsMenu {
+      .MuiBackdrop-root{
+        background-color: rgb(0 0 0 / 16.9%);
+      }
+    }
+    .menuEdit {
+      .MuiPaper-root {
+        width: 180px;
+        left: 1702px!important;
+      }
+      li.MuiMenuItem-root {
+        gap: 10px;
+        justify-content: flex-end;
+        color: ${({ theme }) => theme.palette.color.dark};
+        font-size: ${({ theme }) => theme.typography.fontSizeLight + 0.2}rem;
+        > .MuiListItemIcon-root {
+          min-width: auto;
+        }
+      }
+    }
+
+    .MuiTooltip-tooltip {
+      font-size: 1.2rem;
+    }
+
+    .drawerContainer {
+
+      .MuiPaper-root {
+        box-shadow: none;
+      }
+      .MuiList-root {
+        .MuiButtonBase-root {
+          border-bottom: 1px solid #ebe9f1;
+        }
+      }
+      .MuiListSubheader-root {
+        color: ${({ theme }) => theme.palette.color.light};
+        font-size: ${({ theme }) => theme.typography.fontSize}rem;
+        font-weight: ${({ theme }) => theme.typography.fontWeightRegular + 100};
+      }
+    
+      .MuiListItemText-root {
+        .MuiTypography-root {
+          color: ${({ theme }) => theme.palette.color.regular}!important;
+          font-weight: ${({ theme }) =>
+            theme.typography.fontWeightBold - 100}!important;
+          font-size: ${({ theme }) =>
+            theme.typography.fontSize - 0.2}rem !important;
+        }
+      }
+    }
   }
 
   &::-webkit-scrollbar {
@@ -67,6 +127,12 @@ export const GlobalStyles = createGlobalStyle`
   &::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background: #484d57;
+  }
+
+  .MuiTypography-body1 {
+    color: ${({ theme }) => theme.palette.color.dark} !important;
+    font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem !important;
+    font-weight: ${({ theme }) => theme.typography.fontWeightLight} !important;
   }
 
 

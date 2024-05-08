@@ -36,6 +36,11 @@ export const Form = styled.form`
   > div:first-child {
     padding: 30px 20px 0px;
   }
+  .containerUnits {
+    > div {
+      background-color: #f0f8ff61;
+    }
+  }
 `;
 
 export const ContainerInputs = styled(Grid)`
@@ -55,6 +60,9 @@ export const ContainerInputs = styled(Grid)`
       height: 30px;
       margin-bottom: 13px;
       font-size: ${({ theme }) => theme.typography.fontSizeRegular - 0.2}rem;
+    }
+    > .btnRemove {
+      background-color: ${({ theme }) => theme.palette.error.default};
     }
   }
 `;

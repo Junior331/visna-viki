@@ -4,13 +4,17 @@ import { Card } from './Card';
 
 describe('Card component', () => {
   const mockProps = {
-    progress: 80,
-    status: 'Done',
-    name: 'Project 01',
-    text: `Lorem Ipsum'is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever.`
+    text: 'Card',
+    width: '256px',
+    height: 'auto',
+    handleClick: () => {}
   };
   test('should render without crashing', () => {
-    renderCustom(<Card handleClick={() => {}} {...mockProps} />);
+    renderCustom(
+      <Card {...mockProps}>
+        <h2>{mockProps.text}</h2>
+      </Card>
+    );
     expect(screen.getByText('Card')).toBeTruthy();
   });
 });

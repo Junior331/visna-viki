@@ -1,5 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { unitSummaryType } from '@/utils/types';
 import { handleChangeUnitProps, handleSumValuesProps } from './@types';
+
+export const unitDefault = {
+  netAmount: '',
+  unitTypeId: 0,
+  averageArea: '',
+  unitQuantity: '',
+  marketAmount: '',
+  exchangeQuantity: '',
+  totalExchangeArea: '',
+  areaPrivativaTotal: ''
+};
 
 export const handleChangeUnit = ({
   index,
@@ -8,7 +20,6 @@ export const handleChangeUnit = ({
   setListUnit
 }: handleChangeUnitProps) => {
   setListUnit((prevList) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newList: any = [...prevList];
     newList[index][field] = value;
     return newList;
@@ -22,7 +33,6 @@ export const handleSumValues = ({
   value2,
   fieldName,
   value3 = '',
-  setListUnit,
   setFieldValue
 }: handleSumValuesProps) => {
   const parsedValue1 = value1.replace(',', '.');
@@ -34,17 +44,7 @@ export const handleSumValues = ({
       const sum = parseFloat(parsedValue1) * parseFloat(parsedValue2);
       sum.toFixed(2);
 
-      setListUnit((prevList) =>
-        prevList.map((unit) => {
-          if (unit.id === id) {
-            return {
-              ...unit,
-              [fieldName]: sum.toString()
-            };
-          }
-          return unit;
-        })
-      );
+      setFieldValue(`unit[${id}].${fieldName}`, sum.toString());
     } else {
       console.error(
         'Um ou ambos os valores fornecidos não são números válidos.'
@@ -56,18 +56,7 @@ export const handleSumValues = ({
     const sum2 = parseFloat(parsedValue2.replace(/\./g, '').replace(',', '.'));
     const sum3 = parseFloat(parsedValue3.replace(/\./g, '').replace(',', '.'));
     const sum = sum1 * (sum2 - sum3);
-
-    setListUnit((prevList) =>
-      prevList.map((unit) => {
-        if (unit.id === id) {
-          return {
-            ...unit,
-            [fieldName]: sum.toString()
-          };
-        }
-        return unit;
-      })
-    );
+    setFieldValue(`unit[${id}].${fieldName}`, sum.toString());
   }
   if (type === 'TUID') {
     const sum =
@@ -93,7 +82,6 @@ export const calculateTUID = (
 ): number => {
   let totalTUID = 0;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   listUnit.forEach((unit: any) => {
     totalTUID += parseFloat(unit[field]);
   });

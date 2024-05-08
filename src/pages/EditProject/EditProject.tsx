@@ -1,45 +1,39 @@
-import React, { useContext, useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { FieldArray, FormikProvider, useFormik } from 'formik';
 import {
   Box,
-  FormControl,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Select,
   Tab,
   Tabs,
-  Typography
+  Grid,
+  Select,
+  MenuItem,
+  Typography,
+  FormControl,
+  InputAdornment
 } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid';
-import { Layout } from '@/components/organism';
-import { Button, Input } from '@/components/elements';
-import { HeaderBreadcrumbs } from '@/components/organism';
-import { breadCrumbsItems, handleTabs } from './utils';
+import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import {
-  MaskType,
-  emptyProjectInfo,
-  emptyUnitSummary,
-  projectInfoType,
-  unitSummaryType
-} from '@/utils/types';
-import { getInfoProject } from './services';
-import * as S from './EditProjectStyled';
-import { SnackbarContext } from '@/contexts/Snackbar';
-import { useFormik } from 'formik';
-import { formatCurrency, typeMask } from '@/utils/utils';
-import {
-  handleChangeUnit,
-  handleSumValues
+  handleSumValues,
+  unitDefault
 } from '@/components/organism/UnitsForm/utils';
+import { tabPanelProps } from './@types';
+import { getInfoProject } from './services';
+import { icons } from '@/assets/images/icons';
+import { Layout } from '@/components/organism';
+import { emptyProjectInfo } from '@/utils/emptys';
+import { GenericModal } from '@/components/modules';
+import { Button, Input } from '@/components/elements';
+import { SnackbarContext } from '@/contexts/Snackbar';
+import { breadCrumbsItems, handleDeleteProject, handleTabs } from './utils';
+import { convertToParams, formatCurrency, typeMask } from '@/utils/utils';
+import { HeaderBreadcrumbs } from '@/components/organism';
+import { MaskType, projectInfoType } from '@/utils/types';
+import unitsFormSchema from '@/components/organism/UnitsForm/UnitsFormSchema';
+import * as S from './EditProjectStyled';
 
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-const CustomTabPanel = (props: TabPanelProps) => {
+const CustomTabPanel = (props: tabPanelProps) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -59,88 +53,41 @@ const CustomTabPanel = (props: TabPanelProps) => {
   );
 };
 
-function a11yProps(index: number) {
+const a11yProps = (index: number) => {
   return {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`
   };
-}
+};
 
 export const EditProject = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState(0);
   const [searchParams] = useSearchParams();
+  const [isLoad, setIsLoad] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
   const { id, name } = Object.fromEntries([...searchParams]);
   const [date, setDate] = useState<projectInfoType>(emptyProjectInfo);
-  const [listUnit, setListUnit] = useState<Array<unitSummaryType>>([
-    emptyUnitSummary
-  ]);
-  console.log('date ::', date);
 
   const formikLand = useFormik({
-    initialValues: {
-      name: '',
-      street: '',
-      neighborhood: '',
-      country: '',
-      state: '',
-      number: '',
-      zipCode: '',
-      area: 0,
-      frontage: 0,
-      topographyTypeId: 0,
-      amountPerMeter: 0,
-      totalAmount: 0,
-      zoning: 0
-    },
+    initialValues: date.land,
     onSubmit: async (values) => {
       console.log('values ::', values);
     }
   });
 
   const formikUnit = useFormik({
-    initialValues: {
-      unitTypeId: 0,
-      averageArea: '',
-      marketAmount: '',
-      unitQuantity: '',
-      areaPrivativaTotal: '',
-      exchangeQuantity: '',
-      totalExchangeArea: '',
-      netAmount: '',
-      flooring: '',
-      unitPerFloor: '',
-      underground: '',
-      totalUnitsInDevelopment: '',
-      totalPrivateAreaQuantity: '',
-      totalToBeBuiltArea: '',
-      totalValueNoExchange: '',
-      averageSaleValue: ''
-    },
+    initialValues: date.unitHub,
     onSubmit: async (values) => {
-      console.log('values ::', values);
-      // const payload = {
-      //   projectId: id, // projectId
-      //   unit: date.unitHub.unit,
-      //   flooring: values.flooring,
-      //   underground: values.underground,
-      //   unitPerFloor: values.unitPerFloor,
-      //   averageSaleValue: values.averageSaleValue,
-      //   totalToBeBuiltArea: values.totalToBeBuiltArea,
-      //   totalValueNoExchange: values.totalValueNoExchange,
-      //   totalUnitsInDevelopment: values.totalUnitsInDevelopment
-      // };
-    }
+      console.log(values);
+    },
+    validationSchema: unitsFormSchema
   });
 
   const formikDeadline = useFormik({
-    initialValues: {
-      startDate: '',
-      totalDeadlineInMonth: '',
-      approvalDeadlineInMonth: '',
-      constructionDeadlineInMonth: ''
-    },
+    initialValues: date.deadline,
     onSubmit: async (values) => {
       console.log('values ::', values);
     }
@@ -149,50 +96,51 @@ export const EditProject = () => {
   const { values, touched, errors, handleBlur, handleSubmit, handleChange } =
     formikLand;
 
-  const emptyVgv =
-    formikUnit.values.marketAmount &&
-    formikUnit.values.marketAmount &&
-    formikUnit.values.marketAmount;
-
-  const handleNewUnit = () => {
-    const UnitDfault = {
-      id: uuidv4(),
-      netAmount: '',
-      unitTypeId: 0,
-      averageArea: '',
-      unitQuantity: '',
-      marketAmount: '',
-      exchangeQuantity: '',
-      totalExchangeArea: '',
-      areaPrivativaTotal: ''
-    };
-    setListUnit((prevList) => [
-      ...prevList.map((unit) => ({
-        ...unit,
-        isRemove: true
-      })),
-      {
-        ...UnitDfault,
-        id: uuidv4(),
-        isRemove: false
-      }
-    ]);
-  };
-
-  const handleRemoveUnit = (id: string) => {
-    setListUnit((prevList) => prevList.filter((unit) => unit.id !== id));
-  };
-
   useEffect(() => {
     getInfoProject({ id: parseFloat(id), setDate, setSnackbar });
   }, [id, setSnackbar]);
+
+  useEffect(() => {
+    const lands: any = date.land || emptyProjectInfo.land;
+    Object.keys(lands)?.forEach((key: string) => {
+      formikLand.setFieldValue(key, lands[key]);
+    });
+
+    if (date.unitHub) {
+      const units: any = date.unitHub;
+      units.unit.forEach((unit: any, index: number) => {
+        Object.keys(unit).forEach((unitKey: string) => {
+          const fieldName = `unit.${index}.${unitKey}`;
+          formikUnit.setFieldValue(fieldName, unit[unitKey]);
+        });
+      });
+
+      Object.keys(units).forEach((key: string) => {
+        formikUnit.setFieldValue(key, units[key]);
+      });
+    }
+    if (date.deadline) {
+      const lands: any = date.deadline;
+      Object.keys(lands)?.forEach((key: string) => {
+        formikDeadline.setFieldValue(key, lands[key]);
+      });
+    }
+
+    if (!date.unitHub) {
+      setDate({
+        ...date,
+        unitHub: emptyProjectInfo.unitHub
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [date]);
 
   return (
     <Layout>
       <S.EditProjectContainer>
         <S.Header>
           <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems(name)} />
-          <Button isOutline size="200px" onClick={() => navigate('/home')}>
+          <Button isOutline size="200px" onClick={() => setOpenModal(true)}>
             Cancelar
           </Button>
         </S.Header>
@@ -210,7 +158,12 @@ export const EditProject = () => {
                 <Tab label="Unidades" {...a11yProps(1)} />
                 <Tab label="Áreas" {...a11yProps(2)} disabled />
                 <Tab label="Prazos" {...a11yProps(3)} />
-                <Tab label="Contas" {...a11yProps(4)} disabled />
+                <Tab
+                  label="Contas"
+                  onClick={() =>
+                    navigate(`/bills?${convertToParams({ id, name })}`)
+                  }
+                />
                 <Tab label="Rentabilidade" {...a11yProps(5)} disabled />
               </Tabs>
             </Box>
@@ -235,12 +188,11 @@ export const EditProject = () => {
                         required
                         id="street"
                         onBlur={handleBlur}
-                        value={values.street}
+                        value={values.address.street}
                         onChange={handleChange}
                         aria-describedby="street"
                         placeholder="Digite o endereço"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
-                        error={touched.street && Boolean(errors.street)}
                       />
                     </FormControl>
                   </Grid>
@@ -264,12 +216,8 @@ export const EditProject = () => {
                         onChange={handleChange}
                         placeholder="Digite o bairro"
                         aria-describedby="neighborhood"
-                        value={values.neighborhood}
+                        value={values.address.neighborhood}
                         inputProps={{ style: { fontSize: '1.4rem' } }}
-                        helperText={touched.neighborhood && errors.neighborhood}
-                        error={
-                          touched.neighborhood && Boolean(errors.neighborhood)
-                        }
                       />
                     </FormControl>
                   </Grid>
@@ -293,10 +241,8 @@ export const EditProject = () => {
                         onChange={handleChange}
                         aria-describedby="country"
                         placeholder="Digite o país"
-                        value={values.country}
+                        value={values.address.country}
                         inputProps={{ style: { fontSize: '1.4rem' } }}
-                        helperText={touched.country && errors.country}
-                        error={touched.country && Boolean(errors.country)}
                       />
                     </FormControl>
                   </Grid>
@@ -316,7 +262,7 @@ export const EditProject = () => {
                       <Input
                         id="state"
                         required
-                        value={values.state}
+                        value={values.address.state}
                         onChange={handleChange}
                         aria-describedby="state"
                         placeholder="Digite o estado"
@@ -324,8 +270,6 @@ export const EditProject = () => {
                           style: { fontSize: '1.4rem' },
                           maxLength: 2
                         }}
-                        helperText={touched.state && errors.state}
-                        error={touched.state && Boolean(errors.state)}
                       />
                     </FormControl>
                   </Grid>
@@ -348,10 +292,8 @@ export const EditProject = () => {
                         onChange={handleChange}
                         aria-describedby="number"
                         placeholder="Digite o número"
-                        value={values.number}
+                        value={values.address.number}
                         inputProps={{ style: { fontSize: '1.4rem' } }}
-                        helperText={touched.number && errors.number}
-                        error={touched.number && Boolean(errors.number)}
                       />
                     </FormControl>
                   </Grid>
@@ -374,10 +316,8 @@ export const EditProject = () => {
                         onChange={handleChange}
                         aria-describedby="zipCode"
                         placeholder="Digite o Cep"
-                        value={typeMask(MaskType.CEP, values.zipCode)}
+                        value={typeMask(MaskType.CEP, values.address.zipCode)}
                         inputProps={{ style: { fontSize: '1.4rem' } }}
-                        helperText={touched.zipCode && errors.zipCode}
-                        error={touched.zipCode && Boolean(errors.zipCode)}
                       />
                     </FormControl>
                   </Grid>
@@ -470,6 +410,7 @@ export const EditProject = () => {
                         onChange={handleChange}
                         className="SelectComponent"
                         value={values.topographyTypeId}
+                        IconComponent={KeyboardArrowDownRounded}
                         inputProps={{ 'aria-label': 'Without label' }}
                       >
                         <MenuItem value={0} disabled>
@@ -570,6 +511,7 @@ export const EditProject = () => {
                         value={values.zoning}
                         onChange={handleChange}
                         className="SelectComponent"
+                        IconComponent={KeyboardArrowDownRounded}
                         inputProps={{ 'aria-label': 'Without label' }}
                       >
                         <MenuItem value={0} disabled>
@@ -585,562 +527,726 @@ export const EditProject = () => {
                 </S.ContainerInputs>
 
                 <S.ContainerButtons>
-                  <Button isOutline size="80px" onClick={() => navigate('/')}>
-                    Cancelar
+                  <Button
+                    isOutline
+                    size="80px"
+                    className="btnDelete"
+                    onClick={() => {
+                      setIsDelete(true);
+                      setOpenModal(true);
+                    }}
+                  >
+                    Deletar
                   </Button>
-                  <Button size="100px" type="submit">
-                    Proximo
-                  </Button>
+                  <div>
+                    <Button
+                      isOutline
+                      size="80px"
+                      onClick={() => setOpenModal(true)}
+                    >
+                      Cancelar
+                    </Button>
+                    <Button size="100px" type="submit">
+                      Salvar
+                    </Button>
+                  </div>
                 </S.ContainerButtons>
               </S.Form>
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={1}>
-              <S.Form onSubmit={handleSubmit}>
-                <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
-                  <Grid
-                    pt={5}
-                    pl={4}
-                    mb={2}
-                    container
-                    spacing={{ xs: 0, sm: 2 }}
-                    rowGap={4}
-                  >
-                    {listUnit.map((unit, index) => (
-                      <S.ContainerInputs
-                        pl={0.5}
-                        container
-                        rowGap={1}
-                        key={unit.id}
-                        spacing={{ xs: 0, sm: 2 }}
-                      >
-                        <Grid item xs={12} sm={6} md={1.5} minWidth={170}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
+              <FormikProvider value={formikUnit}>
+                <S.Form onSubmit={formikUnit.handleSubmit}>
+                  <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
+                    <FieldArray name="unit">
+                      {({ push, remove }) => {
+                        return (
+                          <Grid
+                            pl={4}
+                            mb={2}
+                            pt={5}
+                            container
+                            rowGap={4}
+                            className="containerUnits"
+                            spacing={{ xs: 0, sm: 2 }}
                           >
-                            <S.Label>Tipos de unidades </S.Label>
+                            {formikUnit.values.unit.map((unit, index) => (
+                              <S.ContainerInputs
+                                pl={0.5}
+                                container
+                                rowGap={1}
+                                key={unit.id}
+                                spacing={{ xs: 0, sm: 2 }}
+                              >
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sm={6}
+                                  md={1.5}
+                                  minWidth={170}
+                                >
+                                  <FormControl
+                                    sx={{ m: 1, width: '25ch' }}
+                                    variant="outlined"
+                                  >
+                                    <S.Label>Tipos de unidades </S.Label>
 
-                            <Select
-                              required
-                              displayEmpty
-                              name="unitTypeId"
-                              onBlur={handleBlur}
-                              value={unit.unitTypeId}
-                              className="SelectComponent"
-                              id={`unitTypeId-${unit.id}`}
-                              inputProps={{ 'aria-label': 'Without label' }}
-                              onChange={(e) =>
-                                handleChangeUnit({
-                                  index,
-                                  setListUnit,
-                                  field: 'unitTypeId',
-                                  value: e.target.value
-                                })
-                              }
-                            >
-                              <MenuItem value={0} disabled>
-                                <em>Selecione a opção </em>
-                              </MenuItem>
-                              <MenuItem value={1}>Residencial</MenuItem>
-                              <MenuItem value={2}>Não Residencial </MenuItem>
-                              <MenuItem value={3}>Loja</MenuItem>
-                              <MenuItem value={4}>Vagas</MenuItem>
-                              <MenuItem value={5}>HMP</MenuItem>
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={1.3} minWidth={120}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <S.Label>Quantidade</S.Label>
-                            <Input
-                              required
-                              onBlur={(e) => {
-                                formikUnit.setFieldValue(
-                                  'unitQuantity',
-                                  e.target.value
-                                );
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'sum',
-                                  value1: e.target.value,
-                                  value2: unit.averageArea.toString(),
-                                  fieldName: 'areaPrivativaTotal',
-                                  setListUnit
-                                });
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'mult',
-                                  value1: unit.marketAmount.toString(),
-                                  value2: e.target.value,
-                                  value3: unit.exchangeQuantity.toString(),
-                                  fieldName: 'netAmount',
-                                  setListUnit
-                                });
-                              }}
-                              id={`unitQuantity-${unit.id}`}
-                              onChange={(e) =>
-                                handleChangeUnit({
-                                  index,
-                                  setListUnit,
-                                  field: 'unitQuantity',
-                                  value: e.target.value
-                                })
-                              }
-                              value={typeMask(
-                                MaskType.NUMBER,
-                                unit.unitQuantity.toString()
-                              )}
-                              aria-describedby="unitQuantity"
-                              placeholder="Digite a quantidade"
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={1} minWidth={180}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <S.Label>Area média</S.Label>
-                            <Input
-                              required
-                              onBlur={(e) => {
-                                formikUnit.setFieldValue(
-                                  'unitQuantity',
-                                  e.target.value
-                                );
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'sum',
-                                  value1: e.target.value,
-                                  value2: unit.unitQuantity.toString(),
-                                  fieldName: 'areaPrivativaTotal',
-                                  setListUnit
-                                });
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'sum',
-                                  value1: e.target.value,
-                                  value2: unit.exchangeQuantity.toString(),
-                                  fieldName: 'totalExchangeArea',
-                                  setListUnit
-                                });
-                              }}
-                              id={`averageArea-${unit.id}`}
-                              onChange={(e) =>
-                                handleChangeUnit({
-                                  index,
-                                  setListUnit,
-                                  field: 'averageArea',
-                                  value: e.target.value
-                                })
-                              }
-                              value={unit.averageArea}
-                              aria-describedby="averageArea"
-                              placeholder="Digite a area"
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={1.3} minWidth={165}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <S.Label>A. Privativa total</S.Label>
-                            <Input
-                              disabled
-                              onBlur={handleBlur}
-                              id={`areaPrivativaTotal-${unit.id}`}
-                              onChange={(e) =>
-                                handleChangeUnit({
-                                  index,
-                                  setListUnit,
-                                  field: 'areaPrivativaTotal',
-                                  value: e.target.value
-                                })
-                              }
-                              value={unit.areaPrivativaTotal}
-                              placeholder="A. Privativa"
-                              aria-describedby="areaPrivativaTotal"
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={1.5} minWidth={180}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <S.Label>Qtd permutas</S.Label>
-                            <Input
-                              required
-                              onBlur={(e) => {
-                                formikUnit.setFieldValue(
-                                  'exchangeQuantity',
-                                  e.target.value
-                                );
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'sum',
-                                  value1: unit.averageArea.toString(),
-                                  value2: e.target.value,
-                                  fieldName: 'totalExchangeArea',
-                                  setListUnit
-                                });
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'mult',
-                                  value1: unit.marketAmount.toString(),
-                                  value2: unit.unitQuantity.toString(),
-                                  value3: e.target.value,
-                                  fieldName: 'netAmount',
-                                  setListUnit
-                                });
-                              }}
-                              id={`exchangeQuantity-${unit.id}`}
-                              onChange={(e) =>
-                                handleChangeUnit({
-                                  index,
-                                  setListUnit,
-                                  field: 'exchangeQuantity',
-                                  value: e.target.value
-                                })
-                              }
-                              value={unit.exchangeQuantity}
-                              placeholder="Digite a quantidade"
-                              aria-describedby="exchangeQuantity"
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={1.5} minWidth={285}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <S.Label>Área total permutada</S.Label>
-                            <Input
-                              required
-                              disabled
-                              onBlur={handleBlur}
-                              id={`totalExchangeArea-${unit.id}`}
-                              onChange={(e) =>
-                                handleChangeUnit({
-                                  index,
-                                  setListUnit,
-                                  field: 'totalExchangeArea',
-                                  value: e.target.value
-                                })
-                              }
-                              value={unit.totalExchangeArea}
-                              placeholder="Digite a area"
-                              aria-describedby="totalExchangeArea"
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    (m²)
-                                  </InputAdornment>
-                                )
-                              }}
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={1.5} minWidth={160}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <S.Label>Valor de mercado </S.Label>
-                            <Input
-                              required
-                              onBlur={(e) => {
-                                formikUnit.setFieldValue(
-                                  'marketAmount',
-                                  e.target.value
-                                );
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'mult',
-                                  value1: e.target.value,
-                                  value2: unit.unitQuantity.toString(),
-                                  value3: unit.exchangeQuantity.toString(),
-                                  fieldName: 'netAmount',
-                                  setListUnit
-                                });
-                              }}
-                              id={`marketAmount-${unit.id}`}
-                              onChange={(e) =>
-                                handleChangeUnit({
-                                  index,
-                                  setListUnit,
-                                  field: 'marketAmount',
-                                  value: formatCurrency(e.target.value)
-                                })
-                              }
-                              value={unit.marketAmount}
-                              placeholder="Digite o valor"
-                              aria-describedby="marketAmount"
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    R$
-                                  </InputAdornment>
-                                )
-                              }}
-                            />
-                          </FormControl>
-                        </Grid>
+                                    <Select
+                                      required
+                                      displayEmpty
+                                      onBlur={handleBlur}
+                                      onChange={handleChange}
+                                      className="SelectComponent"
+                                      id={`unitTypeId-${unit.id}`}
+                                      name={`unit[${index}].unitTypeId`}
+                                      IconComponent={KeyboardArrowDownRounded}
+                                      inputProps={{
+                                        'aria-label': 'Without label'
+                                      }}
+                                      value={
+                                        formikUnit.values.unit[index].unitTypeId
+                                      }
+                                    >
+                                      <MenuItem value={0} disabled>
+                                        <em>Selecione a opção </em>
+                                      </MenuItem>
+                                      <MenuItem value={1}>Residencial</MenuItem>
+                                      <MenuItem value={2}>
+                                        Não Residencial{' '}
+                                      </MenuItem>
+                                      <MenuItem value={3}>Loja</MenuItem>
+                                      <MenuItem value={4}>Vagas</MenuItem>
+                                      <MenuItem value={5}>HMP</MenuItem>
+                                    </Select>
+                                  </FormControl>
+                                </Grid>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sm={6}
+                                  md={1.3}
+                                  minWidth={120}
+                                >
+                                  <FormControl
+                                    sx={{ m: 1, width: '25ch' }}
+                                    variant="outlined"
+                                  >
+                                    <S.Label>Quantidade</S.Label>
+                                    <Input
+                                      required
+                                      onBlur={(e) => {
+                                        formikUnit.setFieldValue(
+                                          `unit[${index}].unitQuantity`,
+                                          e.target.value
+                                        );
+                                        handleSumValues({
+                                          id: unit.id,
+                                          type: 'sum',
+                                          value1: e.target.value,
+                                          value2: unit.averageArea.toString(),
+                                          fieldName: 'areaPrivativaTotal',
+                                          setFieldValue:
+                                            formikUnit.setFieldValue
+                                        });
+                                        handleSumValues({
+                                          id: unit.id,
+                                          type: 'mult',
+                                          value1: unit.marketAmount.toString(),
+                                          value2: e.target.value,
+                                          value3:
+                                            unit.exchangeQuantity.toString(),
+                                          fieldName: 'netAmount',
+                                          setFieldValue:
+                                            formikUnit.setFieldValue
+                                        });
+                                      }}
+                                      id={`unitQuantity-${unit.id}`}
+                                      onChange={handleChange}
+                                      name={`unit[${index}].unitQuantity`}
+                                      value={typeMask(
+                                        MaskType.NUMBER,
+                                        formikUnit.values.unit[
+                                          index
+                                        ].unitQuantity.toString()
+                                      )}
+                                      aria-describedby="unitQuantity"
+                                      placeholder="Digite a quantidade"
+                                      inputProps={{
+                                        style: { fontSize: '1.4rem' }
+                                      }}
+                                    />
+                                  </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={6} md={1} minWidth={165}>
+                                  <FormControl
+                                    sx={{ m: 1, width: '25ch' }}
+                                    variant="outlined"
+                                  >
+                                    <S.Label>Area média</S.Label>
+                                    <Input
+                                      required
+                                      onBlur={(e) => {
+                                        formikUnit.setFieldValue(
+                                          `unit[${index}].averageArea`,
+                                          e.target.value
+                                        );
+                                        handleSumValues({
+                                          id: unit.id,
+                                          type: 'sum',
+                                          value1: e.target.value,
+                                          value2: unit.unitQuantity.toString(),
+                                          fieldName: 'areaPrivativaTotal',
+                                          setFieldValue:
+                                            formikUnit.setFieldValue
+                                        });
+                                        handleSumValues({
+                                          id: unit.id,
+                                          type: 'sum',
+                                          value1: e.target.value,
+                                          value2:
+                                            unit.exchangeQuantity.toString(),
+                                          fieldName: 'totalExchangeArea',
+                                          setFieldValue:
+                                            formikUnit.setFieldValue
+                                        });
+                                      }}
+                                      id={`averageArea-${unit.id}`}
+                                      onChange={handleChange}
+                                      name={`unit[${index}].averageArea`}
+                                      value={
+                                        formikUnit.values.unit[index]
+                                          .averageArea
+                                      }
+                                      aria-describedby="averageArea"
+                                      placeholder="Digite a area"
+                                      inputProps={{
+                                        style: { fontSize: '1.4rem' }
+                                      }}
+                                    />
+                                  </FormControl>
+                                </Grid>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sm={6}
+                                  md={1.3}
+                                  minWidth={165}
+                                >
+                                  <FormControl
+                                    sx={{ m: 1, width: '25ch' }}
+                                    variant="outlined"
+                                  >
+                                    <S.Label>A. Privativa total</S.Label>
+                                    <Input
+                                      disabled
+                                      onBlur={handleBlur}
+                                      id={`areaPrivativaTotal-${unit.id}`}
+                                      onChange={handleChange}
+                                      name={`unit[${index}].areaPrivativaTotal`}
+                                      value={
+                                        formikUnit.values.unit[index]
+                                          .areaPrivativaTotal
+                                      }
+                                      placeholder="A. Privativa"
+                                      aria-describedby="areaPrivativaTotal"
+                                      inputProps={{
+                                        style: { fontSize: '1.4rem' }
+                                      }}
+                                    />
+                                  </FormControl>
+                                </Grid>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sm={6}
+                                  md={1.5}
+                                  minWidth={180}
+                                >
+                                  <FormControl
+                                    sx={{ m: 1, width: '25ch' }}
+                                    variant="outlined"
+                                  >
+                                    <S.Label>Qtd permutas</S.Label>
+                                    <Input
+                                      required
+                                      onBlur={(e) => {
+                                        formikUnit.setFieldValue(
+                                          `unit[${index}].exchangeQuantity`,
+                                          e.target.value
+                                        );
+                                        handleSumValues({
+                                          id: unit.id,
+                                          type: 'sum',
+                                          value1: unit.averageArea.toString(),
+                                          value2: e.target.value,
+                                          fieldName: 'totalExchangeArea',
+                                          setFieldValue:
+                                            formikUnit.setFieldValue
+                                        });
+                                        handleSumValues({
+                                          id: unit.id,
+                                          type: 'mult',
+                                          value1: unit.marketAmount.toString(),
+                                          value2: unit.unitQuantity.toString(),
+                                          value3: e.target.value,
+                                          fieldName: 'netAmount',
+                                          setFieldValue:
+                                            formikUnit.setFieldValue
+                                        });
+                                      }}
+                                      onChange={handleChange}
+                                      id={`exchangeQuantity-${unit.id}`}
+                                      name={`unit[${index}].exchangeQuantity`}
+                                      value={
+                                        formikUnit.values.unit[index]
+                                          .exchangeQuantity
+                                      }
+                                      placeholder="Digite a quantidade"
+                                      aria-describedby="exchangeQuantity"
+                                      inputProps={{
+                                        style: { fontSize: '1.4rem' }
+                                      }}
+                                    />
+                                  </FormControl>
+                                </Grid>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sm={6}
+                                  md={1.5}
+                                  minWidth={240}
+                                >
+                                  <FormControl
+                                    sx={{ m: 1, width: '25ch' }}
+                                    variant="outlined"
+                                  >
+                                    <S.Label>Área total permutada</S.Label>
+                                    <Input
+                                      required
+                                      disabled
+                                      onBlur={handleBlur}
+                                      id={`totalExchangeArea-${unit.id}`}
+                                      onChange={handleChange}
+                                      name={`unit[${index}].totalExchangeArea`}
+                                      value={
+                                        formikUnit.values.unit[index]
+                                          .totalExchangeArea
+                                      }
+                                      placeholder="Digite a area"
+                                      aria-describedby="totalExchangeArea"
+                                      inputProps={{
+                                        style: { fontSize: '1.4rem' }
+                                      }}
+                                      InputProps={{
+                                        endAdornment: (
+                                          <InputAdornment position="end">
+                                            (m²)
+                                          </InputAdornment>
+                                        )
+                                      }}
+                                    />
+                                  </FormControl>
+                                </Grid>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sm={6}
+                                  md={1.5}
+                                  minWidth={160}
+                                >
+                                  <FormControl
+                                    sx={{ m: 1, width: '25ch' }}
+                                    variant="outlined"
+                                  >
+                                    <S.Label>Valor de mercado </S.Label>
+                                    <Input
+                                      required
+                                      onBlur={(e) => {
+                                        formikUnit.setFieldValue(
+                                          `unit[${index}].marketAmount`,
+                                          e.target.value
+                                        );
+                                        handleSumValues({
+                                          id: unit.id,
+                                          type: 'mult',
+                                          value1: e.target.value,
+                                          value2: unit.unitQuantity.toString(),
+                                          value3:
+                                            unit.exchangeQuantity.toString(),
+                                          fieldName: 'netAmount',
+                                          setFieldValue:
+                                            formikUnit.setFieldValue
+                                        });
+                                      }}
+                                      id={`marketAmount-${unit.id}`}
+                                      onChange={handleChange}
+                                      name={`unit[${index}].marketAmount`}
+                                      value={formatCurrency(
+                                        formikUnit.values.unit[
+                                          index
+                                        ].marketAmount.toString()
+                                      )}
+                                      placeholder="Digite o valor"
+                                      aria-describedby="marketAmount"
+                                      inputProps={{
+                                        style: { fontSize: '1.4rem' }
+                                      }}
+                                      InputProps={{
+                                        endAdornment: (
+                                          <InputAdornment position="end">
+                                            R$
+                                          </InputAdornment>
+                                        )
+                                      }}
+                                    />
+                                  </FormControl>
+                                </Grid>
 
-                        <Grid item xs={12} sm={6} md={1.5} minWidth={160}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <S.Label>VGV líquido</S.Label>
-                            <Input
-                              required
-                              disabled
-                              onBlur={handleBlur}
-                              id={`netAmount-${unit.id}`}
-                              onChange={(e) =>
-                                handleChangeUnit({
-                                  index,
-                                  setListUnit,
-                                  field: 'netAmount',
-                                  value: e.target.value
-                                })
-                              }
-                              value={emptyVgv ? unit.netAmount : ''}
-                              aria-describedby="netAmount"
-                              placeholder="Digite o valor"
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    (R$)
-                                  </InputAdornment>
-                                )
-                              }}
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid
-                          item
-                          xs={12}
-                          sm={6}
-                          md={0.5}
-                          className="containerButton"
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sm={6}
+                                  md={1.5}
+                                  minWidth={160}
+                                >
+                                  <FormControl
+                                    sx={{ m: 1, width: '25ch' }}
+                                    variant="outlined"
+                                  >
+                                    <S.Label>VGV líquido</S.Label>
+                                    <Input
+                                      required
+                                      disabled
+                                      onBlur={handleBlur}
+                                      id={`netAmount-${unit.id}`}
+                                      onChange={handleChange}
+                                      placeholder="0,00"
+                                      aria-describedby="netAmount"
+                                      name={`unit[${index}].netAmount`}
+                                      value={formatCurrency(
+                                        formikUnit.values.unit[
+                                          index
+                                        ].netAmount.toString()
+                                      )}
+                                      inputProps={{
+                                        style: { fontSize: '1.4rem' }
+                                      }}
+                                      InputProps={{
+                                        endAdornment: (
+                                          <InputAdornment position="end">
+                                            (R$)
+                                          </InputAdornment>
+                                        )
+                                      }}
+                                    />
+                                  </FormControl>
+                                </Grid>
+                                <Grid
+                                  item
+                                  xs={12}
+                                  sm={6}
+                                  md={1}
+                                  className="containerButton"
+                                  minWidth={
+                                    formikUnit.values.unit.length > 1 ? 80 : 45
+                                  }
+                                >
+                                  {formikUnit.values.unit.length > 1 && (
+                                    <Button
+                                      size="30px"
+                                      className="btnRemove"
+                                      onClick={() => remove(unit.id)}
+                                    >
+                                      -
+                                    </Button>
+                                  )}
+                                  <Button
+                                    size="30px"
+                                    onClick={() =>
+                                      push({
+                                        ...unitDefault,
+                                        id: formikUnit.values.unit.length
+                                      })
+                                    }
+                                  >
+                                    +
+                                  </Button>
+                                </Grid>
+                              </S.ContainerInputs>
+                            ))}
+                          </Grid>
+                        );
+                      }}
+                    </FieldArray>
+
+                    <Grid
+                      container
+                      spacing={{ xs: 0, sm: 2 }}
+                      rowGap={1}
+                      pl={0.3}
+                      pt={4}
+                      pb={2.5}
+                    >
+                      <Grid item xs={12} sm={6} md={1.5} minWidth={200}>
+                        <FormControl
+                          sx={{ m: 1, width: '25ch' }}
+                          variant="outlined"
                         >
-                          {unit.isRemove ? (
-                            <Button
-                              size="30px"
-                              className="btn_remove"
-                              onClick={() => handleRemoveUnit(unit.id)}
-                            >
-                              -
-                            </Button>
-                          ) : (
-                            <Button size="30px" onClick={() => handleNewUnit()}>
-                              +
-                            </Button>
-                          )}
-                        </Grid>
-                      </S.ContainerInputs>
-                    ))}
-                  </Grid>
+                          <S.Label>Pavimentos </S.Label>
+                          <Input
+                            required
+                            onBlur={handleBlur}
+                            id="flooring"
+                            onChange={handleChange}
+                            value={formikUnit.values.flooring}
+                            aria-describedby="flooring"
+                            placeholder="Digite a quantidade"
+                            inputProps={{ style: { fontSize: '1.4rem' } }}
+                            helperText={
+                              formikUnit.touched.flooring &&
+                              formikUnit.errors.flooring
+                            }
+                            error={
+                              formikUnit.touched.flooring &&
+                              Boolean(formikUnit.errors.flooring)
+                            }
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={1.5} minWidth={200}>
+                        <FormControl
+                          sx={{ m: 1, width: '25ch' }}
+                          variant="outlined"
+                        >
+                          <S.Label>Unidades por andar</S.Label>
+                          <Input
+                            required
+                            onBlur={handleBlur}
+                            id="unitPerFloor"
+                            onChange={handleChange}
+                            value={formikUnit.values.unitPerFloor}
+                            aria-describedby="unitPerFloor"
+                            placeholder="Digite a quantidade"
+                            inputProps={{ style: { fontSize: '1.4rem' } }}
+                            helperText={
+                              formikUnit.touched.unitPerFloor &&
+                              formikUnit.errors.unitPerFloor
+                            }
+                            error={
+                              formikUnit.touched.unitPerFloor &&
+                              Boolean(formikUnit.errors.unitPerFloor)
+                            }
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={2} minWidth={200}>
+                        <FormControl
+                          sx={{ m: 1, width: '25ch' }}
+                          variant="outlined"
+                        >
+                          <S.Label>Subsolos</S.Label>
+                          <Input
+                            required
+                            onBlur={handleBlur}
+                            id="underground"
+                            onChange={handleChange}
+                            value={formikUnit.values.underground}
+                            aria-describedby="underground"
+                            placeholder="Digite o quantidade"
+                            inputProps={{ style: { fontSize: '1.4rem' } }}
+                            helperText={
+                              formikUnit.touched.underground &&
+                              formikUnit.errors.underground
+                            }
+                            error={
+                              formikUnit.touched.underground &&
+                              Boolean(formikUnit.errors.underground)
+                            }
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={3} minWidth={280}>
+                        <FormControl
+                          sx={{ m: 1, width: '25ch' }}
+                          variant="outlined"
+                        >
+                          <S.Label>U. Total no empreendimento </S.Label>
+                          <Input
+                            required
+                            disabled
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            id="totalUnitsInDevelopment"
+                            placeholder="Digite a quantidade"
+                            value={formikUnit.values.totalUnitsInDevelopment}
+                            aria-describedby="totalUnitsInDevelopment"
+                            inputProps={{ style: { fontSize: '1.4rem' } }}
+                            helperText={
+                              formikUnit.touched.totalUnitsInDevelopment &&
+                              formikUnit.errors.totalUnitsInDevelopment
+                            }
+                            error={
+                              formikUnit.touched.totalUnitsInDevelopment &&
+                              Boolean(formikUnit.errors.totalUnitsInDevelopment)
+                            }
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={2} minWidth={200}>
+                        <FormControl
+                          sx={{ m: 1, width: '25ch' }}
+                          variant="outlined"
+                        >
+                          <S.Label>Total de area privativa </S.Label>
+                          <Input
+                            required
+                            disabled
+                            placeholder="0"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            id="totalPrivateAreaQuantity"
+                            value={formikUnit.values.totalPrivateAreaQuantity}
+                            aria-describedby="totalPrivateAreaQuantity"
+                            inputProps={{ style: { fontSize: '1.4rem' } }}
+                          />
+                        </FormControl>
+                      </Grid>
 
-                  <Grid
-                    container
-                    spacing={{ xs: 0, sm: 2 }}
-                    rowGap={1}
-                    pl={0.3}
-                  >
-                    <Grid item xs={12} sm={6} md={1.5} minWidth={200}>
-                      <FormControl
-                        sx={{ m: 1, width: '25ch' }}
-                        variant="outlined"
-                      >
-                        <S.Label>Pavimentos </S.Label>
-                        <Input
-                          required
-                          onBlur={handleBlur}
-                          id="flooring"
-                          onChange={handleChange}
-                          value={formikUnit.values.flooring}
-                          aria-describedby="flooring"
-                          placeholder="Digite a quantidade"
-                          inputProps={{ style: { fontSize: '1.4rem' } }}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={1.5} minWidth={200}>
-                      <FormControl
-                        sx={{ m: 1, width: '25ch' }}
-                        variant="outlined"
-                      >
-                        <S.Label>Unidades por andar</S.Label>
-                        <Input
-                          required
-                          onBlur={handleBlur}
-                          id="unitPerFloor"
-                          onChange={handleChange}
-                          value={formikUnit.values.unitPerFloor}
-                          aria-describedby="unitPerFloor"
-                          placeholder="Digite a quantidade"
-                          inputProps={{ style: { fontSize: '1.4rem' } }}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={2} minWidth={200}>
-                      <FormControl
-                        sx={{ m: 1, width: '25ch' }}
-                        variant="outlined"
-                      >
-                        <S.Label>Subsolos</S.Label>
-                        <Input
-                          required
-                          onBlur={handleBlur}
-                          id="underground"
-                          onChange={handleChange}
-                          value={formikUnit.values.underground}
-                          aria-describedby="underground"
-                          placeholder="Digite o quantidade"
-                          inputProps={{ style: { fontSize: '1.4rem' } }}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3} minWidth={280}>
-                      <FormControl
-                        sx={{ m: 1, width: '25ch' }}
-                        variant="outlined"
-                      >
-                        <S.Label>U. Total no empreendimento </S.Label>
-                        <Input
-                          required
-                          disabled
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          id="totalUnitsInDevelopment"
-                          placeholder="Digite a quantidade"
-                          value={formikUnit.values.totalUnitsInDevelopment}
-                          aria-describedby="totalUnitsInDevelopment"
-                          inputProps={{ style: { fontSize: '1.4rem' } }}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={2} minWidth={200}>
-                      <FormControl
-                        sx={{ m: 1, width: '25ch' }}
-                        variant="outlined"
-                      >
-                        <S.Label>Total de area privativa </S.Label>
-                        <Input
-                          required
-                          disabled
-                          onBlur={handleBlur}
-                          id="totalPrivateAreaQuantity"
-                          onChange={handleChange}
-                          value={formikUnit.values.totalPrivateAreaQuantity}
-                          placeholder="Digite a quantidade"
-                          aria-describedby="totalPrivateAreaQuantity"
-                          inputProps={{ style: { fontSize: '1.4rem' } }}
-                        />
-                      </FormControl>
-                    </Grid>
+                      <Grid item xs={12} sm={6} md={1.5} minWidth={295}>
+                        <FormControl
+                          sx={{ m: 1, width: '25ch' }}
+                          variant="outlined"
+                        >
+                          <S.Label>Área total a construir (m²) </S.Label>
+                          <Input
+                            required
+                            onBlur={handleBlur}
+                            id="totalToBeBuiltArea"
+                            onChange={handleChange}
+                            value={formikUnit.values.totalToBeBuiltArea}
+                            aria-describedby="totalToBeBuiltArea"
+                            placeholder="Digite a quantidade"
+                            inputProps={{ style: { fontSize: '1.4rem' } }}
+                            helperText={
+                              formikUnit.touched.totalToBeBuiltArea &&
+                              formikUnit.errors.totalToBeBuiltArea
+                            }
+                            error={
+                              formikUnit.touched.totalToBeBuiltArea &&
+                              Boolean(formikUnit.errors.totalToBeBuiltArea)
+                            }
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  m²
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                        </FormControl>
+                      </Grid>
 
-                    <Grid item xs={12} sm={6} md={1.5} minWidth={235}>
-                      <FormControl
-                        sx={{ m: 1, width: '25ch' }}
-                        variant="outlined"
-                      >
-                        <S.Label>Área total a construir (m²) </S.Label>
-                        <Input
-                          required
-                          onBlur={handleBlur}
-                          id="totalToBeBuiltArea"
-                          onChange={handleChange}
-                          value={formikUnit.values.totalToBeBuiltArea}
-                          aria-describedby="totalToBeBuiltArea"
-                          placeholder="Digite a quantidade"
-                          inputProps={{ style: { fontSize: '1.4rem' } }}
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">m²</InputAdornment>
-                            )
-                          }}
-                        />
-                      </FormControl>
+                      <Grid item xs={12} sm={6} md={2} minWidth={340}>
+                        <FormControl
+                          sx={{ m: 1, width: '25ch' }}
+                          variant="outlined"
+                        >
+                          <S.Label>
+                            Área total privativa sem permuta (m²){' '}
+                          </S.Label>
+                          <Input
+                            required
+                            disabled
+                            placeholder="0"
+                            onBlur={handleBlur}
+                            id="totalValueNoExchange"
+                            onChange={handleChange}
+                            value={formikUnit.values.totalValueNoExchange}
+                            aria-describedby="totalValueNoExchange"
+                            inputProps={{ style: { fontSize: '1.4rem' } }}
+                            helperText={
+                              formikUnit.touched.totalValueNoExchange &&
+                              formikUnit.errors.totalValueNoExchange
+                            }
+                            error={
+                              formikUnit.touched.totalValueNoExchange &&
+                              Boolean(formikUnit.errors.totalValueNoExchange)
+                            }
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  m²
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12} sm={6} md={3} minWidth={280}>
+                        <FormControl
+                          sx={{ m: 1, width: '25ch' }}
+                          variant="outlined"
+                        >
+                          <S.Label>Valor médio de venda (m²) </S.Label>
+                          <Input
+                            required
+                            disabled
+                            placeholder="0,00"
+                            onBlur={handleBlur}
+                            id="averageSaleValue"
+                            onChange={handleChange}
+                            aria-describedby="averageSaleValue"
+                            inputProps={{ style: { fontSize: '1.4rem' } }}
+                            value={formatCurrency(
+                              formikUnit.values.averageSaleValue.toString()
+                            )}
+                            helperText={
+                              formikUnit.touched.averageSaleValue &&
+                              formikUnit.errors.averageSaleValue
+                            }
+                            error={
+                              formikUnit.touched.averageSaleValue &&
+                              Boolean(formikUnit.errors.averageSaleValue)
+                            }
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  R$
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                        </FormControl>
+                      </Grid>
                     </Grid>
-
-                    <Grid item xs={12} sm={6} md={2} minWidth={340}>
-                      <FormControl
-                        sx={{ m: 1, width: '25ch' }}
-                        variant="outlined"
+                  </S.ContainerInputs>
+                  <S.ContainerButtons>
+                    <Button
+                      isOutline
+                      size="80px"
+                      className="btnDelete"
+                      onClick={() => {
+                        setIsDelete(true);
+                        setOpenModal(true);
+                      }}
+                    >
+                      Deletar
+                    </Button>
+                    <div>
+                      <Button
+                        isOutline
+                        size="80px"
+                        onClick={() => setOpenModal(true)}
                       >
-                        <S.Label>
-                          Área total privativa sem permuta (m²){' '}
-                        </S.Label>
-                        <Input
-                          required
-                          // disabled
-                          onBlur={handleBlur}
-                          id="totalValueNoExchange"
-                          onChange={handleChange}
-                          placeholder="Digite a quantidade"
-                          value={formikUnit.values.totalValueNoExchange}
-                          aria-describedby="totalValueNoExchange"
-                          inputProps={{ style: { fontSize: '1.4rem' } }}
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">m²</InputAdornment>
-                            )
-                          }}
-                        />
-                      </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3} minWidth={280}>
-                      <FormControl
-                        sx={{ m: 1, width: '25ch' }}
-                        variant="outlined"
-                      >
-                        <S.Label>Valor médio de venda (m²) </S.Label>
-                        <Input
-                          required
-                          // disabled
-                          onBlur={handleBlur}
-                          id="averageSaleValue"
-                          onChange={handleChange}
-                          value={formikUnit.values.averageSaleValue}
-                          aria-describedby="averageSaleValue"
-                          placeholder="Digite a quantidade"
-                          inputProps={{ style: { fontSize: '1.4rem' } }}
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">R$</InputAdornment>
-                            )
-                          }}
-                        />
-                      </FormControl>
-                    </Grid>
-                  </Grid>
-                </S.ContainerInputs>
-
-                <S.ContainerButtons>
-                  <Button isOutline size="80px" onClick={() => navigate('/')}>
-                    Cancelar
-                  </Button>
-                  <Button size="100px" type="submit">
-                    Proximo
-                  </Button>
-                </S.ContainerButtons>
-              </S.Form>
+                        Cancelar
+                      </Button>
+                      <Button size="100px" type="submit">
+                        Salvar
+                      </Button>
+                    </div>
+                  </S.ContainerButtons>
+                </S.Form>
+              </FormikProvider>
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={2}>
@@ -1245,12 +1351,29 @@ export const EditProject = () => {
                 </S.ContainerInputs>
 
                 <S.ContainerButtons>
-                  <Button isOutline size="80px" onClick={() => navigate('/')}>
-                    Cancelar
+                  <Button
+                    isOutline
+                    size="80px"
+                    className="btnDelete"
+                    onClick={() => {
+                      setIsDelete(true);
+                      setOpenModal(true);
+                    }}
+                  >
+                    Deletar
                   </Button>
-                  <Button size="100px" type="submit">
-                    Proximo
-                  </Button>
+                  <div>
+                    <Button
+                      isOutline
+                      size="80px"
+                      onClick={() => setOpenModal(true)}
+                    >
+                      Cancelar
+                    </Button>
+                    <Button size="100px" type="submit">
+                      Salvar
+                    </Button>
+                  </div>
                 </S.ContainerButtons>
               </S.Form>
             </CustomTabPanel>
@@ -1265,6 +1388,54 @@ export const EditProject = () => {
           </Box>
         </S.Content>
       </S.EditProjectContainer>
+
+      <GenericModal
+        maxWidth={'650px'}
+        maxHeight={'300px'}
+        open={openModal}
+        setOpen={setOpenModal}
+      >
+        <S.ContainerMessage>
+          <S.Icon src={icons.AlertTriangle} alt="Icon alert triangle" />
+          <S.Title>{isDelete ? 'Deletar' : 'Cancelar'}</S.Title>
+          <S.Text>
+            {isDelete
+              ? 'Tem certeza de que deseja excluir este projeto?"'
+              : 'Todas as alterações não salvas serão perdidas.'}
+          </S.Text>
+          <S.ContainerButtons>
+            <Button
+              size="100px"
+              disabled={isLoad}
+              onClick={() => {
+                setIsDelete(false);
+                setOpenModal(false);
+              }}
+            >
+              Não
+            </Button>
+            <Button
+              loading={isLoad}
+              disabled={isLoad}
+              size="100px"
+              onClick={() =>
+                isDelete
+                  ? handleDeleteProject({
+                      id,
+                      navigate,
+                      setIsLoad,
+                      setIsDelete,
+                      setSnackbar,
+                      setOpenModal
+                    })
+                  : navigate('/home')
+              }
+            >
+              Sim
+            </Button>
+          </S.ContainerButtons>
+        </S.ContainerMessage>
+      </GenericModal>
     </Layout>
   );
 };

@@ -1,8 +1,7 @@
 import {
   Header as CardHeader,
-  CardContainer,
   ContainerProgress
-} from '@/components/modules/Card/CardStyled';
+} from '@/components/modules/Project/ProjectStyled';
 import styled from 'styled-components';
 
 export const GenericContainer = styled.div`
@@ -55,8 +54,34 @@ export const ContainerCards = styled(GenericContainer)`
   flex-wrap: wrap;
   border-radius: 6px;
   background-color: #f0f8ff;
+  .MuiPagination-root {
+    width: 100%;
+    display: flex;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    .MuiButtonBase-root {
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+
+  > div {
+    cursor: pointer;
+    min-height: 367px;
+  }
 `;
-export const StackSkeleton = styled(CardContainer)``;
+export const StackSkeleton = styled(GenericContainer)`
+  gap: 6px;
+  width: 254px;
+  cursor: pointer;
+  min-height: 367px;
+  border-radius: 6px;
+  padding: 12px 10px;
+  background: #ffffff;
+  flex-direction: column;
+  box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.06);
+`;
 export const HeaderSkeleton = styled(CardHeader)``;
 export const FooterSkeleton = styled(ContainerProgress)``;
 export const ContainerSearch = styled(GenericContainer)`
@@ -68,4 +93,11 @@ export const Title = styled.h2`
   color: ${({ theme }) => theme.palette.color.dark};
   font-size: ${({ theme }) => theme.typography.fontSizeRegular}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
+`;
+export const Text = styled.p`
+  color: ${({ theme }) => theme.palette.color.medium};
+  font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
+`;
+export const Icon = styled.img`
+  margin-bottom: 20px;
 `;
