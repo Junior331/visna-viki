@@ -95,10 +95,11 @@ export const GlobalStyles = createGlobalStyle`
       .MuiPaper-root {
         box-shadow: none;
       }
-      .MuiButtonBase-root {
-        border-bottom: 1px solid #ebe9f1;
+      .MuiList-root {
+        .MuiButtonBase-root {
+          border-bottom: 1px solid #ebe9f1;
+        }
       }
-
       .MuiListSubheader-root {
         color: ${({ theme }) => theme.palette.color.light};
         font-size: ${({ theme }) => theme.typography.fontSize}rem;
