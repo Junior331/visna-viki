@@ -89,6 +89,32 @@ export const GlobalStyles = createGlobalStyle`
     .MuiTooltip-tooltip {
       font-size: 1.2rem;
     }
+
+    .drawerContainer {
+
+      .MuiPaper-root {
+        box-shadow: none;
+      }
+      .MuiButtonBase-root {
+        border-bottom: 1px solid #ebe9f1;
+      }
+
+      .MuiListSubheader-root {
+        color: ${({ theme }) => theme.palette.color.light};
+        font-size: ${({ theme }) => theme.typography.fontSize}rem;
+        font-weight: ${({ theme }) => theme.typography.fontWeightRegular + 100};
+      }
+    
+      .MuiListItemText-root {
+        .MuiTypography-root {
+          color: ${({ theme }) => theme.palette.color.regular}!important;
+          font-weight: ${({ theme }) =>
+            theme.typography.fontWeightBold - 100}!important;
+          font-size: ${({ theme }) =>
+            theme.typography.fontSize - 0.2}rem !important;
+        }
+      }
+    }
   }
 
   &::-webkit-scrollbar {
