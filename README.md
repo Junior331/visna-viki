@@ -42,6 +42,7 @@ yarn dev
   - [ ] Bills
   - [x] Sign In
   - [x] Sign Up
+  - [x] ListBills
   - [x] New project
   - [ ] Edit project
   - [x] Forgot Password
@@ -54,21 +55,31 @@ yarn dev
   - [x] Input
   - [x] Button
   - [x] Checkbox
+  - [x] Accordion
 
   ### Organism
 
   - [x] Menu
+  - [x] Table
   - [x] Layout
+  - [x] LandForm
+  - [x] UnitsForm
+  - [x] SummaryForm
+  - [x] DeadlinesForm
   - [x] LayoutAbstract
+  - [x] HeaderBreadcrumbs
 
   ### Modules
 
-  - [x] Card
   - [x] Step
+  - [x] Card
   - [x] Modal
   - [x] Header
+  - [x] Project
   - [x] Snackbar
-  - [x] progressBar
+  - [x] TableBody
+  - [x] TableHeader
+  - [x] ProgressBar
 
 ### Descrição da estrutura do projeto
 
@@ -106,52 +117,78 @@ yarn dev
     │   │   ├── elements/
     │   │   │   ├── input
     │   │   │   ├── button
-    │   │   │   └── Checkbox
+    │   │   │   ├── checkbox
+    │   │   │   └── accordion
     │   │   ├── modules/
     │   │   │   ├── card
     │   │   │   ├── step
     │   │   │   ├── modal
     │   │   │   ├── header
+    │   │   │   ├── project
     │   │   │   ├── snackbar
+    │   │   │   ├── tableBody
+    │   │   │   ├── tableHeader
     │   │   │   └── progressBar
     │   │   └── organism/
     │   │   │   ├── menu
-    │   │   │   ├── Layout
-    │   │   │   └── LayoutAbstract
+    │   │   │   ├── table
+    │   │   │   ├── layout
+    │   │   │   ├── landForm
+    │   │   │   ├── unitsForm
+    │   │   │   ├── summaryForm
+    │   │   │   ├── deadlinesForm
+    │   │   │   ├── layoutAbstract
+    │   │   │   └── headerBreadcrumbs
     │   ├── contexts/
     │   │   ├── menu
+    │   │   ├── search
     │   │   ├── snackbar
-    │   │   └── userDate
+    │   │   └── stepIsDone
     │   ├── hooks/
+    │   │   ├── useInitials
     │   │   └── lightenColo
     │   ├── pages/
-    │   │   ├── Home
-    │   │   ├── SignUp
-    │   │   ├── SignIn
-    │   │   ├── ResetPassword
-    │   │   └── ForgotPassword
+    │   │   ├── home
+    │   │   ├── bills
+    │   │   ├── signUp
+    │   │   ├── signIn
+    │   │   ├── listBills
+    │   │   ├── editProject
+    │   │   ├── detailsBills
+    │   │   ├── createProject
+    │   │   ├── resetPassword
+    │   │   └── forgotPassword
     │   ├── routes/
     │   │   └── index
     │   ├── services/
     │   │   ├── mocks/
+    │   │   │   ├── rows
     │   │   │   ├── index
+    │   │   │   ├── bills
+    │   │   │   ├── columns
     │   │   │   └── projects
     │   │   └── services
     │   ├── state/
-    │   │   ├── provider
-    │   │   └── ....
+    │   │   ├── user/
+    │   │   │   ├── state
+    │   │   │   ├── @types/
+    │   │   │   │   ├── index
+    │   │   │   │   └── actions
+    │   │   │   └── reducer
+    │   │   └── provider
     │   ├── styles/
     │   │   ├── interfaces
     │   │   │   ├── color
     │   │   │   ├── index
     │   │   │   └── typography
+    │   │   ├── theme
+    │   │   ├── themeType
     │   │   ├── breakpoints
-    │   │   ├── globalStyled
-    │   │   ├── Theme
-    │   │   └── ThemeType
+    │   │   └── globalStyled
     │   ├── utils/
     │   │   ├── utils
     │   │   ├── types
+    │   │   ├── emptys
     │   │   ├── endpoints
     │   │   └── renderCustom
     ├── public/

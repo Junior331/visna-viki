@@ -22,13 +22,14 @@ import { tabPanelProps } from './@types';
 import { getInfoProject } from './services';
 import { icons } from '@/assets/images/icons';
 import { Layout } from '@/components/organism';
+import { emptyProjectInfo } from '@/utils/emptys';
 import { GenericModal } from '@/components/modules';
 import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import { breadCrumbsItems, handleDeleteProject, handleTabs } from './utils';
 import { convertToParams, formatCurrency, typeMask } from '@/utils/utils';
 import { HeaderBreadcrumbs } from '@/components/organism';
-import { MaskType, emptyProjectInfo, projectInfoType } from '@/utils/types';
+import { MaskType, projectInfoType } from '@/utils/types';
 import unitsFormSchema from '@/components/organism/UnitsForm/UnitsFormSchema';
 import * as S from './EditProjectStyled';
 

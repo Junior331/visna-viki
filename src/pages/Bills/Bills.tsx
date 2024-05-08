@@ -17,10 +17,10 @@ import {
   handleDelete,
   breadCrumbsItems
 } from './utils';
-import { billType, subBillType } from './@types';
-import { emptyBills } from '@/utils/types';
+import { emptyBills } from '@/utils/emptys';
 import { icons } from '@/assets/images/icons';
 import { Button } from '@/components/elements';
+import { billType, subBillType } from './@types';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import { Card, GenericModal } from '@/components/modules';
 import { HeaderBreadcrumbs } from '@/components/organism';

@@ -13,7 +13,8 @@ import { Button } from '@/components/elements';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 
-import { emptyProjectDate, projectDateType } from '@/utils/types';
+import { projectDateType } from '@/utils/types';
+import { emptyProjectDate } from '@/utils/emptys';
 import { GenericModal, StepProgress } from '@/components/modules';
 import * as S from './CreateProjectStyled';
 

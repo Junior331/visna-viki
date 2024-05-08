@@ -17,7 +17,7 @@ import {
   breadCrumbsItems,
   listDetailsBill
 } from './utils';
-import { emptyBills } from '@/utils/types';
+import { emptyBills } from '@/utils/emptys';
 import { icons } from '@/assets/images/icons';
 import { Button } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';

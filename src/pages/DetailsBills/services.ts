@@ -1,8 +1,8 @@
-import { mocks } from '@/services/mocks';
-import { ENDPOINTS } from '@/utils/endpoints';
 import axios from 'axios';
+import { mocks } from '@/services/mocks';
+import { emptyBills } from '@/utils/emptys';
 import { subBillType } from '../Bills/@types';
-import { emptyBills } from '@/utils/types';
+import { ENDPOINTS } from '@/utils/endpoints';
 
 const generateMockData = (id: string) => {
   const mockData = mocks.bills;
