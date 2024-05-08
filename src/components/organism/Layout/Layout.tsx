@@ -5,16 +5,21 @@ import { GlobalStyles } from '@/styles/globalStyled';
 import * as S from './LayoutStyled';
 import { getInfoUser } from '@/pages/SignIn/services';
 import { UserContext } from '@/state/user/state';
+import { useNavigate } from 'react-router-dom';
 
 const Layout = ({ children }: LayoutProps) => {
+  const navigate = useNavigate();
   const { dispatch } = useContext(UserContext);
 
   useEffect(() => {
     const accessToken = window.sessionStorage.getItem('TOKEN');
+
     if (accessToken) {
       getInfoUser({ dispatch, accessToken });
+    } else {
+      navigate('/');
     }
-  }, [dispatch]);
+  }, [dispatch, navigate]);
 
   return (
     <S.LayoutContainer>

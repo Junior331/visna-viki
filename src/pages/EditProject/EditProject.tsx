@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { FieldArray, FormikProvider, useFormik } from 'formik';
 import {
   Box,
-  FormControl,
-  Grid,
-  InputAdornment,
-  MenuItem,
-  Select,
   Tab,
   Tabs,
-  Typography
+  Grid,
+  Select,
+  MenuItem,
+  Typography,
+  FormControl,
+  InputAdornment
 } from '@mui/material';
-import { FieldArray, FormikProvider, useFormik } from 'formik';
+import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import {
   handleSumValues,
   unitDefault
@@ -25,7 +26,7 @@ import { GenericModal } from '@/components/modules';
 import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import { breadCrumbsItems, handleDeleteProject, handleTabs } from './utils';
-import { formatCurrency, typeMask } from '@/utils/utils';
+import { convertToParams, formatCurrency, typeMask } from '@/utils/utils';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import { MaskType, emptyProjectInfo, projectInfoType } from '@/utils/types';
 import unitsFormSchema from '@/components/organism/UnitsForm/UnitsFormSchema';
@@ -62,7 +63,7 @@ export const EditProject = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState(0);
   const [searchParams] = useSearchParams();
-  const [isLoad, setIsLoad] = useState(true);
+  const [isLoad, setIsLoad] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
@@ -99,8 +100,8 @@ export const EditProject = () => {
   }, [id, setSnackbar]);
 
   useEffect(() => {
-    const lands: any = date.land;
-    Object.keys(lands).forEach((key: string) => {
+    const lands: any = date.land || emptyProjectInfo.land;
+    Object.keys(lands)?.forEach((key: string) => {
       formikLand.setFieldValue(key, lands[key]);
     });
 
@@ -119,7 +120,7 @@ export const EditProject = () => {
     }
     if (date.deadline) {
       const lands: any = date.deadline;
-      Object.keys(lands).forEach((key: string) => {
+      Object.keys(lands)?.forEach((key: string) => {
         formikDeadline.setFieldValue(key, lands[key]);
       });
     }
@@ -156,7 +157,12 @@ export const EditProject = () => {
                 <Tab label="Unidades" {...a11yProps(1)} />
                 <Tab label="Áreas" {...a11yProps(2)} disabled />
                 <Tab label="Prazos" {...a11yProps(3)} />
-                <Tab label="Contas" {...a11yProps(4)} disabled />
+                <Tab
+                  label="Contas"
+                  onClick={() =>
+                    navigate(`/bills?${convertToParams({ id, name })}`)
+                  }
+                />
                 <Tab label="Rentabilidade" {...a11yProps(5)} disabled />
               </Tabs>
             </Box>
@@ -403,6 +409,7 @@ export const EditProject = () => {
                         onChange={handleChange}
                         className="SelectComponent"
                         value={values.topographyTypeId}
+                        IconComponent={KeyboardArrowDownRounded}
                         inputProps={{ 'aria-label': 'Without label' }}
                       >
                         <MenuItem value={0} disabled>
@@ -503,6 +510,7 @@ export const EditProject = () => {
                         value={values.zoning}
                         onChange={handleChange}
                         className="SelectComponent"
+                        IconComponent={KeyboardArrowDownRounded}
                         inputProps={{ 'aria-label': 'Without label' }}
                       >
                         <MenuItem value={0} disabled>
@@ -586,16 +594,17 @@ export const EditProject = () => {
                                       required
                                       displayEmpty
                                       onBlur={handleBlur}
+                                      onChange={handleChange}
                                       className="SelectComponent"
                                       id={`unitTypeId-${unit.id}`}
                                       name={`unit[${index}].unitTypeId`}
-                                      value={
-                                        formikUnit.values.unit[index].unitTypeId
-                                      }
+                                      IconComponent={KeyboardArrowDownRounded}
                                       inputProps={{
                                         'aria-label': 'Without label'
                                       }}
-                                      onChange={handleChange}
+                                      value={
+                                        formikUnit.values.unit[index].unitTypeId
+                                      }
                                     >
                                       <MenuItem value={0} disabled>
                                         <em>Selecione a opção </em>

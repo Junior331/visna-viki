@@ -128,6 +128,9 @@ export const ContainerMessage = styled(GenericContainer)`
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  > img {
+    margin-bottom: 20px;
+  }
   > div {
     gap: 30px;
     margin-top: 30px;

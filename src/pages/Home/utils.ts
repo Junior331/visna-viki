@@ -92,5 +92,5 @@ export const handleChangeProject = ({
   name,
   navigate
 }: handleChangeProjectProps) => {
-  navigate(`/edit?${convertToParams({ id, name })}`); // Navegue para a rota "/edit" com os parâmetros id e name
+  navigate(`/edit?${convertToParams({ id, name })}`);
 };

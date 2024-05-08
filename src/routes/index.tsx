@@ -3,10 +3,12 @@ import {
   Home,
   SignIn,
   SignUp,
+  Bills,
+  EditProject,
   ResetPassword,
   CreateProject,
   ForgotPassword,
-  EditProject
+  DetailsBills
 } from '@/pages';
 
 export const AppRoutes = () => {
@@ -14,8 +16,10 @@ export const AppRoutes = () => {
     <Routes>
       <Route index element={<SignIn />} />
       <Route path="/home" element={<Home />} />
+      <Route path="/bills" element={<Bills />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/edit" element={<EditProject />} />
+      <Route path="/details" element={<DetailsBills />} />
       <Route path="/create" element={<CreateProject />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />

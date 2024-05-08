@@ -46,6 +46,9 @@ export const ContainerMessage = styled(GenericContainer)`
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  > img {
+    margin-bottom: 20px;
+  }
   > div {
     > button:first-child {
       background-color: #e73d3e;

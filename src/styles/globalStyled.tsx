@@ -56,6 +56,39 @@ export const GlobalStyles = createGlobalStyle`
     .MuiBackdrop-root{
       background-color: rgb(0 0 0 / 60%);
     }
+    .MuiBackdrop-root{
+      background-color: rgb(0 0 0 / 60%);
+    }
+    
+    .billsMenu {
+      .MuiBackdrop-root{
+        background-color: rgb(0 0 0 / 37%);
+      }
+    }
+    .detailsBillsMenu {
+      .MuiBackdrop-root{
+        background-color: rgb(0 0 0 / 16.9%);
+      }
+    }
+    .menuEdit {
+      .MuiPaper-root {
+        width: 180px;
+        left: 1702px!important;
+      }
+      li.MuiMenuItem-root {
+        gap: 10px;
+        justify-content: flex-end;
+        color: ${({ theme }) => theme.palette.color.dark};
+        font-size: ${({ theme }) => theme.typography.fontSizeLight + 0.2}rem;
+        > .MuiListItemIcon-root {
+          min-width: auto;
+        }
+      }
+    }
+
+    .MuiTooltip-tooltip {
+      font-size: 1.2rem;
+    }
   }
 
   &::-webkit-scrollbar {

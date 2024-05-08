@@ -2,12 +2,13 @@
 import { useContext, useEffect } from 'react';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import {
-  FormControl,
   Grid,
-  InputAdornment,
+  Select,
   MenuItem,
-  Select
+  FormControl,
+  InputAdornment
 } from '@mui/material';
+import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { Props } from './@types';
 import { MaskType } from '@/utils/types';
 import unitsFormSchema from './UnitsFormSchema';
@@ -134,12 +135,13 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                               required
                               displayEmpty
                               onBlur={handleBlur}
+                              onChange={handleChange}
                               className="SelectComponent"
                               id={`unitTypeId-${unit.id}`}
                               name={`unit[${index}].unitTypeId`}
                               value={values.unit[index].unitTypeId}
+                              IconComponent={KeyboardArrowDownRounded}
                               inputProps={{ 'aria-label': 'Without label' }}
-                              onChange={handleChange}
                             >
                               <MenuItem value={0} disabled>
                                 <em>Selecione a opção </em>

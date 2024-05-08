@@ -1,11 +1,13 @@
+import { ReactNode } from 'react';
+
 export type Props = {
-  text: string;
-  name: string;
-  progress: number;
-  handleClick: () => void;
-  status: 'Done' | 'In Progress' | 'To Do' | 'In Review' | 'Block' | string;
+  width: string;
+  height: string;
+  className?: string;
+  children: ReactNode;
+  handleClick?: () => void;
 };
 export type styledProps = {
-  color: string;
-  bgColor: string;
+  width: string;
+  height: string;
 };

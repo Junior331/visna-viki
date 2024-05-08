@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import { Search } from '@mui/icons-material';
+import { Search, KeyboardArrowDownRounded } from '@mui/icons-material';
 import {
   Select,
   MenuItem,
@@ -14,12 +14,11 @@ import {
 import { mocks } from '@/services/mocks';
 import { projectType } from '@/utils/types';
 import { emptyProject } from '@/utils/emptys';
-import { Header } from '@/components/modules';
+import { Header, Project } from '@/components/modules';
 import { Layout } from '@/components/organism';
 import { SearchContext } from '@/contexts/Search';
 import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
-import { Card } from '@/components/modules';
 import {
   listProjects,
   handleFilterAndSearch,
@@ -75,10 +74,11 @@ export const Home = () => {
                 <Select
                   displayEmpty
                   value={option}
+                  IconComponent={KeyboardArrowDownRounded}
                   inputProps={{ 'aria-label': 'Without label' }}
                   onChange={(event) => setOption(event.target.value)}
                 >
-                  <MenuItem value={''}>All</MenuItem>
+                  <MenuItem value={''}>Todos</MenuItem>
                   <MenuItem value={'Block'}>Block</MenuItem>
                   <MenuItem value={'Done'}>Done</MenuItem>
                   <MenuItem value={'To Do'}>To Do</MenuItem>
@@ -156,7 +156,7 @@ export const Home = () => {
             ) : (
               <>
                 {filteredList.map((data) => (
-                  <Card
+                  <Project
                     key={data.id}
                     name={data.name}
                     text={data.text}

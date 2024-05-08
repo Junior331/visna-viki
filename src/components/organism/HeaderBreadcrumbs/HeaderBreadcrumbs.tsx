@@ -7,10 +7,11 @@ const HeaderBreadcrumbs = ({ breadcrumbs }: HeaderBreadcrumbsProps) => {
   const navigate = useNavigate();
 
   const handleBreadcrumbClick = (path: string) => {
-    if (!path) {
+    if (path) {
       navigate(path);
     }
   };
+
   const emptyComponent = (index: number, path: string) => {
     if (index === breadcrumbs.length - 1 || !path) {
       return 'span';

@@ -1,5 +1,8 @@
 // import { v4 as uuidv4 } from 'uuid';
 
+import { billType } from '@/pages/Bills/@types';
+import { Dispatch, MouseEvent } from 'react';
+
 export enum statusColor {
   'Done' = '#28c76f',
   'To Do' = '#FF9F43',
@@ -37,6 +40,7 @@ export type landType = {
   amountPerMeter: number;
   topographyTypeId: number;
 };
+
 export type landSummaryType = {
   id: number;
   area: number;
@@ -150,6 +154,14 @@ export type payloadUserType = {
   status: string;
   username: string;
   passwordHash: string;
+};
+
+export type handleProps = {
+  setAnchorEl: Dispatch<React.SetStateAction<HTMLElement | null>>;
+};
+
+export type handleClickProps = handleProps & {
+  event: MouseEvent<HTMLElement>;
 };
 
 export const emptyProjectDate: projectDateType = {
@@ -272,4 +284,50 @@ export const emptyProjectInfo: projectInfoType = {
     startDate: '',
     endDate: null
   }
+};
+
+export const emptyBills: billType = {
+  bills: [
+    {
+      id: '',
+      total: 0,
+      name: '',
+
+      expenses: [
+        {
+          id: '',
+          name: '',
+          value: 0,
+          sub_expenses: [
+            {
+              id: '',
+              name: '',
+              value: 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: '',
+      total: 0,
+      name: '',
+
+      expenses: [
+        {
+          id: '',
+          name: '',
+          value: 0,
+          sub_expenses: [
+            {
+              id: '',
+              name: '',
+              value: 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  total: 0
 };

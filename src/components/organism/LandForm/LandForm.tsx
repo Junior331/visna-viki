@@ -2,12 +2,13 @@ import { useFormik } from 'formik';
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  FormControl,
   Grid,
-  InputAdornment,
+  Select,
   MenuItem,
-  Select
+  FormControl,
+  InputAdornment
 } from '@mui/material';
+import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { Props } from './@types';
 import { MaskType } from '@/utils/types';
 import { handleSumValues } from '../UnitsForm/utils';
@@ -319,6 +320,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     onChange={handleChange}
                     className="SelectComponent"
                     value={values.topographyTypeId}
+                    IconComponent={KeyboardArrowDownRounded}
                     inputProps={{ 'aria-label': 'Without label' }}
                   >
                     <MenuItem value={0} disabled>
@@ -395,6 +397,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     value={values.zoning}
                     onChange={handleChange}
                     className="SelectComponent"
+                    IconComponent={KeyboardArrowDownRounded}
                     inputProps={{ 'aria-label': 'Without label' }}
                   >
                     <MenuItem value={''} disabled>

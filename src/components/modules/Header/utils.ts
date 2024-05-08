@@ -1,12 +1,4 @@
-import { handleClickProps, handleLogoutProps, handleProps } from './@types';
-
-export const handleClick = ({ event, setAnchorEl }: handleClickProps) => {
-  setAnchorEl(event.currentTarget);
-};
-
-export const handleClose = ({ setAnchorEl }: handleProps) => {
-  setAnchorEl(null);
-};
+import { handleLogoutProps } from './@types';
 
 export const handleLogout = ({ setAnchorEl, navigate }: handleLogoutProps) => {
   setAnchorEl(null);

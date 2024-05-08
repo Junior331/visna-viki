@@ -1,4 +1,4 @@
-import { MaskType } from './types';
+import { MaskType, handleClickProps, handleProps } from './types';
 
 export const typeMask = (type: MaskType, value: string): string => {
   if (!value) return '';
@@ -46,6 +46,14 @@ export const formatCurrency = (value: string): string => {
   });
 
   return formattedValue;
+};
+
+export const handleClickMenu = ({ event, setAnchorEl }: handleClickProps) => {
+  setAnchorEl(event.currentTarget);
+};
+
+export const handleCloseMenu = ({ setAnchorEl }: handleProps) => {
+  setAnchorEl(null);
 };
 
 export const convertToParams = (

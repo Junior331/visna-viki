@@ -39,9 +39,9 @@ yarn dev
   ### Pages
 
   - [x] Home
+  - [ ] Bills
   - [x] Sign In
   - [x] Sign Up
-  - [ ] Accounts
   - [x] New project
   - [ ] Edit project
   - [x] Forgot Password

@@ -6,7 +6,6 @@ import {
   Avatar,
   Box,
   IconButton,
-  Tooltip,
   Menu as MuiMenu,
   MenuItem,
   Divider,
@@ -19,11 +18,13 @@ import {
 } from '@mui/material';
 import {
   Logout,
-  MenuOutlined,
   PersonAdd,
   Visibility,
-  VisibilityOff
+  MenuOutlined,
+  VisibilityOff,
+  KeyboardArrowDownRounded
 } from '@mui/icons-material';
+
 import { Menu } from '@/components/organism';
 import { MenuContext } from '@/contexts/Menu';
 import UseInitials from '@/hooks/useInitials';
@@ -32,7 +33,8 @@ import { GenericModal } from '../GenericModal';
 import { UserContext } from '@/state/user/state';
 import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
-import { handleClick, handleClose, handleLogout } from './utils';
+import { handleLogout } from './utils';
+import { handleClickMenu, handleCloseMenu } from '@/utils/utils';
 import * as S from './HeaderStyled';
 
 const Header = () => {
@@ -88,26 +90,24 @@ const Header = () => {
         <Box
           sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}
         >
-          <Tooltip title="Account settings">
-            <IconButton
-              size="small"
-              sx={{ ml: 2 }}
-              aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
-              aria-controls={open ? 'account-menu' : undefined}
-              onClick={(e) => handleClick({ event: e, setAnchorEl })}
-            >
-              <Avatar sx={{ width: 50, height: 50 }}>{initials}</Avatar>
-            </IconButton>
-          </Tooltip>
+          <IconButton
+            size="small"
+            sx={{ ml: 2 }}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            aria-controls={open ? 'account-menu' : undefined}
+            onClick={(e) => handleClickMenu({ event: e, setAnchorEl })}
+          >
+            <Avatar sx={{ width: 50, height: 50 }}>{initials}</Avatar>
+          </IconButton>
         </Box>
 
         <MuiMenu
           anchorEl={anchorEl}
           id="account-menu"
           open={open}
-          onClick={() => handleClose({ setAnchorEl })}
-          onClose={() => handleClose({ setAnchorEl })}
+          onClick={() => handleCloseMenu({ setAnchorEl })}
+          onClose={() => handleCloseMenu({ setAnchorEl })}
           PaperProps={{
             elevation: 0,
             sx: {
@@ -137,7 +137,7 @@ const Header = () => {
           transformOrigin={{ horizontal: 'right', vertical: 'top' }}
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-          <MenuItem onClick={() => handleClose({ setAnchorEl })}>
+          <MenuItem onClick={() => handleCloseMenu({ setAnchorEl })}>
             <Avatar /> Profile
           </MenuItem>
           <Divider />
@@ -145,7 +145,7 @@ const Header = () => {
             <MenuItem
               onClick={() => {
                 setOpenModal(true);
-                handleClose({ setAnchorEl });
+                handleCloseMenu({ setAnchorEl });
               }}
             >
               <ListItemIcon>
@@ -225,6 +225,7 @@ const Header = () => {
                       value={values.status}
                       onChange={handleChange}
                       className="SelectComponent"
+                      IconComponent={KeyboardArrowDownRounded}
                       inputProps={{ 'aria-label': 'Without label' }}
                     >
                       <MenuItem value={''} disabled>
@@ -245,6 +246,7 @@ const Header = () => {
                       value={values.role}
                       onChange={handleChange}
                       className="SelectComponent"
+                      IconComponent={KeyboardArrowDownRounded}
                       inputProps={{ 'aria-label': 'Without label' }}
                     >
                       <MenuItem value={''} disabled>
