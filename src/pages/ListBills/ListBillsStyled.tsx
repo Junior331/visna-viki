@@ -149,3 +149,27 @@ export const ContainerPagination = styled(GenericContainer)`
     }
   }
 `;
+export const ContainerMessage = styled(GenericContainer)`
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 33px;
+  > img {
+    margin-bottom: 20px;
+  }
+`;
+
+export const Title = styled.h2`
+  letter-spacing: 1px;
+  color: ${({ theme }) => theme.palette.color.dark};
+  font-size: ${({ theme }) => theme.typography.fontSizeRegular}rem;
+  font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
+`;
+export const Text = styled.p`
+  text-align: center;
+  margin-bottom: 10px;
+  max-width: 300px;
+  margin-top: 10px;
+  color: ${({ theme }) => theme.palette.color.dark};
+  font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
+`;
