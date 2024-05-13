@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
 import { CloseRounded, KeyboardArrowDownRounded } from '@mui/icons-material';
 import { FormControl, Grid, MenuItem, Pagination, Select } from '@mui/material';
 import { costType } from './@types';
@@ -10,13 +9,13 @@ import { handleChangePage } from '../Home/utils';
 import { breadCrumbsItems, handleFilter, listCosts } from './utils';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import { Layout, Table } from '@/components/organism';
+import { GenericModal } from '@/components/modules';
 import { HeaderBreadcrumbs } from '@/components/organism';
+import { rowData } from '@/components/modules/TableBody/@types';
 import { Accordion, Button, Input } from '@/components/elements';
 import * as S from './ListBillsStyled';
-import { rowData } from '@/components/modules/TableBody/@types';
 
 export const ListBills = () => {
-  const navigate = useNavigate();
   const [totalPage] = useState(12);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -29,6 +28,7 @@ export const ListBills = () => {
   );
 
   const [isOpen, setIsOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -71,8 +71,8 @@ export const ListBills = () => {
       <S.ListBillsContainer>
         <S.Header>
           <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems()} />
-          <Button $isOutline size="200px" onClick={() => navigate('/home')}>
-            Cancelar
+          <Button size="200px" onClick={() => setOpenModal(true)}>
+            Nova despesa
           </Button>
         </S.Header>
         <S.Content>
@@ -177,6 +177,82 @@ export const ListBills = () => {
           )}
         </S.Content>
       </S.ListBillsContainer>
+
+      <GenericModal
+        maxWidth={'750px'}
+        maxHeight={'400px'}
+        open={openModal}
+        setOpen={setOpenModal}
+      >
+        <S.ContainerMessage>
+          <S.Title>Novo tipo de despesa</S.Title>
+          <S.Text>
+            Esse novo tipo de despesa podera ser usado nos proximos cadastros
+          </S.Text>
+          <S.Form onSubmit={handleSubmit}>
+            <Grid container spacing={{ xs: 0, sm: 2 }} alignItems={'center'}>
+              <Grid item xs={12} sm={12} md={6} minWidth={300}>
+                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                  <S.Label>Tipo de custos</S.Label>
+                  <Select
+                    required
+                    displayEmpty
+                    name="typesCost"
+                    onChange={handleChange}
+                    value={values.typesCost}
+                    className="SelectComponent"
+                    IconComponent={KeyboardArrowDownRounded}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                  >
+                    <MenuItem value={0} disabled>
+                      <em>Custo raso </em>
+                    </MenuItem>
+                    <MenuItem value={1}>Teste 1</MenuItem>
+                    <MenuItem value={2}>Teste 2</MenuItem>
+                    <MenuItem value={3}>Teste 3</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} minWidth={300}>
+                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                  <S.Label>Tipo de despesa</S.Label>
+                  <Input
+                    required
+                    id="nameExpense"
+                    onChange={handleChange}
+                    value={values.nameExpense}
+                    aria-describedby="nameExpense"
+                    placeholder="Terreno / Outurga / Despesas de aquisiçoes"
+                    inputProps={{ style: { fontSize: '1.4rem' } }}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} minWidth={600}>
+                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                  <S.Label>Nome</S.Label>
+                  <Input
+                    required
+                    id="nameExpense"
+                    onChange={handleChange}
+                    value={values.nameExpense}
+                    aria-describedby="nameExpense"
+                    placeholder="Terreno - Pagamento"
+                    inputProps={{ style: { fontSize: '1.4rem' } }}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} minWidth={280} mt={2.3}>
+                <S.ContainerButtons>
+                  <Button isOutline size="140px">
+                    Cancelar
+                  </Button>
+                  <Button size="140px">Adicionar</Button>
+                </S.ContainerButtons>
+              </Grid>
+            </Grid>
+          </S.Form>
+        </S.ContainerMessage>
+      </GenericModal>
     </Layout>
   );
 };
