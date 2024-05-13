@@ -243,7 +243,7 @@ export const ListBills = () => {
               </Grid>
               <Grid item xs={12} sm={12} md={12} minWidth={280} mt={2.3}>
                 <S.ContainerButtons>
-                  <Button isOutline size="140px">
+                  <Button $isOutline size="140px">
                     Cancelar
                   </Button>
                   <Button size="140px">Adicionar</Button>
