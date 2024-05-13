@@ -49,6 +49,20 @@ export const ListBills = () => {
       setFilteredList(filteredList);
     }
   });
+  const formikNewExpense = useFormik({
+    initialValues: {
+      typesCost: '',
+      nameExpense: '',
+      typesExpense: ''
+    },
+    onSubmit: async ({ typesCost, nameExpense, typesExpense }) => {
+      setOpenModal(false);
+      console.log('typesCost ::', typesCost);
+      console.log('nameExpense ::', nameExpense);
+      console.log('typesExpense ::', typesExpense);
+      formikNewExpense.resetForm({});
+    }
+  });
 
   useEffect(() => {
     listCosts({
@@ -189,64 +203,71 @@ export const ListBills = () => {
           <S.Text>
             Esse novo tipo de despesa podera ser usado nos proximos cadastros
           </S.Text>
-          <S.Form onSubmit={handleSubmit}>
+          <S.Form onSubmit={formikNewExpense.handleSubmit}>
             <Grid container spacing={{ xs: 0, sm: 2 }} alignItems={'center'}>
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Tipo de custos</S.Label>
+                  <S.Label>Tipos de custos</S.Label>
                   <Select
-                    required
                     displayEmpty
                     name="typesCost"
-                    onChange={handleChange}
-                    value={values.typesCost}
+                    onChange={formikNewExpense.handleChange}
                     className="SelectComponent"
                     IconComponent={KeyboardArrowDownRounded}
+                    value={formikNewExpense.values.typesCost}
                     inputProps={{ 'aria-label': 'Without label' }}
                   >
-                    <MenuItem value={0} disabled>
-                      <em>Custo raso </em>
+                    <MenuItem value={''} disabled>
+                      <em>Selecione a opção </em>
                     </MenuItem>
-                    <MenuItem value={1}>Teste 1</MenuItem>
-                    <MenuItem value={2}>Teste 2</MenuItem>
-                    <MenuItem value={3}>Teste 3</MenuItem>
+                    {typesCostOptions.map((option) => (
+                      <MenuItem value={option.name}>{option.name}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Tipo de despesa</S.Label>
-                  <Input
-                    required
-                    id="nameExpense"
-                    onChange={handleChange}
-                    value={values.nameExpense}
-                    aria-describedby="nameExpense"
-                    placeholder="Terreno / Outurga / Despesas de aquisiçoes"
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                  />
+                  <S.Label>Tipos de despesa</S.Label>
+                  <Select
+                    displayEmpty
+                    name="typesExpense"
+                    onChange={formikNewExpense.handleChange}
+                    value={formikNewExpense.values.typesExpense}
+                    className="SelectComponent"
+                    IconComponent={KeyboardArrowDownRounded}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                  >
+                    <MenuItem value={''} disabled>
+                      <em>Selecione a opção </em>
+                    </MenuItem>
+                    {typesExpenseOptions.map((option) => (
+                      <MenuItem value={option.name}>{option.name}</MenuItem>
+                    ))}
+                  </Select>
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={12} md={12} minWidth={600}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Nome</S.Label>
+                  <S.Label>Nome da despesa</S.Label>
                   <Input
-                    required
                     id="nameExpense"
-                    onChange={handleChange}
-                    value={values.nameExpense}
+                    placeholder="Digite o nome"
                     aria-describedby="nameExpense"
-                    placeholder="Terreno - Pagamento"
+                    onChange={formikNewExpense.handleChange}
+                    value={formikNewExpense.values.nameExpense}
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                   />
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={12} md={12} minWidth={280} mt={2.3}>
-                <S.ContainerButtons>
+                <S.ContainerButtons className="containerBtn">
                   <Button $isOutline size="140px">
                     Cancelar
                   </Button>
-                  <Button size="140px">Adicionar</Button>
+                  <Button size="140px" type="submit">
+                    Adicionar
+                  </Button>
                 </S.ContainerButtons>
               </Grid>
             </Grid>

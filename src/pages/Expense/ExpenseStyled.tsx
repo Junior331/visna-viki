@@ -144,6 +144,9 @@ export const ContainerMessage = styled(GenericContainer)`
     margin-bottom: 20px;
   }
   > div {
+    gap: 30px;
+    width: auto;
+    margin-top: 30px;
     > button:first-child {
       background-color: #e73d3e;
       &:hover {

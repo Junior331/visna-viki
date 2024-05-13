@@ -95,6 +95,9 @@ export const GlobalStyles = createGlobalStyle`
         left: 1650px!important;
       }
     }
+    .MuiSelect-select,.MuiInputBase-input {
+      font-size: ${({ theme }) => theme.typography.fontSize - 0.3}rem;
+    }
   
 
     .MuiTooltip-tooltip {
