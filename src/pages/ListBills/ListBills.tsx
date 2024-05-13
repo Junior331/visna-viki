@@ -1,44 +1,77 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { CloseRounded, KeyboardArrowDownRounded } from '@mui/icons-material';
 import { FormControl, Grid, MenuItem, Pagination, Select } from '@mui/material';
+import { costType } from './@types';
 import { mocks } from '@/services/mocks';
-import { breadCrumbsItems } from './utils';
+import { Header } from '@/components/modules';
 import { handleChangePage } from '../Home/utils';
+import { breadCrumbsItems, handleFilter, listCosts } from './utils';
+import { SnackbarContext } from '@/contexts/Snackbar';
 import { Layout, Table } from '@/components/organism';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import { Accordion, Button, Input } from '@/components/elements';
 import * as S from './ListBillsStyled';
+import { rowData } from '@/components/modules/TableBody/@types';
 
 export const ListBills = () => {
   const navigate = useNavigate();
   const [totalPage] = useState(12);
   const [page, setPage] = useState(1);
-  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [list, setList] = useState<rowData[]>([]);
+  const { setSnackbar } = useContext(SnackbarContext);
+  const [filteredList, setFilteredList] = useState<rowData[]>(list);
+  const [typesCostOptions, setTypesCostOptions] = useState<costType[]>([]);
+  const [typesExpenseOptions, setTypesExpenseOptions] = useState<costType[]>(
+    []
+  );
+
   const [isOpen, setIsOpen] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      typesCost: 0,
+      typesCost: '',
       nameExpense: '',
-      typesExpense: 0
+      typesExpense: ''
     },
-    onSubmit: async (values) => {
-      setShow(true);
+    onSubmit: async ({ typesCost, nameExpense, typesExpense }) => {
       setIsOpen(false);
       console.log('page ::', page);
-      console.log('values ::', values);
+      const filteredList = handleFilter({
+        list,
+        typesCost,
+        nameExpense,
+        typesExpense
+      });
+
+      setFilteredList(filteredList);
     }
   });
+
+  useEffect(() => {
+    listCosts({
+      setList,
+      setLoading,
+      setSnackbar,
+      setTypesCostOptions,
+      setTypesExpenseOptions
+    });
+  }, [setSnackbar]);
+  useEffect(() => {
+    setFilteredList(list);
+  }, [list]);
+
   const { values, handleSubmit, handleChange, resetForm } = formik;
 
   return (
     <Layout>
+      <Header />
       <S.ListBillsContainer>
         <S.Header>
           <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems()} />
-          <Button isOutline size="200px" onClick={() => navigate('/home')}>
+          <Button $isOutline size="200px" onClick={() => navigate('/home')}>
             Cancelar
           </Button>
         </S.Header>
@@ -54,7 +87,6 @@ export const ListBills = () => {
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Tipos de custos</S.Label>
                     <Select
-                      required
                       displayEmpty
                       name="typesCost"
                       onChange={handleChange}
@@ -63,12 +95,12 @@ export const ListBills = () => {
                       IconComponent={KeyboardArrowDownRounded}
                       inputProps={{ 'aria-label': 'Without label' }}
                     >
-                      <MenuItem value={0} disabled>
+                      <MenuItem value={''} disabled>
                         <em>Selecione a opção </em>
                       </MenuItem>
-                      <MenuItem value={1}>Teste 1</MenuItem>
-                      <MenuItem value={2}>Teste 2</MenuItem>
-                      <MenuItem value={3}>Teste 3</MenuItem>
+                      {typesCostOptions.map((option) => (
+                        <MenuItem value={option.name}>{option.name}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -76,7 +108,6 @@ export const ListBills = () => {
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Tipos de despesas</S.Label>
                     <Select
-                      required
                       displayEmpty
                       name="typesExpense"
                       onChange={handleChange}
@@ -85,12 +116,12 @@ export const ListBills = () => {
                       IconComponent={KeyboardArrowDownRounded}
                       inputProps={{ 'aria-label': 'Without label' }}
                     >
-                      <MenuItem value={0} disabled>
+                      <MenuItem value={''} disabled>
                         <em>Selecione a opção </em>
                       </MenuItem>
-                      <MenuItem value={1}>Teste 1</MenuItem>
-                      <MenuItem value={2}>Teste 2</MenuItem>
-                      <MenuItem value={3}>Teste 3</MenuItem>
+                      {typesExpenseOptions.map((option) => (
+                        <MenuItem value={option.name}>{option.name}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -98,7 +129,6 @@ export const ListBills = () => {
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Nome da despesa</S.Label>
                     <Input
-                      required
                       id="nameExpense"
                       onChange={handleChange}
                       value={values.nameExpense}
@@ -111,9 +141,12 @@ export const ListBills = () => {
                 <Grid item xs={12} sm={12} md={2.3} minWidth={280} mt={2.3}>
                   <S.ContainerButtons>
                     <Button
-                      isOutline
+                      $isOutline
                       size="140px"
-                      onClick={() => resetForm({})}
+                      onClick={() => {
+                        setFilteredList(list);
+                        resetForm({});
+                      }}
                     >
                       <CloseRounded />
                       Limpar
@@ -126,10 +159,9 @@ export const ListBills = () => {
               </Grid>
             </S.Form>
           </Accordion>
-
-          {show && (
+          {!loading && (
             <>
-              <Table rows={mocks.rowsExpense} columns={mocks.columnsExpense} />
+              <Table rows={filteredList} columns={mocks.columnsExpense} />
               <S.ContainerPagination>
                 <Pagination
                   color="primary"

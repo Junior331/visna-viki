@@ -1,9 +1,7 @@
 import { mocks } from '@/services/mocks';
-import { ENDPOINTS } from '@/utils/endpoints';
-import axios from 'axios';
+import { listExpenseTypes } from '@/services/services';
 
 const generateMockData = () => mocks.bills;
-const token = window.sessionStorage.getItem('TOKEN') || '';
 
 export const getBills = async (isMock: boolean) => {
   try {
@@ -12,15 +10,8 @@ export const getBills = async (isMock: boolean) => {
       const mockData = generateMockData();
       return mockData;
     } else {
-      const response = await axios.get(
-        `${ENDPOINTS.BASE_URL}${ENDPOINTS.PROJECTS.BASE_URL}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-      return response.data;
+      const response = await listExpenseTypes();
+      return response;
     }
   } catch (error) {
     if (error instanceof Error) {

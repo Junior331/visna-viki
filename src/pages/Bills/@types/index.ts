@@ -2,39 +2,44 @@ import { Snackbar } from '@/contexts/Snackbar';
 import { Dispatch, SetStateAction } from 'react';
 import { NavigateFunction } from 'react-router-dom';
 
-export type summaryExpenseType = {
-  id: string;
-  name: string;
-  value: number;
-};
-
 export type expenseType = {
-  id: string;
+  id: number;
   name: string;
-  value: number;
-  sub_expenses: summaryExpenseType[];
 };
-
-export type subBillType = {
-  id: string;
+export type genericObjType = {
+  id: number;
   name: string;
-  total: number;
   expenses: expenseType[];
 };
-
-export type billType = {
-  total: number;
-  bills: subBillType[];
+export type shallowCostType = {
+  id: number;
+  name: string;
+  land: genericObjType;
+  project: genericObjType;
+  Licenses: genericObjType;
+  constructions: genericObjType;
+  AdministrativeCosts: genericObjType;
 };
-
+export type incorporationFeeType = {
+  id: number;
+  name: string;
+  administrateTax: genericObjType;
+};
+export type costsType = {
+  costs: {
+    shallowCost: shallowCostType;
+    incorporationFee: incorporationFeeType;
+  };
+};
 export type listBillsProps = {
-  setDate: Dispatch<SetStateAction<billType>>;
+  setDate: Dispatch<SetStateAction<costsType>>;
   setSnackbar: (snackbarData: Snackbar) => void;
   setLoading: Dispatch<React.SetStateAction<boolean>>;
 };
 export type handleProps = {
-  id: string;
+  id: number;
   name: string;
   idProject: string;
   navigate: NavigateFunction;
+  cost: shallowCostType | incorporationFeeType;
 };

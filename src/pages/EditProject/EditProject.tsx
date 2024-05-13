@@ -10,8 +10,7 @@ import {
   Select,
   MenuItem,
   Typography,
-  FormControl,
-  InputAdornment
+  FormControl
 } from '@mui/material';
 import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import {
@@ -140,7 +139,7 @@ export const EditProject = () => {
       <S.EditProjectContainer>
         <S.Header>
           <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems(name)} />
-          <Button isOutline size="200px" onClick={() => setOpenModal(true)}>
+          <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
             Cancelar
           </Button>
         </S.Header>
@@ -347,11 +346,6 @@ export const EditProject = () => {
                           values.area.toString()
                         )}
                         error={touched.area && Boolean(errors.area)}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">(m²)</InputAdornment>
-                          )
-                        }}
                       />
                     </FormControl>
                   </Grid>
@@ -367,7 +361,7 @@ export const EditProject = () => {
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
                     >
-                      <S.Label>Testada </S.Label>
+                      <S.Label>Testada (m²)</S.Label>
                       <Input
                         required
                         id="frontage"
@@ -381,11 +375,6 @@ export const EditProject = () => {
                           values.frontage.toString()
                         )}
                         error={touched.frontage && Boolean(errors.frontage)}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">(m²)</InputAdornment>
-                          )
-                        }}
                       />
                     </FormControl>
                   </Grid>
@@ -434,7 +423,7 @@ export const EditProject = () => {
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
                     >
-                      <S.Label>Valor (m²) </S.Label>
+                      <S.Label>Valor (m²/R$) </S.Label>
                       <Input
                         required
                         id="amountPerMeter"
@@ -450,11 +439,6 @@ export const EditProject = () => {
                           touched.amountPerMeter &&
                           Boolean(errors.amountPerMeter)
                         }
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">(R$)</InputAdornment>
-                          )
-                        }}
                       />
                     </FormControl>
                   </Grid>
@@ -470,7 +454,7 @@ export const EditProject = () => {
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
                     >
-                      <S.Label>Valor total</S.Label>
+                      <S.Label>Valor total (R$)</S.Label>
                       <Input
                         required
                         id="totalAmount"
@@ -483,11 +467,6 @@ export const EditProject = () => {
                         error={
                           touched.totalAmount && Boolean(errors.totalAmount)
                         }
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">(R$)</InputAdornment>
-                          )
-                        }}
                       />
                     </FormControl>
                   </Grid>
@@ -528,7 +507,7 @@ export const EditProject = () => {
 
                 <S.ContainerButtons>
                   <Button
-                    isOutline
+                    $isOutline
                     size="80px"
                     className="btnDelete"
                     onClick={() => {
@@ -540,7 +519,7 @@ export const EditProject = () => {
                   </Button>
                   <div>
                     <Button
-                      isOutline
+                      $isOutline
                       size="80px"
                       onClick={() => setOpenModal(true)}
                     >
@@ -820,7 +799,7 @@ export const EditProject = () => {
                                     sx={{ m: 1, width: '25ch' }}
                                     variant="outlined"
                                   >
-                                    <S.Label>Área total permutada</S.Label>
+                                    <S.Label>Área total permutada (m²)</S.Label>
                                     <Input
                                       required
                                       disabled
@@ -837,13 +816,6 @@ export const EditProject = () => {
                                       inputProps={{
                                         style: { fontSize: '1.4rem' }
                                       }}
-                                      InputProps={{
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                            (m²)
-                                          </InputAdornment>
-                                        )
-                                      }}
                                     />
                                   </FormControl>
                                 </Grid>
@@ -858,7 +830,7 @@ export const EditProject = () => {
                                     sx={{ m: 1, width: '25ch' }}
                                     variant="outlined"
                                   >
-                                    <S.Label>Valor de mercado </S.Label>
+                                    <S.Label>Valor de mercado (R$)</S.Label>
                                     <Input
                                       required
                                       onBlur={(e) => {
@@ -891,13 +863,6 @@ export const EditProject = () => {
                                       inputProps={{
                                         style: { fontSize: '1.4rem' }
                                       }}
-                                      InputProps={{
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                            R$
-                                          </InputAdornment>
-                                        )
-                                      }}
                                     />
                                   </FormControl>
                                 </Grid>
@@ -913,7 +878,7 @@ export const EditProject = () => {
                                     sx={{ m: 1, width: '25ch' }}
                                     variant="outlined"
                                   >
-                                    <S.Label>VGV líquido</S.Label>
+                                    <S.Label>VGV líquido (R$)</S.Label>
                                     <Input
                                       required
                                       disabled
@@ -930,13 +895,6 @@ export const EditProject = () => {
                                       )}
                                       inputProps={{
                                         style: { fontSize: '1.4rem' }
-                                      }}
-                                      InputProps={{
-                                        endAdornment: (
-                                          <InputAdornment position="end">
-                                            (R$)
-                                          </InputAdornment>
-                                        )
                                       }}
                                     />
                                   </FormControl>
@@ -1135,13 +1093,6 @@ export const EditProject = () => {
                               formikUnit.touched.totalToBeBuiltArea &&
                               Boolean(formikUnit.errors.totalToBeBuiltArea)
                             }
-                            InputProps={{
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  m²
-                                </InputAdornment>
-                              )
-                            }}
                           />
                         </FormControl>
                       </Grid>
@@ -1172,13 +1123,6 @@ export const EditProject = () => {
                               formikUnit.touched.totalValueNoExchange &&
                               Boolean(formikUnit.errors.totalValueNoExchange)
                             }
-                            InputProps={{
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  m²
-                                </InputAdornment>
-                              )
-                            }}
                           />
                         </FormControl>
                       </Grid>
@@ -1187,7 +1131,7 @@ export const EditProject = () => {
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <S.Label>Valor médio de venda (m²) </S.Label>
+                          <S.Label>Valor médio de venda (m²/R$) </S.Label>
                           <Input
                             required
                             disabled
@@ -1208,13 +1152,6 @@ export const EditProject = () => {
                               formikUnit.touched.averageSaleValue &&
                               Boolean(formikUnit.errors.averageSaleValue)
                             }
-                            InputProps={{
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  R$
-                                </InputAdornment>
-                              )
-                            }}
                           />
                         </FormControl>
                       </Grid>
@@ -1222,7 +1159,7 @@ export const EditProject = () => {
                   </S.ContainerInputs>
                   <S.ContainerButtons>
                     <Button
-                      isOutline
+                      $isOutline
                       size="80px"
                       className="btnDelete"
                       onClick={() => {
@@ -1234,7 +1171,7 @@ export const EditProject = () => {
                     </Button>
                     <div>
                       <Button
-                        isOutline
+                        $isOutline
                         size="80px"
                         onClick={() => setOpenModal(true)}
                       >
@@ -1256,7 +1193,14 @@ export const EditProject = () => {
             <CustomTabPanel value={value} index={3}>
               <S.Form onSubmit={formikDeadline.handleSubmit}>
                 <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
-                  <Grid item xs={12} sm={12} md={3} minWidth={250}>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={2.5}
+                    minWidth={250}
+                    minHeight={117}
+                  >
                     <FormControl
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
@@ -1277,12 +1221,19 @@ export const EditProject = () => {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12} sm={12} md={3} minWidth={250}>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={2.5}
+                    minWidth={250}
+                    minHeight={117}
+                  >
                     <FormControl
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
                     >
-                      <S.Label>Aprovação do projeto </S.Label>
+                      <S.Label>Aprovação do projeto (mes)</S.Label>
                       <Input
                         required
                         onBlur={handleBlur}
@@ -1292,20 +1243,22 @@ export const EditProject = () => {
                         value={formikDeadline.values.approvalDeadlineInMonth}
                         aria-describedby="approvalDeadlineInMonth"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">mes</InputAdornment>
-                          )
-                        }}
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12} sm={12} md={3} minWidth={250}>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={2.5}
+                    minWidth={250}
+                    minHeight={117}
+                  >
                     <FormControl
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
                     >
-                      <S.Label>Execução da obra </S.Label>
+                      <S.Label>Execução da obra (mes)</S.Label>
                       <Input
                         required
                         onBlur={handleBlur}
@@ -1317,20 +1270,22 @@ export const EditProject = () => {
                         }
                         aria-describedby="constructionDeadlineInMonth"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">mes</InputAdornment>
-                          )
-                        }}
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12} sm={12} md={3} minWidth={250}>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={2.5}
+                    minWidth={250}
+                    minHeight={117}
+                  >
                     <FormControl
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
                     >
-                      <S.Label>Prazo total</S.Label>
+                      <S.Label>Prazo total (mes)</S.Label>
                       <Input
                         required
                         onBlur={handleBlur}
@@ -1340,11 +1295,39 @@ export const EditProject = () => {
                         value={formikDeadline.values.totalDeadlineInMonth}
                         aria-describedby="totalDeadlineInMonth"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">mes</InputAdornment>
-                          )
-                        }}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={2}
+                    minWidth={250}
+                    minHeight={117}
+                  >
+                    <FormControl
+                      sx={{ m: 1, width: '25ch' }}
+                      variant="outlined"
+                    >
+                      <S.Label>Prazo de lançamento (mes)</S.Label>
+                      <Input
+                        required
+                        id="endDate"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={formikDeadline.values.endDate}
+                        aria-describedby="endDate"
+                        placeholder="Digite os meses"
+                        inputProps={{ style: { fontSize: '1.4rem' } }}
+                        helperText={
+                          formikDeadline.touched.endDate &&
+                          formikDeadline.errors.endDate
+                        }
+                        error={
+                          formikDeadline.touched.endDate &&
+                          Boolean(formikDeadline.errors.endDate)
+                        }
                       />
                     </FormControl>
                   </Grid>
@@ -1352,7 +1335,7 @@ export const EditProject = () => {
 
                 <S.ContainerButtons>
                   <Button
-                    isOutline
+                    $isOutline
                     size="80px"
                     className="btnDelete"
                     onClick={() => {
@@ -1364,7 +1347,7 @@ export const EditProject = () => {
                   </Button>
                   <div>
                     <Button
-                      isOutline
+                      $isOutline
                       size="80px"
                       onClick={() => setOpenModal(true)}
                     >

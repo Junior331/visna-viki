@@ -16,6 +16,7 @@ export const Header = styled(ContainerGeneric)`
   padding-left: 10px;
   border-bottom: 2px solid #ebe9f1;
   > p {
+    cursor: pointer;
     color: ${({ theme }) => theme.palette.background.regular};
     font-weight: ${({ theme }) => theme.typography.fontWeightBold};
     font-size: ${({ theme }) => theme.typography.fontSizeRegular + 0.4}rem;

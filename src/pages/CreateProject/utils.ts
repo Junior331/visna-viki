@@ -23,13 +23,17 @@ export const breadCrumbsItems = (name: string) => [
 
 export const handleSaveInfosByStep = async ({
   date,
-  stepsIsDone
+  navigate,
+  stepsIsDone,
+  setOpenModal
 }: handleSaveInfosByStepProps) => {
   // eslint-disable-next-line @typescript-eslint/ban-types
   const stepFunctions: { [key: string]: Function } = {
     '1': async () => {
       const createP = await createProject(date.lands.name);
       const projectId = createP.id;
+      setOpenModal(false);
+      navigate('/home');
       await createLands(projectId, date.lands);
       return projectId;
     },

@@ -1,3 +1,4 @@
+import { incorporationFeeType, shallowCostType } from '../Bills/@types';
 import { handleEditProps, listBillsProps } from './@types';
 import { getDetailsBill } from './services';
 
@@ -23,14 +24,15 @@ export const handleView = () => {};
 export const handleDelete = () => {};
 
 export const listDetailsBill = async ({
-  id,
   setDate,
   setLoading,
   setSnackbar
 }: listBillsProps) => {
   setLoading(true);
   try {
-    const result = await getDetailsBill(true, id);
+    const result = (await getDetailsBill()) as
+      | shallowCostType
+      | incorporationFeeType;
     setDate(result);
     setLoading(false);
   } catch (error) {

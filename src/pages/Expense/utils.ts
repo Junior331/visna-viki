@@ -1,21 +1,55 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { rowData } from '@/components/modules/TableBody/@types';
-import { costsType } from '../Bills/@types';
+import {
+  costsType,
+  incorporationFeeType,
+  shallowCostType
+} from '../Bills/@types';
 import { getBills } from '../Bills/services';
-import { handleFilterProps, listCostsProps } from './@types';
+import { listBillsProps, listCostsProps } from './@types';
+import { getDetailsBill } from './services';
 
-export const breadCrumbsItems = () => [
+export const breadCrumbsItems = (name: string) => [
   {
     path: '',
-    label: 'Contas'
+    label: `Contas`
   },
   {
     path: '',
-    label: 'Dispesas'
+    label: 'Despesas'
+  },
+  {
+    path: '',
+    label: `${name}`
   }
 ];
+
+export const listDetailsBill = async ({
+  setDate,
+  setLoading,
+  setSnackbar
+}: listBillsProps) => {
+  setLoading(true);
+  try {
+    const result = (await getDetailsBill()) as
+      | shallowCostType
+      | incorporationFeeType;
+    setDate(result);
+    setLoading(false);
+  } catch (error) {
+    if (error instanceof Error) {
+      setLoading(false);
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    }
+  }
+};
+
 export const listCosts = async ({
-  setList,
   setLoading,
   setSnackbar,
   setTypesCostOptions,
@@ -23,7 +57,6 @@ export const listCosts = async ({
 }: listCostsProps) => {
   setLoading(true);
   try {
-    const listExpenses: rowData[] = [];
     const result = (await getBills(false)) as costsType;
     const typesCostOptions: { id: number; name: string }[] = [];
     const typesExpenseOptions: { id: number; name: string }[] = [];
@@ -36,20 +69,10 @@ export const listCosts = async ({
             id: expenseType.id,
             name: expenseType.name
           });
-          expenseType.expenses.forEach((expense: any) => {
-            const expenseObj: rowData = {
-              name: expense.name,
-              typesCost: cost.name,
-              typesExpense: expenseType.name,
-              action: 'menu'
-            };
-            listExpenses.push(expenseObj);
-          });
         }
       });
     });
 
-    setList(listExpenses);
     setTypesCostOptions(typesCostOptions);
     setTypesExpenseOptions(typesExpenseOptions);
     setLoading(false);
@@ -66,20 +89,3 @@ export const listCosts = async ({
     }
   }
 };
-
-export const handleFilter = ({
-  list,
-  typesCost,
-  nameExpense,
-  typesExpense
-}: handleFilterProps) =>
-  list.filter((expense) => {
-    const isTypesCostMatch = !typesCost || expense.typesCost === typesCost;
-    const isTypesExpenseMatch =
-      !typesExpense || expense.typesExpense === typesExpense;
-    const isNameExpenseMatch =
-      !nameExpense ||
-      expense.name.toString().toLowerCase().includes(nameExpense.toLowerCase());
-
-    return isTypesCostMatch && isTypesExpenseMatch && isNameExpenseMatch;
-  });

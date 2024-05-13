@@ -59,17 +59,7 @@ export const GlobalStyles = createGlobalStyle`
     .MuiBackdrop-root{
       background-color: rgb(0 0 0 / 60%);
     }
-    
-    .billsMenu {
-      .MuiBackdrop-root{
-        background-color: rgb(0 0 0 / 37%);
-      }
-    }
-    .detailsBillsMenu {
-      .MuiBackdrop-root{
-        background-color: rgb(0 0 0 / 16.9%);
-      }
-    }
+
     .menuEdit {
       .MuiPaper-root {
         width: 180px;
@@ -85,6 +75,27 @@ export const GlobalStyles = createGlobalStyle`
         }
       }
     }
+    
+    .billsMenu {
+      .MuiBackdrop-root{
+        background-color: rgb(0 0 0 / 37%);
+      }
+    }
+    .detailsBillsMenu {
+      .MuiBackdrop-root{
+        background-color: rgb(0 0 0 / 16.9%);
+      }
+    }
+    .detailsExpenseMenu {
+      .MuiBackdrop-root{
+        background-color: rgb(0 0 0 / 2.3%);
+      }
+      .MuiPaper-root {
+        width: 180px;
+        left: 1650px!important;
+      }
+    }
+  
 
     .MuiTooltip-tooltip {
       font-size: 1.2rem;

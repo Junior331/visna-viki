@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import { useContext, useEffect } from 'react';
 import { Props } from './@types';
-import { FormControl, Grid, InputAdornment } from '@mui/material';
+import { FormControl, Grid } from '@mui/material';
 import { MaskType } from '@/utils/types';
 import { typeMask } from '@/utils/utils';
 import { Button, Input } from '@/components/elements';
@@ -53,7 +53,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
       <S.Form onSubmit={handleSubmit}>
         <Grid container spacing={{ xs: 0, sm: 2 }}>
           <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
-            <Grid item xs={12} sm={12} md={3} minWidth={250}>
+            <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <S.Label>Data de início</S.Label>
                 <Input
@@ -70,9 +70,9 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={12} md={3} minWidth={250}>
+            <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Aprovação do projeto </S.Label>
+                <S.Label>Aprovação do projeto (mes)</S.Label>
                 <Input
                   required
                   onBlur={handleBlur}
@@ -90,17 +90,12 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                     touched.approvalDeadlineInMonth &&
                     Boolean(errors.approvalDeadlineInMonth)
                   }
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">mes</InputAdornment>
-                    )
-                  }}
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={12} md={3} minWidth={250}>
+            <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Execução da obra </S.Label>
+                <S.Label>Execução da obra (mes)</S.Label>
                 <Input
                   required
                   onBlur={handleBlur}
@@ -118,17 +113,12 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                     touched.constructionDeadlineInMonth &&
                     Boolean(errors.constructionDeadlineInMonth)
                   }
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">mes</InputAdornment>
-                    )
-                  }}
                 />
               </FormControl>
             </Grid>
-            <Grid item xs={12} sm={12} md={3} minWidth={250}>
+            <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Prazo total</S.Label>
+                <S.Label>Prazo total (mes)</S.Label>
                 <Input
                   required
                   onBlur={handleBlur}
@@ -145,18 +135,30 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                     touched.totalDeadlineInMonth &&
                     Boolean(errors.totalDeadlineInMonth)
                   }
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">mes</InputAdornment>
-                    )
-                  }}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={12} md={2} minWidth={250} minHeight={117}>
+              <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                <S.Label>Prazo de lançamento (mes)</S.Label>
+                <Input
+                  required
+                  id="endDate"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.endDate}
+                  aria-describedby="endDate"
+                  placeholder="Digite os meses"
+                  inputProps={{ style: { fontSize: '1.4rem' } }}
+                  helperText={touched.endDate && errors.endDate}
+                  error={touched.endDate && Boolean(errors.endDate)}
                 />
               </FormControl>
             </Grid>
           </S.ContainerInputs>
         </Grid>
         <S.ContainerButtons>
-          <Button isOutline size="80px" onClick={() => handleStep(2)}>
+          <Button $isOutline size="80px" onClick={() => handleStep(2)}>
             Voltar
           </Button>
           <Button size="100px" type="submit">

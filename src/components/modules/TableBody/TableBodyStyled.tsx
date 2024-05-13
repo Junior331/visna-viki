@@ -26,7 +26,6 @@ export const Form = styled.form`
     }
   }
 `;
-
 export const ContainerInputs = styled(Grid)`
   row-gap: 10px;
   margin-top: 25px;
@@ -60,3 +59,4 @@ export const ContainerButtons = styled(ContainerGeneric)`
   align-items: center;
   justify-content: flex-end;
 `;
+export const Icon = styled.img``;

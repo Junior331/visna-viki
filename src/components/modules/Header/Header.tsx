@@ -138,7 +138,7 @@ const Header = () => {
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
           <MenuItem onClick={() => handleCloseMenu({ setAnchorEl })}>
-            <Avatar /> Profile
+            <Avatar /> Perfil
           </MenuItem>
           <Divider />
           {state.user.role === 'ADMIN' && (
@@ -151,14 +151,14 @@ const Header = () => {
               <ListItemIcon>
                 <PersonAdd fontSize="small" />
               </ListItemIcon>
-              Create another account
+              Criar outra conta
             </MenuItem>
           )}
           <MenuItem onClick={() => handleLogout({ setAnchorEl, navigate })}>
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>
-            Logout
+            Sair
           </MenuItem>
         </MuiMenu>
       </S.InfoUser>
@@ -287,7 +287,11 @@ const Header = () => {
               </S.ContainerInputs>
             </Grid>
             <S.ContainerButtons>
-              <Button isOutline size="80px" onClick={() => setOpenModal(false)}>
+              <Button
+                $isOutline
+                size="80px"
+                onClick={() => setOpenModal(false)}
+              >
                 Cancelar
               </Button>
               <Button size="100px" type="submit">

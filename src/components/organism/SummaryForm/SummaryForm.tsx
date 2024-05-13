@@ -417,7 +417,7 @@ const SummaryForm = ({ date, handleStep }: Props) => {
         </S.ContainerInfo>
       </S.Section>
       <S.ContainerButtons>
-        <Button isOutline size="80px" onClick={() => handleStep(3)}>
+        <Button $isOutline size="80px" onClick={() => handleStep(3)}>
           Voltar
         </Button>
         <Button

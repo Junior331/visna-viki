@@ -35,7 +35,7 @@ export const CreateProject = () => {
       <S.CreateProjectContainer>
         <S.Header>
           <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems(date.lands.name)} />
-          <Button isOutline size="200px" onClick={() => setOpenModal(true)}>
+          <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
             Cancelar
           </Button>
         </S.Header>
@@ -73,9 +73,9 @@ export const CreateProject = () => {
       </S.CreateProjectContainer>
 
       <GenericModal
+        open={openModal}
         maxWidth={'650px'}
         maxHeight={'300px'}
-        open={openModal}
         setOpen={setOpenModal}
       >
         <S.ContainerMessage>
@@ -96,7 +96,14 @@ export const CreateProject = () => {
             </Button>
             <Button
               size="100px"
-              onClick={() => handleSaveInfosByStep({ date, stepsIsDone })}
+              onClick={() =>
+                handleSaveInfosByStep({
+                  date,
+                  navigate,
+                  stepsIsDone,
+                  setOpenModal
+                })
+              }
             >
               Sim
             </Button>
