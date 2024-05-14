@@ -23,6 +23,7 @@ const TableBody = ({
   cost,
   isEdit,
   formik,
+  rows,
   itemActive,
   align = 'left'
 }: Props) => {
@@ -32,6 +33,8 @@ const TableBody = ({
   const [expenseActive, setExpenseActive] = useState<rowData>({});
 
   const { handleSubmit, setFieldValue, setValues, values } = formik;
+
+  const List = values.land ? values[cost?.type as string].rows : rows;
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -68,7 +71,7 @@ const TableBody = ({
 
   return (
     <MuiTableBody>
-      {values[cost?.type as string].rows.map((row: any, index: number) => {
+      {List.map((row: any, index: number) => {
         return (
           <TableRow key={index}>
             {Object.keys(row).map((key) => {

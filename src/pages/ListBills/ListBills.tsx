@@ -190,7 +190,11 @@ export const ListBills = () => {
           </Accordion>
           {!loading && (
             <>
-              <Table rows={filteredList} columns={mocks.columnsExpense} />
+              <Table
+                rows={filteredList}
+                formik={formik}
+                columns={mocks.columnsExpense}
+              />
               {/* <S.ContainerPagination>
                 <Pagination
                   color="primary"
