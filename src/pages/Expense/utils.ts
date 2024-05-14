@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { rowData } from '@/components/modules/TableBody/@types';
 import {
   costsType,
   incorporationFeeType,
   shallowCostType
 } from '../Bills/@types';
 import { getBills } from '../Bills/services';
-import { listBillsProps, listCostsProps } from './@types';
+import { listBillsProps, listCostsProps, updateListItemProps } from './@types';
 import { getDetailsBill } from './services';
 
 export const breadCrumbsItems = (name: string) => [
@@ -88,4 +89,34 @@ export const listCosts = async ({
       });
     }
   }
+};
+
+export const updateListItem = ({
+  listCostsStorage,
+  stateExpense,
+  newValues
+}: updateListItemProps): rowData[] => {
+  const newList: any = JSON.parse(listCostsStorage as string);
+
+  const index = newList.findIndex(
+    (item: any) => item.name === stateExpense.name
+  );
+
+  if (index !== -1) {
+    newList[index] = {
+      ...newList[index],
+      ...Object.fromEntries(
+        Object.entries(newValues).filter(([, value]) => value !== undefined)
+      )
+    };
+  } else {
+    newList.push({
+      name: stateExpense.name,
+      ...Object.fromEntries(
+        Object.entries(newValues).filter(([, value]) => value !== undefined)
+      )
+    });
+  }
+
+  return newList;
 };

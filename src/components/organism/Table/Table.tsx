@@ -3,13 +3,13 @@ import * as S from './TableStyled';
 import { TableBody, TableHeader } from '@/components/modules';
 import { Props } from './@types';
 
-const Table = ({ columns, rows, isEdit }: Props) => {
+const Table = ({ columns, rows, formik, isEdit }: Props) => {
   return (
     <S.TableContainer>
       <TableContainer component={Paper}>
         <MuiTable sx={{ minWidth: 650 }} aria-label="caption table">
           <TableHeader columns={columns} />
-          <TableBody rows={rows} isEdit={isEdit} />
+          <TableBody rows={rows} formik={formik} isEdit={isEdit} />
         </MuiTable>
       </TableContainer>
     </S.TableContainer>

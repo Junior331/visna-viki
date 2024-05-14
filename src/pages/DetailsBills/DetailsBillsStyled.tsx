@@ -46,6 +46,11 @@ export const Content = styled(GenericContainer)`
       padding-top: 0px;
     }
   }
+  .containerBtn {
+    gap: 20px;
+    margin-top: 0;
+    justify-content: right;
+  }
 `;
 export const Title = styled.h2`
   letter-spacing: 1px;

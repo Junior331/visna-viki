@@ -13,5 +13,3 @@ export const handleEdit = ({ navigate, expenseActive }: handleProps) => {
     }
   );
 };
-
-export const handleDelete = () => {};

@@ -1,3 +1,4 @@
+import { rowData } from '@/components/modules/TableBody/@types';
 import { Snackbar } from '@/contexts/Snackbar';
 import { Dispatch, SetStateAction } from 'react';
 import { NavigateFunction } from 'react-router-dom';
@@ -9,6 +10,13 @@ export type expenseType = {
 export type genericObjType = {
   id: number;
   name: string;
+  expenses: expenseType[];
+};
+export type genericV2ObjType = {
+  id: number;
+  name: string;
+  total: string;
+  rows: rowData[];
   expenses: expenseType[];
 };
 export type shallowCostType = {

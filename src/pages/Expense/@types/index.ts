@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { Snackbar } from '@/contexts/Snackbar';
 import { shallowCostType, incorporationFeeType } from '@/pages/Bills/@types';
 import { costType } from '@/pages/ListBills/@types';
+import { rowData } from '@/components/modules/TableBody/@types';
 
 export type listBillsProps = {
   id: number;
@@ -14,4 +15,9 @@ export type listCostsProps = {
   setSnackbar: (snackbarData: Snackbar) => void;
   setTypesCostOptions: Dispatch<SetStateAction<costType[]>>;
   setTypesExpenseOptions: Dispatch<SetStateAction<costType[]>>;
+};
+export type updateListItemProps = {
+  listCostsStorage: string | null;
+  stateExpense: { name: string };
+  newValues: Partial<rowData>;
 };

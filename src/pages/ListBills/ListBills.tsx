@@ -1,11 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { CloseRounded, KeyboardArrowDownRounded } from '@mui/icons-material';
-import { FormControl, Grid, MenuItem, Pagination, Select } from '@mui/material';
+import { FormControl, Grid, MenuItem, Select } from '@mui/material';
 import { costType } from './@types';
 import { mocks } from '@/services/mocks';
 import { Header } from '@/components/modules';
-import { handleChangePage } from '../Home/utils';
 import { breadCrumbsItems, handleFilter, listCosts } from './utils';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import { Layout, Table } from '@/components/organism';
@@ -16,8 +15,6 @@ import { Accordion, Button, Input } from '@/components/elements';
 import * as S from './ListBillsStyled';
 
 export const ListBills = () => {
-  const [totalPage] = useState(12);
-  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState<rowData[]>([]);
   const { setSnackbar } = useContext(SnackbarContext);
@@ -26,6 +23,7 @@ export const ListBills = () => {
   const [typesExpenseOptions, setTypesExpenseOptions] = useState<costType[]>(
     []
   );
+  const listCostsStorage = window.sessionStorage.getItem('LIST_EXPENSES');
 
   const [isOpen, setIsOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -38,7 +36,6 @@ export const ListBills = () => {
     },
     onSubmit: async ({ typesCost, nameExpense, typesExpense }) => {
       setIsOpen(false);
-      console.log('page ::', page);
       const filteredList = handleFilter({
         list,
         typesCost,
@@ -57,9 +54,28 @@ export const ListBills = () => {
     },
     onSubmit: async ({ typesCost, nameExpense, typesExpense }) => {
       setOpenModal(false);
-      console.log('typesCost ::', typesCost);
-      console.log('nameExpense ::', nameExpense);
-      console.log('typesExpense ::', typesExpense);
+
+      const newList = JSON.parse(listCostsStorage as '') as rowData[];
+
+      const newItem = {
+        name: nameExpense,
+        typesCost: typesCost,
+        typesExpense: typesExpense,
+        action: 'menu'
+      };
+
+      console.log();
+      newList.push(newItem);
+      window.sessionStorage.setItem('LIST_EXPENSES', JSON.stringify(newList));
+      setList(newList);
+      setSnackbar({
+        isOpen: true,
+        severity: 'success',
+        vertical: 'top',
+        horizontal: 'right',
+        message: 'Despesa adicionada com sucesso'
+      });
+
       formikNewExpense.resetForm({});
     }
   });
@@ -176,7 +192,7 @@ export const ListBills = () => {
           {!loading && (
             <>
               <Table rows={filteredList} columns={mocks.columnsExpense} />
-              <S.ContainerPagination>
+              {/* <S.ContainerPagination>
                 <Pagination
                   color="primary"
                   showLastButton
@@ -186,7 +202,7 @@ export const ListBills = () => {
                     handleChangePage({ newPage: index, setPage });
                   }}
                 />
-              </S.ContainerPagination>
+              </S.ContainerPagination> */}
             </>
           )}
         </S.Content>

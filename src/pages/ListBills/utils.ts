@@ -2,7 +2,11 @@
 import { rowData } from '@/components/modules/TableBody/@types';
 import { costsType } from '../Bills/@types';
 import { getBills } from '../Bills/services';
-import { handleFilterProps, listCostsProps } from './@types';
+import {
+  deleteItemListProps,
+  handleFilterProps,
+  listCostsProps
+} from './@types';
 
 export const breadCrumbsItems = () => [
   {
@@ -48,8 +52,19 @@ export const listCosts = async ({
         }
       });
     });
+    const listCostsStorage = window.sessionStorage.getItem('LIST_EXPENSES');
 
-    setList(listExpenses);
+    if (listCostsStorage) {
+      setList(JSON.parse(listCostsStorage) as rowData[]);
+      console.log('listExpenses ::', JSON.parse(listCostsStorage) as rowData[]);
+    } else {
+      window.sessionStorage.setItem(
+        'LIST_EXPENSES',
+        JSON.stringify(listExpenses)
+      );
+      setList(listExpenses);
+    }
+
     setTypesCostOptions(typesCostOptions);
     setTypesExpenseOptions(typesExpenseOptions);
     setLoading(false);
@@ -83,3 +98,18 @@ export const handleFilter = ({
 
     return isTypesCostMatch && isTypesExpenseMatch && isNameExpenseMatch;
   });
+
+export const deleteItemList = ({
+  listCostsStorage,
+  itemName
+}: deleteItemListProps): rowData[] => {
+  const newList: rowData[] = JSON.parse(listCostsStorage as string);
+
+  const index = newList.findIndex((item) => item.name === itemName);
+
+  if (index !== -1) {
+    newList.splice(index, 1);
+  }
+
+  return newList;
+};

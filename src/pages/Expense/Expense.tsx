@@ -4,7 +4,7 @@ import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { FormControl, Grid, MenuItem, Select } from '@mui/material';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Layout } from '@/components/organism';
-import { breadCrumbsItems, listCosts } from './utils';
+import { breadCrumbsItems, listCosts, updateListItem } from './utils';
 import { icons } from '@/assets/images/icons';
 import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
@@ -12,12 +12,14 @@ import { GenericModal } from '@/components/modules';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import { costType } from '../ListBills/@types';
 import * as S from './ExpenseStyled';
+import { deleteItemList } from '../ListBills/utils';
 
 export const Expense = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
   const { name } = Object.fromEntries([...searchParams]);
@@ -25,6 +27,7 @@ export const Expense = () => {
   const [typesExpenseOptions, setTypesExpenseOptions] = useState<costType[]>(
     []
   );
+  const listCostsStorage = window.sessionStorage.getItem('LIST_EXPENSES');
 
   const formik = useFormik({
     initialValues: {
@@ -33,11 +36,47 @@ export const Expense = () => {
       typesExpense: state.expense.typesExpense
     },
     onSubmit: async (values) => {
-      console.log('values ::', values);
+      const updatedList = updateListItem({
+        listCostsStorage,
+        stateExpense: state.expense,
+        newValues: values
+      });
+      window.sessionStorage.setItem(
+        'LIST_EXPENSES',
+        JSON.stringify(updatedList)
+      );
+      navigate('/listbills');
+      setSnackbar({
+        isOpen: true,
+        severity: 'success',
+        vertical: 'top',
+        horizontal: 'right',
+        message: 'Despesa atualizada com sucesso'
+      });
     }
   });
 
   const { values, handleSubmit, handleChange, setFieldValue } = formik;
+
+  const handleModalDelete = () => {
+    setIsDelete(true);
+    setOpenModal(true);
+  };
+  const handleDelete = () => {
+    const updatedList = deleteItemList({
+      listCostsStorage,
+      itemName: state.expense.name
+    });
+    window.sessionStorage.setItem('LIST_EXPENSES', JSON.stringify(updatedList));
+    navigate('/listbills');
+    setSnackbar({
+      isOpen: true,
+      severity: 'success',
+      vertical: 'top',
+      horizontal: 'right',
+      message: 'Despesa deletada com sucesso'
+    });
+  };
 
   useEffect(() => {
     listCosts({
@@ -129,9 +168,7 @@ export const Expense = () => {
                   $isOutline
                   size="80px"
                   className="btnDelete"
-                  onClick={() => {
-                    setOpenModal(true);
-                  }}
+                  onClick={() => handleModalDelete()}
                 >
                   Deletar
                 </Button>
@@ -161,13 +198,22 @@ export const Expense = () => {
       >
         <S.ContainerMessage>
           <S.Icon src={icons.AlertTriangle} alt="Icon alert triangle" />
-          <S.Title>Cancelar</S.Title>
-          <S.Text>Você perderá as alterações que ainda não foram salvas</S.Text>
+          <S.Title>{isDelete ? 'Deletar' : 'Cancelar'}</S.Title>
+          <S.Text>
+            {isDelete
+              ? 'Você perderá essa informação. Esta ação não poderá ser desfeita'
+              : 'Você perderá as alterações que ainda não foram salvas'}
+          </S.Text>
           <S.ContainerButtons>
             <Button size="100px" onClick={() => setOpenModal(false)}>
               Não
             </Button>
-            <Button size="100px" onClick={() => navigate(`/listbills`)}>
+            <Button
+              size="100px"
+              onClick={() =>
+                isDelete ? handleDelete() : navigate(`/listbills`)
+              }
+            >
               Sim
             </Button>
           </S.ContainerButtons>

@@ -19,3 +19,7 @@ export type handleFilterProps = {
   nameExpense: string;
   typesExpense: string;
 };
+export type deleteItemListProps = {
+  listCostsStorage: string | null;
+  itemName: string;
+};

@@ -46,7 +46,13 @@ export const handleEdit = ({
 };
 export const handleView = ({ id, idProject, name, navigate }: handleProps) => {
   const formatedId = id.toString();
-  navigate(`/details?${convertToParams({ idProject, name, id: formatedId })}`);
+  navigate(
+    `/details?isEdit=false${convertToParams({
+      idProject,
+      name,
+      id: formatedId
+    })}`
+  );
 };
 export const handleDelete = () => {};
 export const listBills = async ({
