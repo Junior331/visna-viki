@@ -19,5 +19,8 @@ export const ENDPOINTS = {
   },
   DEADLINE: {
     BASE_URL: 'deadline'
+  },
+  EXPENSE: {
+    BASE_URL: 'expense/hub'
   }
 };

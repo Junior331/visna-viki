@@ -115,6 +115,7 @@ export type unitHubType = {
 };
 
 export type deadlineType = {
+  endDate: string;
   startDate: string;
   totalDeadlineInMonth: string;
   approvalDeadlineInMonth: string;
@@ -161,4 +162,28 @@ export type handleProps = {
 
 export type handleClickProps = handleProps & {
   event: MouseEvent<HTMLElement>;
+};
+
+export type handleExpenseGenericProps = {
+  projectId: number;
+};
+
+export type handleExpenseProps = handleExpenseGenericProps & {
+  page: number;
+  perPage: number;
+};
+
+export type payloadExpenseType = {
+  id: number;
+  expenseName: string;
+  expenseTypeId: number;
+};
+export type payloadExpense = {
+  id: number;
+  quantity: number;
+  unitValue: number;
+  projectId: number;
+  expenseId: number;
+  totalValue: number;
+  unitExpenseTypeId: number;
 };

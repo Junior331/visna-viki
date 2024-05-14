@@ -1,4 +1,4 @@
-import { billType } from '@/pages/Bills/@types';
+import { costsType } from '@/pages/Bills/@types';
 import {
   projectDateType,
   projectInfoType,
@@ -54,6 +54,7 @@ export const emptyProjectDate: projectDateType = {
     ]
   },
   deadline: {
+    endDate: '',
     startDate: '',
     totalDeadlineInMonth: '',
     approvalDeadlineInMonth: '',
@@ -135,48 +136,45 @@ export const emptyProjectInfo: projectInfoType = {
   }
 };
 
-export const emptyBills: billType = {
-  bills: [
-    {
-      id: '',
-      total: 0,
+export const emptyCosts: costsType = {
+  costs: {
+    shallowCost: {
+      id: 0,
       name: '',
-
-      expenses: [
-        {
-          id: '',
-          name: '',
-          value: 0,
-          sub_expenses: [
-            {
-              id: '',
-              name: '',
-              value: 0
-            }
-          ]
-        }
-      ]
+      land: {
+        id: 0,
+        name: '',
+        expenses: Array.from({ length: 12 }, () => ({ id: 0, name: '' }))
+      },
+      project: {
+        id: 0,
+        name: '',
+        expenses: Array.from({ length: 5 }, () => ({ id: 0, name: '' }))
+      },
+      constructions: {
+        id: 0,
+        name: 'Obra',
+        expenses: Array.from({ length: 3 }, () => ({ id: 0, name: '' }))
+      },
+      Licenses: {
+        id: 0,
+        name: '',
+        expenses: Array.from({ length: 8 }, () => ({ id: 0, name: '' }))
+      },
+      AdministrativeCosts: {
+        id: 0,
+        name: ' ',
+        expenses: Array.from({ length: 10 }, () => ({ id: 0, name: '' }))
+      }
     },
-    {
-      id: '',
-      total: 0,
+    incorporationFee: {
+      id: 0,
       name: '',
-
-      expenses: [
-        {
-          id: '',
-          name: '',
-          value: 0,
-          sub_expenses: [
-            {
-              id: '',
-              name: '',
-              value: 0
-            }
-          ]
-        }
-      ]
+      administrateTax: {
+        id: 0,
+        name: '',
+        expenses: Array.from({ length: 1 }, () => ({ id: 0, name: '' }))
+      }
     }
-  ],
-  total: 0
+  }
 };

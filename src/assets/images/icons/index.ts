@@ -9,6 +9,7 @@ import close from './close.svg';
 import files from './files.svg';
 import dollar from './dollar.png';
 import invoice from './invoice.svg';
+import plus_circle from './plus_circle.png';
 import fallback from '../image_not_found.png';
 import AlertTriangle from './alert_triangle.svg';
 
@@ -25,6 +26,7 @@ export const icons = {
   dollar,
   invoice,
   fallback,
+  plus_circle,
   AlertTriangle
 };
 

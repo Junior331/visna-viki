@@ -1,7 +1,10 @@
 import axios from 'axios';
 import {
   deadlineType,
+  handleExpenseProps,
   landType,
+  payloadExpense,
+  payloadExpenseType,
   payloadUserType,
   unitType
 } from '@/utils/types';
@@ -463,6 +466,174 @@ export const listAllUser = async () => {
   try {
     const response = await axios.get(
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.USER.BASE_URL}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+
+// crud expense
+export const listAllExpenseByProject = async ({
+  page,
+  perPage,
+  projectId
+}: handleExpenseProps) => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}/all/${projectId}?page=${page}&perPage=${perPage}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const listExpenseById = async (id: number) => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const createExpense = async (payload: payloadExpense) => {
+  try {
+    const response = await axios.post(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const editExpense = async (id: number, payload: payloadExpense) => {
+  try {
+    const response = await axios.patch(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}/${id}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const deleteExpense = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+
+// crud expense types
+export const listExpenseTypes = async () => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}/types`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const createExpenseTypes = async (payload: payloadExpenseType) => {
+  try {
+    const response = await axios.post(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}/types`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const editExpenseTypes = async (
+  id: number,
+  payload: payloadExpenseType
+) => {
+  try {
+    const response = await axios.patch(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}/types/${id}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const deleteExpenseTypes = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}/types/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`

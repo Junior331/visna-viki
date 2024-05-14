@@ -42,16 +42,6 @@ export const ContainerInputs = styled(Grid)`
   align-items: center;
   padding: 10px 20px 20px;
   border: 1px solid #b9b9c3;
-  > div:last-child {
-    display: flex;
-    min-height: 90px;
-    align-items: flex-end;
-    > button {
-      height: 30px;
-      margin-bottom: 13px;
-      font-size: ${({ theme }) => theme.typography.fontSizeRegular - 0.2}rem;
-    }
-  }
 
   @media (min-width: 599px) {
     margin-top: 40px;

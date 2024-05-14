@@ -1,156 +1,206 @@
-import { billType } from '@/pages/Bills/@types';
-import { v4 as uuidv4 } from 'uuid';
+import { costsType } from '@/pages/Bills/@types';
 
-export const bills: billType = {
-  bills: [
-    {
-      id: uuidv4(),
-      total: 1972.2,
-      name: 'Custo raso',
-
-      expenses: [
-        {
-          id: uuidv4(),
-          value: 524.61,
-          name: 'Terreno / Outorga / Despesas de aquisição',
-          sub_expenses: [
-            {
-              id: uuidv4(),
-              value: 60.24,
-              name: 'Permuta Financeira (% do VGV) - fluxo da venda - não abate do RET (imposto)'
-            },
-            {
-              id: uuidv4(),
-              value: 50.12,
-              name: 'Terreno - Pagamento'
-            },
-            {
-              id: uuidv4(),
-              value: 55.47,
-              name: 'Comissão (% do terreno)'
-            },
-            {
-              id: uuidv4(),
-              value: 65.83,
-              name: 'Ass. Jurídica Aquisição / Certidões / Cartório (% do terreno)'
-            },
-            {
-              id: uuidv4(),
-              value: 45.72,
-              name: 'Locação Virtual'
-            },
-            {
-              id: uuidv4(),
-              value: 70.42,
-              name: 'Seguro Permutante'
-            },
-            {
-              id: uuidv4(),
-              value: 52.23,
-              name: 'Demolição'
-            },
-            {
-              id: uuidv4(),
-              value: 58.56,
-              name: 'Retificação / Unificação'
-            },
-            {
-              id: uuidv4(),
-              value: 66.42,
-              name: 'IPTU (Mês)'
-            }
-          ]
-        },
-        {
-          id: uuidv4(),
-          value: 203.43,
-          name: 'Obra',
-          sub_expenses: [
-            {
-              id: '',
-              value: 37.12,
-              name: 'Assessoria Aprovação'
-            },
-            {
-              id: '',
-              value: 49.28,
-              name: 'Projeto Legal'
-            },
-            {
-              id: '',
-              value: 28.57,
-              name: 'Projetos Complementares'
-            },
-            {
-              id: '',
-              value: 42.91,
-              name: 'Decoração Área Comum'
-            },
-            {
-              id: '',
-              value: 45.55,
-              name: 'Compatibilização de Projetos'
-            }
-          ]
-        },
-        {
-          id: uuidv4(),
-          value: 187.12,
-          name: 'Licenças / Ambiental / Legalização ',
-          sub_expenses: [
-            {
-              id: '',
-              value: 187.12,
-              name: 'Teste'
-            }
-          ]
-        },
-        {
-          id: uuidv4(),
-          value: 425.78,
-          name: 'Despesas Administrativas ',
-          sub_expenses: [
-            {
-              id: '',
-              value: 425.78,
-              name: 'Teste'
-            }
-          ]
-        },
-        {
-          id: uuidv4(),
-          value: 634.31,
-          name: 'Taxa de Incorporação ',
-          sub_expenses: [
-            {
-              id: '',
-              value: 634.31,
-              name: 'Teste'
-            }
-          ]
-        }
-      ]
+export const bills: costsType = {
+  costs: {
+    shallowCost: {
+      id: 1,
+      name: 'Custo Raso',
+      land: {
+        id: 1,
+        name: 'Terreno, Outorga e Despesas de Aquisição',
+        expenses: [
+          {
+            id: 11,
+            name: 'Permuta Financeira (% do VGV) - fluxo da venda  - não abate do RET (imposto) '
+          },
+          {
+            id: 12,
+            name: 'Terreno - Pagamento'
+          },
+          {
+            id: 13,
+            name: 'Comissão (% do terreno)'
+          },
+          {
+            id: 14,
+            name: 'ITBI (% do terreno + permuta)'
+          },
+          {
+            id: 15,
+            name: 'Ass. Jurídica Aquisição / Certidões / Cartório  (% do terreno) '
+          },
+          {
+            id: 16,
+            name: 'Outorga Onerosa'
+          },
+          {
+            id: 17,
+            name: 'Locação Virtual'
+          },
+          {
+            id: 18,
+            name: 'Seguro Permutante'
+          },
+          {
+            id: 19,
+            name: 'Demolição'
+          },
+          {
+            id: 20,
+            name: 'Retificação / Unificação'
+          },
+          {
+            id: 21,
+            name: 'IPTU (Mês)'
+          },
+          {
+            id: 52,
+            name: 'teste'
+          }
+        ]
+      },
+      project: {
+        id: 2,
+        name: ' Projetos, Assessorias e Decoração ',
+        expenses: [
+          {
+            id: 22,
+            name: 'Assessoria Aprovação'
+          },
+          {
+            id: 23,
+            name: 'Projeto Legal'
+          },
+          {
+            id: 24,
+            name: 'Projetos Complementares'
+          },
+          {
+            id: 25,
+            name: 'Decoração Área Comum'
+          },
+          {
+            id: 26,
+            name: 'Compatibilização de Projetos'
+          }
+        ]
+      },
+      constructions: {
+        id: 3,
+        name: 'Obra',
+        expenses: [
+          {
+            id: 27,
+            name: 'Custo de Obra (R$/m2 privativo)'
+          },
+          {
+            id: 28,
+            name: 'Custo com extensão rede concecionárias publicas'
+          },
+          {
+            id: 29,
+            name: 'Custo com emissão do ISS'
+          }
+        ]
+      },
+      Licenses: {
+        id: 4,
+        name: ' Licenças / Ambiental / Legalização',
+        expenses: [
+          {
+            id: 30,
+            name: 'Laudo Contaminação (Fase 1 e fase 2)'
+          },
+          {
+            id: 31,
+            name: 'Depave'
+          },
+          {
+            id: 32,
+            name: 'Topografia'
+          },
+          {
+            id: 33,
+            name: 'Cetesp'
+          },
+          {
+            id: 34,
+            name: 'Deconti'
+          },
+          {
+            id: 35,
+            name: 'Comaer'
+          },
+          {
+            id: 36,
+            name: 'Sondagem'
+          },
+          {
+            id: 37,
+            name: 'Análise do Metrô'
+          }
+        ]
+      },
+      AdministrativeCosts: {
+        id: 5,
+        name: ' Despesas Administrativas',
+        expenses: [
+          {
+            id: 38,
+            name: 'Contabilidade'
+          },
+          {
+            id: 39,
+            name: 'Ass. Jurídica: Minutas de Convenção / Regimento Interno / IPCV / QR'
+          },
+          {
+            id: 40,
+            name: 'Taxa da Prefeitura de Aprovação'
+          },
+          {
+            id: 41,
+            name: 'Registro da Incorporção'
+          },
+          {
+            id: 42,
+            name: 'Registro do Habite-se e Instituição de Condomínio'
+          },
+          {
+            id: 43,
+            name: 'Assessoria Jurídica Averbação Habite-se'
+          },
+          {
+            id: 44,
+            name: 'Tarifa bancária'
+          },
+          {
+            id: 45,
+            name: 'Gerenciadora'
+          },
+          {
+            id: 46,
+            name: 'Diversos'
+          },
+          {
+            id: 47,
+            name: 'Material de MKT '
+          }
+        ]
+      }
     },
-    {
-      id: uuidv4(),
-      total: 699.31,
-      name: 'Taxa de Incorporação',
-
-      expenses: [
-        {
-          id: uuidv4(),
-          value: 699.31,
-          name: 'Taxa Administrativas',
-          sub_expenses: [
-            {
-              id: '',
-              value: 37.12,
-              name: 'Assessoria Aprovação'
-            }
-          ]
-        }
-      ]
+    incorporationFee: {
+      id: 2,
+      name: 'Taxa da Incorporação',
+      administrateTax: {
+        id: 6,
+        name: 'Taxa Administrativa',
+        expenses: [
+          {
+            id: 48,
+            name: 'Taxa Administrativa'
+          }
+        ]
+      }
     }
-  ],
-  total: 2671.49
+  }
 };

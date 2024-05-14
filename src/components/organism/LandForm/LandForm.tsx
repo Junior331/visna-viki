@@ -1,13 +1,7 @@
 import { useFormik } from 'formik';
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Grid,
-  Select,
-  MenuItem,
-  FormControl,
-  InputAdornment
-} from '@mui/material';
+import { Grid, Select, MenuItem, FormControl } from '@mui/material';
 import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { Props } from './@types';
 import { MaskType } from '@/utils/types';
@@ -151,269 +145,261 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
         </S.Form>
         <S.Form onSubmit={handleSubmit}>
           {isShow && (
-            <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
-              <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Endereço</S.Label>
-                  <Input
-                    required
-                    id="street"
-                    onBlur={handleBlur}
-                    value={values.street}
-                    onChange={handleChange}
-                    aria-describedby="street"
-                    placeholder="Digite o endereço"
-                    helperText={touched.street && errors.street}
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                    error={touched.street && Boolean(errors.street)}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Bairro</S.Label>
-                  <Input
-                    required
-                    id="neighborhood"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="Digite o bairro"
-                    aria-describedby="neighborhood"
-                    value={values.neighborhood}
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                    helperText={touched.neighborhood && errors.neighborhood}
-                    error={touched.neighborhood && Boolean(errors.neighborhood)}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>País</S.Label>
-                  <Input
-                    required
-                    id="country"
-                    name="country"
-                    onChange={handleChange}
-                    aria-describedby="country"
-                    placeholder="Digite o país"
-                    value={values.country}
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                    helperText={touched.country && errors.country}
-                    error={touched.country && Boolean(errors.country)}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Estado</S.Label>
-                  <Input
-                    id="state"
-                    required
-                    value={values.state}
-                    onChange={handleChange}
-                    aria-describedby="state"
-                    placeholder="Digite o estado"
-                    inputProps={{
-                      style: { fontSize: '1.4rem' },
-                      maxLength: 2
-                    }}
-                    helperText={touched.state && errors.state}
-                    error={touched.state && Boolean(errors.state)}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Número</S.Label>
-                  <Input
-                    id="number"
-                    required
-                    onChange={handleChange}
-                    aria-describedby="number"
-                    placeholder="Digite o número"
-                    value={values.number}
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                    helperText={touched.number && errors.number}
-                    error={touched.number && Boolean(errors.number)}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Cep</S.Label>
-                  <Input
-                    required
-                    id="zipCode"
-                    onChange={handleChange}
-                    aria-describedby="zipCode"
-                    placeholder="Digite o Cep"
-                    value={typeMask(MaskType.CEP, values.zipCode)}
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                    helperText={touched.zipCode && errors.zipCode}
-                    error={touched.zipCode && Boolean(errors.zipCode)}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Área total (m²)</S.Label>
-                  <Input
-                    id="area"
-                    required
-                    onBlur={(e) => {
-                      handleSumValues({
-                        id: '',
-                        setFieldValue,
-                        type: 'sumLand',
-                        value1: e.target.value,
-                        fieldName: 'totalAmount',
-                        value2: values.amountPerMeter.toString()
-                      });
-                    }}
-                    onChange={handleChange}
-                    aria-describedby="area"
-                    placeholder="Digite a Área total"
-                    helperText={touched.area && errors.area}
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                    value={typeMask(MaskType.NUMBER, values.area.toString())}
-                    error={touched.area && Boolean(errors.area)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">(m²)</InputAdornment>
-                      )
-                    }}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Testada </S.Label>
-                  <Input
-                    required
-                    id="frontage"
-                    onChange={handleChange}
-                    aria-describedby="frontage"
-                    placeholder="Digite aqui"
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                    helperText={touched.frontage && errors.frontage}
-                    value={typeMask(
-                      MaskType.NUMBER,
-                      values.frontage.toString()
-                    )}
-                    error={touched.frontage && Boolean(errors.frontage)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">(m²)</InputAdornment>
-                      )
-                    }}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Topografia</S.Label>
+            <>
+              <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }} mb={2}>
+                <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Endereço</S.Label>
+                    <Input
+                      required
+                      id="street"
+                      onBlur={handleBlur}
+                      value={values.street}
+                      onChange={handleChange}
+                      aria-describedby="street"
+                      placeholder="Digite o endereço"
+                      helperText={touched.street && errors.street}
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                      error={touched.street && Boolean(errors.street)}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Bairro</S.Label>
+                    <Input
+                      required
+                      id="neighborhood"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Digite o bairro"
+                      aria-describedby="neighborhood"
+                      value={values.neighborhood}
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                      helperText={touched.neighborhood && errors.neighborhood}
+                      error={
+                        touched.neighborhood && Boolean(errors.neighborhood)
+                      }
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>País</S.Label>
+                    <Input
+                      required
+                      id="country"
+                      name="country"
+                      onChange={handleChange}
+                      aria-describedby="country"
+                      placeholder="Digite o país"
+                      value={values.country}
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                      helperText={touched.country && errors.country}
+                      error={touched.country && Boolean(errors.country)}
+                    />
+                  </FormControl>
+                </Grid>
 
-                  <Select
-                    required
-                    displayEmpty
-                    name="topographyTypeId"
-                    onChange={handleChange}
-                    className="SelectComponent"
-                    value={values.topographyTypeId}
-                    IconComponent={KeyboardArrowDownRounded}
-                    inputProps={{ 'aria-label': 'Without label' }}
-                  >
-                    <MenuItem value={0} disabled>
-                      <em>Selecione a opção </em>
-                    </MenuItem>
-                    <MenuItem value={1}>Plano</MenuItem>
-                    <MenuItem value={2}>Declive</MenuItem>
-                    <MenuItem value={3}>Aclive</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Valor (m²) </S.Label>
-                  <Input
-                    required
-                    id="amountPerMeter"
-                    onBlur={(e) => {
-                      handleSumValues({
-                        id: '',
-                        setFieldValue,
-                        type: 'sumLand',
-                        value2: e.target.value,
-                        value1: values.area.toString(),
-                        fieldName: 'totalAmount'
-                      });
-                    }}
-                    onChange={handleChange}
-                    placeholder="Digite o valor"
-                    value={formatCurrency(values.amountPerMeter.toString())}
-                    aria-describedby="amountPerMeter"
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                    helperText={touched.amountPerMeter && errors.amountPerMeter}
-                    error={
-                      touched.amountPerMeter && Boolean(errors.amountPerMeter)
-                    }
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">(R$)</InputAdornment>
-                      )
-                    }}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Valor total</S.Label>
-                  <Input
-                    required
-                    disabled
-                    id="totalAmount"
-                    onChange={handleChange}
-                    aria-describedby="totalAmount"
-                    placeholder="Digite o valor total"
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                    helperText={touched.totalAmount && errors.totalAmount}
-                    value={formatCurrency(values.totalAmount.toString())}
-                    error={touched.totalAmount && Boolean(errors.totalAmount)}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">(R$)</InputAdornment>
-                      )
-                    }}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Zoneamento</S.Label>
-                  <Select
-                    required
-                    displayEmpty
-                    name="zoning"
-                    value={values.zoning}
-                    onChange={handleChange}
-                    className="SelectComponent"
-                    IconComponent={KeyboardArrowDownRounded}
-                    inputProps={{ 'aria-label': 'Without label' }}
-                  >
-                    <MenuItem value={''} disabled>
-                      <em>Selecione a opção </em>
-                    </MenuItem>
-                    <MenuItem value={1}>(ZM)</MenuItem>
-                    <MenuItem value={2}>(ZC)</MenuItem>
-                    <MenuItem value={3}>(ZEU)</MenuItem>
-                    <MenuItem value={4}>(ZER)</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-            </S.ContainerInputs>
+                <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Estado</S.Label>
+                    <Input
+                      id="state"
+                      required
+                      value={values.state}
+                      onChange={handleChange}
+                      aria-describedby="state"
+                      placeholder="Digite o estado"
+                      inputProps={{
+                        style: { fontSize: '1.4rem' },
+                        maxLength: 2
+                      }}
+                      helperText={touched.state && errors.state}
+                      error={touched.state && Boolean(errors.state)}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Número</S.Label>
+                    <Input
+                      id="number"
+                      required
+                      onChange={handleChange}
+                      aria-describedby="number"
+                      placeholder="Digite o número"
+                      value={values.number}
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                      helperText={touched.number && errors.number}
+                      error={touched.number && Boolean(errors.number)}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Cep</S.Label>
+                    <Input
+                      required
+                      id="zipCode"
+                      onChange={handleChange}
+                      aria-describedby="zipCode"
+                      placeholder="Digite o Cep"
+                      value={typeMask(MaskType.CEP, values.zipCode)}
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                      helperText={touched.zipCode && errors.zipCode}
+                      error={touched.zipCode && Boolean(errors.zipCode)}
+                    />
+                  </FormControl>
+                </Grid>
+              </S.ContainerInputs>
+
+              <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }} mb={2}>
+                <Grid item xs={12} sm={6} md={3} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Área total (m²)</S.Label>
+                    <Input
+                      id="area"
+                      required
+                      onBlur={(e) => {
+                        handleSumValues({
+                          id: '',
+                          setFieldValue,
+                          type: 'sumLand',
+                          value1: e.target.value,
+                          fieldName: 'totalAmount',
+                          value2: values.amountPerMeter.toString()
+                        });
+                      }}
+                      onChange={handleChange}
+                      aria-describedby="area"
+                      placeholder="Digite a Área total"
+                      helperText={touched.area && errors.area}
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                      value={typeMask(MaskType.NUMBER, values.area.toString())}
+                      error={touched.area && Boolean(errors.area)}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Testada (m²)</S.Label>
+                    <Input
+                      required
+                      id="frontage"
+                      onChange={handleChange}
+                      aria-describedby="frontage"
+                      placeholder="Digite aqui"
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                      helperText={touched.frontage && errors.frontage}
+                      value={typeMask(
+                        MaskType.NUMBER,
+                        values.frontage.toString()
+                      )}
+                      error={touched.frontage && Boolean(errors.frontage)}
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Topografia</S.Label>
+
+                    <Select
+                      required
+                      displayEmpty
+                      name="topographyTypeId"
+                      onChange={handleChange}
+                      className="SelectComponent"
+                      value={values.topographyTypeId}
+                      IconComponent={KeyboardArrowDownRounded}
+                      inputProps={{ 'aria-label': 'Without label' }}
+                    >
+                      <MenuItem value={0} disabled>
+                        <em>Selecione a opção </em>
+                      </MenuItem>
+                      <MenuItem value={1}>Plano</MenuItem>
+                      <MenuItem value={2}>Declive</MenuItem>
+                      <MenuItem value={3}>Aclive</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={3} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Zoneamento</S.Label>
+                    <Select
+                      required
+                      displayEmpty
+                      name="zoning"
+                      value={values.zoning}
+                      onChange={handleChange}
+                      className="SelectComponent"
+                      IconComponent={KeyboardArrowDownRounded}
+                      inputProps={{ 'aria-label': 'Without label' }}
+                    >
+                      <MenuItem value={''} disabled>
+                        <em>Selecione a opção </em>
+                      </MenuItem>
+                      <MenuItem value={1}>(ZM)</MenuItem>
+                      <MenuItem value={2}>(ZC)</MenuItem>
+                      <MenuItem value={3}>(ZEU)</MenuItem>
+                      <MenuItem value={4}>(ZER)</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </S.ContainerInputs>
+              <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
+                <Grid item xs={12} sm={6} md={6} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Valor (m²/R$) </S.Label>
+                    <Input
+                      required
+                      id="amountPerMeter"
+                      onBlur={(e) => {
+                        handleSumValues({
+                          id: '',
+                          setFieldValue,
+                          type: 'sumLand',
+                          value2: e.target.value,
+                          value1: values.area.toString(),
+                          fieldName: 'totalAmount'
+                        });
+                      }}
+                      onChange={handleChange}
+                      placeholder="Digite o valor"
+                      value={formatCurrency(values.amountPerMeter.toString())}
+                      aria-describedby="amountPerMeter"
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                      helperText={
+                        touched.amountPerMeter && errors.amountPerMeter
+                      }
+                      error={
+                        touched.amountPerMeter && Boolean(errors.amountPerMeter)
+                      }
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={6} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Valor total (R$)</S.Label>
+                    <Input
+                      required
+                      disabled
+                      id="totalAmount"
+                      onChange={handleChange}
+                      aria-describedby="totalAmount"
+                      placeholder="Digite o valor total"
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                      helperText={touched.totalAmount && errors.totalAmount}
+                      value={formatCurrency(values.totalAmount.toString())}
+                      error={touched.totalAmount && Boolean(errors.totalAmount)}
+                    />
+                  </FormControl>
+                </Grid>
+              </S.ContainerInputs>
+            </>
           )}
           <S.ContainerButtons>
-            <Button isOutline size="80px" onClick={() => navigate('/home')}>
+            <Button $isOutline size="80px" onClick={() => navigate('/home')}>
               Cancelar
             </Button>
             <Button

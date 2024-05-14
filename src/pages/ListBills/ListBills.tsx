@@ -1,41 +1,102 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { CloseRounded, KeyboardArrowDownRounded } from '@mui/icons-material';
-import { FormControl, Grid, MenuItem, Pagination, Select } from '@mui/material';
+import { FormControl, Grid, MenuItem, Select } from '@mui/material';
+import { costType } from './@types';
 import { mocks } from '@/services/mocks';
-import { breadCrumbsItems } from './utils';
-import { handleChangePage } from '../Home/utils';
+import { Header } from '@/components/modules';
+import { breadCrumbsItems, handleFilter, listCosts } from './utils';
+import { SnackbarContext } from '@/contexts/Snackbar';
 import { Layout, Table } from '@/components/organism';
-
+import { GenericModal } from '@/components/modules';
 import { HeaderBreadcrumbs } from '@/components/organism';
+import { rowData } from '@/components/modules/TableBody/@types';
 import { Accordion, Button, Input } from '@/components/elements';
 import * as S from './ListBillsStyled';
-import { GenericModal } from '@/components/modules';
 
 export const ListBills = () => {
-  const [totalPage] = useState(12);
-  const [page, setPage] = useState(1);
-  const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [list, setList] = useState<rowData[]>([]);
+  const { setSnackbar } = useContext(SnackbarContext);
+  const [filteredList, setFilteredList] = useState<rowData[]>(list);
+  const [typesCostOptions, setTypesCostOptions] = useState<costType[]>([]);
+  const [typesExpenseOptions, setTypesExpenseOptions] = useState<costType[]>(
+    []
+  );
+  const listCostsStorage = window.sessionStorage.getItem('LIST_EXPENSES');
+
   const [isOpen, setIsOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      typesCost: 0,
+      typesCost: '',
       nameExpense: '',
-      typesExpense: 0
+      typesExpense: ''
     },
-    onSubmit: async (values) => {
-      setShow(true);
+    onSubmit: async ({ typesCost, nameExpense, typesExpense }) => {
       setIsOpen(false);
-      console.log('page ::', page);
-      console.log('values ::', values);
+      const filteredList = handleFilter({
+        list,
+        typesCost,
+        nameExpense,
+        typesExpense
+      });
+
+      setFilteredList(filteredList);
     }
   });
+  const formikNewExpense = useFormik({
+    initialValues: {
+      typesCost: '',
+      nameExpense: '',
+      typesExpense: ''
+    },
+    onSubmit: async ({ typesCost, nameExpense, typesExpense }) => {
+      setOpenModal(false);
+
+      const newList = JSON.parse(listCostsStorage as '') as rowData[];
+
+      const newItem = {
+        name: nameExpense,
+        typesCost: typesCost,
+        typesExpense: typesExpense,
+        action: 'menu'
+      };
+
+      newList.push(newItem);
+      window.sessionStorage.setItem('LIST_EXPENSES', JSON.stringify(newList));
+      setList(newList);
+      setSnackbar({
+        isOpen: true,
+        severity: 'success',
+        vertical: 'top',
+        horizontal: 'right',
+        message: 'Despesa adicionada com sucesso'
+      });
+
+      formikNewExpense.resetForm({});
+    }
+  });
+
+  useEffect(() => {
+    listCosts({
+      setList,
+      setLoading,
+      setSnackbar,
+      setTypesCostOptions,
+      setTypesExpenseOptions
+    });
+  }, [setSnackbar]);
+  useEffect(() => {
+    setFilteredList(list);
+  }, [list]);
+
   const { values, handleSubmit, handleChange, resetForm } = formik;
 
   return (
     <Layout>
+      <Header />
       <S.ListBillsContainer>
         <S.Header>
           <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems()} />
@@ -55,7 +116,6 @@ export const ListBills = () => {
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Tipos de custos</S.Label>
                     <Select
-                      required
                       displayEmpty
                       name="typesCost"
                       onChange={handleChange}
@@ -64,12 +124,12 @@ export const ListBills = () => {
                       IconComponent={KeyboardArrowDownRounded}
                       inputProps={{ 'aria-label': 'Without label' }}
                     >
-                      <MenuItem value={0} disabled>
+                      <MenuItem value={''} disabled>
                         <em>Selecione a opção </em>
                       </MenuItem>
-                      <MenuItem value={1}>Teste 1</MenuItem>
-                      <MenuItem value={2}>Teste 2</MenuItem>
-                      <MenuItem value={3}>Teste 3</MenuItem>
+                      {typesCostOptions.map((option) => (
+                        <MenuItem value={option.name}>{option.name}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -77,7 +137,6 @@ export const ListBills = () => {
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Tipos de despesas</S.Label>
                     <Select
-                      required
                       displayEmpty
                       name="typesExpense"
                       onChange={handleChange}
@@ -86,12 +145,12 @@ export const ListBills = () => {
                       IconComponent={KeyboardArrowDownRounded}
                       inputProps={{ 'aria-label': 'Without label' }}
                     >
-                      <MenuItem value={0} disabled>
+                      <MenuItem value={''} disabled>
                         <em>Selecione a opção </em>
                       </MenuItem>
-                      <MenuItem value={1}>Teste 1</MenuItem>
-                      <MenuItem value={2}>Teste 2</MenuItem>
-                      <MenuItem value={3}>Teste 3</MenuItem>
+                      {typesExpenseOptions.map((option) => (
+                        <MenuItem value={option.name}>{option.name}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -99,7 +158,6 @@ export const ListBills = () => {
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Nome da despesa</S.Label>
                     <Input
-                      required
                       id="nameExpense"
                       onChange={handleChange}
                       value={values.nameExpense}
@@ -112,9 +170,12 @@ export const ListBills = () => {
                 <Grid item xs={12} sm={12} md={2.3} minWidth={280} mt={2.3}>
                   <S.ContainerButtons>
                     <Button
-                      isOutline
+                      $isOutline
                       size="140px"
-                      onClick={() => resetForm({})}
+                      onClick={() => {
+                        setFilteredList(list);
+                        resetForm({});
+                      }}
                     >
                       <CloseRounded />
                       Limpar
@@ -127,11 +188,14 @@ export const ListBills = () => {
               </Grid>
             </S.Form>
           </Accordion>
-
-          {show && (
+          {!loading && (
             <>
-              <Table rows={mocks.rowsExpense} columns={mocks.columnsExpense} />
-              <S.ContainerPagination>
+              <Table
+                rows={filteredList}
+                formik={formik}
+                columns={mocks.columnsExpense}
+              />
+              {/* <S.ContainerPagination>
                 <Pagination
                   color="primary"
                   showLastButton
@@ -141,7 +205,7 @@ export const ListBills = () => {
                     handleChangePage({ newPage: index, setPage });
                   }}
                 />
-              </S.ContainerPagination>
+              </S.ContainerPagination> */}
             </>
           )}
         </S.Content>
@@ -158,64 +222,71 @@ export const ListBills = () => {
           <S.Text>
             Esse novo tipo de despesa podera ser usado nos proximos cadastros
           </S.Text>
-          <S.Form onSubmit={handleSubmit}>
+          <S.Form onSubmit={formikNewExpense.handleSubmit}>
             <Grid container spacing={{ xs: 0, sm: 2 }} alignItems={'center'}>
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Tipo de custos</S.Label>
+                  <S.Label>Tipos de custos</S.Label>
                   <Select
-                    required
                     displayEmpty
                     name="typesCost"
-                    onChange={handleChange}
-                    value={values.typesCost}
+                    onChange={formikNewExpense.handleChange}
                     className="SelectComponent"
                     IconComponent={KeyboardArrowDownRounded}
+                    value={formikNewExpense.values.typesCost}
                     inputProps={{ 'aria-label': 'Without label' }}
                   >
-                    <MenuItem value={0} disabled>
-                      <em>Custo raso </em>
+                    <MenuItem value={''} disabled>
+                      <em>Selecione a opção </em>
                     </MenuItem>
-                    <MenuItem value={1}>Teste 1</MenuItem>
-                    <MenuItem value={2}>Teste 2</MenuItem>
-                    <MenuItem value={3}>Teste 3</MenuItem>
+                    {typesCostOptions.map((option) => (
+                      <MenuItem value={option.name}>{option.name}</MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Tipo de despesa</S.Label>
-                  <Input
-                    required
-                    id="nameExpense"
-                    onChange={handleChange}
-                    value={values.nameExpense}
-                    aria-describedby="nameExpense"
-                    placeholder="Terreno / Outurga / Despesas de aquisiçoes"
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                  />
+                  <S.Label>Tipos de despesa</S.Label>
+                  <Select
+                    displayEmpty
+                    name="typesExpense"
+                    onChange={formikNewExpense.handleChange}
+                    value={formikNewExpense.values.typesExpense}
+                    className="SelectComponent"
+                    IconComponent={KeyboardArrowDownRounded}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                  >
+                    <MenuItem value={''} disabled>
+                      <em>Selecione a opção </em>
+                    </MenuItem>
+                    {typesExpenseOptions.map((option) => (
+                      <MenuItem value={option.name}>{option.name}</MenuItem>
+                    ))}
+                  </Select>
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={12} md={12} minWidth={600}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Nome</S.Label>
+                  <S.Label>Nome da despesa</S.Label>
                   <Input
-                    required
                     id="nameExpense"
-                    onChange={handleChange}
-                    value={values.nameExpense}
+                    placeholder="Digite o nome"
                     aria-describedby="nameExpense"
-                    placeholder="Terreno - Pagamento"
+                    onChange={formikNewExpense.handleChange}
+                    value={formikNewExpense.values.nameExpense}
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                   />
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={12} md={12} minWidth={280} mt={2.3}>
-                <S.ContainerButtons>
-                  <Button isOutline size="140px">
+                <S.ContainerButtons className="containerBtn">
+                  <Button $isOutline size="140px">
                     Cancelar
                   </Button>
-                  <Button size="140px">Adicionar</Button>
+                  <Button size="140px" type="submit">
+                    Adicionar
+                  </Button>
                 </S.ContainerButtons>
               </Grid>
             </Grid>

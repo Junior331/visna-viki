@@ -46,6 +46,7 @@ export const getInfoUser = async ({
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
+      console.log('error ::', error);
       throw error;
     }
   }

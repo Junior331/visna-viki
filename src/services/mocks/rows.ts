@@ -47,39 +47,39 @@ export const rows: rowData[] = [
 
 export const rowsExpense: rowData[] = [
   {
-    nome: 'Terreno - Pagamento',
-    tipos_de_custo: 'Custo Raso',
-    tipos_de_despesa: 'Terreno / Outorga / Despesas de aquisição ',
+    name: 'Terreno - Pagamento',
+    typesCost: 'Custo Raso',
+    typesExpense: 'Terreno / Outorga / Despesas de aquisição ',
     action: '-'
   },
   {
-    nome: 'Terreno - Pagamento',
-    tipos_de_custo: 'Custo Raso',
-    tipos_de_despesa: 'Terreno / Outorga / Despesas de aquisição ',
+    name: 'Terreno - Pagamento',
+    typesCost: 'Custo Raso',
+    typesExpense: 'Terreno / Outorga / Despesas de aquisição ',
     action: '-'
   },
   {
-    nome: 'Terreno - Pagamento',
-    tipos_de_custo: 'Custo Raso',
-    tipos_de_despesa: 'Terreno / Outorga / Despesas de aquisição ',
+    name: 'Terreno - Pagamento',
+    typesCost: 'Custo Raso',
+    typesExpense: 'Terreno / Outorga / Despesas de aquisição ',
     action: '-'
   },
   {
-    nome: 'Terreno - Pagamento',
-    tipos_de_custo: 'Custo Raso',
-    tipos_de_despesa: 'Terreno / Outorga / Despesas de aquisição ',
+    name: 'Terreno - Pagamento',
+    typesCost: 'Custo Raso',
+    typesExpense: 'Terreno / Outorga / Despesas de aquisição ',
     action: '-'
   },
   {
-    nome: 'Terreno - Pagamento',
-    tipos_de_custo: 'Custo Raso',
-    tipos_de_despesa: 'Terreno / Outorga / Despesas de aquisição ',
+    name: 'Terreno - Pagamento',
+    typesCost: 'Custo Raso',
+    typesExpense: 'Terreno / Outorga / Despesas de aquisição ',
     action: '-'
   },
   {
-    nome: 'Terreno - Pagamento',
-    tipos_de_custo: 'Custo Raso',
-    tipos_de_despesa: 'Terreno / Outorga / Despesas de aquisição ',
+    name: 'Terreno - Pagamento',
+    typesCost: 'Custo Raso',
+    typesExpense: 'Terreno / Outorga / Despesas de aquisição ',
     action: '-'
   }
 ];

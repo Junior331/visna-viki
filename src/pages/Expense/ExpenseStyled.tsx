@@ -13,7 +13,7 @@ export const GenericContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
 `;
-export const DetailsBillsContainer = styled(GenericContainer)`
+export const ExpenseContainer = styled(GenericContainer)`
   gap: 21px;
   padding: 20px;
   flex-direction: column;
@@ -47,12 +47,89 @@ export const Content = styled(GenericContainer)`
       padding-top: 0px;
     }
   }
-  .containerBtn {
-    gap: 20px;
-    margin-top: 0;
-    justify-content: right;
+`;
+
+export const Form = styled.form`
+  gap: 15px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .MuiFormControl-root {
+    gap: 3px;
+    width: 100%;
+    margin: 0px;
+  }
+  .MuiGrid-root {
+    > button {
+      height: 53px;
+    }
+  }
+  .containerUnits {
+    > div {
+      background-color: #f0f8ff61;
+    }
   }
 `;
+
+export const ContainerInputs = styled(Grid)`
+  margin-top: 40px;
+  border-radius: 8px;
+  align-items: center;
+  padding: 10px 20px 20px;
+  border: 1px solid #b9b9c3;
+  justify-content: space-between;
+
+  > .containerButton:last-child {
+    padding: 0;
+    display: flex;
+    max-width: 47px;
+    min-height: 90px;
+    align-items: flex-end;
+    justify-content: flex-end;
+    > button {
+      height: 30px;
+      margin-bottom: 13px;
+      font-size: ${({ theme }) => theme.typography.fontSizeRegular - 0.2}rem;
+    }
+  }
+`;
+export const Label = styled.label`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  color: ${({ theme }) => theme.palette.color.medium};
+  font-size: ${({ theme }) => theme.typography.fontSize}rem;
+  font-weight: ${({ theme }) => theme.typography.fontWeightLight};
+`;
+export const ContainerButtons = styled(GenericContainer)`
+  gap: 20px;
+  width: 100%;
+  height: auto;
+  align-items: center;
+  justify-content: space-between;
+
+  > .btnDelete {
+    border: none;
+    background-color: transparent;
+    color: ${({ theme }) => theme.palette.error.default};
+    border: 1px solid ${({ theme }) => theme.palette.error.default};
+    &:hover {
+      color: ${({ theme }) => theme.palette.color.default};
+      background-color: ${({ theme }) => theme.palette.error.default};
+    }
+  }
+
+  > div {
+    gap: 20px;
+    width: auto;
+    display: flex;
+    align-items: center;
+  }
+`;
+
 export const Title = styled.h2`
   letter-spacing: 1px;
   color: ${({ theme }) => theme.palette.color.dark};
@@ -67,6 +144,9 @@ export const ContainerMessage = styled(GenericContainer)`
     margin-bottom: 20px;
   }
   > div {
+    gap: 30px;
+    width: auto;
+    margin-top: 30px;
     > button:first-child {
       background-color: #e73d3e;
       &:hover {
@@ -81,31 +161,7 @@ export const Text = styled.p`
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
 `;
 export const Icon = styled.img``;
-export const ContainerButtons = styled(GenericContainer)`
-  gap: 30px;
-  margin-top: 30px;
-  align-items: center;
-  justify-content: center;
-`;
-export const HeaderCard = styled(Header)`
-  align-items: center;
-  border-bottom: none;
 
-  > h2 {
-    color: ${({ theme }) => theme.palette.color.regular};
-  }
-`;
-export const ContainerExpenses = styled(GenericContainer)`
-  gap: 0px;
-  flex-direction: column;
-  > div:first-child {
-    padding: 0;
-  }
-  > div:last-child {
-    margin-top: -1px;
-    padding: 20px 20px 18px;
-  }
-`;
 export const Expense = styled(GenericContainer)`
   gap: 10px;
   justify-content: space-between;
@@ -147,52 +203,4 @@ export const Message = styled(Title)`
   height: 100%;
   display: flex;
   align-items: center;
-`;
-export const Form = styled.form`
-  padding: 25px;
-  gap: 15px;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  .MuiFormControl-root {
-    gap: 3px;
-    width: 100%;
-    margin: 0px;
-  }
-  .MuiGrid-root {
-    > button {
-      height: 53px;
-      margin-left: 10px;
-    }
-  }
-`;
-export const ContainerInputs = styled(Grid)`
-  border-radius: 8px;
-  align-items: center;
-
-  > div:last-child {
-    display: flex;
-    min-height: 90px;
-    align-items: flex-end;
-    > button {
-      height: 30px;
-      margin-bottom: 13px;
-      font-size: ${({ theme }) => theme.typography.fontSizeRegular - 0.2}rem;
-    }
-  }
-
-  @media (min-width: 599px) {
-    margin-top: 40px;
-  }
-`;
-export const Label = styled.label`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  color: ${({ theme }) => theme.palette.color.medium};
-  font-size: ${({ theme }) => theme.typography.fontSize}rem;
-  font-weight: ${({ theme }) => theme.typography.fontWeightLight};
 `;

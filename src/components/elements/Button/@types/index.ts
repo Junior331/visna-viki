@@ -6,7 +6,7 @@ export type Props = {
   disabled?: boolean;
   className?: string;
   noActive?: boolean;
-  isOutline?: boolean;
+  $isOutline?: boolean;
   children?: ReactNode;
   onClick?: (e: MouseEvent) => void;
   size: 'small' | 'medium' | 'large' | string;

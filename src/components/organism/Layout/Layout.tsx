@@ -13,7 +13,6 @@ const Layout = ({ children }: LayoutProps) => {
 
   useEffect(() => {
     const accessToken = window.sessionStorage.getItem('TOKEN');
-
     if (accessToken) {
       getInfoUser({ dispatch, accessToken });
     } else {

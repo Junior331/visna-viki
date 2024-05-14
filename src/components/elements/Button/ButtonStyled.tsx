@@ -37,8 +37,8 @@ export const Button = styled.button<StyledButtonProps>`
       }
     `};
 
-  ${({ isOutline }) =>
-    isOutline &&
+  ${({ $isOutline }) =>
+    $isOutline &&
     css`
       background-color: transparent;
       color: ${({ theme }) => theme.palette.background.regular};

@@ -1,15 +1,16 @@
 import { Route, Routes } from 'react-router-dom';
 import {
   Home,
+  Bills,
   SignIn,
   SignUp,
-  Bills,
+  Expense,
+  ListBills,
   EditProject,
+  DetailsBills,
   ResetPassword,
   CreateProject,
-  ForgotPassword,
-  DetailsBills,
-  ListBills
+  ForgotPassword
 } from '@/pages';
 
 export const AppRoutes = () => {
@@ -17,6 +18,7 @@ export const AppRoutes = () => {
     <Routes>
       <Route index element={<SignIn />} />
       <Route path="/home" element={<Home />} />
+      <Route path="/expense" element={<Expense />} />
       <Route path="/bills" element={<Bills />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/edit" element={<EditProject />} />

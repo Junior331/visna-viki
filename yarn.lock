@@ -3500,11 +3500,6 @@ react-step-progress-bar@^1.0.3:
     invariant "^2.2.4"
     react-transition-group "^2.4.0"
 
-react-step-progress@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npmmirror.com/react-step-progress/-/react-step-progress-1.0.3.tgz#8c93a7e4f5fd020888873944534cd97ab7641535"
-  integrity sha512-AsebjdBZsoZzZuN50p24TMwKt8JVdyhsAPL/xvpY4c3dpQ9XBiRcZlADD0BoKP3iIxpEm+7ufwITmwY66FEfjQ==
-
 react-transition-group@^2.4.0:
   version "2.9.0"
   resolved "https://registry.npmmirror.com/react-transition-group/-/react-transition-group-2.9.0.tgz#df9cdb025796211151a436c69a8f3b97b5b07c8d"

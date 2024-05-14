@@ -1,13 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useContext, useEffect } from 'react';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
-import {
-  Grid,
-  Select,
-  MenuItem,
-  FormControl,
-  InputAdornment
-} from '@mui/material';
+import { Grid, Select, MenuItem, FormControl } from '@mui/material';
 import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { Props } from './@types';
 import { MaskType } from '@/utils/types';
@@ -154,7 +148,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             </Select>
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={1.3} minWidth={120}>
+                        <Grid item xs={12} sm={6} md={1.3} minWidth={130}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
@@ -238,7 +232,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={1.3} minWidth={165}>
+                        <Grid item xs={12} sm={6} md={1.2} minWidth={175}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
@@ -257,7 +251,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={1.5} minWidth={180}>
+                        <Grid item xs={12} sm={6} md={1.3} minWidth={190}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
@@ -298,12 +292,12 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={1.5} minWidth={240}>
+                        <Grid item xs={12} sm={6} md={1.7} minWidth={250}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-                            <S.Label>Área total permutada</S.Label>
+                            <S.Label>Área total permutada (m²)</S.Label>
                             <Input
                               required
                               disabled
@@ -315,22 +309,15 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                               placeholder="Digite a area"
                               aria-describedby="totalExchangeArea"
                               inputProps={{ style: { fontSize: '1.4rem' } }}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    (m²)
-                                  </InputAdornment>
-                                )
-                              }}
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={1.5} minWidth={160}>
+                        <Grid item xs={12} sm={6} md={1.5} minWidth={220}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-                            <S.Label>Valor de mercado </S.Label>
+                            <S.Label>Valor de mercado (R$)</S.Label>
                             <Input
                               required
                               onBlur={(e) => {
@@ -357,23 +344,16 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                               placeholder="Digite o valor"
                               aria-describedby="marketAmount"
                               inputProps={{ style: { fontSize: '1.4rem' } }}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    R$
-                                  </InputAdornment>
-                                )
-                              }}
                             />
                           </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sm={6} md={1.5} minWidth={160}>
+                        <Grid item xs={12} sm={6} md={1.9} minWidth={280}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-                            <S.Label>VGV líquido</S.Label>
+                            <S.Label>VGV líquido da permuta (R$)</S.Label>
                             <Input
                               required
                               disabled
@@ -387,13 +367,6 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                                 values.unit[index].netAmount.toString()
                               )}
                               inputProps={{ style: { fontSize: '1.4rem' } }}
-                              InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    (R$)
-                                  </InputAdornment>
-                                )
-                              }}
                             />
                           </FormControl>
                         </Grid>
@@ -502,7 +475,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     onChange={handleChange}
                     id="totalUnitsInDevelopment"
                     placeholder="Digite a quantidade"
-                    value={values.totalUnitsInDevelopment}
+                    value={values.totalUnitsInDevelopment || ''}
                     aria-describedby="totalUnitsInDevelopment"
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                     helperText={
@@ -526,7 +499,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     onBlur={handleBlur}
                     onChange={handleChange}
                     id="totalPrivateAreaQuantity"
-                    value={values.totalPrivateAreaQuantity}
+                    value={values.totalPrivateAreaQuantity || ''}
                     aria-describedby="totalPrivateAreaQuantity"
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                   />
@@ -552,11 +525,6 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                       touched.totalToBeBuiltArea &&
                       Boolean(errors.totalToBeBuiltArea)
                     }
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">m²</InputAdornment>
-                      )
-                    }}
                   />
                 </FormControl>
               </Grid>
@@ -571,7 +539,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     onBlur={handleBlur}
                     id="totalValueNoExchange"
                     onChange={handleChange}
-                    value={values.totalValueNoExchange}
+                    value={values.totalValueNoExchange || ''}
                     aria-describedby="totalValueNoExchange"
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                     helperText={
@@ -582,17 +550,12 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                       touched.totalValueNoExchange &&
                       Boolean(errors.totalValueNoExchange)
                     }
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">m²</InputAdornment>
-                      )
-                    }}
                   />
                 </FormControl>
               </Grid>
-              <Grid item xs={12} sm={6} md={3} minWidth={280}>
+              <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Valor médio de venda (m²) </S.Label>
+                  <S.Label>Valor médio de venda (m²/R$) </S.Label>
                   <Input
                     required
                     disabled
@@ -610,18 +573,13 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                       touched.averageSaleValue &&
                       Boolean(errors.averageSaleValue)
                     }
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">R$</InputAdornment>
-                      )
-                    }}
                   />
                 </FormControl>
               </Grid>
             </Grid>
           </S.ContainerInputs>
           <S.ContainerButtons>
-            <Button isOutline size="80px" onClick={() => handleStep(1)}>
+            <Button $isOutline size="80px" onClick={() => handleStep(1)}>
               Voltar
             </Button>
             <Button size="100px" type="submit">
