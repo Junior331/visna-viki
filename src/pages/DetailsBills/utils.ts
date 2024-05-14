@@ -62,6 +62,7 @@ const addRowsToCosts = (costData: any, newRows: rowData[]) => {
 
       const sectionTotal = calculateSectionTotal(costData[section]);
       costData[section].total = sectionTotal.toFixed(2).toString();
+      costData[section].type = section;
 
       totalCost += sectionTotal;
     }
@@ -88,7 +89,6 @@ export const listDetailsBill = async ({
 
     if (listCostsStorage) {
       setDate(JSON.parse(listCostsStorage) as any);
-      console.log('listExpenses ::', JSON.parse(listCostsStorage) as any);
     } else {
       window.sessionStorage.setItem('LIST_COSTS', JSON.stringify(updatedCost));
       setDate(updatedCost);
@@ -105,5 +105,33 @@ export const listDetailsBill = async ({
         message: error.message
       });
     }
+  }
+};
+
+export const initialValues = {
+  land: {
+    id: 0,
+    name: '',
+    rows: []
+  },
+  project: {
+    id: 0,
+    name: '',
+    rows: []
+  },
+  constructions: {
+    id: 0,
+    name: '',
+    rows: []
+  },
+  Licenses: {
+    id: 0,
+    name: '',
+    rows: []
+  },
+  AdministrativeCosts: {
+    id: 0,
+    name: '',
+    rows: []
   }
 };

@@ -14,3 +14,30 @@ export type listBillsProps = {
 export type handleEditProps = {
   setIsFormEdit: Dispatch<SetStateAction<boolean>>;
 };
+export type initialState = {
+  land: {
+    id: number;
+    name: string;
+    rows: never[];
+  };
+  project: {
+    id: number;
+    name: string;
+    rows: never[];
+  };
+  constructions: {
+    id: number;
+    name: string;
+    rows: never[];
+  };
+  Licenses: {
+    id: number;
+    name: string;
+    rows: never[];
+  };
+  AdministrativeCosts: {
+    id: number;
+    name: string;
+    rows: never[];
+  };
+};

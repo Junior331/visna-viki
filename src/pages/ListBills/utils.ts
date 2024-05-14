@@ -56,7 +56,6 @@ export const listCosts = async ({
 
     if (listCostsStorage) {
       setList(JSON.parse(listCostsStorage) as rowData[]);
-      console.log('listExpenses ::', JSON.parse(listCostsStorage) as rowData[]);
     } else {
       window.sessionStorage.setItem(
         'LIST_EXPENSES',

@@ -14,6 +14,7 @@ export type genericObjType = {
 };
 export type genericV2ObjType = {
   id: number;
+  type: string;
   name: string;
   total: string;
   rows: rowData[];

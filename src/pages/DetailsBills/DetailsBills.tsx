@@ -16,7 +16,8 @@ import {
   handleEdit,
   handleDelete,
   breadCrumbsItems,
-  listDetailsBill
+  listDetailsBill,
+  initialValues
 } from './utils';
 import { emptyCosts } from '@/utils/emptys';
 import { icons } from '@/assets/images/icons';
@@ -35,7 +36,7 @@ import { mocks } from '@/services/mocks';
 import { expenseType, genericObjType, genericV2ObjType } from '../Bills/@types';
 import * as S from './DetailsBillsStyled';
 import { emptyInfo } from '../Bills/utils';
-import { rowData } from '@/components/modules/TableBody/@types';
+import { initialState } from './@types';
 
 export const DetailsBills = () => {
   const navigate = useNavigate();
@@ -45,7 +46,13 @@ export const DetailsBills = () => {
   const [openModal, setOpenModal] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
   const [isFormEdit, setIsFormEdit] = useState(false);
-  const [fields, setFields] = useState<rowData[]>([]);
+  const [fields, setFields] = useState({
+    land: { id: 0, name: '', rows: [] },
+    project: { id: 0, name: '', rows: [] },
+    constructions: { id: 0, name: '', rows: [] },
+    Licenses: { id: 0, name: '', rows: [] },
+    AdministrativeCosts: { id: 0, name: '', rows: [] }
+  });
   const { id, idProject, name, isEdit } = Object.fromEntries([...searchParams]);
   const [date, setDate] = useState<any>();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -54,18 +61,21 @@ export const DetailsBills = () => {
     emptyCosts.costs.shallowCost.land.expenses[0]
   );
 
+  const initialState = window.sessionStorage.getItem('FORM_DETAILS_BILLS');
+  const initialStateParse = JSON.parse(initialState as string);
+
   const formik = useFormik({
-    initialValues: {
-      rows: fields.map((row) => ({
-        nome: row.nome,
-        unidade: row.unidade,
-        quantidade: row.quantidade,
-        valor_total: row.valor_total,
-        valor_unitário: row.valor_unitário
-      }))
-    },
+    initialValues: initialState
+      ? (initialStateParse as initialState)
+      : initialValues,
     onSubmit: async (values) => {
-      console.log('values ::', values);
+      formik.setValues(values);
+      window.sessionStorage.setItem(
+        'FORM_DETAILS_BILLS',
+        JSON.stringify(values)
+      );
+
+      setIsFormEdit(false);
     }
   });
 
@@ -78,48 +88,82 @@ export const DetailsBills = () => {
       setSnackbar
     });
   }, [id, setSnackbar, state.cost]);
+  useEffect(() => {
+    console.log('expenseActive', expenseActive);
+  }, [expenseActive]);
 
   useEffect(() => {
     if (date) {
-      const newFields = Object.values(date)
-        .filter((info): info is genericV2ObjType =>
-          emptyInfo(info as string | number | genericObjType)
-        )
-        .map((cost) => cost.rows)
-        .flat();
-      console.log('newFields ::', newFields);
+      // Atualize cada seção individualmente
+      const sections = [
+        'land',
+        'project',
+        'constructions',
+        'Licenses',
+        'AdministrativeCosts'
+      ];
+      const newFields: any = {};
+
+      sections.forEach((section) => {
+        if (date[section]) {
+          newFields[section] = {
+            id: date[section].id,
+            name: date[section].name,
+            rows: date[section].rows.map(
+              (row: {
+                nome: any;
+                unidade: any;
+                quantidade: any;
+                valor_total: any;
+                valor_unitário: any;
+              }) => ({
+                nome: row.nome,
+                unidade: row.unidade,
+                quantidade: row.quantidade,
+                valor_total: row.valor_total,
+                valor_unitário: row.valor_unitário
+              })
+            )
+          };
+        }
+      });
+
       setFields(newFields);
     }
   }, [date]);
 
-  // Atualize valores do Formik quando fields mudar
   useEffect(() => {
-    formik.setValues({
-      rows: fields.map((row) => ({
-        nome: row.nome,
-        unidade: row.unidade,
-        quantidade: row.quantidade,
-        valor_total: row.valor_total,
-        valor_unitário: row.valor_unitário
-      }))
-    });
+    const newFormikValues: initialState = {
+      land: {
+        id: fields.land.id,
+        name: fields.land.name,
+        rows: fields.land ? fields.land.rows : []
+      },
+      project: {
+        id: fields.project.id,
+        name: fields.project.name,
+        rows: fields.project ? fields.project.rows : []
+      },
+      constructions: {
+        id: fields.constructions.id,
+        name: fields.constructions.name,
+        rows: fields.constructions ? fields.constructions.rows : []
+      },
+      Licenses: {
+        id: fields.Licenses.id,
+        name: fields.Licenses.name,
+        rows: fields.Licenses ? fields.Licenses.rows : []
+      },
+      AdministrativeCosts: {
+        id: fields.AdministrativeCosts.id,
+        name: fields.AdministrativeCosts.name,
+        rows: fields.AdministrativeCosts ? fields.AdministrativeCosts.rows : []
+      }
+    };
+
+    formik.setValues(newFormikValues);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields]);
-
-  // // Atualize fields quando date mudar
-  // useEffect(() => {
-  //   if (date) {
-  //     Object.values(date)
-  //       .filter((info): info is genericV2ObjType =>
-  //         emptyInfo(info as string | number | genericObjType)
-  //       )
-  //       .forEach((cost) => {
-  //         const list = cost.rows;
-  //         console.log('list ::', list);
-  //         setFields(list);
-  //       });
-  //   }
-  // }, [date]);
 
   return (
     <Layout>
@@ -197,7 +241,6 @@ export const DetailsBills = () => {
                       emptyInfo(info as string | number | genericObjType)
                     )
                     .map((cost, key) => {
-                      // setFields(cost.rows);
                       return (
                         <>
                           <Card width={'100%'} height={'auto'} key={key}>
@@ -305,9 +348,11 @@ export const DetailsBills = () => {
                             </S.HeaderCard>
                             <S.ContainerExpenses>
                               <Table
+                                cost={cost}
                                 formik={formik}
                                 rows={cost.rows}
                                 columns={mocks.columns}
+                                expenseActive={expenseActive}
                                 isEdit={
                                   isFormEdit && expenseActive.id === cost.id
                                 }
@@ -324,7 +369,11 @@ export const DetailsBills = () => {
                               <Button $isOutline size="80px">
                                 Cancelar
                               </Button>
-                              <Button size="100px" type="submit">
+                              <Button
+                                size="100px"
+                                type="submit"
+                                onClick={() => formik.handleSubmit()}
+                              >
                                 Salvar
                               </Button>
                             </S.ContainerButtons>
