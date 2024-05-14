@@ -64,7 +64,6 @@ export const ListBills = () => {
         action: 'menu'
       };
 
-      console.log();
       newList.push(newItem);
       window.sessionStorage.setItem('LIST_EXPENSES', JSON.stringify(newList));
       setList(newList);

@@ -109,9 +109,6 @@ export const DetailsBills = () => {
       setSnackbar
     });
   }, [id, setSnackbar, state.cost]);
-  useEffect(() => {
-    console.log('expenseActive', expenseActive);
-  }, [expenseActive]);
 
   useEffect(() => {
     if (date) {
