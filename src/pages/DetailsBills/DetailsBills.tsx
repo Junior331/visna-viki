@@ -3,25 +3,25 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import {
   Box,
-  Divider,
+  FormControl,
+  Grid,
   IconButton,
   ListItemIcon,
   Menu,
   MenuItem,
+  Select,
   Skeleton
 } from '@mui/material';
 import { Layout, Table } from '@/components/organism';
 import {
-  handleAdd,
   handleEdit,
-  handleDelete,
   breadCrumbsItems,
   listDetailsBill,
   initialValues
 } from './utils';
 import { emptyCosts } from '@/utils/emptys';
 import { icons } from '@/assets/images/icons';
-import { Button } from '@/components/elements';
+import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import { Card, GenericModal } from '@/components/modules';
 import { HeaderBreadcrumbs } from '@/components/organism';
@@ -37,6 +37,7 @@ import { expenseType, genericObjType, genericV2ObjType } from '../Bills/@types';
 import * as S from './DetailsBillsStyled';
 import { emptyInfo } from '../Bills/utils';
 import { initialState } from './@types';
+import { KeyboardArrowDownRounded } from '@mui/icons-material';
 
 export const DetailsBills = () => {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ export const DetailsBills = () => {
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalNewExpense, setOpenModalNewExpense] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
   const [isFormEdit, setIsFormEdit] = useState(false);
   const [fields, setFields] = useState({
@@ -76,6 +78,25 @@ export const DetailsBills = () => {
       );
 
       setIsFormEdit(false);
+    }
+  });
+
+  const formikNewExpense = useFormik({
+    initialValues: {
+      typesCost: '',
+      nameExpense: '',
+      typesExpense: ''
+    },
+    onSubmit: async () => {
+      // setOpenModal(false);
+      // setSnackbar({
+      //   isOpen: true,
+      //   severity: 'success',
+      //   vertical: 'top',
+      //   horizontal: 'right',
+      //   message: 'Despesa adicionada com sucesso'
+      // });
+      // formikNewExpense.resetForm({});
     }
   });
 
@@ -324,8 +345,10 @@ export const DetailsBills = () => {
                                     <S.Icon src={icons.edit} alt="Icon edit" />
                                   </ListItemIcon>
                                 </MenuItem>
-                                <Divider />
-                                <MenuItem onClick={() => handleAdd()}>
+                                {/* <Divider /> */}
+                                {/* <MenuItem
+                                  onClick={() => setOpenModalNewExpense(true)}
+                                >
                                   Novo custo
                                   <ListItemIcon>
                                     <S.Icon
@@ -333,9 +356,9 @@ export const DetailsBills = () => {
                                       alt="Icon plus_circle"
                                     />
                                   </ListItemIcon>
-                                </MenuItem>
-                                <Divider />
-                                <MenuItem onClick={() => handleDelete()}>
+                                </MenuItem> */}
+                                {/* <Divider /> */}
+                                {/* <MenuItem onClick={() => handleDelete()}>
                                   Deletar
                                   <ListItemIcon>
                                     <S.Icon
@@ -343,7 +366,7 @@ export const DetailsBills = () => {
                                       alt="Icon trash"
                                     />
                                   </ListItemIcon>
-                                </MenuItem>
+                                </MenuItem> */}
                               </Menu>
                             </S.HeaderCard>
                             <S.ContainerExpenses>
@@ -417,6 +440,96 @@ export const DetailsBills = () => {
               Sim
             </Button>
           </S.ContainerButtons>
+        </S.ContainerMessage>
+      </GenericModal>
+
+      <GenericModal
+        maxWidth={'750px'}
+        maxHeight={'400px'}
+        open={openModalNewExpense}
+        setOpen={setOpenModalNewExpense}
+      >
+        <S.ContainerMessage>
+          <S.Title>Nova despesa</S.Title>
+          <S.Text>
+            Esse novo custo sera adicionado em (Terreno / Ourtuga / Despesas de
+            aquisiÃ§ao)
+          </S.Text>
+          <S.Form onSubmit={formikNewExpense.handleSubmit}>
+            <Grid container spacing={{ xs: 0, sm: 2 }} alignItems={'center'}>
+              <Grid item xs={12} sm={12} md={6} minWidth={300}>
+                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                  <S.Label>Tipos de unidades</S.Label>
+                  <Select
+                    displayEmpty
+                    name="typesCost"
+                    onChange={formikNewExpense.handleChange}
+                    className="SelectComponent"
+                    IconComponent={KeyboardArrowDownRounded}
+                    value={formikNewExpense.values.typesCost}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                  >
+                    <MenuItem value={''} disabled>
+                      <em>% </em>
+                    </MenuItem>
+                    <MenuItem value="1">Teste 1</MenuItem>
+                    <MenuItem value="2">Teste 2</MenuItem>
+                    <MenuItem value="3">Teste 3</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12} sm={12} md={6} minWidth={300}>
+                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                  <S.Label>Quantidade</S.Label>
+                  <Input
+                    id="nameExpense"
+                    placeholder="20%"
+                    aria-describedby="nameExpense"
+                    onChange={formikNewExpense.handleChange}
+                    value={formikNewExpense.values.nameExpense}
+                    inputProps={{ style: { fontSize: '1.4rem' } }}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} minWidth={300}>
+                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                  <S.Label>Valor unitario</S.Label>
+                  <Input
+                    id="nameExpense"
+                    placeholder="R$ 520,00"
+                    aria-describedby="nameExpense"
+                    onChange={formikNewExpense.handleChange}
+                    value={formikNewExpense.values.nameExpense}
+                    inputProps={{ style: { fontSize: '1.4rem' } }}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} minWidth={300}>
+                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                  <S.Label>Valor total</S.Label>
+                  <Input
+                    id="nameExpense"
+                    placeholder="Valor unitario + quantidade = R$ ????"
+                    aria-describedby="nameExpense"
+                    onChange={formikNewExpense.handleChange}
+                    value={formikNewExpense.values.nameExpense}
+                    inputProps={{ style: { fontSize: '1.4rem' } }}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} minWidth={300} mt={2.3}>
+                <S.ContainerButtons className="containerBtn">
+                  <Button $isOutline size="140px">
+                    Cancelar
+                  </Button>
+                  <Button size="140px" type="submit">
+                    Adicionar
+                  </Button>
+                </S.ContainerButtons>
+              </Grid>
+            </Grid>
+          </S.Form>
         </S.ContainerMessage>
       </GenericModal>
     </Layout>

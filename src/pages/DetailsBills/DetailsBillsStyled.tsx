@@ -4,6 +4,7 @@ import {
   ContainerProgress,
   Header as CardHeader
 } from '@/components/modules/Project/ProjectStyled';
+import { Grid } from '@mui/material';
 
 export const GenericContainer = styled.div`
   width: 100%;
@@ -146,4 +147,52 @@ export const Message = styled(Title)`
   height: 100%;
   display: flex;
   align-items: center;
+`;
+export const Form = styled.form`
+  padding: 25px;
+  gap: 15px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .MuiFormControl-root {
+    gap: 3px;
+    width: 100%;
+    margin: 0px;
+  }
+  .MuiGrid-root {
+    > button {
+      height: 53px;
+      margin-left: 10px;
+    }
+  }
+`;
+export const ContainerInputs = styled(Grid)`
+  border-radius: 8px;
+  align-items: center;
+
+  > div:last-child {
+    display: flex;
+    min-height: 90px;
+    align-items: flex-end;
+    > button {
+      height: 30px;
+      margin-bottom: 13px;
+      font-size: ${({ theme }) => theme.typography.fontSizeRegular - 0.2}rem;
+    }
+  }
+
+  @media (min-width: 599px) {
+    margin-top: 40px;
+  }
+`;
+export const Label = styled.label`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  color: ${({ theme }) => theme.palette.color.medium};
+  font-size: ${({ theme }) => theme.typography.fontSize}rem;
+  font-weight: ${({ theme }) => theme.typography.fontWeightLight};
 `;
