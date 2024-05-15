@@ -36,7 +36,7 @@ export const SignIn = () => {
 
         setLoading(false);
         if (accessToken) {
-          getInfoUser({ dispatch, accessToken });
+          getInfoUser({ dispatch });
 
           navigate('/home');
         }

@@ -7,6 +7,7 @@ export const bills: costsType = {
       name: 'Custo Raso',
       land: {
         id: 1,
+        totalValue: 0,
         name: 'Terreno, Outorga e Despesas de Aquisição',
         expenses: [
           {
@@ -61,6 +62,7 @@ export const bills: costsType = {
       },
       project: {
         id: 2,
+        totalValue: 0,
         name: ' Projetos, Assessorias e Decoração ',
         expenses: [
           {
@@ -88,6 +90,7 @@ export const bills: costsType = {
       constructions: {
         id: 3,
         name: 'Obra',
+        totalValue: 0,
         expenses: [
           {
             id: 27,
@@ -105,6 +108,7 @@ export const bills: costsType = {
       },
       Licenses: {
         id: 4,
+        totalValue: 0,
         name: ' Licenças / Ambiental / Legalização',
         expenses: [
           {
@@ -143,6 +147,7 @@ export const bills: costsType = {
       },
       AdministrativeCosts: {
         id: 5,
+        totalValue: 0,
         name: ' Despesas Administrativas',
         expenses: [
           {
@@ -193,6 +198,7 @@ export const bills: costsType = {
       name: 'Taxa da Incorporação',
       administrateTax: {
         id: 6,
+        totalValue: 0,
         name: 'Taxa Administrativa',
         expenses: [
           {

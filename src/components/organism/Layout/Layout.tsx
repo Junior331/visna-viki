@@ -6,13 +6,14 @@ import { UserContext } from '@/state/user/state';
 import { GlobalStyles } from '@/styles/globalStyled';
 import { getInfoUser } from '@/pages/SignIn/services';
 import * as S from './LayoutStyled';
+import { getToken } from '@/services/sessionStorage';
 
 const Layout = ({ children }: LayoutProps) => {
   const navigate = useNavigate();
   const { dispatch } = useContext(UserContext);
 
   useEffect(() => {
-    const accessToken = window.sessionStorage.getItem('TOKEN');
+    const accessToken = getToken();
     if (accessToken) {
       getInfoUser({ dispatch });
     } else {

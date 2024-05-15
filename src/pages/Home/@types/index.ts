@@ -6,7 +6,6 @@ import { NavigateFunction } from 'react-router-dom';
 export type listProjectsProps = {
   page: number;
   limit?: number;
-  token: string;
   setSnackbar: (snackbarData: Snackbar) => void;
   setList: Dispatch<SetStateAction<projectType[]>>;
   setLoading: Dispatch<React.SetStateAction<boolean>>;

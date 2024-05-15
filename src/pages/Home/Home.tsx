@@ -37,7 +37,6 @@ export const Home = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { setContentActive } = useContext(SearchContext);
   const { setStepsIsDone } = useContext(StepsIsDoneContext);
-  const token = window.sessionStorage.getItem('TOKEN') || '';
   const [list, setList] = useState<Array<projectType>>([emptyProject]);
   const [filteredList, setFilterList] = useState<Array<projectType>>(list);
 
@@ -53,7 +52,6 @@ export const Home = () => {
     setStepsIsDone([]);
     listProjects({
       page,
-      token,
       setList,
       setLoading,
       setSnackbar,
