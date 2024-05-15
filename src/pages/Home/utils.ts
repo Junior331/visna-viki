@@ -16,7 +16,6 @@ export const handleChangePage = ({
 
 export const listProjects = async ({
   page,
-  token,
   setList,
   limit = 10,
   setLoading,
@@ -24,7 +23,7 @@ export const listProjects = async ({
   setTotalPage
 }: listProjectsProps) => {
   try {
-    const result = await getAllProjects(false, page, limit, token);
+    const result = await getAllProjects(false, page, limit);
 
     const newList = result.items.map(
       (obj: {

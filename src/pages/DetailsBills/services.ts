@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { ENDPOINTS } from '@/utils/endpoints';
-
-const token = window.sessionStorage.getItem('TOKEN') || '';
+import { getToken } from '@/services/sessionStorage';
+import { createExpense } from '@/services/services';
+import { payloadExpense } from '@/utils/types';
 
 export const getDetailsBill = async () => {
   try {
@@ -9,11 +10,22 @@ export const getDetailsBill = async () => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.PROJECTS.BASE_URL}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
     return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+
+export const createCost = async (payload: payloadExpense) => {
+  try {
+    const response = await createExpense(payload);
+    return response;
   } catch (error) {
     if (error instanceof Error) {
       throw error;

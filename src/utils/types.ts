@@ -169,17 +169,15 @@ export type handleExpenseGenericProps = {
 };
 
 export type handleExpenseProps = handleExpenseGenericProps & {
-  page: number;
-  perPage: number;
+  page?: number;
+  perPage?: number;
 };
 
 export type payloadExpenseType = {
-  id: number;
   expenseName: string;
   expenseTypeId: number;
 };
 export type payloadExpense = {
-  id: number;
   quantity: number;
   unitValue: number;
   projectId: number;

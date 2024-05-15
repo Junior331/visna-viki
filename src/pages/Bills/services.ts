@@ -1,5 +1,5 @@
 import { mocks } from '@/services/mocks';
-import { listExpenseTypes } from '@/services/services';
+import { listExpenseTypes, listAllExpenseByProject } from '@/services/services';
 
 const generateMockData = () => mocks.bills;
 
@@ -13,6 +13,17 @@ export const getBills = async (isMock: boolean) => {
       const response = await listExpenseTypes();
       return response;
     }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+
+export const getCostsByProject = async (id: number) => {
+  try {
+    const response = await listAllExpenseByProject({ projectId: id });
+    return response;
   } catch (error) {
     if (error instanceof Error) {
       throw error;

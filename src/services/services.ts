@@ -9,8 +9,7 @@ import {
   unitType
 } from '@/utils/types';
 import { ENDPOINTS } from '@/utils/endpoints';
-
-const token = window.sessionStorage.getItem('TOKEN');
+import { getToken } from './sessionStorage';
 
 // crud Units
 export const createUnits = async (projectId: number, payload: unitType) => {
@@ -47,7 +46,7 @@ export const createUnits = async (projectId: number, payload: unitType) => {
       body,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -64,7 +63,7 @@ export const deleteUnits = async (unitId: number) => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.UNITS.BASE_URL}/${unitId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -90,7 +89,7 @@ export const editUnits = async (
       body,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -107,7 +106,7 @@ export const listUnits = async (unitId: number) => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.UNITS.BASE_URL}/${unitId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -141,7 +140,7 @@ export const createLands = async (projectId: number, payload: landType) => {
       body,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -158,7 +157,7 @@ export const deleteLands = async (landId: number) => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.LANDS.BASE_URL}/${landId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -184,7 +183,7 @@ export const editLands = async (
       body,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -201,7 +200,7 @@ export const listLands = async (landId: number) => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.LANDS.BASE_URL}/${landId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -239,7 +238,7 @@ export const createDeadline = async (
       body,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -256,7 +255,7 @@ export const deleteDeadline = async (deadlineId: number) => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.DEADLINE.BASE_URL}/${deadlineId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -282,7 +281,7 @@ export const editDeadline = async (
       body,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -299,7 +298,7 @@ export const listDeadline = async (deadlineId: number) => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.DEADLINE.BASE_URL}/${deadlineId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -323,7 +322,7 @@ export const createProject = async (name: string) => {
       payload,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -340,7 +339,7 @@ export const deleteProject = async (projectId: number) => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.PROJECTS.BASE_URL}/${projectId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -361,7 +360,7 @@ export const editProject = async (projectId: number, name: string) => {
       payload,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -378,7 +377,7 @@ export const listProject = async (projectId: number) => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.PROJECTS.BASE_URL}/${projectId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -398,7 +397,7 @@ export const createUser = async (payload: payloadUserType) => {
       payload,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -415,7 +414,7 @@ export const deleteUser = async (userId: number) => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.USER.BASE_URL}/${userId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -434,7 +433,7 @@ export const editUser = async (userId: number) => {
       payload,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -451,7 +450,7 @@ export const listUser = async (userId: number) => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.USER.BASE_URL}/${userId}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -468,7 +467,7 @@ export const listAllUser = async () => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.USER.BASE_URL}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -482,8 +481,8 @@ export const listAllUser = async () => {
 
 // crud expense
 export const listAllExpenseByProject = async ({
-  page,
-  perPage,
+  page = 1,
+  perPage = 1000,
   projectId
 }: handleExpenseProps) => {
   try {
@@ -491,7 +490,7 @@ export const listAllExpenseByProject = async ({
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}/all/${projectId}?page=${page}&perPage=${perPage}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -508,7 +507,7 @@ export const listExpenseById = async (id: number) => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}/${id}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -526,7 +525,7 @@ export const createExpense = async (payload: payloadExpense) => {
       payload,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -544,7 +543,7 @@ export const editExpense = async (id: number, payload: payloadExpense) => {
       payload,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -561,7 +560,7 @@ export const deleteExpense = async (id: number) => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}/${id}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -580,7 +579,7 @@ export const listExpenseTypes = async () => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}/types`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -598,7 +597,7 @@ export const createExpenseTypes = async (payload: payloadExpenseType) => {
       payload,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -619,7 +618,7 @@ export const editExpenseTypes = async (
       payload,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );
@@ -636,7 +635,7 @@ export const deleteExpenseTypes = async (id: number) => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.EXPENSE.BASE_URL}/types/${id}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );

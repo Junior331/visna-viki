@@ -64,3 +64,28 @@ export const convertToParams = (
     | URLSearchParams
     | undefined
 ) => data && new URLSearchParams(data).toString();
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const cleanObject = (obj: { [s: string]: any }) =>
+  Object.fromEntries(
+    Object.entries(obj).filter(
+      ([, value]) =>
+        value !== 0 &&
+        value !== null &&
+        value !== '' &&
+        value !== undefined &&
+        value?.length !== 0
+    )
+  );
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const cleanObjectWithZero = (obj: { [s: string]: any }) =>
+  Object.fromEntries(
+    Object.entries(obj).filter(
+      ([, value]) =>
+        value !== null &&
+        value !== '' &&
+        value !== undefined &&
+        value?.length !== 0
+    )
+  );

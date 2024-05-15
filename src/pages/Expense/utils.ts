@@ -1,13 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { rowData } from '@/components/modules/TableBody/@types';
 import {
   costsType,
   incorporationFeeType,
   shallowCostType
 } from '../Bills/@types';
 import { getBills } from '../Bills/services';
-import { listBillsProps, listCostsProps, updateListItemProps } from './@types';
+import {
+  deleteExpenseProps,
+  editExpenseProps,
+  listBillsProps,
+  listCostsProps
+} from './@types';
 import { getDetailsBill } from './services';
+import { deleteExpenseTypes, editExpenseTypes } from '@/services/services';
 
 export const breadCrumbsItems = (name: string) => [
   {
@@ -64,6 +68,7 @@ export const listCosts = async ({
 
     Object.values(result.costs).map((cost) => {
       typesCostOptions.push({ id: cost.id, name: cost.name });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       Object.values(cost).forEach((expenseType: any) => {
         if (Array.isArray(expenseType.expenses)) {
           typesExpenseOptions.push({
@@ -91,32 +96,84 @@ export const listCosts = async ({
   }
 };
 
-export const updateListItem = ({
-  listCostsStorage,
-  stateExpense,
-  newValues
-}: updateListItemProps): rowData[] => {
-  const newList: any = JSON.parse(listCostsStorage as string);
+export const deleteExpense = async ({
+  id,
+  navigate,
+  setLoading,
+  setSnackbar
+}: deleteExpenseProps) => {
+  setLoading(true);
 
-  const index = newList.findIndex(
-    (item: any) => item.name === stateExpense.name
-  );
-
-  if (index !== -1) {
-    newList[index] = {
-      ...newList[index],
-      ...Object.fromEntries(
-        Object.entries(newValues).filter(([, value]) => value !== undefined)
-      )
-    };
-  } else {
-    newList.push({
-      name: stateExpense.name,
-      ...Object.fromEntries(
-        Object.entries(newValues).filter(([, value]) => value !== undefined)
-      )
+  try {
+    await deleteExpenseTypes(id);
+    setSnackbar({
+      isOpen: true,
+      severity: 'success',
+      vertical: 'top',
+      horizontal: 'right',
+      message: 'Despesa deletada com sucesso'
     });
+    navigate('/listbills');
+  } catch (error) {
+    if (error instanceof Error) {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
+    }
+  } finally {
+    setLoading(false);
   }
+};
+export const editExpense = async ({
+  id,
+  expense,
+  navigate,
+  setLoading,
+  setSnackbar
+}: editExpenseProps) => {
+  setLoading(true);
 
-  return newList;
+  try {
+    await editExpenseTypes(id, expense);
+    setSnackbar({
+      isOpen: true,
+      severity: 'success',
+      vertical: 'top',
+      horizontal: 'right',
+      message: 'Despesa atualizada com sucesso'
+    });
+    navigate('/listbills');
+  } catch (error) {
+    if (error instanceof Error) {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
+    }
+  } finally {
+    setLoading(false);
+  }
 };

@@ -10,14 +10,15 @@ export type expenseType = {
 export type genericObjType = {
   id: number;
   name: string;
+  totalValue: number;
   expenses: expenseType[];
 };
 export type genericV2ObjType = {
   id: number;
   type: string;
   name: string;
-  total: string;
   rows: rowData[];
+  totalValue: number;
   expenses: expenseType[];
 };
 export type shallowCostType = {
@@ -40,7 +41,8 @@ export type costsType = {
     incorporationFee: incorporationFeeType;
   };
 };
-export type listBillsProps = {
+export type listCostsProps = {
+  id: number;
   setDate: Dispatch<SetStateAction<costsType>>;
   setSnackbar: (snackbarData: Snackbar) => void;
   setLoading: Dispatch<React.SetStateAction<boolean>>;
