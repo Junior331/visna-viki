@@ -3,7 +3,9 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import {
   Box,
+  Divider,
   FormControl,
+  FormHelperText,
   Grid,
   IconButton,
   ListItemIcon,
@@ -12,12 +14,15 @@ import {
   Select,
   Skeleton
 } from '@mui/material';
+import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { Layout, Table } from '@/components/organism';
 import {
   handleEdit,
   breadCrumbsItems,
   listDetailsBill,
-  initialValues
+  initialValues,
+  handleSumTotalValue,
+  createNewCost
 } from './utils';
 import { emptyCosts } from '@/utils/emptys';
 import { icons } from '@/assets/images/icons';
@@ -34,10 +39,9 @@ import {
 import { useFormik } from 'formik';
 import { mocks } from '@/services/mocks';
 import { expenseType, genericObjType, genericV2ObjType } from '../Bills/@types';
-import * as S from './DetailsBillsStyled';
 import { emptyInfo } from '../Bills/utils';
-import { initialState } from './@types';
-import { KeyboardArrowDownRounded } from '@mui/icons-material';
+import * as S from './DetailsBillsStyled';
+import { payloadExpense } from '@/utils/types';
 
 export const DetailsBills = () => {
   const navigate = useNavigate();
@@ -45,16 +49,11 @@ export const DetailsBills = () => {
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [openModalNewExpense, setOpenModalNewExpense] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
   const [isFormEdit, setIsFormEdit] = useState(false);
-  const [fields, setFields] = useState({
-    land: { id: 0, name: '', rows: [] },
-    project: { id: 0, name: '', rows: [] },
-    constructions: { id: 0, name: '', rows: [] },
-    Licenses: { id: 0, name: '', rows: [] },
-    AdministrativeCosts: { id: 0, name: '', rows: [] }
-  });
+
   const { id, idProject, name, isEdit } = Object.fromEntries([...searchParams]);
   const [date, setDate] = useState<any>();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -63,19 +62,10 @@ export const DetailsBills = () => {
     emptyCosts.costs.shallowCost.land.expenses[0]
   );
 
-  const initialState = window.sessionStorage.getItem('FORM_DETAILS_BILLS');
-  const initialStateParse = JSON.parse(initialState as string);
-
   const formik = useFormik({
-    initialValues: initialState
-      ? (initialStateParse as initialState)
-      : initialValues,
+    initialValues: initialValues,
     onSubmit: async (values) => {
       formik.setValues(values);
-      window.sessionStorage.setItem(
-        'FORM_DETAILS_BILLS',
-        JSON.stringify(values)
-      );
 
       setIsFormEdit(false);
     }
@@ -83,20 +73,28 @@ export const DetailsBills = () => {
 
   const formikNewExpense = useFormik({
     initialValues: {
-      typesCost: '',
-      nameExpense: '',
-      typesExpense: ''
+      expenseId: 0,
+      typesCost: 0,
+      quantity: '0',
+      unitValue: '0',
+      totalValue: 0,
+      unitExpenseTypeId: 0
     },
-    onSubmit: async () => {
-      // setOpenModal(false);
-      // setSnackbar({
-      //   isOpen: true,
-      //   severity: 'success',
-      //   vertical: 'top',
-      //   horizontal: 'right',
-      //   message: 'Despesa adicionada com sucesso'
-      // });
-      // formikNewExpense.resetForm({});
+    onSubmit: async (values) => {
+      const payload: payloadExpense = {
+        ...values,
+        quantity: parseFloat(values.quantity),
+        unitValue: parseFloat(values.unitValue),
+        projectId: parseFloat(idProject)
+      };
+
+      const isAnyFieldEmpty = !values.expenseId || !values.typesCost;
+      isAnyFieldEmpty
+        ? setShowError(true)
+        : createNewCost({ payload, setLoading, setSnackbar });
+
+      setOpenModal(false);
+      formikNewExpense.resetForm({});
     }
   });
 
@@ -109,79 +107,6 @@ export const DetailsBills = () => {
       setSnackbar
     });
   }, [id, setSnackbar, state.cost]);
-
-  useEffect(() => {
-    if (date) {
-      // Atualize cada seção individualmente
-      const sections = [
-        'land',
-        'project',
-        'constructions',
-        'Licenses',
-        'AdministrativeCosts'
-      ];
-      const newFields: any = {};
-
-      sections.forEach((section) => {
-        if (date[section]) {
-          newFields[section] = {
-            id: date[section].id,
-            name: date[section].name,
-            rows: date[section].rows.map(
-              (row: {
-                nome: any;
-                unidade: any;
-                quantidade: any;
-                valor_total: any;
-                valor_unitário: any;
-              }) => ({
-                nome: row.nome,
-                unidade: row.unidade,
-                quantidade: row.quantidade,
-                valor_total: row.valor_total,
-                valor_unitário: row.valor_unitário
-              })
-            )
-          };
-        }
-      });
-
-      setFields(newFields);
-    }
-  }, [date]);
-
-  useEffect(() => {
-    const newFormikValues: initialState = {
-      land: {
-        id: fields.land.id,
-        name: fields.land.name,
-        rows: fields.land ? fields.land.rows : []
-      },
-      project: {
-        id: fields.project.id,
-        name: fields.project.name,
-        rows: fields.project ? fields.project.rows : []
-      },
-      constructions: {
-        id: fields.constructions.id,
-        name: fields.constructions.name,
-        rows: fields.constructions ? fields.constructions.rows : []
-      },
-      Licenses: {
-        id: fields.Licenses.id,
-        name: fields.Licenses.name,
-        rows: fields.Licenses ? fields.Licenses.rows : []
-      },
-      AdministrativeCosts: {
-        id: fields.AdministrativeCosts.id,
-        name: fields.AdministrativeCosts.name,
-        rows: fields.AdministrativeCosts ? fields.AdministrativeCosts.rows : []
-      }
-    };
-
-    formik.setValues(newFormikValues);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fields]);
 
   return (
     <Layout>
@@ -342,8 +267,8 @@ export const DetailsBills = () => {
                                     <S.Icon src={icons.edit} alt="Icon edit" />
                                   </ListItemIcon>
                                 </MenuItem>
-                                {/* <Divider /> */}
-                                {/* <MenuItem
+                                <Divider />
+                                <MenuItem
                                   onClick={() => setOpenModalNewExpense(true)}
                                 >
                                   Novo custo
@@ -353,24 +278,14 @@ export const DetailsBills = () => {
                                       alt="Icon plus_circle"
                                     />
                                   </ListItemIcon>
-                                </MenuItem> */}
-                                {/* <Divider /> */}
-                                {/* <MenuItem onClick={() => handleDelete()}>
-                                  Deletar
-                                  <ListItemIcon>
-                                    <S.Icon
-                                      src={icons.trash}
-                                      alt="Icon trash"
-                                    />
-                                  </ListItemIcon>
-                                </MenuItem> */}
+                                </MenuItem>
                               </Menu>
                             </S.HeaderCard>
                             <S.ContainerExpenses>
                               <Table
                                 cost={cost}
                                 formik={formik}
-                                rows={cost.rows}
+                                rows={[]}
                                 columns={mocks.columns}
                                 expenseActive={expenseActive}
                                 isEdit={
@@ -380,7 +295,10 @@ export const DetailsBills = () => {
 
                               <S.FooterExpense>
                                 <S.Title>Total </S.Title>
-                                <S.Text>R$ {formatCurrency(cost.total)}</S.Text>
+                                <S.Text>
+                                  R${' '}
+                                  {formatCurrency(cost.totalValue.toString())}
+                                </S.Text>
                               </S.FooterExpense>
                             </S.ContainerExpenses>
                           </Card>
@@ -404,7 +322,7 @@ export const DetailsBills = () => {
                   <Card width={'100%'} height={'auto'} className="footer">
                     <S.FooterExpense>
                       <S.Title>Total </S.Title>
-                      <S.Text>R$ {formatCurrency(date.total)}</S.Text>
+                      {/* <S.Text>R$ {formatCurrency(date.total)}</S.Text> */}
                     </S.FooterExpense>
                   </Card>
                 </>
@@ -441,37 +359,129 @@ export const DetailsBills = () => {
       </GenericModal>
 
       <GenericModal
-        maxWidth={'750px'}
-        maxHeight={'400px'}
+        maxWidth={'900px'}
+        maxHeight={'440px'}
         open={openModalNewExpense}
         setOpen={setOpenModalNewExpense}
       >
         <S.ContainerMessage>
-          <S.Title>Nova despesa</S.Title>
-          <S.Text>
-            Esse novo custo sera adicionado em (Terreno / Ourtuga / Despesas de
-            aquisiÃ§ao)
-          </S.Text>
+          <S.Title>Novo custo</S.Title>
+          <S.Text>Esse novo custo sera adicionado na sua listagem</S.Text>
           <S.Form onSubmit={formikNewExpense.handleSubmit}>
             <Grid container spacing={{ xs: 0, sm: 2 }} alignItems={'center'}>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={6}
+                minWidth={300}
+                minHeight={showError ? 117 : 76}
+              >
+                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                  <S.Label>Tipos de custos</S.Label>
+                  <Select
+                    displayEmpty
+                    name="typesCost"
+                    onBlur={formikNewExpense.handleBlur}
+                    value={formikNewExpense.values.typesCost}
+                    onChange={(e) => {
+                      formikNewExpense.setFieldValue('expenseId', 0);
+                      formikNewExpense.handleChange(e);
+                    }}
+                    className="SelectComponent"
+                    IconComponent={KeyboardArrowDownRounded}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                  >
+                    <MenuItem value={0} disabled>
+                      <em>Selecione a opção </em>
+                    </MenuItem>
+                    <MenuItem value={1}>Custo Raso</MenuItem>
+                    <MenuItem value={2}>Taxa da Incorporação</MenuItem>
+                  </Select>
+                  {showError && !formikNewExpense.values.typesCost && (
+                    <FormHelperText>
+                      Tipos de custos é obrigatório
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={6}
+                minWidth={300}
+                minHeight={showError ? 117 : 76}
+              >
+                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                  <S.Label>Tipos de despesas</S.Label>
+                  <Select
+                    required
+                    name="expenseId"
+                    className="SelectComponent"
+                    onBlur={formikNewExpense.handleBlur}
+                    onChange={(e) => {
+                      setShowError(false);
+                      formikNewExpense.handleChange(e);
+                    }}
+                    value={formikNewExpense.values.expenseId}
+                    disabled={!formikNewExpense.values.typesCost}
+                    IconComponent={KeyboardArrowDownRounded}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                  >
+                    <MenuItem value={0} disabled>
+                      <em>Selecione a opção </em>
+                    </MenuItem>
+                    {formikNewExpense.values.typesCost === 1 ? (
+                      [
+                        <MenuItem key={1} value={1}>
+                          Terreno, Outorga e Despesas de Aquisição
+                        </MenuItem>,
+                        <MenuItem key={2} value={2}>
+                          Projetos, Assessorias e Decoração
+                        </MenuItem>,
+                        <MenuItem key={3} value={3}>
+                          Obra
+                        </MenuItem>,
+                        <MenuItem key={4} value={4}>
+                          Licenças / Ambiental / Legalização
+                        </MenuItem>,
+                        <MenuItem key={5} value={5}>
+                          Despesas Administrativas
+                        </MenuItem>
+                      ]
+                    ) : (
+                      <MenuItem key={6} value={6}>
+                        Taxa Administrativa
+                      </MenuItem>
+                    )}
+                  </Select>
+                  {showError && !formikNewExpense.values.expenseId && (
+                    <FormHelperText>
+                      Tipos de despesas é obrigatório
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                   <S.Label>Tipos de unidades</S.Label>
                   <Select
                     displayEmpty
-                    name="typesCost"
-                    onChange={formikNewExpense.handleChange}
+                    name="unitExpenseTypeId"
                     className="SelectComponent"
+                    onChange={formikNewExpense.handleChange}
                     IconComponent={KeyboardArrowDownRounded}
-                    value={formikNewExpense.values.typesCost}
                     inputProps={{ 'aria-label': 'Without label' }}
+                    value={formikNewExpense.values.unitExpenseTypeId}
                   >
-                    <MenuItem value={''} disabled>
-                      <em>% </em>
+                    <MenuItem value={0} disabled>
+                      <em>Selecione a opção</em>
                     </MenuItem>
-                    <MenuItem value="1">Teste 1</MenuItem>
-                    <MenuItem value="2">Teste 2</MenuItem>
-                    <MenuItem value="3">Teste 3</MenuItem>
+                    <MenuItem value={1}>%</MenuItem>
+                    <MenuItem value={2}>VB</MenuItem>
+                    <MenuItem value={3}>mes</MenuItem>
+                    <MenuItem value={4}>m²</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -480,42 +490,71 @@ export const DetailsBills = () => {
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                   <S.Label>Quantidade</S.Label>
                   <Input
-                    id="nameExpense"
-                    placeholder="20%"
-                    aria-describedby="nameExpense"
+                    required
+                    id="quantity"
+                    aria-describedby="quantity"
+                    placeholder="Digite a quantidade"
+                    onBlur={(e) => {
+                      formikNewExpense.setFieldValue(
+                        'quantity',
+                        e.target.value
+                      );
+                      handleSumTotalValue({
+                        value2: e.target.value,
+                        fieldName: 'totalValue',
+                        value1: formikNewExpense.values.unitValue,
+                        setFieldValue: formikNewExpense.setFieldValue
+                      });
+                    }}
                     onChange={formikNewExpense.handleChange}
-                    value={formikNewExpense.values.nameExpense}
+                    value={formikNewExpense.values.quantity}
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                   />
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Valor unitario</S.Label>
+                  <S.Label>Valor unitario (R$)</S.Label>
                   <Input
-                    id="nameExpense"
-                    placeholder="R$ 520,00"
-                    aria-describedby="nameExpense"
+                    required
+                    id="unitValue"
+                    aria-describedby="unitValue"
+                    placeholder="0,00"
+                    onBlur={(e) => {
+                      formikNewExpense.setFieldValue(
+                        'unitValue',
+                        e.target.value
+                      );
+                      handleSumTotalValue({
+                        value1: e.target.value,
+                        fieldName: 'totalValue',
+                        value2: formikNewExpense.values.quantity,
+                        setFieldValue: formikNewExpense.setFieldValue
+                      });
+                    }}
                     onChange={formikNewExpense.handleChange}
-                    value={formikNewExpense.values.nameExpense}
+                    value={formatCurrency(formikNewExpense.values.unitValue)}
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                   />
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Valor total</S.Label>
+                  <S.Label>Valor total (R$)</S.Label>
                   <Input
-                    id="nameExpense"
-                    placeholder="Valor unitario + quantidade = R$ ????"
-                    aria-describedby="nameExpense"
+                    disabled
+                    id="totalValue"
+                    placeholder="0,00"
+                    aria-describedby="totalValue"
                     onChange={formikNewExpense.handleChange}
-                    value={formikNewExpense.values.nameExpense}
+                    value={formatCurrency(
+                      formikNewExpense.values.totalValue.toString()
+                    )}
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                   />
                 </FormControl>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} minWidth={300} mt={2.3}>
+              <Grid item xs={12} sm={12} md={12} minWidth={300}>
                 <S.ContainerButtons className="containerBtn">
                   <Button $isOutline size="140px">
                     Cancelar

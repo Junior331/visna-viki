@@ -1,11 +1,11 @@
 import { convertToParams } from '@/utils/utils';
 import {
-  costsType,
   handleProps,
-  listBillsProps,
-  genericObjType
+  listCostsProps,
+  genericObjType,
+  costsType
 } from './@types';
-import { getBills } from './services';
+import { getCostsByProject } from './services';
 
 export const emptyInfo = (info: string | number | genericObjType) =>
   info instanceof Object &&
@@ -55,14 +55,15 @@ export const handleView = ({ id, idProject, name, navigate }: handleProps) => {
   );
 };
 export const handleDelete = () => {};
-export const listBills = async ({
+export const listCosts = async ({
+  id,
   setDate,
   setLoading,
   setSnackbar
-}: listBillsProps) => {
+}: listCostsProps) => {
   setLoading(true);
   try {
-    const result = (await getBills(false)) as costsType;
+    const result = (await getCostsByProject(id)) as costsType;
     setDate(result);
     setLoading(false);
   } catch (error) {

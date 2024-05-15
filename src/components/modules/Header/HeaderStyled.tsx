@@ -9,14 +9,17 @@ export const ContainerGeneric = styled.div`
 
 export const Header = styled(ContainerGeneric)`
   width: 100%;
-  min-height: 50px;
+  height: auto;
   padding: 12px 10px;
   align-items: center;
   background: #f3f5fb;
+  .MuiButtonBase-root {
+    margin-left: -5px;
+  }
 
   .MuiSvgIcon-root {
     color: ${({ theme }) => theme.palette.color.medium};
-    font-size: ${({ theme }) => theme.typography.fontSizeRegular}rem;
+    font-size: ${({ theme }) => theme.typography.fontSizeRegular + 0.6}rem;
   }
 `;
 export const InfoUser = styled(ContainerGeneric)`

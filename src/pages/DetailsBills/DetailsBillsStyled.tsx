@@ -149,7 +149,7 @@ export const Message = styled(Title)`
   align-items: center;
 `;
 export const Form = styled.form`
-  padding: 25px;
+  padding: 25px 25px 0;
   gap: 15px;
   width: 100%;
   height: 100%;
@@ -167,6 +167,10 @@ export const Form = styled.form`
       height: 53px;
       margin-left: 10px;
     }
+  }
+  .containerBtn {
+    margin: 0;
+    justify-content: flex-end;
   }
 `;
 export const ContainerInputs = styled(Grid)`

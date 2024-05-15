@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { ENDPOINTS } from '@/utils/endpoints';
-
-const token = window.sessionStorage.getItem('TOKEN') || '';
+import { getToken } from '@/services/sessionStorage';
 
 export const getDetailsBill = async () => {
   try {
@@ -9,7 +8,7 @@ export const getDetailsBill = async () => {
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.PROJECTS.BASE_URL}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );

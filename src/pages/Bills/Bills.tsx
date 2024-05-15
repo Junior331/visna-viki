@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { Layout } from '@/components/organism';
 import {
-  listBills,
+  listCosts,
   handleView,
   handleEdit,
   handleDelete,
@@ -53,12 +53,13 @@ export const Bills = () => {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    listBills({
+    listCosts({
+      id: parseFloat(id),
       setDate,
       setLoading,
       setSnackbar
     });
-  }, [setSnackbar]);
+  }, [id, setSnackbar]);
 
   return (
     <Layout>
@@ -72,9 +73,9 @@ export const Bills = () => {
         <S.Content>
           {loading && (
             <>
-              {Object.values(date.costs).map((cost, key) => {
+              {Object.values(date.costs).map((cost) => {
                 return (
-                  <Card width={'100%'} height={'auto'} key={key}>
+                  <Card width={'100%'} height={'auto'} key={cost.id}>
                     <S.HeaderCard>
                       <Skeleton height={20} width={'15%'} variant="rounded" />
                       <Skeleton height={20} width={'10px'} variant="rounded" />
@@ -237,7 +238,9 @@ export const Bills = () => {
                           return (
                             <S.Expense key={info.id}>
                               <S.Title>{info.name}</S.Title>
-                              <S.Text>R$ {formatCurrency('0')}</S.Text>
+                              <S.Text>
+                                R$ {formatCurrency(info.totalValue.toString())}
+                              </S.Text>
                             </S.Expense>
                           );
                         })}

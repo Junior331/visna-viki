@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { signUpProps } from './@types';
 import { ENDPOINTS } from '@/utils/endpoints';
-
-const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlRlc3RlIERFViBUIiwiZW1haWwiOiJ0ZXN0ZUBkZXYuY29tIiwiaWF0IjoxNzEzNDk3Mjk3LCJleHAiOjE3MTM0OTc1OTcsImF1ZCI6ImJhY2tvZmZpY2UtYXBpIiwiaXNzIjoibG9naW4iLCJzdWIiOiIxIn0.rQuU-SYXBWBO5Iw0MJvjsfOUGf6gGUEhVApcOV_wG78`;
+import { getToken } from '@/services/sessionStorage';
 
 export const signUp = async ({
   email,
@@ -23,7 +22,7 @@ export const signUp = async ({
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );

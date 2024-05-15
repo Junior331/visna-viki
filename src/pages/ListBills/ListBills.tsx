@@ -1,38 +1,37 @@
 import { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
+import { rowsDataType } from './@types';
 import { CloseRounded, KeyboardArrowDownRounded } from '@mui/icons-material';
 import { FormControl, Grid, MenuItem, Select } from '@mui/material';
-import { costType } from './@types';
 import { mocks } from '@/services/mocks';
 import { Header } from '@/components/modules';
-import { breadCrumbsItems, handleFilter, listCosts } from './utils';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import { Layout, Table } from '@/components/organism';
 import { GenericModal } from '@/components/modules';
 import { HeaderBreadcrumbs } from '@/components/organism';
-import { rowData } from '@/components/modules/TableBody/@types';
 import { Accordion, Button, Input } from '@/components/elements';
+import {
+  breadCrumbsItems,
+  handleCreateExpense,
+  handleFilter,
+  listCosts
+} from './utils';
 import * as S from './ListBillsStyled';
 
 export const ListBills = () => {
   const [loading, setLoading] = useState(true);
-  const [list, setList] = useState<rowData[]>([]);
+  const [list, setList] = useState<rowsDataType[]>([]);
   const { setSnackbar } = useContext(SnackbarContext);
-  const [filteredList, setFilteredList] = useState<rowData[]>(list);
-  const [typesCostOptions, setTypesCostOptions] = useState<costType[]>([]);
-  const [typesExpenseOptions, setTypesExpenseOptions] = useState<costType[]>(
-    []
-  );
-  const listCostsStorage = window.sessionStorage.getItem('LIST_EXPENSES');
+  const [filteredList, setFilteredList] = useState<rowsDataType[]>(list);
 
   const [isOpen, setIsOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      typesCost: '',
+      typesCost: 0,
       nameExpense: '',
-      typesExpense: ''
+      typesExpense: 0
     },
     onSubmit: async ({ typesCost, nameExpense, typesExpense }) => {
       setIsOpen(false);
@@ -48,31 +47,22 @@ export const ListBills = () => {
   });
   const formikNewExpense = useFormik({
     initialValues: {
-      typesCost: '',
+      typesCost: 0,
       nameExpense: '',
-      typesExpense: ''
+      typesExpense: 0
     },
-    onSubmit: async ({ typesCost, nameExpense, typesExpense }) => {
+    onSubmit: async ({ nameExpense, typesExpense }) => {
       setOpenModal(false);
-
-      const newList = JSON.parse(listCostsStorage as '') as rowData[];
-
-      const newItem = {
-        name: nameExpense,
-        typesCost: typesCost,
-        typesExpense: typesExpense,
-        action: 'menu'
+      const newExpense = {
+        expenseName: nameExpense,
+        expenseTypeId: typesExpense
       };
+      handleCreateExpense({ newExpense, setLoading, setSnackbar });
 
-      newList.push(newItem);
-      window.sessionStorage.setItem('LIST_EXPENSES', JSON.stringify(newList));
-      setList(newList);
-      setSnackbar({
-        isOpen: true,
-        severity: 'success',
-        vertical: 'top',
-        horizontal: 'right',
-        message: 'Despesa adicionada com sucesso'
+      listCosts({
+        setList,
+        setLoading,
+        setSnackbar
       });
 
       formikNewExpense.resetForm({});
@@ -83,16 +73,15 @@ export const ListBills = () => {
     listCosts({
       setList,
       setLoading,
-      setSnackbar,
-      setTypesCostOptions,
-      setTypesExpenseOptions
+      setSnackbar
     });
   }, [setSnackbar]);
   useEffect(() => {
     setFilteredList(list);
   }, [list]);
 
-  const { values, handleSubmit, handleChange, resetForm } = formik;
+  const { values, handleSubmit, handleChange, setFieldValue, resetForm } =
+    formik;
 
   return (
     <Layout>
@@ -118,18 +107,20 @@ export const ListBills = () => {
                     <Select
                       displayEmpty
                       name="typesCost"
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        setFieldValue('typesExpense', 0);
+                        handleChange(e);
+                      }}
                       value={values.typesCost}
                       className="SelectComponent"
                       IconComponent={KeyboardArrowDownRounded}
                       inputProps={{ 'aria-label': 'Without label' }}
                     >
-                      <MenuItem value={''} disabled>
+                      <MenuItem value={0} disabled>
                         <em>Selecione a opção </em>
                       </MenuItem>
-                      {typesCostOptions.map((option) => (
-                        <MenuItem value={option.name}>{option.name}</MenuItem>
-                      ))}
+                      <MenuItem value={1}>Custo Raso</MenuItem>
+                      <MenuItem value={2}>Taxa da Incorporação</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -140,17 +131,38 @@ export const ListBills = () => {
                       displayEmpty
                       name="typesExpense"
                       onChange={handleChange}
-                      value={values.typesExpense}
+                      value={values.typesExpense || 0}
                       className="SelectComponent"
+                      disabled={!values.typesCost}
                       IconComponent={KeyboardArrowDownRounded}
                       inputProps={{ 'aria-label': 'Without label' }}
                     >
-                      <MenuItem value={''} disabled>
-                        <em>Selecione a opção </em>
+                      <MenuItem value={0} disabled>
+                        <em>Selecione a opção</em>
                       </MenuItem>
-                      {typesExpenseOptions.map((option) => (
-                        <MenuItem value={option.name}>{option.name}</MenuItem>
-                      ))}
+                      {values.typesCost === 1 ? (
+                        [
+                          <MenuItem key={1} value={1}>
+                            Terreno, Outorga e Despesas de Aquisição
+                          </MenuItem>,
+                          <MenuItem key={2} value={2}>
+                            Projetos, Assessorias e Decoração
+                          </MenuItem>,
+                          <MenuItem key={3} value={3}>
+                            Obra
+                          </MenuItem>,
+                          <MenuItem key={4} value={4}>
+                            Licenças / Ambiental / Legalização
+                          </MenuItem>,
+                          <MenuItem key={5} value={5}>
+                            Despesas Administrativas
+                          </MenuItem>
+                        ]
+                      ) : (
+                        <MenuItem key={6} value={6}>
+                          Taxa Administrativa
+                        </MenuItem>
+                      )}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -195,17 +207,6 @@ export const ListBills = () => {
                 formik={formik}
                 columns={mocks.columnsExpense}
               />
-              {/* <S.ContainerPagination>
-                <Pagination
-                  color="primary"
-                  showLastButton
-                  showFirstButton
-                  count={totalPage}
-                  onChange={(_e, index) => {
-                    handleChangePage({ newPage: index, setPage });
-                  }}
-                />
-              </S.ContainerPagination> */}
             </>
           )}
         </S.Content>
@@ -230,18 +231,20 @@ export const ListBills = () => {
                   <Select
                     displayEmpty
                     name="typesCost"
-                    onChange={formikNewExpense.handleChange}
                     className="SelectComponent"
                     IconComponent={KeyboardArrowDownRounded}
                     value={formikNewExpense.values.typesCost}
                     inputProps={{ 'aria-label': 'Without label' }}
+                    onChange={(e) => {
+                      formikNewExpense.setFieldValue('typesExpense', 0);
+                      formikNewExpense.handleChange(e);
+                    }}
                   >
-                    <MenuItem value={''} disabled>
+                    <MenuItem value={0} disabled>
                       <em>Selecione a opção </em>
                     </MenuItem>
-                    {typesCostOptions.map((option) => (
-                      <MenuItem value={option.name}>{option.name}</MenuItem>
-                    ))}
+                    <MenuItem value={1}>Custo Raso</MenuItem>
+                    <MenuItem value={2}>Taxa da Incorporação</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -251,18 +254,39 @@ export const ListBills = () => {
                   <Select
                     displayEmpty
                     name="typesExpense"
-                    onChange={formikNewExpense.handleChange}
-                    value={formikNewExpense.values.typesExpense}
                     className="SelectComponent"
                     IconComponent={KeyboardArrowDownRounded}
+                    onChange={formikNewExpense.handleChange}
                     inputProps={{ 'aria-label': 'Without label' }}
+                    disabled={!formikNewExpense.values.typesCost}
+                    value={formikNewExpense.values.typesExpense || 0}
                   >
-                    <MenuItem value={''} disabled>
+                    <MenuItem value={0} disabled>
                       <em>Selecione a opção </em>
                     </MenuItem>
-                    {typesExpenseOptions.map((option) => (
-                      <MenuItem value={option.name}>{option.name}</MenuItem>
-                    ))}
+                    {formikNewExpense.values.typesCost === 1 ? (
+                      [
+                        <MenuItem key={1} value={1}>
+                          Terreno, Outorga e Despesas de Aquisição
+                        </MenuItem>,
+                        <MenuItem key={2} value={2}>
+                          Projetos, Assessorias e Decoração
+                        </MenuItem>,
+                        <MenuItem key={3} value={3}>
+                          Obra
+                        </MenuItem>,
+                        <MenuItem key={4} value={4}>
+                          Licenças / Ambiental / Legalização
+                        </MenuItem>,
+                        <MenuItem key={5} value={5}>
+                          Despesas Administrativas
+                        </MenuItem>
+                      ]
+                    ) : (
+                      <MenuItem key={6} value={6}>
+                        Taxa Administrativa
+                      </MenuItem>
+                    )}
                   </Select>
                 </FormControl>
               </Grid>

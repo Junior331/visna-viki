@@ -39,7 +39,7 @@ yarn dev
   ### Pages
 
   - [x] Home
-  - [ ] Bills
+  - [x] Bills
   - [x] Sign In
   - [x] Sign Up
   - [x] ListBills

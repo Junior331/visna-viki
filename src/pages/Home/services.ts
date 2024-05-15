@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { ENDPOINTS } from '@/utils/endpoints';
 import { mocks } from '@/services/mocks';
+import { getToken } from '@/services/sessionStorage';
 
 const generateMockData = () => mocks.projects;
 
 export const getAllProjects = async (
   isMock: boolean,
   page: number,
-  perPage: number,
-  token: string
+  perPage: number
 ) => {
   try {
     if (isMock) {
@@ -20,7 +20,7 @@ export const getAllProjects = async (
         `${ENDPOINTS.BASE_URL}${ENDPOINTS.PROJECTS.BASE_URL}?page=${page}&perPage=${perPage}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${getToken()}`
           }
         }
       );

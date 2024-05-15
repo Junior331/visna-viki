@@ -144,26 +144,31 @@ export const emptyCosts: costsType = {
       land: {
         id: 0,
         name: '',
+        totalValue: 0,
         expenses: Array.from({ length: 12 }, () => ({ id: 0, name: '' }))
       },
       project: {
         id: 0,
         name: '',
+        totalValue: 0,
         expenses: Array.from({ length: 5 }, () => ({ id: 0, name: '' }))
       },
       constructions: {
         id: 0,
-        name: 'Obra',
+        name: '',
+        totalValue: 0,
         expenses: Array.from({ length: 3 }, () => ({ id: 0, name: '' }))
       },
       Licenses: {
         id: 0,
         name: '',
+        totalValue: 0,
         expenses: Array.from({ length: 8 }, () => ({ id: 0, name: '' }))
       },
       AdministrativeCosts: {
         id: 0,
         name: ' ',
+        totalValue: 0,
         expenses: Array.from({ length: 10 }, () => ({ id: 0, name: '' }))
       }
     },
@@ -173,6 +178,7 @@ export const emptyCosts: costsType = {
       administrateTax: {
         id: 0,
         name: '',
+        totalValue: 0,
         expenses: Array.from({ length: 1 }, () => ({ id: 0, name: '' }))
       }
     }

@@ -3,6 +3,7 @@ import { getInfoUserProps, signInProps } from './@types';
 import { ENDPOINTS } from '@/utils/endpoints';
 import { Actions } from '@/state/user/@types/actions';
 import { images } from '@/assets/images';
+import { getToken } from '@/services/sessionStorage';
 
 export const signIn = async ({ email, password }: signInProps) => {
   try {
@@ -20,16 +21,13 @@ export const signIn = async ({ email, password }: signInProps) => {
     }
   }
 };
-export const getInfoUser = async ({
-  dispatch,
-  accessToken
-}: getInfoUserProps) => {
+export const getInfoUser = async ({ dispatch }: getInfoUserProps) => {
   try {
     const response = await axios.get(
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.USER.GET_AUTH_USER}`,
       {
         headers: {
-          Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${getToken()}`
         }
       }
     );

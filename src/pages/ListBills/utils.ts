@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { rowData } from '@/components/modules/TableBody/@types';
-import { costsType } from '../Bills/@types';
 import { getBills } from '../Bills/services';
 import {
-  deleteItemListProps,
+  costsType,
+  expenseType,
+  handleCreateExpenseProps,
   handleFilterProps,
-  listCostsProps
+  listCostsProps,
+  rowsDataType,
+  typesExpenses,
+  typesIdCosts
 } from './@types';
+import { createExpenseTypes } from '@/services/services';
 
 export const breadCrumbsItems = () => [
   {
@@ -21,55 +25,42 @@ export const breadCrumbsItems = () => [
 export const listCosts = async ({
   setList,
   setLoading,
-  setSnackbar,
-  setTypesCostOptions,
-  setTypesExpenseOptions
+  setSnackbar
 }: listCostsProps) => {
   setLoading(true);
+
   try {
-    const listExpenses: rowData[] = [];
     const result = (await getBills(false)) as costsType;
-    const typesCostOptions: { id: number; name: string }[] = [];
-    const typesExpenseOptions: { id: number; name: string }[] = [];
 
-    Object.values(result.costs).map((cost) => {
-      typesCostOptions.push({ id: cost.id, name: cost.name });
-      Object.values(cost).forEach((expenseType: any) => {
-        if (Array.isArray(expenseType.expenses)) {
-          typesExpenseOptions.push({
-            id: expenseType.id,
-            name: expenseType.name
-          });
-          expenseType.expenses.forEach((expense: any) => {
-            const expenseObj: rowData = {
-              name: expense.name,
-              typesCost: cost.name,
-              typesExpense: expenseType.name,
-              action: 'menu'
-            };
-            listExpenses.push(expenseObj);
-          });
-        }
-      });
-    });
-    const listCostsStorage = window.sessionStorage.getItem('LIST_EXPENSES');
+    const listExpenses = Object.keys(result.costs).reduce<rowsDataType[]>(
+      (acc, costKey) => {
+        const cost = result.costs[costKey];
+        const expenses = Object.keys(cost).reduce<rowsDataType[]>(
+          (innerAcc, expenseTypeKey) => {
+            const expenseType = cost[expenseTypeKey] as expenseType;
+            if (Array.isArray(expenseType.expenses)) {
+              const mappedExpenses = expenseType.expenses.map((expense) => ({
+                name: expense.name,
+                typesCost: cost.name,
+                typesIdCost: cost.id,
+                expenseId: expense.id,
+                typesExpense: expenseType.name,
+                action: 'menu'
+              }));
+              return innerAcc.concat(mappedExpenses);
+            }
+            return innerAcc;
+          },
+          []
+        );
+        return acc.concat(expenses);
+      },
+      []
+    );
 
-    if (listCostsStorage) {
-      setList(JSON.parse(listCostsStorage) as rowData[]);
-    } else {
-      window.sessionStorage.setItem(
-        'LIST_EXPENSES',
-        JSON.stringify(listExpenses)
-      );
-      setList(listExpenses);
-    }
-
-    setTypesCostOptions(typesCostOptions);
-    setTypesExpenseOptions(typesExpenseOptions);
-    setLoading(false);
+    setList(listExpenses);
   } catch (error) {
     if (error instanceof Error) {
-      setLoading(false);
       setSnackbar({
         isOpen: true,
         severity: 'error',
@@ -77,7 +68,17 @@ export const listCosts = async ({
         horizontal: 'left',
         message: error.message
       });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
     }
+  } finally {
+    setLoading(false);
   }
 };
 
@@ -86,29 +87,62 @@ export const handleFilter = ({
   typesCost,
   nameExpense,
   typesExpense
-}: handleFilterProps) =>
-  list.filter((expense) => {
-    const isTypesCostMatch = !typesCost || expense.typesCost === typesCost;
+}: handleFilterProps) => {
+  return list.filter((expense) => {
+    const typesIdCost =
+      typesIdCosts[expense.typesCost as keyof typeof typesIdCosts];
+    const typesIdExpense =
+      typesExpenses[expense.typesExpense as keyof typeof typesExpenses];
+
+    const isTypesCostMatch = !typesCost || typesIdCost === typesCost;
     const isTypesExpenseMatch =
-      !typesExpense || expense.typesExpense === typesExpense;
+      !typesExpense || typesIdExpense === typesExpense;
     const isNameExpenseMatch =
       !nameExpense ||
-      expense.name.toString().toLowerCase().includes(nameExpense.toLowerCase());
+      expense.name
+        .toString()
+        .toLowerCase()
+        .includes(nameExpense.trim().toLowerCase());
 
     return isTypesCostMatch && isTypesExpenseMatch && isNameExpenseMatch;
   });
+};
 
-export const deleteItemList = ({
-  listCostsStorage,
-  itemName
-}: deleteItemListProps): rowData[] => {
-  const newList: rowData[] = JSON.parse(listCostsStorage as string);
+export const handleCreateExpense = async ({
+  newExpense,
+  setLoading,
+  setSnackbar
+}: handleCreateExpenseProps) => {
+  setLoading(true);
 
-  const index = newList.findIndex((item) => item.name === itemName);
-
-  if (index !== -1) {
-    newList.splice(index, 1);
+  try {
+    await createExpenseTypes(newExpense);
+    setSnackbar({
+      isOpen: true,
+      severity: 'success',
+      vertical: 'top',
+      horizontal: 'right',
+      message: 'Despesa criada com sucesso'
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
+    }
+  } finally {
+    setLoading(false);
   }
-
-  return newList;
 };

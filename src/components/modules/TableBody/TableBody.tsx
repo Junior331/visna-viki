@@ -34,7 +34,7 @@ const TableBody = ({
 
   const { handleSubmit, setFieldValue, setValues, values } = formik;
 
-  const List = values.land ? values[cost?.type as string].rows : rows;
+  const List = values.land ? values[cost?.type as string]?.rows || [] : rows;
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -74,117 +74,120 @@ const TableBody = ({
       {List.map((row: any, index: number) => {
         return (
           <TableRow key={index}>
-            {Object.keys(row).map((key) => {
-              return (
-                <TableCell align={align} key={key}>
-                  {isEdit ? (
-                    <S.Form onSubmit={handleSubmit}>
-                      <FormControl sx={{ m: 1 }} variant="outlined">
-                        <Input
-                          required
-                          id={`input-${index}-${key}`}
-                          onChange={(e) => {
-                            const fieldName = key;
-                            handleInputChange(
-                              e,
-                              fieldName,
-                              index,
-                              cost?.name as string
-                            );
-                          }}
-                          value={
-                            values[itemActive.type]?.rows?.[index]?.[key] || ''
-                          }
-                          aria-describedby={`input-${index}-${key}`}
-                          placeholder={row[key].toString()}
-                          inputProps={{ style: { fontSize: '1.4rem' } }}
-                        />
-                      </FormControl>
-                    </S.Form>
-                  ) : (
-                    <>
-                      {row[key] === 'menu' ? (
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            textAlign: 'center'
-                          }}
-                        >
-                          <IconButton
-                            size="small"
-                            sx={{ ml: 2 }}
-                            aria-haspopup="true"
-                            aria-expanded={open ? 'true' : undefined}
-                            aria-controls={open ? 'account-menu' : undefined}
-                            onClick={(e) => {
-                              setExpenseActive(row);
-                              handleClickMenu({ event: e, setAnchorEl });
+            {Object.keys(row)
+              .filter((key) => !key.toLowerCase().includes('id'))
+              .map((key) => {
+                return (
+                  <TableCell align={align} key={key}>
+                    {isEdit ? (
+                      <S.Form onSubmit={handleSubmit}>
+                        <FormControl sx={{ m: 1 }} variant="outlined">
+                          <Input
+                            required
+                            id={`input-${index}-${key}`}
+                            onChange={(e) => {
+                              const fieldName = key;
+                              handleInputChange(
+                                e,
+                                fieldName,
+                                index,
+                                cost?.name as string
+                              );
+                            }}
+                            value={
+                              values[itemActive.type]?.rows?.[index]?.[key] ||
+                              ''
+                            }
+                            aria-describedby={`input-${index}-${key}`}
+                            placeholder={row[key].toString()}
+                            inputProps={{ style: { fontSize: '1.4rem' } }}
+                          />
+                        </FormControl>
+                      </S.Form>
+                    ) : (
+                      <>
+                        {row[key] === 'menu' ? (
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              textAlign: 'center'
                             }}
                           >
-                            <S.Icon src={icons.menu} alt="Icon menu" />
-                          </IconButton>
-                          <Menu
-                            open={open}
-                            id="account-menu"
-                            anchorEl={anchorEl}
-                            className="menuEdit detailsExpenseMenu"
-                            onClick={() => handleCloseMenu({ setAnchorEl })}
-                            onClose={() => handleCloseMenu({ setAnchorEl })}
-                            PaperProps={{
-                              elevation: 0,
-                              sx: {
-                                overflow: 'visible',
-                                mt: 1.5,
-                                '& .MuiAvatar-root': {
-                                  width: 32,
-                                  height: 32,
-                                  ml: -0.5,
-                                  mr: 1
-                                },
-                                '&::before': {
-                                  content: '""',
-                                  display: 'block',
-                                  position: 'absolute',
-                                  top: 0,
-                                  right: 14,
-                                  width: 10,
-                                  height: 10,
-                                  bgcolor: 'background.paper',
-                                  transform: 'translateY(-50%) rotate(45deg)',
-                                  zIndex: 0
-                                }
-                              }
-                            }}
-                            transformOrigin={{
-                              horizontal: 'right',
-                              vertical: 'top'
-                            }}
-                            anchorOrigin={{
-                              horizontal: 'right',
-                              vertical: 'bottom'
-                            }}
-                          >
-                            <MenuItem
-                              onClick={() =>
-                                handleEdit({ expenseActive, navigate })
-                              }
+                            <IconButton
+                              size="small"
+                              sx={{ ml: 2 }}
+                              aria-haspopup="true"
+                              aria-expanded={open ? 'true' : undefined}
+                              aria-controls={open ? 'account-menu' : undefined}
+                              onClick={(e) => {
+                                setExpenseActive(row);
+                                handleClickMenu({ event: e, setAnchorEl });
+                              }}
                             >
-                              Editar
-                              <ListItemIcon>
-                                <S.Icon src={icons.edit} alt="Icon edit" />
-                              </ListItemIcon>
-                            </MenuItem>
-                          </Menu>
-                        </Box>
-                      ) : (
-                        <>{row[key]}</>
-                      )}
-                    </>
-                  )}
-                </TableCell>
-              );
-            })}
+                              <S.Icon src={icons.menu} alt="Icon menu" />
+                            </IconButton>
+                            <Menu
+                              open={open}
+                              id="account-menu"
+                              anchorEl={anchorEl}
+                              className="menuEdit detailsExpenseMenu"
+                              onClick={() => handleCloseMenu({ setAnchorEl })}
+                              onClose={() => handleCloseMenu({ setAnchorEl })}
+                              PaperProps={{
+                                elevation: 0,
+                                sx: {
+                                  overflow: 'visible',
+                                  mt: 1.5,
+                                  '& .MuiAvatar-root': {
+                                    width: 32,
+                                    height: 32,
+                                    ml: -0.5,
+                                    mr: 1
+                                  },
+                                  '&::before': {
+                                    content: '""',
+                                    display: 'block',
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 14,
+                                    width: 10,
+                                    height: 10,
+                                    bgcolor: 'background.paper',
+                                    transform: 'translateY(-50%) rotate(45deg)',
+                                    zIndex: 0
+                                  }
+                                }
+                              }}
+                              transformOrigin={{
+                                horizontal: 'right',
+                                vertical: 'top'
+                              }}
+                              anchorOrigin={{
+                                horizontal: 'right',
+                                vertical: 'bottom'
+                              }}
+                            >
+                              <MenuItem
+                                onClick={() => {
+                                  handleEdit({ expenseActive, navigate });
+                                }}
+                              >
+                                Editar
+                                <ListItemIcon>
+                                  <S.Icon src={icons.edit} alt="Icon edit" />
+                                </ListItemIcon>
+                              </MenuItem>
+                            </Menu>
+                          </Box>
+                        ) : (
+                          <>{row[key]}</>
+                        )}
+                      </>
+                    )}
+                  </TableCell>
+                );
+              })}
           </TableRow>
         );
       })}
