@@ -21,7 +21,7 @@ import * as S from './CreateProjectStyled';
 export const CreateProject = () => {
   const navigate = useNavigate();
   const [isShow, setIsShow] = useState(false);
-  const [stepActive, setStepActive] = useState(1);
+  const [stepActive, setStepActive] = useState(4);
   const [openModal, setOpenModal] = useState(false);
   const { stepsIsDone } = useContext(StepsIsDoneContext);
   const [date, setDate] = useState<projectDateType>(emptyProjectDate);
@@ -91,18 +91,25 @@ export const CreateProject = () => {
               : 'Você perderá as alterações que ainda não foram salvas'}
           </S.Text>
           <S.ContainerButtons>
-            <Button size="100px" onClick={() => navigate('/home')}>
+            <Button
+              size="100px"
+              onClick={() =>
+                stepsIsDone.length ? navigate('/home') : setOpenModal(false)
+              }
+            >
               Não
             </Button>
             <Button
               size="100px"
               onClick={() =>
-                handleSaveInfosByStep({
-                  date,
-                  navigate,
-                  stepsIsDone,
-                  setOpenModal
-                })
+                stepsIsDone.length
+                  ? handleSaveInfosByStep({
+                      date,
+                      navigate,
+                      stepsIsDone,
+                      setOpenModal
+                    })
+                  : navigate('/home')
               }
             >
               Sim

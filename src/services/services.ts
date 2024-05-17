@@ -1,7 +1,9 @@
 import axios from 'axios';
 import {
+  deadlineSummaryType,
   deadlineType,
   handleExpenseProps,
+  landSummaryType,
   landType,
   payloadExpense,
   payloadExpenseType,
@@ -122,7 +124,6 @@ export const listUnits = async (unitId: number) => {
 export const createLands = async (projectId: number, payload: landType) => {
   const formatPayload = {
     ...payload,
-    zoning: parseFloat(payload.zoning),
     area: parseFloat(payload.area.toString()),
     frontage: parseFloat(payload.frontage.toString()),
     totalAmount: parseFloat(payload.totalAmount.toString()),
@@ -168,13 +169,8 @@ export const deleteLands = async (landId: number) => {
     }
   }
 };
-export const editLands = async (
-  projectId: number,
-  landId: number,
-  payload: landType
-) => {
+export const editLands = async (landId: number, payload: landSummaryType) => {
   const body = {
-    projectId,
     ...payload
   };
   try {
@@ -219,10 +215,7 @@ export const createDeadline = async (
 ) => {
   const formatPayload = {
     ...payload,
-    totalDeadlineInMonth: parseFloat(payload.totalDeadlineInMonth.toString()),
-    approvalDeadlineInMonth: parseFloat(
-      payload.approvalDeadlineInMonth.toString()
-    ),
+    totalDeadlineInMonth: payload.totalDeadlineInMonth,
     constructionDeadlineInMonth: parseFloat(
       payload.constructionDeadlineInMonth.toString()
     )
@@ -267,12 +260,10 @@ export const deleteDeadline = async (deadlineId: number) => {
   }
 };
 export const editDeadline = async (
-  projectId: number,
   deadlineId: number,
-  payload: landType
+  payload: deadlineSummaryType
 ) => {
   const body = {
-    projectId,
     ...payload
   };
   try {

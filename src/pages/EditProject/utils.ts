@@ -1,5 +1,10 @@
-import { deleteProject } from '@/services/services';
-import { handleDeleteProjectProps, handleTabsProps } from './@types';
+import { deleteProject, editDeadline, editLands } from '@/services/services';
+import {
+  handleDeleteProjectProps,
+  handleEditDeadlineIdProps,
+  handleEditLandProps,
+  handleTabsProps
+} from './@types';
 
 export const unitSummaryDefault = {
   id: 0,
@@ -16,7 +21,7 @@ export const unitSummaryDefault = {
 
 export const breadCrumbsItems = (name: string) => [
   {
-    path: '',
+    path: '/home',
     label: 'Projetos'
   },
   {
@@ -36,15 +41,15 @@ export const handleTabs = ({ setValue, newValue }: handleTabsProps) => {
 export const handleDeleteProject = async ({
   id,
   navigate,
-  setIsLoad,
+  setLoading,
   setIsDelete,
   setSnackbar,
   setOpenModal
 }: handleDeleteProjectProps) => {
-  setIsLoad(true);
+  setLoading(true);
   try {
     await deleteProject(parseFloat(id));
-    setIsLoad(false);
+    setLoading(false);
     setOpenModal(false);
     setSnackbar({
       isOpen: true,
@@ -56,7 +61,7 @@ export const handleDeleteProject = async ({
     navigate('/home');
   } catch (error) {
     if (error instanceof Error) {
-      setIsLoad(false);
+      setLoading(false);
       setIsDelete(false);
       setOpenModal(false);
       setSnackbar({
@@ -67,5 +72,84 @@ export const handleDeleteProject = async ({
         message: error.message
       });
     }
+  }
+};
+
+export const handleEditLand = async ({
+  landId,
+  payload,
+  setLoading,
+  setSnackbar
+}: handleEditLandProps) => {
+  setLoading(true);
+
+  try {
+    await editLands(landId, payload);
+    setSnackbar({
+      isOpen: true,
+      severity: 'success',
+      vertical: 'top',
+      horizontal: 'right',
+      message: 'Terreno editado com sucesso'
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+export const handleEditDeadline = async ({
+  deadlineId,
+  payload,
+  setLoading,
+  setSnackbar
+}: handleEditDeadlineIdProps) => {
+  setLoading(true);
+
+  try {
+    await editDeadline(deadlineId, payload);
+    setSnackbar({
+      isOpen: true,
+      severity: 'success',
+      vertical: 'top',
+      horizontal: 'right',
+      message: 'Prazos editados com sucesso'
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
+    }
+  } finally {
+    setLoading(false);
   }
 };

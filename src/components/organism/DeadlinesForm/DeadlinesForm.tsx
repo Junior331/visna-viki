@@ -3,11 +3,12 @@ import { useContext, useEffect } from 'react';
 import { Props } from './@types';
 import { FormControl, Grid } from '@mui/material';
 import { MaskType } from '@/utils/types';
-import { typeMask } from '@/utils/utils';
+import { handleKeyDown, typeMask } from '@/utils/utils';
 import { Button, Input } from '@/components/elements';
 import deadlinesFormSchema from './DeadlinesFormSchema';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import * as S from './DeadlinesFormStyled';
+import { handleSumValues } from './utils';
 
 const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
   const { stepsIsDone, setStepsIsDone } = useContext(StepsIsDoneContext);
@@ -21,6 +22,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
           ...values
         }
       });
+
       setStepsIsDone([...stepsIsDone, '3']);
 
       handleStep(4);
@@ -70,12 +72,25 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                 />
               </FormControl>
             </Grid>
+
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <S.Label>Aprovação do projeto (mes)</S.Label>
                 <Input
                   required
-                  onBlur={handleBlur}
+                  onBlur={(e) => {
+                    setFieldValue(
+                      'approvalDeadlineInMonth',
+                      parseFloat(e.target.value)
+                    );
+                    handleSumValues({
+                      value1: parseFloat(e.target.value),
+                      value2: values.endDate,
+                      value3: values.constructionDeadlineInMonth,
+                      fieldName: 'totalDeadlineInMonth',
+                      setFieldValue
+                    });
+                  }}
                   onChange={handleChange}
                   id="approvalDeadlineInMonth"
                   placeholder="Digite os meses"
@@ -93,13 +108,54 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                 />
               </FormControl>
             </Grid>
+
+            <Grid item xs={12} sm={12} md={2} minWidth={250} minHeight={117}>
+              <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                <S.Label>Prazo de lançamento (mes)</S.Label>
+                <Input
+                  required
+                  id="endDate"
+                  onBlur={(e) => {
+                    setFieldValue('endDate', parseFloat(e.target.value));
+                    handleSumValues({
+                      value1: values.approvalDeadlineInMonth,
+                      value2: parseFloat(e.target.value),
+                      value3: values.constructionDeadlineInMonth,
+                      fieldName: 'totalDeadlineInMonth',
+                      setFieldValue
+                    });
+                  }}
+                  value={values.endDate}
+                  onChange={handleChange}
+                  aria-describedby="endDate"
+                  placeholder="Digite os meses"
+                  inputProps={{ style: { fontSize: '1.4rem' } }}
+                  helperText={touched.endDate && errors.endDate}
+                  error={touched.endDate && Boolean(errors.endDate)}
+                />
+              </FormControl>
+            </Grid>
+
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <S.Label>Execução da obra (mes)</S.Label>
                 <Input
                   required
-                  onBlur={handleBlur}
+                  onBlur={(e) => {
+                    setFieldValue(
+                      'constructionDeadlineInMonth',
+                      parseFloat(e.target.value)
+                    );
+                    handleSumValues({
+                      value1: values.approvalDeadlineInMonth,
+                      value2: values.endDate,
+                      value3: parseFloat(e.target.value),
+                      fieldName: 'totalDeadlineInMonth',
+                      setFieldValue
+                    });
+                  }}
                   onChange={handleChange}
+                  onKeyDown={handleKeyDown}
                   placeholder="Digite os meses"
                   id="constructionDeadlineInMonth"
                   value={values.constructionDeadlineInMonth}
@@ -116,16 +172,18 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                 />
               </FormControl>
             </Grid>
+
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <S.Label>Prazo total (mes)</S.Label>
                 <Input
                   required
+                  disabled
                   onBlur={handleBlur}
                   onChange={handleChange}
                   id="totalDeadlineInMonth"
                   placeholder="Digite os meses"
-                  value={values.totalDeadlineInMonth}
+                  value={values.totalDeadlineInMonth || 0}
                   aria-describedby="totalDeadlineInMonth"
                   inputProps={{ style: { fontSize: '1.4rem' } }}
                   helperText={
@@ -135,23 +193,6 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                     touched.totalDeadlineInMonth &&
                     Boolean(errors.totalDeadlineInMonth)
                   }
-                />
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={12} md={2} minWidth={250} minHeight={117}>
-              <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Prazo de lançamento (mes)</S.Label>
-                <Input
-                  required
-                  id="endDate"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.endDate}
-                  aria-describedby="endDate"
-                  placeholder="Digite os meses"
-                  inputProps={{ style: { fontSize: '1.4rem' } }}
-                  helperText={touched.endDate && errors.endDate}
-                  error={touched.endDate && Boolean(errors.endDate)}
                 />
               </FormControl>
             </Grid>

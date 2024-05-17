@@ -19,7 +19,8 @@ export const emptyProjectDate: projectDateType = {
     area: 0,
     name: '',
     state: '',
-    zoning: '',
+    depave: 0,
+    zoning: 0,
     street: '',
     number: '',
     zipCode: '',
@@ -54,11 +55,11 @@ export const emptyProjectDate: projectDateType = {
     ]
   },
   deadline: {
-    endDate: '',
+    endDate: 0,
     startDate: '',
-    totalDeadlineInMonth: '',
-    approvalDeadlineInMonth: '',
-    constructionDeadlineInMonth: ''
+    totalDeadlineInMonth: 0,
+    approvalDeadlineInMonth: 0,
+    constructionDeadlineInMonth: 0
   }
 };
 
@@ -105,14 +106,15 @@ export const emptyProjectInfo: projectInfoType = {
   },
   land: {
     id: 0,
+    depave: 0,
+    area: 0,
     addressId: 0,
     topographyTypeId: 0,
-    area: 0,
     frontage: 0,
     amountPerMeter: 0,
     totalAmount: 0,
     projectId: 0,
-    zoning: '',
+    zoning: 0,
     address: {
       id: 0,
       zipCode: '',
@@ -132,7 +134,7 @@ export const emptyProjectInfo: projectInfoType = {
     constructionDeadlineInMonth: 0,
     projectLaunchDeadlineInMonth: null,
     startDate: '',
-    endDate: null
+    endDate: 0
   }
 };
 

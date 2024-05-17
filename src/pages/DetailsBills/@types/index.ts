@@ -3,12 +3,16 @@ import { Dispatch, SetStateAction } from 'react';
 import { Snackbar } from '@/contexts/Snackbar';
 import { shallowCostType, incorporationFeeType } from '@/pages/Bills/@types';
 import { payloadExpense } from '@/utils/types';
+import { expense } from '@/pages/ListBills/@types';
 
-export type listBillsProps = {
-  id: number;
-  item: shallowCostType | incorporationFeeType;
+export type handleGenericProps = {
+  setLoading: Dispatch<SetStateAction<boolean>>;
   setSnackbar: (snackbarData: Snackbar) => void;
-  setLoading: Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type listBillsProps = handleGenericProps & {
+  idProject: string;
+  item: shallowCostType | incorporationFeeType;
   setDate: Dispatch<SetStateAction<shallowCostType | incorporationFeeType>>;
 };
 
@@ -49,6 +53,18 @@ export type initialState = {
     rows: row[];
   };
 };
+export type rowsDataType = {
+  name: string;
+  expenseId: number;
+  typesIdCost: number;
+  typesIdExpense: number;
+};
+export type expenseType = {
+  id: string;
+  name: string;
+  expenses: expense[];
+};
+
 export type handleSumTotalValueProps = {
   value1: string;
   value2: string;
@@ -59,8 +75,19 @@ export type handleSumTotalValueProps = {
     shouldValidate?: boolean | undefined
   ) => void;
 };
-export type createNewCostProps = {
+export type createNewCostProps = handleGenericProps & {
   payload: payloadExpense;
-  setSnackbar: (snackbarData: Snackbar) => void;
-  setLoading: Dispatch<React.SetStateAction<boolean>>;
+};
+export type listCostsProps = handleGenericProps & {
+  setList: Dispatch<SetStateAction<rowsDataType[]>>;
+};
+export type handleFilterProps = {
+  typesCost: number;
+  list: rowsDataType[];
+  typesExpense: number;
+};
+export type breadCrumbsItemsProps = {
+  name: string;
+  bill: string;
+  idProject: string;
 };

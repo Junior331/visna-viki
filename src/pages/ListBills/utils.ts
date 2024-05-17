@@ -30,7 +30,7 @@ export const listCosts = async ({
   setLoading(true);
 
   try {
-    const result = (await getBills(false)) as costsType;
+    const result = (await getBills()) as costsType;
 
     const listExpenses = Object.keys(result.costs).reduce<rowsDataType[]>(
       (acc, costKey) => {

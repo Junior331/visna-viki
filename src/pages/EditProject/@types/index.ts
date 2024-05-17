@@ -1,12 +1,21 @@
 import { Dispatch, SetStateAction } from 'react';
 import { NavigateFunction } from 'react-router-dom';
 import { Snackbar } from '@/contexts/Snackbar';
-import { projectInfoType } from '@/utils/types';
+import {
+  deadlineSummaryType,
+  landSummaryType,
+  projectInfoType
+} from '@/utils/types';
 
 export type tabPanelProps = {
   value: number;
   index: number;
   children?: React.ReactNode;
+};
+
+export type handleGenericProps = {
+  setLoading: Dispatch<SetStateAction<boolean>>;
+  setSnackbar: (snackbarData: Snackbar) => void;
 };
 
 export type handleTabsProps = {
@@ -19,11 +28,18 @@ export type getInfoProjectProps = {
   setDate: Dispatch<SetStateAction<projectInfoType>>;
 };
 
-export type handleDeleteProjectProps = {
+export type handleDeleteProjectProps = handleGenericProps & {
   id: string;
   navigate: NavigateFunction;
-  setSnackbar: (snackbarData: Snackbar) => void;
-  setIsLoad: Dispatch<React.SetStateAction<boolean>>;
   setIsDelete: Dispatch<React.SetStateAction<boolean>>;
   setOpenModal: Dispatch<React.SetStateAction<boolean>>;
+};
+
+export type handleEditLandProps = handleGenericProps & {
+  landId: number;
+  payload: landSummaryType;
+};
+export type handleEditDeadlineIdProps = handleGenericProps & {
+  deadlineId: number;
+  payload: deadlineSummaryType;
 };

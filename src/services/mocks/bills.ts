@@ -1,6 +1,4 @@
-import { costsType } from '@/pages/Bills/@types';
-
-export const bills: costsType = {
+export const bills = {
   costs: {
     shallowCost: {
       id: 1,

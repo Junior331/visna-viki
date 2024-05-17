@@ -15,11 +15,11 @@ import { deleteExpenseTypes, editExpenseTypes } from '@/services/services';
 
 export const breadCrumbsItems = (name: string) => [
   {
-    path: '',
+    path: '/listbills',
     label: `Contas`
   },
   {
-    path: '',
+    path: '/listbills',
     label: 'Despesas'
   },
   {
@@ -62,7 +62,7 @@ export const listCosts = async ({
 }: listCostsProps) => {
   setLoading(true);
   try {
-    const result = (await getBills(false)) as costsType;
+    const result = (await getBills()) as costsType;
     const typesCostOptions: { id: number; name: string }[] = [];
     const typesExpenseOptions: { id: number; name: string }[] = [];
 

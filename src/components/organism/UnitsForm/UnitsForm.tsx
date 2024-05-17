@@ -7,7 +7,7 @@ import { Props } from './@types';
 import { MaskType } from '@/utils/types';
 import unitsFormSchema from './UnitsFormSchema';
 import { Button, Input } from '@/components/elements';
-import { formatCurrency, typeMask } from '@/utils/utils';
+import { formatCurrency, handleKeyDown, typeMask } from '@/utils/utils';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import { calculateTUID, handleSumValues, unitDefault } from './utils';
 import * as S from './UnitsFormStyled';
@@ -514,6 +514,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     onBlur={handleBlur}
                     id="totalToBeBuiltArea"
                     onChange={handleChange}
+                    onKeyDown={handleKeyDown}
                     value={values.totalToBeBuiltArea}
                     aria-describedby="totalToBeBuiltArea"
                     placeholder="Digite a quantidade"

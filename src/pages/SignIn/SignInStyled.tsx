@@ -22,7 +22,7 @@ export const Text = styled.p`
   display: flex;
   flex-wrap: wrap;
   max-width: 380px;
-  color: ${({ theme }) => theme.palette.color.medium};
+  color: ${({ theme }) => theme.palette.color.dark};
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
 `;
 
@@ -45,7 +45,7 @@ export const Label = styled.label`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  color: ${({ theme }) => theme.palette.color.medium};
+  color: ${({ theme }) => theme.palette.color.dark};
   font-size: ${({ theme }) => theme.typography.fontSize}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightLight};
 `;

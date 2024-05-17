@@ -18,12 +18,12 @@ export const landFormSchema = yup.object().shape({
     .min(2, 'Estado inválido, deve ter 2 caracteres')
     .required('Campo obrigatório'),
   number: yup.string().required('Campo obrigatório'),
-  zipCode: yup.string().min(8, 'Cep inválido').required('Campo obrigatório'),
   area: yup.string().required('Campo obrigatório'),
   frontage: yup.string().required('Campo obrigatório'),
   topographyTypeId: yup.string().required('Campo obrigatório'),
   amountPerMeter: yup.string().required('Campo obrigatório'),
   totalAmount: yup.string().required('Campo obrigatório'),
+  depave: yup.string().required('Campo obrigatório'),
   zoning: yup.string().required('Campo obrigatório')
 });
 

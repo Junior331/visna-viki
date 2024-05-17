@@ -7,7 +7,7 @@ import { Props } from './@types';
 import { MaskType } from '@/utils/types';
 import { handleSumValues } from '../UnitsForm/utils';
 import { Button, Input } from '@/components/elements';
-import { formatCurrency, typeMask } from '@/utils/utils';
+import { formatCurrency, handleKeyDown, typeMask } from '@/utils/utils';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import { landFormSchema, projectNameFormSchema } from './Schema';
 import * as S from './LandFormStyled';
@@ -240,22 +240,19 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <S.Label>Cep</S.Label>
                     <Input
-                      required
                       id="zipCode"
                       onChange={handleChange}
                       aria-describedby="zipCode"
                       placeholder="Digite o Cep"
                       value={typeMask(MaskType.CEP, values.zipCode)}
                       inputProps={{ style: { fontSize: '1.4rem' } }}
-                      helperText={touched.zipCode && errors.zipCode}
-                      error={touched.zipCode && Boolean(errors.zipCode)}
                     />
                   </FormControl>
                 </Grid>
               </S.ContainerInputs>
 
               <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }} mb={2}>
-                <Grid item xs={12} sm={6} md={3} minWidth={200} minHeight={117}>
+                <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <S.Label>Área total (m²)</S.Label>
                     <Input
@@ -281,7 +278,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3} minWidth={200} minHeight={117}>
+                <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <S.Label>Testada (m²)</S.Label>
                     <Input
@@ -298,6 +295,25 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                       )}
                       error={touched.frontage && Boolean(errors.frontage)}
                     />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Depave</S.Label>
+
+                    <Select
+                      required
+                      displayEmpty
+                      name="depave"
+                      onChange={handleChange}
+                      className="SelectComponent"
+                      value={values.depave}
+                      IconComponent={KeyboardArrowDownRounded}
+                      inputProps={{ 'aria-label': 'Without label' }}
+                    >
+                      <MenuItem value={1}>Sim</MenuItem>
+                      <MenuItem value={0}>Não</MenuItem>
+                    </Select>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} minWidth={200} minHeight={117}>
@@ -343,6 +359,8 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                       <MenuItem value={2}>(ZC)</MenuItem>
                       <MenuItem value={3}>(ZEU)</MenuItem>
                       <MenuItem value={4}>(ZER)</MenuItem>
+                      <MenuItem value={5}>(Zcore)</MenuItem>
+                      <MenuItem value={6}>(Operação Urbana)</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -365,6 +383,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                         });
                       }}
                       onChange={handleChange}
+                      onKeyDown={handleKeyDown}
                       placeholder="Digite o valor"
                       value={formatCurrency(values.amountPerMeter.toString())}
                       aria-describedby="amountPerMeter"

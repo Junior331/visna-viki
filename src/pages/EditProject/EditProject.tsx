@@ -17,6 +17,7 @@ import {
   handleSumValues,
   unitDefault
 } from '@/components/organism/UnitsForm/utils';
+import { handleSumValues as handleSumValuesV2 } from '@/components/organism/DeadlinesForm/utils';
 import { tabPanelProps } from './@types';
 import { getInfoProject } from './services';
 import { icons } from '@/assets/images/icons';
@@ -25,8 +26,19 @@ import { emptyProjectInfo } from '@/utils/emptys';
 import { GenericModal } from '@/components/modules';
 import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
-import { breadCrumbsItems, handleDeleteProject, handleTabs } from './utils';
-import { convertToParams, formatCurrency, typeMask } from '@/utils/utils';
+import {
+  breadCrumbsItems,
+  handleDeleteProject,
+  handleEditDeadline,
+  handleEditLand,
+  handleTabs
+} from './utils';
+import {
+  convertToParams,
+  formatCurrency,
+  handleKeyDown,
+  typeMask
+} from '@/utils/utils';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import { MaskType, projectInfoType } from '@/utils/types';
 import unitsFormSchema from '@/components/organism/UnitsForm/UnitsFormSchema';
@@ -63,7 +75,7 @@ export const EditProject = () => {
   const navigate = useNavigate();
   const [value, setValue] = useState(0);
   const [searchParams] = useSearchParams();
-  const [isLoad, setIsLoad] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
@@ -73,7 +85,17 @@ export const EditProject = () => {
   const formikLand = useFormik({
     initialValues: date.land,
     onSubmit: async (values) => {
-      console.log('values ::', values);
+      const payload = {
+        ...values,
+        projectId: parseFloat(id)
+      };
+      const landId = values.id;
+      handleEditLand({
+        landId,
+        payload,
+        setLoading,
+        setSnackbar
+      });
     }
   });
 
@@ -88,7 +110,17 @@ export const EditProject = () => {
   const formikDeadline = useFormik({
     initialValues: date.deadline,
     onSubmit: async (values) => {
-      console.log('values ::', values);
+      const deadlineId = values.id;
+      const payload = {
+        ...values,
+        projectId: parseFloat(id)
+      };
+      handleEditDeadline({
+        deadlineId,
+        payload,
+        setLoading,
+        setSnackbar
+      });
     }
   });
 
@@ -185,12 +217,12 @@ export const EditProject = () => {
                       <S.Label>Endereço</S.Label>
                       <Input
                         required
-                        id="street"
                         onBlur={handleBlur}
-                        value={values.address.street}
+                        id="address.street"
                         onChange={handleChange}
-                        aria-describedby="street"
+                        value={values.address.street}
                         placeholder="Digite o endereço"
+                        aria-describedby="address.street"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
                       />
                     </FormControl>
@@ -210,12 +242,12 @@ export const EditProject = () => {
                       <S.Label>Bairro</S.Label>
                       <Input
                         required
-                        id="neighborhood"
                         onBlur={handleBlur}
                         onChange={handleChange}
+                        id="address.neighborhood"
                         placeholder="Digite o bairro"
-                        aria-describedby="neighborhood"
                         value={values.address.neighborhood}
+                        aria-describedby="address.neighborhood"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
                       />
                     </FormControl>
@@ -236,11 +268,11 @@ export const EditProject = () => {
                       <Input
                         required
                         id="country"
-                        name="country"
+                        name="address.country"
                         onChange={handleChange}
-                        aria-describedby="country"
                         placeholder="Digite o país"
                         value={values.address.country}
+                        aria-describedby="address.country"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
                       />
                     </FormControl>
@@ -259,12 +291,12 @@ export const EditProject = () => {
                     >
                       <S.Label>Estado</S.Label>
                       <Input
-                        id="state"
                         required
-                        value={values.address.state}
+                        id="address.state"
                         onChange={handleChange}
-                        aria-describedby="state"
+                        value={values.address.state}
                         placeholder="Digite o estado"
+                        aria-describedby="address.state"
                         inputProps={{
                           style: { fontSize: '1.4rem' },
                           maxLength: 2
@@ -286,12 +318,12 @@ export const EditProject = () => {
                     >
                       <S.Label>Número</S.Label>
                       <Input
-                        id="number"
                         required
+                        id="address.number"
                         onChange={handleChange}
-                        aria-describedby="number"
                         placeholder="Digite o número"
                         value={values.address.number}
+                        aria-describedby="address.number"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
                       />
                     </FormControl>
@@ -311,10 +343,10 @@ export const EditProject = () => {
                       <S.Label>Cep</S.Label>
                       <Input
                         required
-                        id="zipCode"
+                        id="address.zipCode"
                         onChange={handleChange}
-                        aria-describedby="zipCode"
                         placeholder="Digite o Cep"
+                        aria-describedby="address.zipCode"
                         value={typeMask(MaskType.CEP, values.address.zipCode)}
                         inputProps={{ style: { fontSize: '1.4rem' } }}
                       />
@@ -378,6 +410,35 @@ export const EditProject = () => {
                       />
                     </FormControl>
                   </Grid>
+
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    md={2}
+                    minWidth={200}
+                    minHeight={117}
+                  >
+                    <FormControl
+                      sx={{ m: 1, width: '25ch' }}
+                      variant="outlined"
+                    >
+                      <S.Label>Depave</S.Label>
+                      <Select
+                        required
+                        displayEmpty
+                        name="depave"
+                        value={values.depave}
+                        onChange={handleChange}
+                        className="SelectComponent"
+                        IconComponent={KeyboardArrowDownRounded}
+                        inputProps={{ 'aria-label': 'Without label' }}
+                      >
+                        <MenuItem value={1}>Sim</MenuItem>
+                        <MenuItem value={0}>Não</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
                   <Grid
                     item
                     xs={12}
@@ -428,6 +489,7 @@ export const EditProject = () => {
                         required
                         id="amountPerMeter"
                         onChange={handleChange}
+                        onKeyDown={handleKeyDown}
                         placeholder="Digite o valor"
                         value={formatCurrency(values.amountPerMeter.toString())}
                         aria-describedby="amountPerMeter"
@@ -470,6 +532,7 @@ export const EditProject = () => {
                       />
                     </FormControl>
                   </Grid>
+
                   <Grid
                     item
                     xs={12}
@@ -1081,6 +1144,7 @@ export const EditProject = () => {
                             onBlur={handleBlur}
                             id="totalToBeBuiltArea"
                             onChange={handleChange}
+                            onKeyDown={handleKeyDown}
                             value={formikUnit.values.totalToBeBuiltArea}
                             aria-describedby="totalToBeBuiltArea"
                             placeholder="Digite a quantidade"
@@ -1214,13 +1278,14 @@ export const EditProject = () => {
                           MaskType.DATE,
                           formikDeadline.values.startDate
                         )}
-                        onChange={handleChange}
+                        onChange={(e) => formikDeadline.handleChange(e)}
                         aria-describedby="startDate"
                         placeholder="Digite a Data"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
                       />
                     </FormControl>
                   </Grid>
+
                   <Grid
                     item
                     xs={12}
@@ -1236,68 +1301,30 @@ export const EditProject = () => {
                       <S.Label>Aprovação do projeto (mes)</S.Label>
                       <Input
                         required
-                        onBlur={handleBlur}
-                        onChange={handleChange}
+                        onBlur={(e) => {
+                          formikDeadline.setFieldValue(
+                            'approvalDeadlineInMonth',
+                            parseFloat(e.target.value)
+                          );
+                          handleSumValuesV2({
+                            value1: parseFloat(e.target.value),
+                            value2: formikDeadline.values.endDate,
+                            value3:
+                              formikDeadline.values.constructionDeadlineInMonth,
+                            fieldName: 'totalDeadlineInMonth',
+                            setFieldValue: formikDeadline.setFieldValue
+                          });
+                        }}
                         id="approvalDeadlineInMonth"
                         placeholder="Digite os meses"
-                        value={formikDeadline.values.approvalDeadlineInMonth}
                         aria-describedby="approvalDeadlineInMonth"
+                        onChange={(e) => formikDeadline.handleChange(e)}
+                        value={formikDeadline.values.approvalDeadlineInMonth}
                         inputProps={{ style: { fontSize: '1.4rem' } }}
                       />
                     </FormControl>
                   </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={12}
-                    md={2.5}
-                    minWidth={250}
-                    minHeight={117}
-                  >
-                    <FormControl
-                      sx={{ m: 1, width: '25ch' }}
-                      variant="outlined"
-                    >
-                      <S.Label>Execução da obra (mes)</S.Label>
-                      <Input
-                        required
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        placeholder="Digite os meses"
-                        id="constructionDeadlineInMonth"
-                        value={
-                          formikDeadline.values.constructionDeadlineInMonth
-                        }
-                        aria-describedby="constructionDeadlineInMonth"
-                        inputProps={{ style: { fontSize: '1.4rem' } }}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    sm={12}
-                    md={2.5}
-                    minWidth={250}
-                    minHeight={117}
-                  >
-                    <FormControl
-                      sx={{ m: 1, width: '25ch' }}
-                      variant="outlined"
-                    >
-                      <S.Label>Prazo total (mes)</S.Label>
-                      <Input
-                        required
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        id="totalDeadlineInMonth"
-                        placeholder="Digite os meses"
-                        value={formikDeadline.values.totalDeadlineInMonth}
-                        aria-describedby="totalDeadlineInMonth"
-                        inputProps={{ style: { fontSize: '1.4rem' } }}
-                      />
-                    </FormControl>
-                  </Grid>
+
                   <Grid
                     item
                     xs={12}
@@ -1314,20 +1341,96 @@ export const EditProject = () => {
                       <Input
                         required
                         id="endDate"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
+                        onBlur={(e) => {
+                          formikDeadline.setFieldValue(
+                            'endDate',
+                            parseFloat(e.target.value)
+                          );
+                          handleSumValuesV2({
+                            value1:
+                              formikDeadline.values.approvalDeadlineInMonth,
+                            value2: parseFloat(e.target.value),
+                            value3:
+                              formikDeadline.values.constructionDeadlineInMonth,
+                            fieldName: 'totalDeadlineInMonth',
+                            setFieldValue: formikDeadline.setFieldValue
+                          });
+                        }}
+                        onChange={(e) => formikDeadline.handleChange(e)}
                         value={formikDeadline.values.endDate}
                         aria-describedby="endDate"
                         placeholder="Digite os meses"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
-                        helperText={
-                          formikDeadline.touched.endDate &&
-                          formikDeadline.errors.endDate
+                      />
+                    </FormControl>
+                  </Grid>
+
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={2.5}
+                    minWidth={250}
+                    minHeight={117}
+                  >
+                    <FormControl
+                      sx={{ m: 1, width: '25ch' }}
+                      variant="outlined"
+                    >
+                      <S.Label>Execução da obra (mes)</S.Label>
+                      <Input
+                        required
+                        onBlur={(e) => {
+                          formikDeadline.setFieldValue(
+                            'constructionDeadlineInMonth',
+                            parseFloat(e.target.value)
+                          );
+
+                          handleSumValuesV2({
+                            value1:
+                              formikDeadline.values.approvalDeadlineInMonth,
+                            value2: formikDeadline.values.endDate,
+                            value3: parseFloat(e.target.value),
+                            fieldName: 'totalDeadlineInMonth',
+                            setFieldValue: formikDeadline.setFieldValue
+                          });
+                        }}
+                        onKeyDown={handleKeyDown}
+                        onChange={(e) => formikDeadline.handleChange(e)}
+                        placeholder="Digite os meses"
+                        id="constructionDeadlineInMonth"
+                        value={
+                          formikDeadline.values.constructionDeadlineInMonth
                         }
-                        error={
-                          formikDeadline.touched.endDate &&
-                          Boolean(formikDeadline.errors.endDate)
-                        }
+                        aria-describedby="constructionDeadlineInMonth"
+                        inputProps={{ style: { fontSize: '1.4rem' } }}
+                      />
+                    </FormControl>
+                  </Grid>
+
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={2.5}
+                    minWidth={250}
+                    minHeight={117}
+                  >
+                    <FormControl
+                      sx={{ m: 1, width: '25ch' }}
+                      variant="outlined"
+                    >
+                      <S.Label>Prazo total (mes)</S.Label>
+                      <Input
+                        required
+                        disabled
+                        onBlur={handleBlur}
+                        onChange={(e) => formikDeadline.handleChange(e)}
+                        id="totalDeadlineInMonth"
+                        placeholder="Digite os meses"
+                        value={formikDeadline.values.totalDeadlineInMonth}
+                        aria-describedby="totalDeadlineInMonth"
+                        inputProps={{ style: { fontSize: '1.4rem' } }}
                       />
                     </FormControl>
                   </Grid>
@@ -1389,7 +1492,7 @@ export const EditProject = () => {
           <S.ContainerButtons>
             <Button
               size="100px"
-              disabled={isLoad}
+              disabled={loading}
               onClick={() => {
                 setIsDelete(false);
                 setOpenModal(false);
@@ -1398,15 +1501,15 @@ export const EditProject = () => {
               Não
             </Button>
             <Button
-              loading={isLoad}
-              disabled={isLoad}
+              loading={loading}
+              disabled={loading}
               size="100px"
               onClick={() =>
                 isDelete
                   ? handleDeleteProject({
                       id,
                       navigate,
-                      setIsLoad,
+                      setLoading,
                       setIsDelete,
                       setSnackbar,
                       setOpenModal

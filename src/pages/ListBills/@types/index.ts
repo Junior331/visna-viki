@@ -39,6 +39,12 @@ export enum typesExpenses {
   'Despesas Administrativas' = 5,
   'Taxa Administrativa' = 6
 }
+export enum unitExpenseTypes {
+  unitType1 = '%',
+  unitType2 = 'VB',
+  unitType3 = 'mes',
+  unitType4 = 'm²'
+}
 export type handleGenericProps = {
   setLoading: Dispatch<SetStateAction<boolean>>;
   setSnackbar: (snackbarData: Snackbar) => void;
