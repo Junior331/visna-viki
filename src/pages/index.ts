@@ -3,6 +3,7 @@ import { Bills } from './Bills';
 import { SignIn } from './SignIn';
 import { SignUp } from './SignUp';
 import { Expense } from './Expense';
+import { Aportes } from './Aportes';
 import { ListBills } from './ListBills';
 import { EditProject } from './EditProject';
 import { DetailsBills } from './DetailsBills';
@@ -16,6 +17,7 @@ export {
   SignIn,
   SignUp,
   Expense,
+  Aportes,
   ListBills,
   EditProject,
   DetailsBills,

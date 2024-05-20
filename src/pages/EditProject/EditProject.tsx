@@ -196,6 +196,12 @@ export const EditProject = () => {
                   }
                 />
                 <Tab label="Rentabilidade" {...a11yProps(5)} disabled />
+                <Tab
+                  label="Aportes"
+                  onClick={() =>
+                    navigate(`/aportes?${convertToParams({ id, name })}`)
+                  }
+                />
               </Tabs>
             </Box>
 
