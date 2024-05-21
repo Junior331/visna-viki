@@ -5,14 +5,26 @@ import { icons } from '@/assets/images/icons';
 import { Button } from '@/components/elements';
 import { convertToParams } from '@/utils/utils';
 import { GenericModal } from '@/components/modules';
-import { HeaderBreadcrumbs, Layout } from '@/components/organism';
+import { HeaderBreadcrumbs, Layout, Table } from '@/components/organism';
 import * as S from './AportesStyled';
+import { mocks } from '@/services/mocks';
+import { useFormik } from 'formik';
 
 export const Aportes = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [openModal, setOpenModal] = useState(false);
   const { id, name } = Object.fromEntries([...searchParams]);
+
+   const formik = useFormik({
+    initialValues: {
+      typesCost: 0,
+      nameExpense: '',
+      typesExpense: 0
+    },
+    onSubmit: async () => {
+    }
+  });
   return (
     <Layout>
       <S.AportesContainer>
@@ -53,6 +65,12 @@ export const Aportes = () => {
           </S.ContainerButtons>
         </S.ContainerMessage>
       </GenericModal>
+
+      <S.ContainerExpenses>
+        <Table formik={formik} rows={mocks.rowsAportes} columns={mocks.columnsAportes} />
+
+
+      </S.ContainerExpenses>
     </Layout>
   );
 };

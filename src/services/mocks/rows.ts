@@ -82,3 +82,47 @@ export const rowsExpense: rowData[] = [
     action: '-'
   }
 ];
+export const rowsAportes: rowData[] = [
+  {
+    date: '12/01/2023.',
+    Observation: 'Compra do Terreno',
+    PhaseOne: 'R$ -',
+    PhaseTwo: 'R$ -',
+    TotalContributions: 'R$ -'
+  },
+  {
+    date: '11/01/2024',
+    Observation: 'Aprovação Projeto',
+    PhaseOne: 'R$ 2.965.791,36',
+    PhaseTwo: 'R$ 1,502,495.89',
+    TotalContributions: 'R$ 4,468,287.25'
+  },
+  {
+    date: '12/01/2024',
+    Observation: 'Inicio da Obra',
+    PhaseOne: 'R$ 353.191,36',
+    PhaseTwo: 'R$ 1,348,211.96 ',
+    TotalContributions: 'R$ 1,701,403.32'
+  },
+  {
+    date: '09/01/2025',
+    Observation: 'Meio da obra',
+    PhaseOne: 'R$ 60.000,00',
+    PhaseTwo: 'R$ 1.156.111,96',
+    TotalContributions: 'R$ 1,156,111.96 '
+  },
+  {
+    date: '07/01/2026',
+    Observation: 'Termino Obra',
+    PhaseOne: 'R$ 60.000,00',
+    PhaseTwo: 'R$ 1.181.111,96',
+    TotalContributions: 'R$ 1.241.111,96'
+  },
+  {
+    date: '08/01/2026',
+    Observation: 'Inicio Vendas',
+    PhaseOne: 'R$ 60.000,00',
+    PhaseTwo: 'R$ 230.322,86 	',
+    TotalContributions: 'R$ 290.322,86'
+  }
+];

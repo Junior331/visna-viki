@@ -58,3 +58,30 @@ export const ContainerButtons = styled(GenericContainer)`
   align-items: center;
   justify-content: center;
 `;
+
+export const ContainerExpenses = styled(GenericContainer)`
+  gap: 0px;
+  flex-direction: column;
+  > div:first-child {
+    padding: 0;
+  }
+  > div:last-child {
+    margin-top: -1px;
+    padding: 20px 20px 18px;
+  }
+`;
+export const FooterExpense = styled(GenericContainer)`
+  gap: 10px;
+  padding-top: 15px;
+  justify-content: space-between;
+  border-top: 2px solid #ebe9f1;
+
+  h2 {
+    color: ${({ theme }) => theme.palette.color.medium};
+  }
+
+  p {
+    color: #28c76f;
+    font-weight: ${({ theme }) => theme.typography.fontWeightRegular + 100};
+  }
+`;

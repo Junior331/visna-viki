@@ -2,8 +2,10 @@ import { rows } from './rows';
 import { bills } from './bills';
 import { columns } from './columns';
 import { rowsExpense } from './rows';
+import { rowsAportes } from "./rows";
 import { projects } from './projects';
 import { columnsExpense } from './columns';
+import { columnsAportes } from "./columns";
 
 export const mocks = {
   rows,
@@ -11,5 +13,8 @@ export const mocks = {
   columns,
   projects,
   rowsExpense,
-  columnsExpense
+  rowsAportes,
+  columnsAportes,
+  columnsExpense,
+
 };
