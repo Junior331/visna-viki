@@ -13,9 +13,9 @@ export const emptyInfo = (info: string | number | genericObjType) =>
   'name' in info &&
   'expenses' in info;
 
-export const breadCrumbsItems = (name: string) => [
+export const breadCrumbsItems = (id: string, name: string) => [
   {
-    path: '',
+    path: `/edit?${convertToParams({ id, name })}`,
     label: `${name}`
   },
   {

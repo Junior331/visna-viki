@@ -32,3 +32,21 @@ export const columnsExpense: columnType[] = [
     label: 'AÇÃO'
   }
 ];
+export const columnsAportes: columnType[] = [
+  {
+    label: 'Data'
+  },
+  {
+    label: 'Observação '
+  },
+  {
+    label: 'Fase 1'
+  },
+  {
+    label: 'Fase 2'
+  },
+  {
+    label: 'Total de Aportes'
+  }
+
+];

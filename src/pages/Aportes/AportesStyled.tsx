@@ -7,31 +7,22 @@ export const GenericContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
 `;
-export const ContainerBreadcrumbs = styled(GenericContainer)`
-  width: auto;
-  height: 100%;
-  align-items: center;
-
-  .MuiTypography-root {
-    cursor: context-menu;
-    color: ${({ theme }) => theme.palette.color.light} !important;
-    font-size: ${({ theme }) => theme.typography.fontSize}rem !important;
-  }
-  > nav {
-    > ol {
-      > li:last-child {
-        > span {
-          color: ${({ theme }) => theme.palette.color.dark}!important;
-          font-weight: ${({ theme }) =>
-            theme.typography.fontWeightRegular}!important;
-        }
-      }
-    }
-  }
-  .MuiLink-root {
-    cursor: pointer;
-    text-decoration: none;
-  }
+export const AportesContainer = styled(GenericContainer)`
+  gap: 21px;
+  padding: 20px;
+  flex-direction: column;
+`;
+export const Header = styled(GenericContainer)`
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+  justify-content: space-between;
+  border-bottom: 2px solid #ebe9f1;
+`;
+export const Content = styled(GenericContainer)`
+  gap: 20px;
+  padding: 0 20px;
+  flex-direction: column;
 `;
 export const ContainerMessage = styled(GenericContainer)`
   align-items: center;
@@ -49,7 +40,6 @@ export const ContainerMessage = styled(GenericContainer)`
     }
   }
 `;
-export const Icon = styled.img``;
 export const Title = styled.h2`
   letter-spacing: 1px;
   color: ${({ theme }) => theme.palette.color.dark};
@@ -61,9 +51,37 @@ export const Text = styled.p`
   color: ${({ theme }) => theme.palette.color.dark};
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
 `;
+export const Icon = styled.img``;
 export const ContainerButtons = styled(GenericContainer)`
   gap: 30px;
   margin-top: 30px;
   align-items: center;
   justify-content: center;
+`;
+
+export const ContainerExpenses = styled(GenericContainer)`
+  gap: 0px;
+  flex-direction: column;
+  > div:first-child {
+    padding: 0;
+  }
+  > div:last-child {
+    margin-top: -1px;
+    padding: 20px 20px 18px;
+  }
+`;
+export const FooterExpense = styled(GenericContainer)`
+  gap: 10px;
+  padding-top: 15px;
+  justify-content: space-between;
+  border-top: 2px solid #ebe9f1;
+
+  h2 {
+    color: ${({ theme }) => theme.palette.color.medium};
+  }
+
+  p {
+    color: #28c76f;
+    font-weight: ${({ theme }) => theme.typography.fontWeightRegular + 100};
+  }
 `;

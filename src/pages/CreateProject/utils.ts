@@ -8,7 +8,7 @@ import { handleSaveInfosByStepProps } from './@types';
 
 export const breadCrumbsItems = (name: string) => [
   {
-    path: '',
+    path: '/home',
     label: 'Projetos'
   },
   {

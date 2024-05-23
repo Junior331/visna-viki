@@ -34,8 +34,6 @@ const TableBody = ({
 
   const { handleSubmit, setFieldValue, setValues, values } = formik;
 
-  const List = values.land ? values[cost?.type as string]?.rows || [] : rows;
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     fieldName: string,
@@ -71,7 +69,7 @@ const TableBody = ({
 
   return (
     <MuiTableBody>
-      {List.map((row: any, index: number) => {
+      {rows.map((row: any, index: number) => {
         return (
           <TableRow key={index}>
             {Object.keys(row)

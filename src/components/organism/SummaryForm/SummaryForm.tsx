@@ -115,6 +115,16 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                   </S.Text>
                 </S.ContainerText>
               </Grid>
+              <Grid item xs={12} sm={12} md={2.9} minWidth={320}>
+                <S.ContainerText>
+                  <S.Title variant="h6" gutterBottom>
+                    Depave
+                  </S.Title>
+                  <S.Text variant="body2" gutterBottom>
+                    {date.lands.depave}
+                  </S.Text>
+                </S.ContainerText>
+              </Grid>
               <Grid item xs={12} sm={12} md={2.9} minWidth={166}>
                 <S.ContainerText>
                   <S.Title variant="h6" gutterBottom>
@@ -145,8 +155,6 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                   </S.Text>
                 </S.ContainerText>
               </Grid>
-            </Grid>
-            <Grid container rowGap={2} columnGap={1}>
               <Grid item xs={12} sm={12} md={2.9} minWidth={320}>
                 <S.ContainerText>
                   <S.Title variant="h6" gutterBottom>

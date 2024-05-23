@@ -5,6 +5,7 @@ import {
   SignIn,
   SignUp,
   Expense,
+  Aportes,
   ListBills,
   EditProject,
   DetailsBills,
@@ -18,9 +19,10 @@ export const AppRoutes = () => {
     <Routes>
       <Route index element={<SignIn />} />
       <Route path="/home" element={<Home />} />
-      <Route path="/expense" element={<Expense />} />
       <Route path="/bills" element={<Bills />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/aportes" element={<Aportes />} />
+      <Route path="/expense" element={<Expense />} />
       <Route path="/edit" element={<EditProject />} />
       <Route path="/listbills" element={<ListBills />} />
       <Route path="/details" element={<DetailsBills />} />

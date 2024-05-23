@@ -22,7 +22,7 @@ export const Text = styled.p`
   display: flex;
   flex-wrap: wrap;
   max-width: 380px;
-  color: ${({ theme }) => theme.palette.color.medium};
+  color: ${({ theme }) => theme.palette.color.dark};
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
 `;
 export const Form = styled.form`
@@ -40,7 +40,7 @@ export const Form = styled.form`
   }
 `;
 export const Label = styled.label`
-  color: ${({ theme }) => theme.palette.color.medium};
+  color: ${({ theme }) => theme.palette.color.dark};
   font-size: ${({ theme }) => theme.typography.fontSize}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightLight};
 `;

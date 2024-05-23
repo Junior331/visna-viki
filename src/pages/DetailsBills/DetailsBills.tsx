@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import {
   Box,
-  Divider,
   FormControl,
   FormHelperText,
   Grid,
@@ -17,12 +16,13 @@ import {
 import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { Layout, Table } from '@/components/organism';
 import {
-  handleEdit,
   breadCrumbsItems,
   listDetailsBill,
   initialValues,
   handleSumTotalValue,
-  createNewCost
+  createNewCost,
+  listCosts,
+  handleFilter
 } from './utils';
 import { emptyCosts } from '@/utils/emptys';
 import { icons } from '@/assets/images/icons';
@@ -38,10 +38,18 @@ import {
 } from '@/utils/utils';
 import { useFormik } from 'formik';
 import { mocks } from '@/services/mocks';
-import { expenseType, genericObjType, genericV2ObjType } from '../Bills/@types';
+import {
+  expenseType,
+  genericObjType,
+  genericV2ObjType,
+  incorporationFeeType,
+  shallowCostType
+} from '../Bills/@types';
 import { emptyInfo } from '../Bills/utils';
 import * as S from './DetailsBillsStyled';
 import { payloadExpense } from '@/utils/types';
+import { rowsDataType } from './@types';
+import { unitExpenseTypes } from '../ListBills/@types';
 
 export const DetailsBills = () => {
   const navigate = useNavigate();
@@ -50,12 +58,17 @@ export const DetailsBills = () => {
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [showError, setShowError] = useState(false);
-  const [openModalNewExpense, setOpenModalNewExpense] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
   const [isFormEdit, setIsFormEdit] = useState(false);
+  const [list, setList] = useState<rowsDataType[]>([]);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [openModalNewExpense, setOpenModalNewExpense] = useState(false);
+  const [optionsExpense, setOptionsExpense] = useState<rowsDataType[]>([]);
 
   const { id, idProject, name, isEdit } = Object.fromEntries([...searchParams]);
-  const [date, setDate] = useState<any>();
+  const [date, setDate] = useState<shallowCostType | incorporationFeeType>(
+    emptyCosts.costs.shallowCost
+  );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [expenseActive, setExpenseActive] = useState<expenseType>(
@@ -70,11 +83,9 @@ export const DetailsBills = () => {
       setIsFormEdit(false);
     }
   });
-
   const formikNewExpense = useFormik({
     initialValues: {
       expenseId: 0,
-      typesCost: 0,
       quantity: '0',
       unitValue: '0',
       totalValue: 0,
@@ -82,38 +93,63 @@ export const DetailsBills = () => {
     },
     onSubmit: async (values) => {
       const payload: payloadExpense = {
-        ...values,
+        expenseId: values.expenseId,
+        totalValue: values.totalValue,
         quantity: parseFloat(values.quantity),
         unitValue: parseFloat(values.unitValue),
+        unitExpenseTypeId: values.unitExpenseTypeId,
         projectId: parseFloat(idProject)
       };
-
-      const isAnyFieldEmpty = !values.expenseId || !values.typesCost;
-      isAnyFieldEmpty
-        ? setShowError(true)
-        : createNewCost({ payload, setLoading, setSnackbar });
-
-      setOpenModal(false);
-      formikNewExpense.resetForm({});
+      const isAnyFieldEmpty = !!values.expenseId;
+      if (!isAnyFieldEmpty) {
+        setShowError(true);
+      } else {
+        createNewCost({ payload, setLoading, setSnackbar });
+        setIsUpdate(true);
+        setOpenModalNewExpense(false);
+        formikNewExpense.resetForm({});
+      }
     }
   });
 
   useEffect(() => {
     listDetailsBill({
-      item: state.cost,
-      id: parseFloat(id),
       setDate,
+      idProject,
+      setLoading,
+      setSnackbar,
+      item: state.cost
+    });
+  }, [idProject, setSnackbar, state.cost, isUpdate]);
+
+  useEffect(() => {
+    listCosts({
+      setList,
       setLoading,
       setSnackbar
     });
-  }, [id, setSnackbar, state.cost]);
+  }, [setSnackbar]);
+
+  useEffect(() => {
+    const filteredList = handleFilter({
+      list,
+      typesCost: parseFloat(id),
+      typesExpense: expenseActive.id
+    });
+
+    setOptionsExpense(filteredList);
+  }, [expenseActive.id, id, list]);
 
   return (
     <Layout>
       <S.DetailsBillsContainer>
         <S.Header>
           <HeaderBreadcrumbs
-            breadcrumbs={breadCrumbsItems(name, state.cost.name)}
+            breadcrumbs={breadCrumbsItems({
+              name,
+              idProject,
+              bill: state.cost.name
+            })}
           />
           <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
             Cancelar
@@ -184,6 +220,21 @@ export const DetailsBills = () => {
                       emptyInfo(info as string | number | genericObjType)
                     )
                     .map((cost, key) => {
+                      const transformData = cost.expenses.map(
+                        (item: any, index) => ({
+                          id: item.id,
+                          name: item.name,
+                          unitType:
+                            unitExpenseTypes[
+                              `unitType${index}` as keyof typeof unitExpenseTypes
+                            ],
+                          quantity: item.quantity,
+                          unitValue: item.unitValue,
+                          totalValue: item.totalValue,
+                          unitTypeId: item.unitTypeId,
+                          projectId: item.projectId
+                        })
+                      );
                       return (
                         <>
                           <Card width={'100%'} height={'auto'} key={key}>
@@ -260,15 +311,6 @@ export const DetailsBills = () => {
                                 }}
                               >
                                 <MenuItem
-                                  onClick={() => handleEdit({ setIsFormEdit })}
-                                >
-                                  Editar
-                                  <ListItemIcon>
-                                    <S.Icon src={icons.edit} alt="Icon edit" />
-                                  </ListItemIcon>
-                                </MenuItem>
-                                <Divider />
-                                <MenuItem
                                   onClick={() => setOpenModalNewExpense(true)}
                                 >
                                   Novo custo
@@ -285,7 +327,7 @@ export const DetailsBills = () => {
                               <Table
                                 cost={cost}
                                 formik={formik}
-                                rows={[]}
+                                rows={transformData}
                                 columns={mocks.columns}
                                 expenseActive={expenseActive}
                                 isEdit={
@@ -297,7 +339,9 @@ export const DetailsBills = () => {
                                 <S.Title>Total </S.Title>
                                 <S.Text>
                                   R${' '}
-                                  {formatCurrency(cost.totalValue.toString())}
+                                  {formatCurrency(
+                                    cost?.totalValue.toString() || '0'
+                                  )}
                                 </S.Text>
                               </S.FooterExpense>
                             </S.ContainerExpenses>
@@ -319,12 +363,14 @@ export const DetailsBills = () => {
                         </>
                       );
                     })}
-                  <Card width={'100%'} height={'auto'} className="footer">
+                  {/* <Card width={'100%'} height={'auto'} className="footer">
                     <S.FooterExpense>
                       <S.Title>Total </S.Title>
-                      {/* <S.Text>R$ {formatCurrency(date.total)}</S.Text> */}
+                      <S.Text>
+                        R$ {formatCurrency(date.totalValue.toString() || '0')}
+                      </S.Text>
                     </S.FooterExpense>
-                  </Card>
+                  </Card> */}
                 </>
               )}
             </>
@@ -360,106 +406,42 @@ export const DetailsBills = () => {
 
       <GenericModal
         maxWidth={'900px'}
-        maxHeight={'440px'}
+        maxHeight={'540px'}
         open={openModalNewExpense}
         setOpen={setOpenModalNewExpense}
       >
         <S.ContainerMessage>
           <S.Title>Novo custo</S.Title>
-          <S.Text>Esse novo custo sera adicionado na sua listagem</S.Text>
+          <S.Text>
+            Esse novo custo sera adicionado em ({expenseActive.name})
+          </S.Text>
           <S.Form onSubmit={formikNewExpense.handleSubmit}>
             <Grid container spacing={{ xs: 0, sm: 2 }} alignItems={'center'}>
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={6}
-                minWidth={300}
-                minHeight={showError ? 117 : 76}
-              >
+              <Grid item xs={12} sm={12} md={12} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Tipos de custos</S.Label>
+                  <S.Label>Despesa</S.Label>
                   <Select
                     displayEmpty
-                    name="typesCost"
-                    onBlur={formikNewExpense.handleBlur}
-                    value={formikNewExpense.values.typesCost}
-                    onChange={(e) => {
-                      formikNewExpense.setFieldValue('expenseId', 0);
-                      formikNewExpense.handleChange(e);
-                    }}
-                    className="SelectComponent"
-                    IconComponent={KeyboardArrowDownRounded}
-                    inputProps={{ 'aria-label': 'Without label' }}
-                  >
-                    <MenuItem value={0} disabled>
-                      <em>Selecione a opção </em>
-                    </MenuItem>
-                    <MenuItem value={1}>Custo Raso</MenuItem>
-                    <MenuItem value={2}>Taxa da Incorporação</MenuItem>
-                  </Select>
-                  {showError && !formikNewExpense.values.typesCost && (
-                    <FormHelperText>
-                      Tipos de custos é obrigatório
-                    </FormHelperText>
-                  )}
-                </FormControl>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={12}
-                md={6}
-                minWidth={300}
-                minHeight={showError ? 117 : 76}
-              >
-                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Tipos de despesas</S.Label>
-                  <Select
-                    required
                     name="expenseId"
                     className="SelectComponent"
-                    onBlur={formikNewExpense.handleBlur}
-                    onChange={(e) => {
-                      setShowError(false);
-                      formikNewExpense.handleChange(e);
-                    }}
-                    value={formikNewExpense.values.expenseId}
-                    disabled={!formikNewExpense.values.typesCost}
+                    disabled={!id || !expenseActive.id}
+                    onChange={formikNewExpense.handleChange}
                     IconComponent={KeyboardArrowDownRounded}
                     inputProps={{ 'aria-label': 'Without label' }}
+                    value={formikNewExpense.values.expenseId}
                   >
                     <MenuItem value={0} disabled>
-                      <em>Selecione a opção </em>
+                      <em>Selecione a opção</em>
                     </MenuItem>
-                    {formikNewExpense.values.typesCost === 1 ? (
-                      [
-                        <MenuItem key={1} value={1}>
-                          Terreno, Outorga e Despesas de Aquisição
-                        </MenuItem>,
-                        <MenuItem key={2} value={2}>
-                          Projetos, Assessorias e Decoração
-                        </MenuItem>,
-                        <MenuItem key={3} value={3}>
-                          Obra
-                        </MenuItem>,
-                        <MenuItem key={4} value={4}>
-                          Licenças / Ambiental / Legalização
-                        </MenuItem>,
-                        <MenuItem key={5} value={5}>
-                          Despesas Administrativas
-                        </MenuItem>
-                      ]
-                    ) : (
-                      <MenuItem key={6} value={6}>
-                        Taxa Administrativa
+
+                    {optionsExpense.map((option) => (
+                      <MenuItem value={option.expenseId}>
+                        {option.name}
                       </MenuItem>
-                    )}
+                    ))}
                   </Select>
-                  {showError && !formikNewExpense.values.expenseId && (
-                    <FormHelperText>
-                      Tipos de despesas é obrigatório
-                    </FormHelperText>
+                  {showError && (
+                    <FormHelperText>Despesa é obrigatório</FormHelperText>
                   )}
                 </FormControl>
               </Grid>
@@ -485,7 +467,6 @@ export const DetailsBills = () => {
                   </Select>
                 </FormControl>
               </Grid>
-
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                   <S.Label>Quantidade</S.Label>
