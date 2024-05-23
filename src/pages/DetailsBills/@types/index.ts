@@ -1,9 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch, SetStateAction } from 'react';
 import { Snackbar } from '@/contexts/Snackbar';
-import { shallowCostType, incorporationFeeType } from '@/pages/Bills/@types';
+import {
+  shallowCostType,
+  incorporationFeeType,
+  genericV2ObjType
+} from '@/pages/Bills/@types';
 import { payloadExpense } from '@/utils/types';
 import { expense } from '@/pages/ListBills/@types';
+import { NavigateFunction } from 'react-router-dom';
+import { rowData } from '@/components/modules/TableBody/@types';
 
 export type handleGenericProps = {
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -25,6 +31,7 @@ export type row = {
   quantity: string;
   unitValue: string;
   totalValue: string;
+  expenseHubId: number;
 };
 export type initialState = {
   land: {
@@ -90,4 +97,12 @@ export type breadCrumbsItemsProps = {
   name: string;
   bill: string;
   idProject: string;
+};
+
+export type handleEditCostProps = {
+  bill: any;
+  projectName: string;
+  cost: genericV2ObjType;
+  expenseActive: rowData;
+  navigate: NavigateFunction;
 };

@@ -21,7 +21,7 @@ import * as S from './CreateProjectStyled';
 export const CreateProject = () => {
   const navigate = useNavigate();
   const [isShow, setIsShow] = useState(false);
-  const [stepActive, setStepActive] = useState(4);
+  const [stepActive, setStepActive] = useState(1);
   const [openModal, setOpenModal] = useState(false);
   const { stepsIsDone } = useContext(StepsIsDoneContext);
   const [date, setDate] = useState<projectDateType>(emptyProjectDate);

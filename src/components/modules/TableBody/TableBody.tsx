@@ -16,16 +16,16 @@ import { Props, rowData } from './@types';
 import { Input } from '@/components/elements';
 import { handleClickMenu, handleCloseMenu } from '@/utils/utils';
 import { icons } from '@/assets/images/icons';
-import { handleEdit } from './utils';
 import * as S from './TableBodyStyled';
 
 const TableBody = ({
   cost,
+  rows,
   isEdit,
   formik,
-  rows,
   itemActive,
-  align = 'left'
+  align = 'left',
+  handleEdit = () => {}
 }: Props) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -84,7 +84,7 @@ const TableBody = ({
                             required
                             id={`input-${index}-${key}`}
                             onChange={(e) => {
-                              const fieldName = key;
+                              const fieldName: string = key;
                               handleInputChange(
                                 e,
                                 fieldName,

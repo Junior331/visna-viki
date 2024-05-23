@@ -22,7 +22,8 @@ import {
   handleSumTotalValue,
   createNewCost,
   listCosts,
-  handleFilter
+  handleFilter,
+  handleEditCost
 } from './utils';
 import { emptyCosts } from '@/utils/emptys';
 import { icons } from '@/assets/images/icons';
@@ -33,6 +34,7 @@ import { HeaderBreadcrumbs } from '@/components/organism';
 import {
   convertToParams,
   formatCurrency,
+  formatter,
   handleClickMenu,
   handleCloseMenu
 } from '@/utils/utils';
@@ -94,7 +96,7 @@ export const DetailsBills = () => {
     onSubmit: async (values) => {
       const payload: payloadExpense = {
         expenseId: values.expenseId,
-        totalValue: values.totalValue,
+        totalValue: values.totalValue / 100,
         quantity: parseFloat(values.quantity),
         unitValue: parseFloat(values.unitValue),
         unitExpenseTypeId: values.unitExpenseTypeId,
@@ -220,21 +222,24 @@ export const DetailsBills = () => {
                       emptyInfo(info as string | number | genericObjType)
                     )
                     .map((cost, key) => {
-                      const transformData = cost.expenses.map(
-                        (item: any, index) => ({
-                          id: item.id,
-                          name: item.name,
-                          unitType:
-                            unitExpenseTypes[
-                              `unitType${index}` as keyof typeof unitExpenseTypes
-                            ],
-                          quantity: item.quantity,
-                          unitValue: item.unitValue,
-                          totalValue: item.totalValue,
-                          unitTypeId: item.unitTypeId,
-                          projectId: item.projectId
-                        })
-                      );
+                      const transformData = cost.expenses.map((item: any) => ({
+                        id: item.id,
+                        name: item.name,
+                        unitType:
+                          unitExpenseTypes[
+                            `unitType${item.unitType}` as keyof typeof unitExpenseTypes
+                          ],
+                        quantity: item.quantity,
+                        unitValue: formatter.format(item.unitValue),
+                        unitTypeById: item.unitType,
+                        totalValue: formatter.format(item.totalValue),
+                        unitValueByIdNumber: item.unitValue,
+                        totalValueByIdNumber: item.totalValue,
+                        expenseHubId: item.expenseHubId,
+                        unitTypeId: item.unitTypeId,
+                        projectId: item.projectId,
+                        action: 'menu'
+                      }));
                       return (
                         <>
                           <Card width={'100%'} height={'auto'} key={key}>
@@ -330,6 +335,15 @@ export const DetailsBills = () => {
                                 rows={transformData}
                                 columns={mocks.columns}
                                 expenseActive={expenseActive}
+                                handleEdit={(item) => {
+                                  handleEditCost({
+                                    cost,
+                                    bill: state.cost,
+                                    projectName: name,
+                                    navigate: item.navigate,
+                                    expenseActive: item.expenseActive
+                                  });
+                                }}
                                 isEdit={
                                   isFormEdit && expenseActive.id === cost.id
                                 }
@@ -338,10 +352,8 @@ export const DetailsBills = () => {
                               <S.FooterExpense>
                                 <S.Title>Total </S.Title>
                                 <S.Text>
-                                  R${' '}
-                                  {formatCurrency(
-                                    cost?.totalValue.toString() || '0'
-                                  )}
+                                  R$
+                                  {formatter.format(cost?.totalValue)}
                                 </S.Text>
                               </S.FooterExpense>
                             </S.ContainerExpenses>
@@ -363,14 +375,6 @@ export const DetailsBills = () => {
                         </>
                       );
                     })}
-                  {/* <Card width={'100%'} height={'auto'} className="footer">
-                    <S.FooterExpense>
-                      <S.Title>Total </S.Title>
-                      <S.Text>
-                        R$ {formatCurrency(date.totalValue.toString() || '0')}
-                      </S.Text>
-                    </S.FooterExpense>
-                  </Card> */}
                 </>
               )}
             </>

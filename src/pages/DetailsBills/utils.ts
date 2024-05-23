@@ -5,6 +5,7 @@ import {
   breadCrumbsItemsProps,
   createNewCostProps,
   expenseType,
+  handleEditCostProps,
   handleEditProps,
   handleFilterProps,
   handleSumTotalValueProps,
@@ -218,5 +219,26 @@ export const handleFilter = ({
       !typesExpense || typesIdExpense === typesExpense;
 
     return isTypesCostMatch && isTypesExpenseMatch;
+  });
+};
+
+export const handleEditCost = ({
+  cost,
+  bill,
+  navigate,
+  projectName,
+  expenseActive
+}: handleEditCostProps) => {
+  const params = {
+    name: expenseActive.name as string,
+    expenseId: expenseActive.expenseHubId as string
+  };
+  navigate(`/costdetails?${convertToParams(params as any)}`, {
+    state: {
+      cost,
+      bill,
+      projectName,
+      expense: expenseActive
+    }
   });
 };

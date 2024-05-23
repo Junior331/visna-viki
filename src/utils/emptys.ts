@@ -1,4 +1,4 @@
-import { costsType } from '@/pages/Bills/@types';
+import { costsType, costsTypeV2 } from '@/pages/Bills/@types';
 import {
   projectDateType,
   projectInfoType,
@@ -143,6 +143,7 @@ export const emptyCosts: costsType = {
     shallowCost: {
       id: 0,
       name: '',
+      totalValue: 0,
       land: {
         id: 0,
         name: '',
@@ -177,6 +178,58 @@ export const emptyCosts: costsType = {
     incorporationFee: {
       id: 0,
       name: '',
+      totalValue: 0,
+      administrateTax: {
+        id: 0,
+        name: '',
+        totalValue: 0,
+        expenses: Array.from({ length: 1 }, () => ({ id: 0, name: '' }))
+      }
+    }
+  }
+};
+export const emptyCostsV2: costsTypeV2 = {
+  costs: {
+    totalValue: 0,
+    shallowCost: {
+      id: 0,
+      name: '',
+      totalValue: 0,
+      land: {
+        id: 0,
+        name: '',
+        totalValue: 0,
+        expenses: Array.from({ length: 12 }, () => ({ id: 0, name: '' }))
+      },
+      project: {
+        id: 0,
+        name: '',
+        totalValue: 0,
+        expenses: Array.from({ length: 5 }, () => ({ id: 0, name: '' }))
+      },
+      constructions: {
+        id: 0,
+        name: '',
+        totalValue: 0,
+        expenses: Array.from({ length: 3 }, () => ({ id: 0, name: '' }))
+      },
+      Licenses: {
+        id: 0,
+        name: '',
+        totalValue: 0,
+        expenses: Array.from({ length: 8 }, () => ({ id: 0, name: '' }))
+      },
+      AdministrativeCosts: {
+        id: 0,
+        name: ' ',
+        totalValue: 0,
+        expenses: Array.from({ length: 10 }, () => ({ id: 0, name: '' }))
+      }
+    },
+    incorporationFee: {
+      id: 0,
+      name: '',
+      totalValue: 0,
       administrateTax: {
         id: 0,
         name: '',

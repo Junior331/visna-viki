@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Paper, TableContainer, Table as MuiTable } from '@mui/material';
 import * as S from './TableStyled';
 import { TableBody, TableHeader } from '@/components/modules';
@@ -9,6 +10,7 @@ const Table = ({
   formik,
   isEdit,
   columns,
+  handleEdit = () => {},
   expenseActive
 }: Props) => {
   return (
@@ -21,6 +23,7 @@ const Table = ({
             cost={cost}
             formik={formik}
             isEdit={isEdit}
+            handleEdit={(item) => handleEdit(item)}
             itemActive={expenseActive}
           />
         </MuiTable>

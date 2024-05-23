@@ -29,6 +29,11 @@ export const typeMask = (type: MaskType, value: string): string => {
   return value;
 };
 
+export const formatter = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL'
+});
+
 export const formatCurrency = (value: string): string => {
   // Remove todos os caracteres não numéricos
   const numericValue = value.replace(/\D/g, '');

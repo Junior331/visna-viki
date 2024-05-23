@@ -8,6 +8,7 @@ import {
   Aportes,
   ListBills,
   EditProject,
+  CostDetails,
   DetailsBills,
   ResetPassword,
   CreateProject,
@@ -27,6 +28,7 @@ export const AppRoutes = () => {
       <Route path="/listbills" element={<ListBills />} />
       <Route path="/details" element={<DetailsBills />} />
       <Route path="/create" element={<CreateProject />} />
+      <Route path="/costdetails" element={<CostDetails />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
     </Routes>

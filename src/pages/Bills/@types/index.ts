@@ -24,6 +24,7 @@ export type genericV2ObjType = {
 export type shallowCostType = {
   id: number;
   name: string;
+  totalValue: number;
   land: genericObjType;
   project: genericObjType;
   Licenses: genericObjType;
@@ -33,10 +34,18 @@ export type shallowCostType = {
 export type incorporationFeeType = {
   id: number;
   name: string;
+  totalValue: number;
   administrateTax: genericObjType;
 };
 export type costsType = {
   costs: {
+    shallowCost: shallowCostType;
+    incorporationFee: incorporationFeeType;
+  };
+};
+export type costsTypeV2 = {
+  costs: {
+    totalValue: number;
     shallowCost: shallowCostType;
     incorporationFee: incorporationFeeType;
   };

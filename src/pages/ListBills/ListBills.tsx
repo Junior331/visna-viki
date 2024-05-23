@@ -13,6 +13,7 @@ import { Accordion, Button, Input } from '@/components/elements';
 import {
   breadCrumbsItems,
   handleCreateExpense,
+  handleEditExpense,
   handleFilter,
   listCosts
 } from './utils';
@@ -203,8 +204,14 @@ export const ListBills = () => {
           {!loading && (
             <>
               <Table
-                rows={filteredList}
+                handleEdit={(item) => {
+                  handleEditExpense({
+                    navigate: item.navigate,
+                    expenseActive: item.expenseActive
+                  });
+                }}
                 formik={formik}
+                rows={filteredList}
                 columns={mocks.columnsExpense}
               />
             </>

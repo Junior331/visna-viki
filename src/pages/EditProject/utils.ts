@@ -1,10 +1,17 @@
-import { deleteProject, editDeadline, editLands } from '@/services/services';
+import {
+  deleteProject,
+  editDeadline,
+  editLands,
+  editUnits
+} from '@/services/services';
 import {
   handleDeleteProjectProps,
   handleEditDeadlineIdProps,
   handleEditLandProps,
+  handleEdittUnitsProps,
   handleTabsProps
 } from './@types';
+import { handleSumValuesProps } from '@/components/organism/UnitsForm/@types';
 
 export const unitSummaryDefault = {
   id: 0,
@@ -33,6 +40,56 @@ export const breadCrumbsItems = (name: string) => [
     label: `${name}`
   }
 ];
+
+export const handleSumValues = ({
+  id,
+  type,
+  value1,
+  value2,
+  fieldName,
+  value3 = '',
+  setFieldValue
+}: handleSumValuesProps) => {
+  const parsedValue1 = value1.replace(',', '.');
+  const parsedValue2 = value2.replace(',', '.');
+  const parsedValue3 = value3?.replace(',', '.');
+
+  if (type === 'sum') {
+    if (parsedValue1 && parsedValue2) {
+      const sum = parseFloat(parsedValue1) * parseFloat(parsedValue2);
+      sum.toFixed(2);
+
+      setFieldValue(`unit[${id}].${fieldName}`, sum);
+    } else {
+      console.error(
+        'Um ou ambos os valores fornecidos não são números válidos.'
+      );
+    }
+  }
+  if (type === 'mult') {
+    const sum1 = parseFloat(parsedValue1.replace(/\./g, '').replace(',', '.'));
+    const sum2 = parseFloat(parsedValue2.replace(/\./g, '').replace(',', '.'));
+    const sum3 = parseFloat(parsedValue3.replace(/\./g, '').replace(',', '.'));
+    const sum = sum1 * (sum2 - sum3);
+    setFieldValue(`unit[${id}].${fieldName}`, sum);
+  }
+  if (type === 'TUID') {
+    const sum =
+      parseFloat(parsedValue1) *
+      (parseFloat(parsedValue2) - parseFloat(parsedValue3));
+
+    sum.toFixed(2);
+    setFieldValue?.(fieldName, sum);
+  }
+  if (type === 'sumLand') {
+    const sum1 = parseFloat(parsedValue1.replace(/\./g, '').replace(',', '.'));
+    const sum2 = parseFloat(parsedValue2.replace(/\./g, '').replace(',', '.'));
+
+    const sum = sum1 * sum2;
+
+    setFieldValue?.(fieldName, sum);
+  }
+};
 
 export const handleTabs = ({ setValue, newValue }: handleTabsProps) => {
   setValue(newValue);
@@ -124,6 +181,44 @@ export const handleEditDeadline = async ({
 
   try {
     await editDeadline(deadlineId, payload);
+    setSnackbar({
+      isOpen: true,
+      severity: 'success',
+      vertical: 'top',
+      horizontal: 'right',
+      message: 'Prazos editados com sucesso'
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+export const handleEdittUnits = async ({
+  unitId,
+  payload,
+  setLoading,
+  setSnackbar
+}: handleEdittUnitsProps) => {
+  setLoading(true);
+  try {
+    await editUnits(unitId, payload);
     setSnackbar({
       isOpen: true,
       severity: 'success',
