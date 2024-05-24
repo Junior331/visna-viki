@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { convertToParams } from '@/utils/utils';
 import { getBills } from '../Bills/services';
 import {
   costsType,
   expenseType,
   handleCreateExpenseProps,
+  handleEditExpenseProps,
   handleFilterProps,
   listCostsProps,
   rowsDataType,
@@ -145,4 +147,20 @@ export const handleCreateExpense = async ({
   } finally {
     setLoading(false);
   }
+};
+
+export const handleEditExpense = ({
+  navigate,
+  expenseActive
+}: handleEditExpenseProps) => {
+  navigate(
+    `/expense?isEdit=true&${convertToParams({
+      name: expenseActive.typesCost as string
+    })}`,
+    {
+      state: {
+        expense: expenseActive
+      }
+    }
+  );
 };

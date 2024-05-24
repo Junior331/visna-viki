@@ -9,16 +9,17 @@ export type rowType = {
 export type fields = (string | number)[][];
 export type rowData = Record<string, string | number>;
 
+export type handleProps = {
+  navigate: NavigateFunction;
+  expenseActive: rowData;
+};
+
 export type Props = {
   formik?: any;
   rows: rowData[];
   isEdit?: boolean;
   itemActive?: any;
   cost?: genericV2ObjType;
+  handleEdit?: (params: handleProps) => void;
   align?: 'center' | 'left' | 'right' | 'justify' | 'inherit';
-};
-
-export type handleProps = {
-  navigate: NavigateFunction;
-  expenseActive: rowData;
 };

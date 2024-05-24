@@ -148,7 +148,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             </Select>
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={1.3} minWidth={130}>
+                        <Grid item xs={12} sm={6} md={1.1} minWidth={130}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"

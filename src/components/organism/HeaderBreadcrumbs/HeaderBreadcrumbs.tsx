@@ -7,7 +7,10 @@ import { Button } from '@/components/elements';
 import * as S from './HeaderBreadcrumbsStyled';
 import { icons } from '@/assets/images/icons';
 
-const HeaderBreadcrumbs = ({ breadcrumbs }: HeaderBreadcrumbsProps) => {
+const HeaderBreadcrumbs = ({
+  breadcrumbs,
+  stateParams
+}: HeaderBreadcrumbsProps) => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const [pathActive, setPathActive] = useState('');
@@ -54,7 +57,14 @@ const HeaderBreadcrumbs = ({ breadcrumbs }: HeaderBreadcrumbsProps) => {
             <Button size="100px" onClick={() => setOpenModal(false)}>
               Não
             </Button>
-            <Button size="100px" onClick={() => navigate(pathActive)}>
+            <Button
+              size="100px"
+              onClick={() =>
+                navigate(pathActive, {
+                  state: stateParams
+                })
+              }
+            >
               Sim
             </Button>
           </S.ContainerButtons>

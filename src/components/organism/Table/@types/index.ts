@@ -10,4 +10,5 @@ export type Props = {
   expenseActive?: any;
   columns: columnType[];
   cost?: genericV2ObjType;
+  handleEdit?: (item: any) => void;
 };

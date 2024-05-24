@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type BreadcrumbItem = {
   path: string;
   label: string;
@@ -5,5 +6,6 @@ export type BreadcrumbItem = {
 };
 
 export type HeaderBreadcrumbsProps = {
+  stateParams?: any;
   breadcrumbs: BreadcrumbItem[];
 };

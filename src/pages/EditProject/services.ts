@@ -9,7 +9,6 @@ export const getInfoProject = async ({
   try {
     const result = await listProject(id);
     setDate(result);
-    // setLoading(false);
   } catch (error) {
     if (error instanceof Error) {
       setSnackbar({

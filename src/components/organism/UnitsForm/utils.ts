@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { unitSummaryType } from '@/utils/types';
+import { unitHubSummaryType, unitSummaryType } from '@/utils/types';
 import { handleChangeUnitProps, handleSumValuesProps } from './@types';
 
 export const unitDefault = {
-  netAmount: '',
+  netAmount: 0,
   unitTypeId: 0,
-  averageArea: '',
-  unitQuantity: '',
-  marketAmount: '',
-  exchangeQuantity: '',
-  totalExchangeArea: '',
-  areaPrivativaTotal: ''
+  averageArea: 0,
+  unitQuantity: 0,
+  marketAmount: 0,
+  exchangeQuantity: 0,
+  totalExchangeArea: 0,
+  areaPrivativaTotal: 0
 };
 
 export const handleChangeUnit = ({
@@ -77,7 +77,7 @@ export const handleSumValues = ({
 };
 
 export const calculateTUID = (
-  listUnit: unitSummaryType[],
+  listUnit: unitSummaryType[] | unitHubSummaryType[],
   field: string = ''
 ): number => {
   let totalTUID = 0;

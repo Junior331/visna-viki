@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import {
-  handleSumValues,
+  calculateTUID,
   unitDefault
 } from '@/components/organism/UnitsForm/utils';
 import { handleSumValues as handleSumValuesV2 } from '@/components/organism/DeadlinesForm/utils';
@@ -31,6 +31,8 @@ import {
   handleDeleteProject,
   handleEditDeadline,
   handleEditLand,
+  handleEdittUnits,
+  handleSumValues,
   handleTabs
 } from './utils';
 import {
@@ -102,7 +104,26 @@ export const EditProject = () => {
   const formikUnit = useFormik({
     initialValues: date.unitHub,
     onSubmit: async (values) => {
-      console.log(values);
+      const payload = {
+        id: values.id,
+        projectId: parseFloat(id),
+        flooring: values.flooring,
+        underground: values.underground,
+        unitPerFloor: values.unitPerFloor,
+        averageSaleValue: values.averageSaleValue,
+        totalToBeBuiltArea: values.totalToBeBuiltArea,
+        totalValueNoExchange: values.totalValueNoExchange,
+        totalUnitsInDevelopment: values.totalUnitsInDevelopment,
+        totalPrivateAreaQuantity: values.totalPrivateAreaQuantity,
+        unit: values.unit
+      };
+
+      handleEdittUnits({
+        unitId: values.id,
+        payload,
+        setLoading,
+        setSnackbar
+      });
     },
     validationSchema: unitsFormSchema
   });
@@ -165,6 +186,49 @@ export const EditProject = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date]);
+  useEffect(() => {
+    if (!formikUnit.values.unit.length) {
+      const defaultValue = [
+        {
+          id: 0,
+          netAmount: 0,
+          unitTypeId: 0,
+          averageArea: 0,
+          unitQuantity: 0,
+          marketAmount: 0,
+          exchangeQuantity: 0,
+          totalExchangeArea: 0,
+          areaPrivativaTotal: 0
+        }
+      ];
+      formikUnit.setFieldValue('unit', defaultValue);
+    }
+  }, [formikUnit, formikUnit.values]);
+
+  useEffect(() => {
+    const listUnit = formikUnit.values.unit;
+    const totalPrivateAreaQuantity = calculateTUID(
+      listUnit,
+      'areaPrivativaTotal'
+    );
+
+    const totalUnitsInDevelopment = calculateTUID(listUnit, 'unitQuantity');
+
+    if (totalUnitsInDevelopment !== null) {
+      formikUnit.setFieldValue(
+        'totalUnitsInDevelopment',
+        totalUnitsInDevelopment
+      );
+    }
+
+    if (totalPrivateAreaQuantity !== null) {
+      formikUnit.setFieldValue(
+        'totalPrivateAreaQuantity',
+        totalPrivateAreaQuantity
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formikUnit.values.unit]);
 
   return (
     <Layout>
@@ -197,6 +261,7 @@ export const EditProject = () => {
                 />
                 <Tab label="Rentabilidade" {...a11yProps(5)} disabled />
                 <Tab
+                  disabled
                   label="Aportes"
                   onClick={() =>
                     navigate(`/aportes?${convertToParams({ id, name })}`)
@@ -643,17 +708,23 @@ export const EditProject = () => {
                                       required
                                       displayEmpty
                                       onBlur={handleBlur}
-                                      onChange={handleChange}
+                                      onChange={(e) => {
+                                        formikUnit.setFieldValue(
+                                          `unit[${index}].unitTypeId`,
+                                          e.target.value
+                                        );
+                                        formikUnit.handleChange(e);
+                                      }}
                                       className="SelectComponent"
-                                      id={`unitTypeId-${unit.id}`}
-                                      name={`unit[${index}].unitTypeId`}
+                                      id={`formikUnit.unitTypeId-${unit.id}`}
+                                      name={`formikUnit.unit[${index}].unitTypeId`}
+                                      value={
+                                        formikUnit.values.unit[index].unitTypeId
+                                      }
                                       IconComponent={KeyboardArrowDownRounded}
                                       inputProps={{
                                         'aria-label': 'Without label'
                                       }}
-                                      value={
-                                        formikUnit.values.unit[index].unitTypeId
-                                      }
                                     >
                                       <MenuItem value={0} disabled>
                                         <em>Selecione a opção </em>
@@ -685,7 +756,7 @@ export const EditProject = () => {
                                       onBlur={(e) => {
                                         formikUnit.setFieldValue(
                                           `unit[${index}].unitQuantity`,
-                                          e.target.value
+                                          parseFloat(e.target.value)
                                         );
                                         handleSumValues({
                                           id: unit.id,
@@ -709,7 +780,13 @@ export const EditProject = () => {
                                         });
                                       }}
                                       id={`unitQuantity-${unit.id}`}
-                                      onChange={handleChange}
+                                      onChange={(e) => {
+                                        formikUnit.setFieldValue(
+                                          `unit[${index}].unitQuantity`,
+                                          parseFloat(e.target.value)
+                                        );
+                                        formikUnit.handleChange(e);
+                                      }}
                                       name={`unit[${index}].unitQuantity`}
                                       value={typeMask(
                                         MaskType.NUMBER,
@@ -736,7 +813,7 @@ export const EditProject = () => {
                                       onBlur={(e) => {
                                         formikUnit.setFieldValue(
                                           `unit[${index}].averageArea`,
-                                          e.target.value
+                                          parseFloat(e.target.value)
                                         );
                                         handleSumValues({
                                           id: unit.id,
@@ -759,7 +836,13 @@ export const EditProject = () => {
                                         });
                                       }}
                                       id={`averageArea-${unit.id}`}
-                                      onChange={handleChange}
+                                      onChange={(e) => {
+                                        formikUnit.setFieldValue(
+                                          `unit[${index}].averageArea`,
+                                          parseFloat(e.target.value)
+                                        );
+                                        formikUnit.handleChange(e);
+                                      }}
                                       name={`unit[${index}].averageArea`}
                                       value={
                                         formikUnit.values.unit[index]
@@ -787,9 +870,21 @@ export const EditProject = () => {
                                     <S.Label>A. Privativa total</S.Label>
                                     <Input
                                       disabled
-                                      onBlur={handleBlur}
+                                      onBlur={(e) => {
+                                        formikUnit.setFieldValue(
+                                          `unit[${index}].areaPrivativaTotal`,
+                                          parseFloat(e.target.value)
+                                        );
+                                        formikUnit.handleBlur(e);
+                                      }}
                                       id={`areaPrivativaTotal-${unit.id}`}
-                                      onChange={handleChange}
+                                      onChange={(e) => {
+                                        formikUnit.setFieldValue(
+                                          `unit[${index}].areaPrivativaTotal`,
+                                          parseFloat(e.target.value)
+                                        );
+                                        formikUnit.handleChange(e);
+                                      }}
                                       name={`unit[${index}].areaPrivativaTotal`}
                                       value={
                                         formikUnit.values.unit[index]
@@ -820,7 +915,7 @@ export const EditProject = () => {
                                       onBlur={(e) => {
                                         formikUnit.setFieldValue(
                                           `unit[${index}].exchangeQuantity`,
-                                          e.target.value
+                                          parseFloat(e.target.value)
                                         );
                                         handleSumValues({
                                           id: unit.id,
@@ -842,7 +937,13 @@ export const EditProject = () => {
                                             formikUnit.setFieldValue
                                         });
                                       }}
-                                      onChange={handleChange}
+                                      onChange={(e) => {
+                                        formikUnit.setFieldValue(
+                                          `unit[${index}].exchangeQuantity`,
+                                          parseFloat(e.target.value)
+                                        );
+                                        formikUnit.handleChange(e);
+                                      }}
                                       id={`exchangeQuantity-${unit.id}`}
                                       name={`unit[${index}].exchangeQuantity`}
                                       value={
@@ -872,9 +973,9 @@ export const EditProject = () => {
                                     <Input
                                       required
                                       disabled
-                                      onBlur={handleBlur}
+                                      onBlur={formikUnit.handleBlur}
                                       id={`totalExchangeArea-${unit.id}`}
-                                      onChange={handleChange}
+                                      onChange={formikUnit.handleChange}
                                       name={`unit[${index}].totalExchangeArea`}
                                       value={
                                         formikUnit.values.unit[index]
@@ -920,7 +1021,9 @@ export const EditProject = () => {
                                         });
                                       }}
                                       id={`marketAmount-${unit.id}`}
-                                      onChange={handleChange}
+                                      onChange={(e) => {
+                                        formikUnit.handleChange(e);
+                                      }}
                                       name={`unit[${index}].marketAmount`}
                                       value={formatCurrency(
                                         formikUnit.values.unit[
@@ -951,9 +1054,9 @@ export const EditProject = () => {
                                     <Input
                                       required
                                       disabled
-                                      onBlur={handleBlur}
+                                      onBlur={formikUnit.handleBlur}
                                       id={`netAmount-${unit.id}`}
-                                      onChange={handleChange}
+                                      onChange={formikUnit.handleChange}
                                       placeholder="0,00"
                                       aria-describedby="netAmount"
                                       name={`unit[${index}].netAmount`}

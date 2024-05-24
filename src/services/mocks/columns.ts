@@ -15,6 +15,9 @@ export const columns: columnType[] = [
   },
   {
     label: 'Valor Total'
+  },
+  {
+    label: 'AÇÃO'
   }
 ];
 

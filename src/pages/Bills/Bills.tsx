@@ -16,7 +16,8 @@ import {
   handleEdit,
   handleDelete,
   breadCrumbsItems,
-  emptyInfo
+  emptyInfo,
+  calculateTotalValueCost
 } from './utils';
 import { emptyCosts } from '@/utils/emptys';
 import { icons } from '@/assets/images/icons';
@@ -32,7 +33,7 @@ import { Card, GenericModal } from '@/components/modules';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import {
   convertToParams,
-  formatCurrency,
+  formatter,
   handleClickMenu,
   handleCloseMenu
 } from '@/utils/utils';
@@ -42,6 +43,7 @@ export const Bills = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const [total, setTotal] = useState(0);
   const [costActive, setCostActive] = useState<
     shallowCostType | incorporationFeeType
   >(emptyCosts.costs.shallowCost);
@@ -60,6 +62,10 @@ export const Bills = () => {
       setSnackbar
     });
   }, [id, setSnackbar]);
+  useEffect(() => {
+    const total = calculateTotalValueCost(date.costs);
+    setTotal(total);
+  }, [date]);
 
   return (
     <Layout>
@@ -239,14 +245,14 @@ export const Bills = () => {
                             <S.Expense key={info.id}>
                               <S.Title>{info.name}</S.Title>
                               <S.Text>
-                                R$ {formatCurrency(info.totalValue.toString())}
+                                {formatter.format(info.totalValue)}
                               </S.Text>
                             </S.Expense>
                           );
                         })}
                       <S.FooterExpense>
-                        <S.Title>Total </S.Title>
-                        <S.Text>R$ {formatCurrency('0')}</S.Text>
+                        <S.Title>Total</S.Title>
+                        <S.Text>{formatter.format(cost.totalValue)}</S.Text>
                       </S.FooterExpense>
                     </S.ContainerExpenses>
                   </Card>
@@ -255,7 +261,7 @@ export const Bills = () => {
               <Card width={'100%'} height={'auto'} className="footer">
                 <S.FooterExpense>
                   <S.Title>Total </S.Title>
-                  <S.Text>R$ {formatCurrency('0')}</S.Text>
+                  <S.Text>{formatter.format(total)}</S.Text>
                 </S.FooterExpense>
               </Card>
             </>

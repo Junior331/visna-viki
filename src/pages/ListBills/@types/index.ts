@@ -1,6 +1,8 @@
+import { rowData } from '@/components/modules/TableBody/@types';
 import { Snackbar } from '@/contexts/Snackbar';
 import { payloadExpenseType } from '@/utils/types';
 import { Dispatch, SetStateAction } from 'react';
+import { NavigateFunction } from 'react-router-dom';
 
 export type costType = {
   id: number;
@@ -61,4 +63,9 @@ export type handleFilterProps = {
 
 export type handleCreateExpenseProps = handleGenericProps & {
   newExpense: payloadExpenseType;
+};
+
+export type handleEditExpenseProps = {
+  navigate: NavigateFunction;
+  expenseActive: rowData;
 };

@@ -8,10 +8,12 @@ import {
   payloadExpense,
   payloadExpenseType,
   payloadUserType,
+  unitHubType,
   unitType
 } from '@/utils/types';
 import { ENDPOINTS } from '@/utils/endpoints';
 import { getToken } from './sessionStorage';
+import { cleanObject } from '@/utils/utils';
 
 // crud Units
 export const createUnits = async (projectId: number, payload: unitType) => {
@@ -76,18 +78,22 @@ export const deleteUnits = async (unitId: number) => {
     }
   }
 };
-export const editUnits = async (
-  projectId: number,
-  UnitId: string,
-  payload: unitType
-) => {
+export const editUnits = async (unitId: number, payload: unitHubType) => {
+  const formatedListUnit = payload.unit.map((item) => {
+    const newObj = {
+      ...item,
+      marketAmount: parseFloat(item.marketAmount.toString())
+    };
+    return newObj;
+  });
+
   const body = {
-    projectId,
-    ...payload
+    ...payload,
+    unit: formatedListUnit.map(cleanObject)
   };
   try {
     const response = await axios.patch(
-      `${ENDPOINTS.BASE_URL}${ENDPOINTS.UNITS.BASE_URL}/${UnitId}`,
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.UNITS.BASE_URL}/${unitId}`,
       body,
       {
         headers: {

@@ -4,7 +4,8 @@ import { Snackbar } from '@/contexts/Snackbar';
 import {
   deadlineSummaryType,
   landSummaryType,
-  projectInfoType
+  projectInfoType,
+  unitHubType
 } from '@/utils/types';
 
 export type tabPanelProps = {
@@ -42,4 +43,8 @@ export type handleEditLandProps = handleGenericProps & {
 export type handleEditDeadlineIdProps = handleGenericProps & {
   deadlineId: number;
   payload: deadlineSummaryType;
+};
+export type handleEdittUnitsProps = handleGenericProps & {
+  unitId: number;
+  payload: unitHubType;
 };

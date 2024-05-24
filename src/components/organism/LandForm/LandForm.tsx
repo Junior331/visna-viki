@@ -352,7 +352,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                       IconComponent={KeyboardArrowDownRounded}
                       inputProps={{ 'aria-label': 'Without label' }}
                     >
-                      <MenuItem value={''} disabled>
+                      <MenuItem value={0} disabled>
                         <em>Selecione a opção </em>
                       </MenuItem>
                       <MenuItem value={1}>(ZM)</MenuItem>

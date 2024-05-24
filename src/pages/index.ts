@@ -5,6 +5,7 @@ import { SignUp } from './SignUp';
 import { Expense } from './Expense';
 import { Aportes } from './Aportes';
 import { ListBills } from './ListBills';
+import { CostDetails } from './CostDetails';
 import { EditProject } from './EditProject';
 import { DetailsBills } from './DetailsBills';
 import { CreateProject } from './CreateProject';
@@ -19,6 +20,7 @@ export {
   Expense,
   Aportes,
   ListBills,
+  CostDetails,
   EditProject,
   DetailsBills,
   ResetPassword,

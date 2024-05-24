@@ -1,5 +1,10 @@
-import { Grid } from '@mui/material';
 import styled from 'styled-components';
+
+import {
+  ContainerProgress,
+  Header as CardHeader
+} from '@/components/modules/Project/ProjectStyled';
+import { Grid } from '@mui/material';
 
 export const GenericContainer = styled.div`
   width: 100%;
@@ -8,37 +13,42 @@ export const GenericContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
 `;
-export const EditProjectContainer = styled(GenericContainer)`
+export const CostDetailsContainer = styled(GenericContainer)`
   gap: 21px;
   padding: 20px;
   flex-direction: column;
+
+  .MuiBackdrop-root {
+    background-color: rgb(0 0 0 / 20%) !important;
+  }
 `;
 export const Header = styled(GenericContainer)`
   gap: 10px;
   flex-wrap: wrap;
   padding-bottom: 10px;
-  border-bottom: 2px solid #ebe9f1;
   justify-content: space-between;
+  border-bottom: 2px solid #ebe9f1;
 `;
 export const Content = styled(GenericContainer)`
   gap: 20px;
   align-items: center;
   flex-direction: column;
-  .MuiBox-root {
-  }
   > div {
-    > div {
-      > .MuiBox-root {
-        padding: 35px 0px 0 15px !important;
-      }
+    gap: 0;
+    padding: 0;
+    > div:first-child {
+      width: 98%;
+      padding: 20px 0 18px;
     }
   }
-  .MuiTypography-root {
-    color: ${({ theme }) => theme.palette.color.dark};
-    font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
-    font-weight: ${({ theme }) => theme.typography.fontWeightLight};
+  .footer {
+    > div {
+      border: none;
+      padding-top: 0px;
+    }
   }
 `;
+
 export const Form = styled.form`
   gap: 15px;
   width: 100%;
@@ -65,11 +75,14 @@ export const Form = styled.form`
 `;
 
 export const ContainerInputs = styled(Grid)`
+  gap: 10px;
   margin-top: 40px;
   border-radius: 8px;
   align-items: center;
   padding: 10px 20px 20px;
   border: 1px solid #b9b9c3;
+  justify-content: flex-start;
+
   > .containerButton:last-child {
     padding: 0;
     display: flex;
@@ -81,10 +94,6 @@ export const ContainerInputs = styled(Grid)`
       height: 30px;
       margin-bottom: 13px;
       font-size: ${({ theme }) => theme.typography.fontSizeRegular - 0.2}rem;
-    }
-    > .btnRemove {
-      margin-right: 10px;
-      background-color: ${({ theme }) => theme.palette.error.default};
     }
   }
 `;
@@ -121,13 +130,13 @@ export const ContainerButtons = styled(GenericContainer)`
     align-items: center;
   }
 `;
+
 export const Title = styled.h2`
   letter-spacing: 1px;
   color: ${({ theme }) => theme.palette.color.dark};
   font-size: ${({ theme }) => theme.typography.fontSizeRegular}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
 `;
-
 export const ContainerMessage = styled(GenericContainer)`
   align-items: center;
   flex-direction: column;
@@ -137,9 +146,8 @@ export const ContainerMessage = styled(GenericContainer)`
   }
   > div {
     gap: 30px;
+    width: auto;
     margin-top: 30px;
-    align-items: center;
-    justify-content: center;
     > button:first-child {
       background-color: #e73d3e;
       &:hover {
@@ -153,6 +161,15 @@ export const Text = styled.p`
   color: ${({ theme }) => theme.palette.color.dark};
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
 `;
-export const Icon = styled.img`
-  margin-bottom: 20px;
+export const Icon = styled.img``;
+
+export const HeaderSkeleton = styled(CardHeader)``;
+export const FooterSkeleton = styled(ContainerProgress)``;
+export const ContainerSearch = styled(GenericContainer)`
+  background-color: #f0f8ff;
+`;
+export const Message = styled(Title)`
+  height: 100%;
+  display: flex;
+  align-items: center;
 `;
