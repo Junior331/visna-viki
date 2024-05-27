@@ -1,30 +1,51 @@
-import { useState } from 'react';
+import { useFormik } from 'formik';
+import { useContext, useEffect, useState } from 'react';
+import { Backdrop, CircularProgress } from '@mui/material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { breadCrumbsItems } from './utils';
+import { mocks } from '@/services/mocks';
 import { icons } from '@/assets/images/icons';
 import { Button } from '@/components/elements';
 import { convertToParams } from '@/utils/utils';
-import { GenericModal } from '@/components/modules';
+import { SnackbarContext } from '@/contexts/Snackbar';
+import { breadCrumbsItems, listAportes } from './utils';
+import { GenericModal, Pagination } from '@/components/modules';
 import { HeaderBreadcrumbs, Layout, Table } from '@/components/organism';
 import * as S from './AportesStyled';
-import { mocks } from '@/services/mocks';
-import { useFormik } from 'formik';
+import { aportesProps } from './@types';
 
 export const Aportes = () => {
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
   const [searchParams] = useSearchParams();
+  const [perPage, setPerPage] = useState(10);
+  const [pageTotal, setPageTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const { setSnackbar } = useContext(SnackbarContext);
+  const [list, setList] = useState<aportesProps[]>([]);
   const { id, name } = Object.fromEntries([...searchParams]);
 
-   const formik = useFormik({
+  const formik = useFormik({
     initialValues: {
       typesCost: 0,
       nameExpense: '',
       typesExpense: 0
     },
-    onSubmit: async () => {
-    }
+    onSubmit: async () => {}
   });
+
+  useEffect(() => {
+    listAportes({
+      page,
+      setList,
+      perPage,
+      setLoading,
+      setSnackbar,
+      setPageTotal,
+      id: parseFloat(id)
+    });
+  }, [id, page, perPage, setSnackbar]);
+
   return (
     <Layout>
       <S.AportesContainer>
@@ -39,7 +60,32 @@ export const Aportes = () => {
             Cancelar
           </Button>
         </S.Header>
-        <S.Content></S.Content>
+        <S.Content>
+          {loading ? (
+            <Backdrop open={loading}>
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          ) : (
+            <>
+              <Table
+                formik={formik}
+                rows={list}
+                columns={mocks.columnsAportes}
+              />
+
+              {pageTotal > 1 && (
+                <Pagination
+                  page={page}
+                  setPage={setPage}
+                  perPage={perPage}
+                  pageTotal={pageTotal}
+                  setPerPage={setPerPage}
+                  setPageTotal={setPageTotal}
+                />
+              )}
+            </>
+          )}
+        </S.Content>
       </S.AportesContainer>
 
       <GenericModal
@@ -65,12 +111,6 @@ export const Aportes = () => {
           </S.ContainerButtons>
         </S.ContainerMessage>
       </GenericModal>
-
-      <S.ContainerExpenses>
-        <Table formik={formik} rows={mocks.rowsAportes} columns={mocks.columnsAportes} />
-
-
-      </S.ContainerExpenses>
     </Layout>
   );
 };

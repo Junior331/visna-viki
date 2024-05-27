@@ -2,28 +2,20 @@ import { convertToParams } from '@/utils/utils';
 import {
   listProjectsProps,
   handleFilterAndSearchProps,
-  handleChangeProjectProps,
-  handleChangePageProps
+  handleChangeProjectProps
 } from './@types';
 import { getAllProjects } from './services';
-
-export const handleChangePage = ({
-  setPage,
-  newPage
-}: handleChangePageProps) => {
-  setPage(newPage);
-};
 
 export const listProjects = async ({
   page,
   setList,
-  limit = 10,
+  perPage,
   setLoading,
   setSnackbar,
-  setTotalPage
+  setPageTotal
 }: listProjectsProps) => {
   try {
-    const result = await getAllProjects(false, page, limit);
+    const result = await getAllProjects(page, perPage);
 
     const newList = result.items.map(
       (obj: {
@@ -40,7 +32,7 @@ export const listProjects = async ({
         progress: obj.progress || 0
       })
     );
-    setTotalPage(result.lastPage);
+    setPageTotal(result.lastPage);
     setList(newList);
     setLoading(false);
   } catch (error) {

@@ -643,3 +643,81 @@ export const deleteExpenseTypes = async (id: number) => {
     }
   }
 };
+
+// crud aportes
+export const getAportesByProject = async (
+  id: number,
+  page: number,
+  perPage: number
+) => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/all/${id}?page=${page}&perPage=${perPage}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createAportes = async (payload: any) => {
+  try {
+    const response = await axios.post(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/create`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const editAportes = async (id: number, payload: any) => {
+  try {
+    const response = await axios.patch(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/edit/${id}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const deleteAportes = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};

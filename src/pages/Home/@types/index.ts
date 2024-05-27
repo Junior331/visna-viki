@@ -5,11 +5,11 @@ import { NavigateFunction } from 'react-router-dom';
 
 export type listProjectsProps = {
   page: number;
-  limit?: number;
+  perPage: number;
   setSnackbar: (snackbarData: Snackbar) => void;
+  setPageTotal: Dispatch<SetStateAction<number>>;
   setList: Dispatch<SetStateAction<projectType[]>>;
   setLoading: Dispatch<React.SetStateAction<boolean>>;
-  setTotalPage: Dispatch<React.SetStateAction<number>>;
 };
 export type handleFilterAndSearchProps = {
   value?: string;
@@ -22,8 +22,4 @@ export type handleChangeProjectProps = {
   id: string;
   name: string;
   navigate: NavigateFunction;
-};
-export type handleChangePageProps = {
-  newPage: number;
-  setPage: Dispatch<React.SetStateAction<number>>;
 };

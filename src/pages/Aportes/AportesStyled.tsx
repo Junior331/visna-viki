@@ -21,8 +21,11 @@ export const Header = styled(GenericContainer)`
 `;
 export const Content = styled(GenericContainer)`
   gap: 20px;
-  padding: 0 20px;
   flex-direction: column;
+  .MuiBackdrop-root {
+    z-index: 2;
+    color: ${({ theme }) => theme.palette.color.default};
+  }
 `;
 export const ContainerMessage = styled(GenericContainer)`
   align-items: center;
@@ -58,30 +61,56 @@ export const ContainerButtons = styled(GenericContainer)`
   align-items: center;
   justify-content: center;
 `;
+export const ContainerPagination = styled(GenericContainer)`
+  justify-content: center;
+  .MuiPagination-ul {
+    li {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      padding-right: 1px;
+      align-items: center;
+      justify-content: center;
+      background-color: #f3f2f7;
+      font-size: ${({ theme }) => theme.typography.fontSize + 0.1}rem;
 
-export const ContainerExpenses = styled(GenericContainer)`
-  gap: 0px;
-  flex-direction: column;
-  > div:first-child {
-    padding: 0;
-  }
-  > div:last-child {
-    margin-top: -1px;
-    padding: 20px 20px 18px;
-  }
-`;
-export const FooterExpense = styled(GenericContainer)`
-  gap: 10px;
-  padding-top: 15px;
-  justify-content: space-between;
-  border-top: 2px solid #ebe9f1;
+      .Mui-selected {
+        padding: 20px;
+        border-radius: 60px;
+      }
+      .MuiButtonBase-root {
+        width: 42px;
+        height: 42px;
+        font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
+        font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
+      }
 
-  h2 {
-    color: ${({ theme }) => theme.palette.color.medium};
-  }
+      svg {
+        color: ${({ theme }) => theme.palette.background.regular};
+        font-size: ${({ theme }) => theme.typography.fontSizeRegular}rem;
+      }
+    }
 
-  p {
-    color: #28c76f;
-    font-weight: ${({ theme }) => theme.typography.fontWeightRegular + 100};
+    > li:first-child,
+    li:last-child {
+      border-radius: 30px;
+    }
+
+    > li:nth-child(2),
+    li:nth-last-child(2) {
+      margin: 0 10px;
+      border-radius: 30px;
+    }
+
+    li:nth-child(3) {
+      border-radius: 25px 0px 0px 25px;
+    }
+
+    li:nth-last-child(3) {
+      border-radius: 0px 25px 25px 0px;
+    }
+    li:nth-child(n4):nth-last-child(4) {
+      border-radius: 0;
+    }
   }
 `;
