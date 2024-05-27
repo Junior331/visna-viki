@@ -21,7 +21,7 @@ export const breadCrumbsItems = () => [
   },
   {
     path: '',
-    label: 'Dispesas'
+    label: 'Despesas'
   }
 ];
 export const listCosts = async ({
