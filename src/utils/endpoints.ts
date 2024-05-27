@@ -22,5 +22,8 @@ export const ENDPOINTS = {
   },
   EXPENSE: {
     BASE_URL: 'expense/hub'
+  },
+  APORTES: {
+    BASE_URL: 'deposit'
   }
 };
