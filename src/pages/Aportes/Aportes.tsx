@@ -6,8 +6,10 @@ import { Button } from '@/components/elements';
 import { convertToParams } from '@/utils/utils';
 import { GenericModal } from '@/components/modules';
 import { SnackbarContext } from '@/contexts/Snackbar';
-import { HeaderBreadcrumbs, Layout } from '@/components/organism';
+import { HeaderBreadcrumbs, Layout, Table } from '@/components/organism';
 import * as S from './AportesStyled';
+import { mocks } from '@/services/mocks';
+import { useFormik } from 'formik';
 
 export const Aportes = () => {
   const navigate = useNavigate();
@@ -18,6 +20,16 @@ export const Aportes = () => {
   const { id, name } = Object.fromEntries([...searchParams]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [list, setList] = useState<any>([]);
+
+  const formik = useFormik({
+    initialValues: {
+      typesCost: 0,
+      nameExpense: '',
+      typesExpense: 0
+    },
+    onSubmit: async () => {}
+  });
+
   useEffect(() => {
     listAportes({
       id: parseFloat(id),
@@ -41,7 +53,15 @@ export const Aportes = () => {
             Cancelar
           </Button>
         </S.Header>
-        <S.Content></S.Content>
+        <S.Content>
+          <S.ContainerExpenses>
+            <Table
+              formik={formik}
+              rows={mocks.rowsAportes}
+              columns={mocks.columnsAportes}
+            />
+          </S.ContainerExpenses>
+        </S.Content>
       </S.AportesContainer>
 
       <GenericModal
