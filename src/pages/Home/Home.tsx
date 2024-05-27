@@ -4,17 +4,16 @@ import { Search, KeyboardArrowDownRounded } from '@mui/icons-material';
 import {
   Select,
   MenuItem,
-  IconButton,
-  OutlinedInput,
-  InputAdornment,
-  FormControl,
   Skeleton,
-  Pagination
+  IconButton,
+  FormControl,
+  OutlinedInput,
+  InputAdornment
 } from '@mui/material';
 import { mocks } from '@/services/mocks';
 import { projectType } from '@/utils/types';
 import { emptyProject } from '@/utils/emptys';
-import { Header, Project } from '@/components/modules';
+import { Header, Pagination, Project } from '@/components/modules';
 import { Layout } from '@/components/organism';
 import { SearchContext } from '@/contexts/Search';
 import { Button, Input } from '@/components/elements';
@@ -22,8 +21,7 @@ import { SnackbarContext } from '@/contexts/Snackbar';
 import {
   listProjects,
   handleFilterAndSearch,
-  handleChangeProject,
-  handleChangePage
+  handleChangeProject
 } from './utils';
 import * as S from './HomeStyled';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
@@ -32,7 +30,8 @@ export const Home = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [option, setOption] = useState('');
-  const [totalPage, setTotalPage] = useState(0);
+  const [perPage, setPerPage] = useState(10);
+  const [pageTotal, setPageTotal] = useState(0);
   const { setSnackbar } = useContext(SnackbarContext);
   const [loading, setLoading] = useState<boolean>(true);
   const { setContentActive } = useContext(SearchContext);
@@ -52,13 +51,14 @@ export const Home = () => {
     setStepsIsDone([]);
     listProjects({
       page,
+      perPage,
       setList,
       setLoading,
       setSnackbar,
-      setTotalPage
+      setPageTotal
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [page, perPage]);
 
   return (
     <Layout>
@@ -170,15 +170,16 @@ export const Home = () => {
                     }
                   />
                 ))}
-                <Pagination
-                  color="primary"
-                  showLastButton
-                  showFirstButton
-                  count={totalPage}
-                  onChange={(_e, index) => {
-                    handleChangePage({ newPage: index, setPage });
-                  }}
-                />
+                {pageTotal > 1 && (
+                  <Pagination
+                    page={page}
+                    setPage={setPage}
+                    perPage={perPage}
+                    pageTotal={pageTotal}
+                    setPerPage={setPerPage}
+                    setPageTotal={setPageTotal}
+                  />
+                )}
               </>
             )}
           </S.ContainerCards>

@@ -130,6 +130,10 @@ export const GlobalStyles = createGlobalStyle`
         }
       }
     }
+
+    /* .base-Popper-root  {
+      inset: auto auto 0px -130px !important;
+    } */
   }
 
   &::-webkit-scrollbar {

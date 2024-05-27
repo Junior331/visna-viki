@@ -43,13 +43,14 @@ export const columnsAportes: columnType[] = [
     label: 'Observação '
   },
   {
-    label: 'Fase 1'
+    label: 'Fase 1',
+    description: 'Aquisição terreno'
   },
   {
-    label: 'Fase 2'
+    label: 'Fase 2',
+    description: 'Obra + todas as despesas'
   },
   {
     label: 'Total de Aportes'
   }
-
 ];

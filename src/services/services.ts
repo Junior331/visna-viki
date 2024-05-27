@@ -645,10 +645,14 @@ export const deleteExpenseTypes = async (id: number) => {
 };
 
 // crud aportes
-export const getAportesByProject = async (id: number) => {
+export const getAportesByProject = async (
+  id: number,
+  page: number,
+  perPage: number
+) => {
   try {
     const response = await axios.get(
-      `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/all/${id}`,
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/all/${id}?page=${page}&perPage=${perPage}`,
       {
         headers: {
           Authorization: `Bearer ${getToken()}`
