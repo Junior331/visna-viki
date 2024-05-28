@@ -63,7 +63,6 @@ export const GlobalStyles = createGlobalStyle`
     .menuEdit {
       .MuiPaper-root {
         width: 180px;
-        left: 1702px!important;
       }
       li.MuiMenuItem-root {
         gap: 10px;

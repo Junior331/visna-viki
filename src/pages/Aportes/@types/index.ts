@@ -6,17 +6,23 @@ export type breadCrumbsItemsProps = {
   name: string;
 };
 export type aportesProps = {
-  id: number;
+  id?: number;
   date: string;
   total: number;
   payment: number;
   expenses: number;
   projectId: number;
+  investment: number;
   observation: string;
 };
+
 export type handleGenericProps = {
   setLoading: Dispatch<SetStateAction<boolean>>;
   setSnackbar: (snackbarData: Snackbar) => void;
+};
+export type createNewAporteProps = handleGenericProps & {
+  payload: aportesProps;
+  setOpenModalNewAporte: Dispatch<SetStateAction<boolean>>;
 };
 export type listAportesProps = handleGenericProps & {
   id: number;
@@ -24,4 +30,14 @@ export type listAportesProps = handleGenericProps & {
   perPage: number;
   setPageTotal: Dispatch<SetStateAction<number>>;
   setList: Dispatch<SetStateAction<aportesProps[]>>;
+};
+export type handleSumValuesProps = {
+  value1: string;
+  value2: string;
+  fieldName: string;
+  setFieldValue: (
+    field: string,
+    value: string,
+    shouldValidate?: boolean | undefined
+  ) => void;
 };

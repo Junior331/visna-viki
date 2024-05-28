@@ -34,6 +34,21 @@ export const formatter = new Intl.NumberFormat('pt-BR', {
   currency: 'BRL'
 });
 
+export const formatterV2 = new Intl.NumberFormat('pt-BR', {
+  style: 'decimal',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+});
+
+export const parseFormattedNumber = (formattedNumber: string) => {
+  // Remove os pontos de separação de milhares
+  let number = formattedNumber.replace(/\./g, '');
+  // Substitui a vírgula por um ponto para converter em número decimal
+  number = number.replace(',', '.');
+  // Converte a string para número
+  return parseFloat(number);
+};
+
 export const formatCurrency = (value: string): string => {
   // Remove todos os caracteres não numéricos
   const numericValue = value.replace(/\D/g, '');
@@ -65,6 +80,15 @@ export const formatDate = (dateInput: string | Date): string => {
   const year = date.getFullYear();
 
   return `${day}/${month}/${year}`;
+};
+
+export const convertDateToISO = (dateString: string) => {
+  if (typeof dateString === 'string' && dateString.trim() === '') {
+    return '-';
+  }
+  const [day, month, year] = dateString.split('/').map(Number);
+  const date = new Date(year, month - 1, day);
+  return date.toISOString();
 };
 
 export const handleClickMenu = ({ event, setAnchorEl }: handleClickProps) => {

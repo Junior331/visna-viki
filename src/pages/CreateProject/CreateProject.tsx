@@ -21,7 +21,7 @@ import * as S from './CreateProjectStyled';
 export const CreateProject = () => {
   const navigate = useNavigate();
   const [isShow, setIsShow] = useState(false);
-  const [stepActive, setStepActive] = useState(1);
+  const [stepActive, setStepActive] = useState(2);
   const [openModal, setOpenModal] = useState(false);
   const { stepsIsDone } = useContext(StepsIsDoneContext);
   const [date, setDate] = useState<projectDateType>(emptyProjectDate);
@@ -36,7 +36,7 @@ export const CreateProject = () => {
         <S.Header>
           <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems(date.lands.name)} />
           <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
-            Cancelar
+            Voltar
           </Button>
         </S.Header>
         <S.Content>

@@ -667,7 +667,7 @@ export const getAportesByProject = async (
   }
 };
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const createAportes = async (payload: any) => {
+export const createAporte = async (payload: any) => {
   try {
     const response = await axios.post(
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/create`,

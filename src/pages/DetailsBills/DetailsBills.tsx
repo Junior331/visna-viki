@@ -154,7 +154,7 @@ export const DetailsBills = () => {
             })}
           />
           <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
-            Cancelar
+            Voltar
           </Button>
         </S.Header>
         <S.Content>
@@ -245,7 +245,7 @@ export const DetailsBills = () => {
                           <Card width={'100%'} height={'auto'} key={key}>
                             <S.HeaderCard>
                               <S.Title>{cost.name}</S.Title>
-                              {isEdit && (
+                              {Boolean(isEdit) && (
                                 <Box
                                   sx={{
                                     display: 'flex',

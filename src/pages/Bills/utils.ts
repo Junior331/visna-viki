@@ -47,14 +47,25 @@ export const handleEdit = ({
     }
   );
 };
-export const handleView = ({ id, idProject, name, navigate }: handleProps) => {
+export const handleView = ({
+  id,
+  name,
+  cost,
+  navigate,
+  idProject
+}: handleProps) => {
   const formatedId = id.toString();
   navigate(
-    `/details?isEdit=false${convertToParams({
+    `/details?${convertToParams({
       idProject,
       name,
       id: formatedId
-    })}`
+    })}`,
+    {
+      state: {
+        cost
+      }
+    }
   );
 };
 export const handleDelete = () => {};

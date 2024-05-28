@@ -18,6 +18,12 @@ export const Header = styled(GenericContainer)`
   padding-bottom: 10px;
   justify-content: space-between;
   border-bottom: 2px solid #ebe9f1;
+
+  > div:last-child {
+    gap: 12px;
+    display: flex;
+    align-items: center;
+  }
 `;
 export const Content = styled(GenericContainer)`
   gap: 20px;
@@ -113,4 +119,37 @@ export const ContainerPagination = styled(GenericContainer)`
       border-radius: 0;
     }
   }
+`;
+export const Form = styled.form`
+  padding: 25px 25px 0;
+  gap: 15px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .MuiFormControl-root {
+    gap: 3px;
+    width: 100%;
+    margin: 0px;
+  }
+  .MuiGrid-root {
+    > button {
+      height: 53px;
+      margin-left: 10px;
+    }
+  }
+  .containerBtn {
+    margin: 0;
+    justify-content: flex-end;
+  }
+`;
+export const Label = styled.label`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  color: ${({ theme }) => theme.palette.color.medium};
+  font-size: ${({ theme }) => theme.typography.fontSize}rem;
+  font-weight: ${({ theme }) => theme.typography.fontWeightLight};
 `;

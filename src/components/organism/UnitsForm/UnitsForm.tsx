@@ -148,7 +148,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             </Select>
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={1.1} minWidth={130}>
+                        <Grid item xs={12} sm={6} md={1.3} minWidth={130}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
@@ -192,7 +192,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={1} minWidth={165}>
+                        <Grid item xs={12} sm={6} md={0.8} minWidth={145}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
@@ -232,7 +232,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={1.2} minWidth={175}>
+                        <Grid item xs={12} sm={6} md={1.1} minWidth={175}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
@@ -251,7 +251,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={1.3} minWidth={190}>
+                        <Grid item xs={12} sm={6} md={1.2} minWidth={190}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
@@ -292,7 +292,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={1.7} minWidth={250}>
+                        <Grid item xs={12} sm={6} md={1.6} minWidth={250}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
@@ -339,7 +339,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                               onChange={handleChange}
                               name={`unit[${index}].marketAmount`}
                               value={formatCurrency(
-                                values.unit[index].marketAmount
+                                values.unit[index].marketAmount || ''
                               )}
                               placeholder="Digite o valor"
                               aria-describedby="marketAmount"
@@ -364,7 +364,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                               aria-describedby="netAmount"
                               name={`unit[${index}].netAmount`}
                               value={formatCurrency(
-                                values.unit[index].netAmount.toString()
+                                values.unit[index].netAmount.toString() || ''
                               )}
                               inputProps={{ style: { fontSize: '1.4rem' } }}
                             />
@@ -566,7 +566,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     onChange={handleChange}
                     aria-describedby="averageSaleValue"
                     inputProps={{ style: { fontSize: '1.4rem' } }}
-                    value={formatCurrency(values.averageSaleValue.toString())}
+                    value={formatCurrency(
+                      values.averageSaleValue.toString() || ''
+                    )}
                     helperText={
                       touched.averageSaleValue && errors.averageSaleValue
                     }

@@ -305,9 +305,11 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                       required
                       displayEmpty
                       name="depave"
-                      onChange={handleChange}
+                      value={values.depave ? 1 : 0}
+                      onChange={(e) => {
+                        setFieldValue('depave', Boolean(e.target.value));
+                      }}
                       className="SelectComponent"
-                      value={values.depave}
                       IconComponent={KeyboardArrowDownRounded}
                       inputProps={{ 'aria-label': 'Without label' }}
                     >
@@ -352,15 +354,17 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                       IconComponent={KeyboardArrowDownRounded}
                       inputProps={{ 'aria-label': 'Without label' }}
                     >
-                      <MenuItem value={0} disabled>
+                      <MenuItem value={''} disabled>
                         <em>Selecione a opção </em>
                       </MenuItem>
-                      <MenuItem value={1}>(ZM)</MenuItem>
-                      <MenuItem value={2}>(ZC)</MenuItem>
-                      <MenuItem value={3}>(ZEU)</MenuItem>
-                      <MenuItem value={4}>(ZER)</MenuItem>
-                      <MenuItem value={5}>(Zcore)</MenuItem>
-                      <MenuItem value={6}>(Operação Urbana)</MenuItem>
+                      <MenuItem value={'ZM'}>(ZM)</MenuItem>
+                      <MenuItem value={'ZC'}>(ZC)</MenuItem>
+                      <MenuItem value={'ZEU'}>(ZEU)</MenuItem>
+                      <MenuItem value={'ZER'}>(ZER)</MenuItem>
+                      <MenuItem value={'Zcore'}>(Zcore)</MenuItem>
+                      <MenuItem value={'Operação Urbana'}>
+                        (Operação Urbana)
+                      </MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>

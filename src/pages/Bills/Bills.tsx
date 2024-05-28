@@ -73,7 +73,7 @@ export const Bills = () => {
         <S.Header>
           <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems(id, name)} />
           <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
-            Cancelar
+            Voltar
           </Button>
         </S.Header>
         <S.Content>

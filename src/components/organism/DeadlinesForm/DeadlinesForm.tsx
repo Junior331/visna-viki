@@ -85,7 +85,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                     );
                     handleSumValues({
                       value1: parseFloat(e.target.value),
-                      value2: values.endDate,
+                      value2: values.projectLaunchDeadlineInMonth,
                       value3: values.constructionDeadlineInMonth,
                       fieldName: 'totalDeadlineInMonth',
                       setFieldValue
@@ -114,9 +114,12 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                 <S.Label>Prazo de lançamento (mes)</S.Label>
                 <Input
                   required
-                  id="endDate"
+                  id="projectLaunchDeadlineInMonth"
                   onBlur={(e) => {
-                    setFieldValue('endDate', parseFloat(e.target.value));
+                    setFieldValue(
+                      'projectLaunchDeadlineInMonth',
+                      parseFloat(e.target.value)
+                    );
                     handleSumValues({
                       value1: values.approvalDeadlineInMonth,
                       value2: parseFloat(e.target.value),
@@ -125,13 +128,19 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                       setFieldValue
                     });
                   }}
-                  value={values.endDate}
+                  value={values.projectLaunchDeadlineInMonth}
                   onChange={handleChange}
-                  aria-describedby="endDate"
+                  aria-describedby="projectLaunchDeadlineInMonth"
                   placeholder="Digite os meses"
                   inputProps={{ style: { fontSize: '1.4rem' } }}
-                  helperText={touched.endDate && errors.endDate}
-                  error={touched.endDate && Boolean(errors.endDate)}
+                  helperText={
+                    touched.projectLaunchDeadlineInMonth &&
+                    errors.projectLaunchDeadlineInMonth
+                  }
+                  error={
+                    touched.projectLaunchDeadlineInMonth &&
+                    Boolean(errors.projectLaunchDeadlineInMonth)
+                  }
                 />
               </FormControl>
             </Grid>
@@ -148,7 +157,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                     );
                     handleSumValues({
                       value1: values.approvalDeadlineInMonth,
-                      value2: values.endDate,
+                      value2: values.projectLaunchDeadlineInMonth,
                       value3: parseFloat(e.target.value),
                       fieldName: 'totalDeadlineInMonth',
                       setFieldValue

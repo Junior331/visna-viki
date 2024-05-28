@@ -28,10 +28,10 @@ export type landType = {
   name: string;
   area: number;
   state: string;
-  zoning: number;
+  zoning: string;
   number: string;
   street: string;
-  depave: number;
+  depave: boolean;
   zipCode: string;
   country: string;
   frontage: number;
@@ -44,8 +44,8 @@ export type landType = {
 export type landSummaryType = {
   id: number;
   area: number;
-  depave: number;
-  zoning: number;
+  depave: boolean;
+  zoning: string;
   frontage: number;
   projectId: number;
   addressId: number;
@@ -117,22 +117,21 @@ export type unitHubType = {
 };
 
 export type deadlineType = {
-  endDate: number;
   startDate: string;
   totalDeadlineInMonth: number;
   approvalDeadlineInMonth: number;
   constructionDeadlineInMonth: number;
+  projectLaunchDeadlineInMonth: number;
 };
 
 export type deadlineSummaryType = {
   id: number;
-  endDate: number;
   projectId: number;
   startDate: string;
   totalDeadlineInMonth: number;
   approvalDeadlineInMonth: number;
   constructionDeadlineInMonth: number;
-  projectLaunchDeadlineInMonth: null;
+  projectLaunchDeadlineInMonth: number;
 };
 
 export type projectDateType = {
