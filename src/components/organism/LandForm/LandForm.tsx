@@ -11,6 +11,7 @@ import { formatCurrency, handleKeyDown, typeMask } from '@/utils/utils';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import { landFormSchema, projectNameFormSchema } from './Schema';
 import * as S from './LandFormStyled';
+import { Tooltip } from '@/components/elements/Tooltip';
 
 const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
   const navigate = useNavigate();
@@ -254,7 +255,9 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
               <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }} mb={2}>
                 <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <S.Label>Área total (m²)</S.Label>
+                    <Tooltip title={'Área total (m²)'}>
+                      <S.Label>A. total (m²)</S.Label>
+                    </Tooltip>
                     <Input
                       id="area"
                       required
@@ -399,7 +402,9 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <S.Label>Valor total (R$)</S.Label>
+                    <Tooltip title={'Valor total (R$)'}>
+                      <S.Label>V. total (R$)</S.Label>
+                    </Tooltip>
                     <Input
                       required
                       disabled

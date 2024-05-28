@@ -45,6 +45,7 @@ import { HeaderBreadcrumbs } from '@/components/organism';
 import { MaskType, projectInfoType } from '@/utils/types';
 import unitsFormSchema from '@/components/organism/UnitsForm/UnitsFormSchema';
 import * as S from './EditProjectStyled';
+import { Tooltip } from '@/components/elements/Tooltip';
 
 const CustomTabPanel = (props: tabPanelProps) => {
   const { children, value, index, ...other } = props;
@@ -434,7 +435,9 @@ export const EditProject = () => {
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
                     >
-                      <S.Label>Área total (m²)</S.Label>
+                      <Tooltip title={'Área total (m²)'}>
+                        <S.Label>A. total (m²)</S.Label>
+                      </Tooltip>
                       <Input
                         id="area"
                         required
@@ -586,7 +589,9 @@ export const EditProject = () => {
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
                     >
-                      <S.Label>Valor total (R$)</S.Label>
+                      <Tooltip title={'Valor total (R$)'}>
+                        <S.Label>V. total (R$)</S.Label>
+                      </Tooltip>
                       <Input
                         required
                         id="totalAmount"
@@ -701,7 +706,9 @@ export const EditProject = () => {
                                     sx={{ m: 1, width: '25ch' }}
                                     variant="outlined"
                                   >
-                                    <S.Label>Tipos de unidades </S.Label>
+                                    <Tooltip title={'Tipos de unidades '}>
+                                      <S.Label>T. unidades </S.Label>
+                                    </Tooltip>
 
                                     <Select
                                       required
@@ -806,7 +813,9 @@ export const EditProject = () => {
                                     sx={{ m: 1, width: '25ch' }}
                                     variant="outlined"
                                   >
-                                    <S.Label>Area média</S.Label>
+                                    <Tooltip title={'Área média'}>
+                                      <S.Label>A. média</S.Label>
+                                    </Tooltip>
                                     <Input
                                       required
                                       onBlur={(e) => {
@@ -866,7 +875,9 @@ export const EditProject = () => {
                                     sx={{ m: 1, width: '25ch' }}
                                     variant="outlined"
                                   >
-                                    <S.Label>A. Privativa total</S.Label>
+                                    <Tooltip title={'Área Privativa total'}>
+                                      <S.Label>A. P. total</S.Label>
+                                    </Tooltip>
                                     <Input
                                       disabled
                                       onBlur={(e) => {
@@ -908,7 +919,9 @@ export const EditProject = () => {
                                     sx={{ m: 1, width: '25ch' }}
                                     variant="outlined"
                                   >
-                                    <S.Label>Qtd permutas</S.Label>
+                                    <Tooltip title={'Quantidade de permutas'}>
+                                      <S.Label>Q. permutas</S.Label>
+                                    </Tooltip>
                                     <Input
                                       required
                                       onBlur={(e) => {
@@ -968,7 +981,11 @@ export const EditProject = () => {
                                     sx={{ m: 1, width: '25ch' }}
                                     variant="outlined"
                                   >
-                                    <S.Label>Área total permutada (m²)</S.Label>
+                                    <Tooltip
+                                      title={'Área total permutada (m²)'}
+                                    >
+                                      <S.Label>A. T. permutada (m²)</S.Label>
+                                    </Tooltip>
                                     <Input
                                       required
                                       disabled
@@ -999,7 +1016,9 @@ export const EditProject = () => {
                                     sx={{ m: 1, width: '25ch' }}
                                     variant="outlined"
                                   >
-                                    <S.Label>Valor de mercado (R$)</S.Label>
+                                    <Tooltip title={'Valor de mercado (R$)'}>
+                                      <S.Label>V. mercado (R$)</S.Label>
+                                    </Tooltip>
                                     <Input
                                       required
                                       onBlur={(e) => {
@@ -1049,7 +1068,9 @@ export const EditProject = () => {
                                     sx={{ m: 1, width: '25ch' }}
                                     variant="outlined"
                                   >
-                                    <S.Label>VGV líquido (R$)</S.Label>
+                                    <Tooltip title={'VGV líquido da permuta'}>
+                                      <S.Label>V. L. permuta (R$)</S.Label>
+                                    </Tooltip>
                                     <Input
                                       required
                                       disabled
@@ -1147,7 +1168,9 @@ export const EditProject = () => {
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <S.Label>Unidades por andar</S.Label>
+                          <Tooltip title={'Unidades por andar'}>
+                            <S.Label>U. andar</S.Label>
+                          </Tooltip>
                           <Input
                             required
                             onBlur={handleBlur}
@@ -1199,7 +1222,9 @@ export const EditProject = () => {
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <S.Label>U. Total no empreendimento </S.Label>
+                          <Tooltip title={'Unidades Total no empreendimento'}>
+                            <S.Label>U. T. empreendimento </S.Label>
+                          </Tooltip>
                           <Input
                             required
                             disabled
@@ -1226,7 +1251,9 @@ export const EditProject = () => {
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <S.Label>Total de area privativa </S.Label>
+                          <Tooltip title={'Total de área privativa'}>
+                            <S.Label>T. A. privativa </S.Label>
+                          </Tooltip>
                           <Input
                             required
                             disabled
@@ -1246,7 +1273,9 @@ export const EditProject = () => {
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <S.Label>Área total a construir (m²) </S.Label>
+                          <Tooltip title={'Área total a construir (m²)'}>
+                            <S.Label>A. T. construir (m²) </S.Label>
+                          </Tooltip>
                           <Input
                             required
                             onBlur={handleBlur}
@@ -1274,9 +1303,11 @@ export const EditProject = () => {
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <S.Label>
-                            Área total privativa sem permuta (m²){' '}
-                          </S.Label>
+                          <Tooltip
+                            title={'Área total privativa sem permuta (m²)'}
+                          >
+                            <S.Label>A. T. P. permuta (m²) </S.Label>
+                          </Tooltip>
                           <Input
                             required
                             disabled
@@ -1303,7 +1334,9 @@ export const EditProject = () => {
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <S.Label>Valor médio de venda (m²/R$) </S.Label>
+                          <Tooltip title={'Valor médio de venda (m²/R$)'}>
+                            <S.Label>V. M. venda (m²/R$) </S.Label>
+                          </Tooltip>
                           <Input
                             required
                             disabled
@@ -1377,7 +1410,9 @@ export const EditProject = () => {
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
                     >
-                      <S.Label>Data de início</S.Label>
+                       <Tooltip title={'Data de início'}>
+                      <S.Label>D. início</S.Label>
+                  </Tooltip>
                       <Input
                         required
                         id="startDate"
@@ -1406,7 +1441,9 @@ export const EditProject = () => {
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
                     >
-                      <S.Label>Aprovação do projeto (mes)</S.Label>
+                      <Tooltip title={'Aprovação do projeto (mes)'}>
+                      <S.Label>A. projeto (mes)</S.Label>
+                  </Tooltip>
                       <Input
                         required
                         onBlur={(e) => {
@@ -1445,7 +1482,9 @@ export const EditProject = () => {
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
                     >
-                      <S.Label>Prazo de lançamento (mes)</S.Label>
+                      <Tooltip title={'Prazo de lançamento (mes)'}>
+                      <S.Label>P. lançamento (mes)</S.Label>
+                  </Tooltip>
                       <Input
                         required
                         id="endDate"
@@ -1485,7 +1524,9 @@ export const EditProject = () => {
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
                     >
-                      <S.Label>Execução da obra (mes)</S.Label>
+                      <Tooltip title={'Execução da obra (mes)'}>
+                      <S.Label>E. obra (mes)</S.Label>
+                  </Tooltip>
                       <Input
                         required
                         onBlur={(e) => {
@@ -1528,7 +1569,9 @@ export const EditProject = () => {
                       sx={{ m: 1, width: '25ch' }}
                       variant="outlined"
                     >
-                      <S.Label>Prazo total (mes)</S.Label>
+                       <Tooltip title={'Prazo total (mes)'}>
+                      <S.Label>P. total (mes)</S.Label>
+                  </Tooltip>
                       <Input
                         required
                         disabled
