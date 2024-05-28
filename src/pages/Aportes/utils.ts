@@ -81,7 +81,6 @@ export const handleCreateAporte = async ({
   setOpenModalNewAporte
 }: createNewAporteProps) => {
   setLoading(true);
-  console.log('payload ::', payload);
 
   try {
     await createAporte(payload);

@@ -686,7 +686,6 @@ export const EditProject = () => {
                             spacing={{ xs: 0, sm: 2 }}
                           >
                             {values.unit.map((unit, index) => {
-                              console.log('unit ::', unit);
                               return (
                                 <S.ContainerInputs
                                   pl={0.5}
@@ -762,15 +761,15 @@ export const EditProject = () => {
                                             parseFloat(e.target.value)
                                           );
                                           handleSumValues({
-                                            id: unit.id,
+                                            id: index,
                                             type: 'sum',
                                             value1: e.target.value,
-                                            value2: unit.averageArea.toString(),
+                                            setFieldValue: setFieldValue,
                                             fieldName: 'areaPrivativaTotal',
-                                            setFieldValue: setFieldValue
+                                            value2: unit.averageArea.toString()
                                           });
                                           handleSumValues({
-                                            id: unit.id,
+                                            id: index,
                                             type: 'mult',
                                             value1:
                                               unit.marketAmount.toString(),
@@ -787,15 +786,9 @@ export const EditProject = () => {
                                             `unit[${index}].unitQuantity`,
                                             parseFloat(e.target.value)
                                           );
-                                          handleChange(e);
                                         }}
-                                        name={`unit[${index}].unitQuantity`}
-                                        value={typeMask(
-                                          MaskType.NUMBER,
-                                          values.unit[
-                                            index
-                                          ].unitQuantity.toString()
-                                        )}
+                                        name={`values.unit[${index}].unitQuantity`}
+                                        value={values.unit[index].unitQuantity}
                                         aria-describedby="unitQuantity"
                                         placeholder="Digite a quantidade"
                                         inputProps={{
@@ -824,7 +817,7 @@ export const EditProject = () => {
                                             parseFloat(e.target.value)
                                           );
                                           handleSumValues({
-                                            id: unit.id,
+                                            id: index,
                                             type: 'sum',
                                             value1: e.target.value,
                                             value2:
@@ -833,7 +826,7 @@ export const EditProject = () => {
                                             setFieldValue: setFieldValue
                                           });
                                           handleSumValues({
-                                            id: unit.id,
+                                            id: index,
                                             type: 'sum',
                                             value1: e.target.value,
                                             value2:
@@ -842,7 +835,7 @@ export const EditProject = () => {
                                             setFieldValue: setFieldValue
                                           });
                                         }}
-                                        id={`averageArea-${unit.id}`}
+                                        id={`averageArea-${index}`}
                                         onChange={(e) => {
                                           setFieldValue(
                                             `unit[${index}].averageArea`,
@@ -860,6 +853,7 @@ export const EditProject = () => {
                                       />
                                     </FormControl>
                                   </Grid>
+
                                   <Grid
                                     item
                                     xs={12}
@@ -881,7 +875,7 @@ export const EditProject = () => {
                                           );
                                           handleBlur(e);
                                         }}
-                                        id={`areaPrivativaTotal-${unit.id}`}
+                                        id={`areaPrivativaTotal-${index}`}
                                         onChange={(e) => {
                                           setFieldValue(
                                             `unit[${index}].areaPrivativaTotal`,
@@ -921,7 +915,7 @@ export const EditProject = () => {
                                             parseFloat(e.target.value)
                                           );
                                           handleSumValues({
-                                            id: unit.id,
+                                            id: index,
                                             type: 'sum',
                                             value1: unit.averageArea.toString(),
                                             value2: e.target.value,
@@ -929,7 +923,7 @@ export const EditProject = () => {
                                             setFieldValue: setFieldValue
                                           });
                                           handleSumValues({
-                                            id: unit.id,
+                                            id: index,
                                             type: 'mult',
                                             value1:
                                               unit.marketAmount.toString(),
@@ -947,7 +941,7 @@ export const EditProject = () => {
                                           );
                                           handleChange(e);
                                         }}
-                                        id={`exchangeQuantity-${unit.id}`}
+                                        id={`exchangeQuantity-${index}`}
                                         name={`unit[${index}].exchangeQuantity`}
                                         value={
                                           values.unit[index].exchangeQuantity
@@ -978,7 +972,7 @@ export const EditProject = () => {
                                         required
                                         disabled
                                         onBlur={handleBlur}
-                                        id={`totalExchangeArea-${unit.id}`}
+                                        id={`totalExchangeArea-${index}`}
                                         onChange={handleChange}
                                         name={`unit[${index}].totalExchangeArea`}
                                         value={
@@ -1012,7 +1006,7 @@ export const EditProject = () => {
                                             e.target.value
                                           );
                                           handleSumValues({
-                                            id: unit.id,
+                                            id: index,
                                             type: 'mult',
                                             value1: e.target.value,
                                             value2:
@@ -1023,7 +1017,7 @@ export const EditProject = () => {
                                             setFieldValue: setFieldValue
                                           });
                                         }}
-                                        id={`marketAmount-${unit.id}`}
+                                        id={`marketAmount-${index}`}
                                         onChange={(e) => {
                                           handleChange(e);
                                         }}
@@ -1058,7 +1052,7 @@ export const EditProject = () => {
                                         required
                                         disabled
                                         onBlur={handleBlur}
-                                        id={`netAmount-${unit.id}`}
+                                        id={`netAmount-${index}`}
                                         onChange={handleChange}
                                         placeholder="0,00"
                                         aria-describedby="netAmount"
