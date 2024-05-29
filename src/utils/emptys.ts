@@ -92,6 +92,7 @@ export const emptyProjectInfo: projectInfoType = {
     unit: [
       {
         id: 0,
+        keyIndex: 0,
         unitTypeId: 0,
         averageArea: 0,
         marketAmount: 0,
