@@ -38,6 +38,10 @@ export const Content = styled(GenericContainer)`
     font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
     font-weight: ${({ theme }) => theme.typography.fontWeightLight};
   }
+  .tabDisabled {
+    cursor: no-drop !important;
+    pointer-events: initial !important;
+  }
 `;
 export const Form = styled.form`
   gap: 15px;

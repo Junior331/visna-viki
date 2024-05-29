@@ -268,11 +268,11 @@ export const EditProject = () => {
               >
                 <Tab label="Terreno" {...a11yProps(0)} />
                 <Tab label="Unidades" {...a11yProps(1)} />
-                <Tab label="Áreas" {...a11yProps(2)} disabled />
-                <Tab label="Prazos" {...a11yProps(3)} />
+                <Tab label="Prazos" {...a11yProps(2)} />
                 <Tab
                   disabled
                   label="Aportes"
+                  className="tabDisabled"
                   onClick={() =>
                     navigate(`/aportes?${convertToParams({ id, name })}`)
                   }
@@ -283,7 +283,12 @@ export const EditProject = () => {
                     navigate(`/bills?${convertToParams({ id, name })}`)
                   }
                 />
-                <Tab label="Rentabilidade" {...a11yProps(5)} disabled />
+                <Tab
+                  label="Rentabilidade"
+                  {...a11yProps(3)}
+                  disabled
+                  className="tabDisabled"
+                />
               </Tabs>
             </Box>
 
@@ -1394,10 +1399,6 @@ export const EditProject = () => {
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={2}>
-              Áreas
-            </CustomTabPanel>
-
-            <CustomTabPanel value={value} index={3}>
               <S.Form onSubmit={formikDeadline.handleSubmit}>
                 <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
                   <Grid
@@ -1623,11 +1624,7 @@ export const EditProject = () => {
               </S.Form>
             </CustomTabPanel>
 
-            <CustomTabPanel value={value} index={4}>
-              Contas
-            </CustomTabPanel>
-
-            <CustomTabPanel value={value} index={5}>
+            <CustomTabPanel value={value} index={3}>
               Rentabilidade
             </CustomTabPanel>
           </Box>
