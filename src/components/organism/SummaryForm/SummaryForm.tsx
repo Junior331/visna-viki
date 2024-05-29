@@ -265,17 +265,7 @@ const SummaryForm = ({ date, handleStep }: Props) => {
             ))}
 
             <Grid container rowGap={2} columnGap={1}>
-              <Grid item xs={12} sm={12} md={1.7} minWidth={180}>
-                <S.ContainerText>
-                  <S.Title variant="h6" gutterBottom>
-                    Pavimentos:
-                  </S.Title>
-                  <S.Text variant="body2" gutterBottom>
-                    12
-                  </S.Text>
-                </S.ContainerText>
-              </Grid>
-              <Grid item xs={12} sm={12} md={2} minWidth={280}>
+            <Grid item xs={12} sm={12} md={3.8} minWidth={280}>
                 <S.ContainerText>
                   <S.Title variant="h6" gutterBottom>
                     Unidades por andar:
@@ -285,7 +275,18 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                   </S.Text>
                 </S.ContainerText>
               </Grid>
-              <Grid item xs={12} sm={12} md={1.1} minWidth={130}>
+              <Grid item xs={12} sm={12} md={3.8} minWidth={180}>
+                <S.ContainerText>
+                  <S.Title variant="h6" gutterBottom>
+                    Pavimentos:
+                  </S.Title>
+                  <S.Text variant="body2" gutterBottom>
+                    12
+                  </S.Text>
+                </S.ContainerText>
+              </Grid>
+
+              <Grid item xs={12} sm={12} md={3.8} minWidth={130}>
                 <S.ContainerText>
                   <S.Title variant="h6" gutterBottom>
                     Subsolos:
@@ -295,29 +296,7 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                   </S.Text>
                 </S.ContainerText>
               </Grid>
-              <Grid item xs={12} sm={12} md={3.7} minWidth={470}>
-                <S.ContainerText>
-                  <S.Title variant="h6" gutterBottom>
-                    Unidades total no empreendimento :
-                  </S.Title>
-                  <S.Text variant="body2" gutterBottom>
-                    32
-                  </S.Text>
-                </S.ContainerText>
-              </Grid>
-              <Grid item xs={12} sm={12} md={2.4} minWidth={470}>
-                <S.ContainerText>
-                  <S.Title variant="h6" gutterBottom>
-                    Total de area privativa :
-                  </S.Title>
-                  <S.Text variant="body2" gutterBottom>
-                    32
-                  </S.Text>
-                </S.ContainerText>
-              </Grid>
-            </Grid>
-            <Grid container rowGap={2} columnGap={1}>
-              <Grid item xs={12} sm={12} md={3.7} minWidth={550}>
+              <Grid item xs={12} sm={12} md={3.8} minWidth={550}>
                 <S.ContainerText>
                   <S.Title variant="h6" gutterBottom>
                     Total de area construída :
@@ -327,17 +306,7 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                   </S.Text>
                 </S.ContainerText>
               </Grid>
-              <Grid item xs={12} sm={12} md={4.8} minWidth={714}>
-                <S.ContainerText>
-                  <S.Title variant="h6" gutterBottom>
-                    Área total a construir (m²):
-                  </S.Title>
-                  <S.Text variant="body2" gutterBottom>
-                    5.395m²
-                  </S.Text>
-                </S.ContainerText>
-              </Grid>
-              <Grid item xs={12} sm={12} md={2.4} minWidth={100}>
+              <Grid item xs={12} sm={12} md={3.8} minWidth={347}>
                 <S.ContainerText>
                   <S.Title variant="h6" gutterBottom>
                     Área total privativa (m²):
@@ -347,6 +316,49 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                   </S.Text>
                 </S.ContainerText>
               </Grid>
+              <Grid item xs={12} sm={12} md={3.8} minWidth={470}>
+                <S.ContainerText>
+                  <S.Title variant="h6" gutterBottom>
+                    Total de area privativa :
+                  </S.Title>
+                  <S.Text variant="body2" gutterBottom>
+                    32
+                  </S.Text>
+                </S.ContainerText>
+              </Grid>
+              <Grid item xs={12} sm={12} md={3.8} minWidth={470}>
+                <S.ContainerText>
+                  <S.Title variant="h6" gutterBottom>
+                    Unidades total no empreendimento :
+                  </S.Title>
+                  <S.Text variant="body2" gutterBottom>
+                    32
+                  </S.Text>
+                </S.ContainerText>
+              </Grid>
+              <Grid item xs={12} sm={12} md={3.8} minWidth={470}>
+                <S.ContainerText>
+                  <S.Title variant="h6" gutterBottom>
+                    Valor médio de venda (m²):
+                  </S.Title>
+                  <S.Text variant="body2" gutterBottom>
+                    14.425m²
+                  </S.Text>
+                </S.ContainerText>
+              </Grid>
+              <Grid item xs={12} sm={12} md={3.8} minWidth={470}>
+                <S.ContainerText>
+                  <S.Title variant="h6" gutterBottom>
+                    Área total a construir (m²):
+                  </S.Title>
+                  <S.Text variant="body2" gutterBottom>
+                    5.395m²
+                  </S.Text>
+                </S.ContainerText>
+              </Grid>
+            </Grid>
+            <Grid container rowGap={2} columnGap={1}>
+
             </Grid>
             <Grid container rowGap={2} columnGap={1}>
               <Grid item xs={12} sm={12} md={3.7} minWidth={552}>
@@ -359,16 +371,7 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                   </S.Text>
                 </S.ContainerText>
               </Grid>
-              <Grid item xs={12} sm={12} md={4.8} minWidth={470}>
-                <S.ContainerText>
-                  <S.Title variant="h6" gutterBottom>
-                    Valor médio de venda (m²):
-                  </S.Title>
-                  <S.Text variant="body2" gutterBottom>
-                    14.425m²
-                  </S.Text>
-                </S.ContainerText>
-              </Grid>
+
             </Grid>
           </Grid>
         </S.ContainerInfo>

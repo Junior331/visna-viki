@@ -9,6 +9,7 @@ import deadlinesFormSchema from './DeadlinesFormSchema';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import * as S from './DeadlinesFormStyled';
 import { handleSumValues } from './utils';
+import { Tooltip } from '@/components/elements/Tooltip';
 
 const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
   const { stepsIsDone, setStepsIsDone } = useContext(StepsIsDoneContext);
@@ -57,7 +58,9 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
           <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Data de início</S.Label>
+                <Tooltip title={'Data de início'}>
+                  <S.Label>D. início</S.Label>
+                </Tooltip>
                 <Input
                   required
                   id="startDate"
@@ -75,7 +78,9 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
 
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Aprovação do projeto (mes)</S.Label>
+                <Tooltip title={'Aprovação do projeto (mes)'}>
+                  <S.Label>A. projeto (mes)</S.Label>
+                </Tooltip>
                 <Input
                   required
                   onBlur={(e) => {
@@ -111,7 +116,9 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
 
             <Grid item xs={12} sm={12} md={2} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Prazo de lançamento (mes)</S.Label>
+                <Tooltip title={'Prazo de lançamento (mes)'}>
+                  <S.Label>P. lançamento (mes)</S.Label>
+                </Tooltip>
                 <Input
                   required
                   id="projectLaunchDeadlineInMonth"
@@ -147,7 +154,9 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
 
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Execução da obra (mes)</S.Label>
+                <Tooltip title={'Execução da obra (mes)'}>
+                  <S.Label>E. obra (mes)</S.Label>
+                </Tooltip>
                 <Input
                   required
                   onBlur={(e) => {
@@ -184,7 +193,9 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
 
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Prazo total (mes)</S.Label>
+                <Tooltip title={'Prazo total (mes)'}>
+                  <S.Label>P. total (mes)</S.Label>
+                </Tooltip>
                 <Input
                   required
                   disabled

@@ -11,6 +11,7 @@ import { formatCurrency, handleKeyDown, typeMask } from '@/utils/utils';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import { calculateTUID, handleSumValues, unitDefault } from './utils';
 import * as S from './UnitsFormStyled';
+import { Tooltip } from '@/components/elements/Tooltip';
 
 const UnitsForm = ({ date, setDate, handleStep }: Props) => {
   const { stepsIsDone, setStepsIsDone } = useContext(StepsIsDoneContext);
@@ -123,7 +124,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-                            <S.Label>Tipos de unidades </S.Label>
+                            <Tooltip title={'Tipos de unidades'}>
+                              <S.Label>T. unidades </S.Label>
+                            </Tooltip>
 
                             <Select
                               required
@@ -197,7 +200,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-                            <S.Label>Area média</S.Label>
+                            <Tooltip title={'Área média'}>
+                              <S.Label>A. média</S.Label>
+                            </Tooltip>
                             <Input
                               required
                               onBlur={(e) => {
@@ -237,7 +242,10 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-                            <S.Label>A. Privativa total</S.Label>
+                            <Tooltip title={'Área Privativa total'}>
+                              <S.Label>A. P. total</S.Label>
+                            </Tooltip>
+
                             <Input
                               disabled
                               onBlur={handleBlur}
@@ -256,7 +264,10 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-                            <S.Label>Qtd permutas</S.Label>
+                            <Tooltip title={'Quantidades de permutas'}>
+                              <S.Label>Q. permutas</S.Label>
+                            </Tooltip>
+
                             <Input
                               required
                               onBlur={(e) => {
@@ -297,7 +308,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-                            <S.Label>Área total permutada (m²)</S.Label>
+                            <Tooltip title={'Área total permutada'}>
+                              <S.Label>A. T. permutada (m²)</S.Label>
+                            </Tooltip>
                             <Input
                               required
                               disabled
@@ -317,7 +330,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-                            <S.Label>Valor de mercado (R$)</S.Label>
+                            <Tooltip title={'Valor de mercado'}>
+                              <S.Label>V. mercado (R$)</S.Label>
+                            </Tooltip>
                             <Input
                               required
                               onBlur={(e) => {
@@ -353,7 +368,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-                            <S.Label>VGV líquido da permuta (R$)</S.Label>
+                            <Tooltip title={'VGV líquido da permuta'}>
+                              <S.Label>V. L. permuta (R$)</S.Label>
+                            </Tooltip>
                             <Input
                               required
                               disabled
@@ -433,7 +450,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
               </Grid>
               <Grid item xs={12} sm={6} md={1.5} minWidth={200}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Unidades por andar</S.Label>
+                  <Tooltip title={'Unidades por andar'}>
+                    <S.Label>U. andar</S.Label>
+                  </Tooltip>
                   <Input
                     required
                     onBlur={handleBlur}
@@ -467,7 +486,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
               </Grid>
               <Grid item xs={12} sm={6} md={3} minWidth={280}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>U. Total no empreendimento </S.Label>
+                  <Tooltip title={'Unidades Total no empreendimento'}>
+                    <S.Label>U. T. empreendimento </S.Label>
+                  </Tooltip>
                   <Input
                     required
                     disabled
@@ -491,7 +512,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
               </Grid>
               <Grid item xs={12} sm={6} md={2} minWidth={200}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Total de area privativa </S.Label>
+                  <Tooltip title={'Total de área privativa'}>
+                    <S.Label>T. A. privativa </S.Label>
+                  </Tooltip>
                   <Input
                     required
                     disabled
@@ -508,7 +531,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
 
               <Grid item xs={12} sm={6} md={1.5} minWidth={295}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Área total a construir (m²) </S.Label>
+                  <Tooltip title={'Área total a construir (m²)'}>
+                    <S.Label>A. T. construir (m²) </S.Label>
+                  </Tooltip>
                   <Input
                     required
                     onBlur={handleBlur}
@@ -532,7 +557,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
 
               <Grid item xs={12} sm={6} md={2} minWidth={340}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Área total privativa sem permuta (m²) </S.Label>
+                  <Tooltip title={'Área total privativa sem permuta (m²)'}>
+                    <S.Label>A. T. P. permuta (m²) </S.Label>
+                  </Tooltip>
                   <Input
                     required
                     disabled
@@ -556,7 +583,10 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
               </Grid>
               <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <S.Label>Valor médio de venda (m²/R$) </S.Label>
+                  <Tooltip title={'Valor médio de venda (m²/R$)'}>
+                    <S.Label>V. M. venda (m²/R$) </S.Label>
+                  </Tooltip>
+
                   <Input
                     required
                     disabled
