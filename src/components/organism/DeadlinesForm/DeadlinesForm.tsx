@@ -59,7 +59,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <Tooltip title={'Data de início'}>
-                  <S.Label>D. início</S.Label>
+                  <S.Label>D. Início</S.Label>
                 </Tooltip>
                 <Input
                   required
@@ -79,7 +79,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <Tooltip title={'Aprovação do projeto (mes)'}>
-                  <S.Label>A. projeto (mes)</S.Label>
+                  <S.Label>A. Projeto (mes)</S.Label>
                 </Tooltip>
                 <Input
                   required
@@ -117,7 +117,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
             <Grid item xs={12} sm={12} md={2} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <Tooltip title={'Prazo de lançamento (mes)'}>
-                  <S.Label>P. lançamento (mes)</S.Label>
+                  <S.Label>P. Lançamento (mes)</S.Label>
                 </Tooltip>
                 <Input
                   required
@@ -155,7 +155,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <Tooltip title={'Execução da obra (mes)'}>
-                  <S.Label>E. obra (mes)</S.Label>
+                  <S.Label>E. Obra (mes)</S.Label>
                 </Tooltip>
                 <Input
                   required
@@ -194,7 +194,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <Tooltip title={'Prazo total (mes)'}>
-                  <S.Label>P. total (mes)</S.Label>
+                  <S.Label>P. Total (mes)</S.Label>
                 </Tooltip>
                 <Input
                   required
