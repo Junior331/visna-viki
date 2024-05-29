@@ -717,7 +717,7 @@ export const EditProject = () => {
                                   pl={0.5}
                                   container
                                   rowGap={1}
-                                  key={unit.id}
+                                  key={unit.keyIndex}
                                   spacing={{ xs: 0, sm: 2 }}
                                 >
                                   <Grid
@@ -808,7 +808,7 @@ export const EditProject = () => {
                                             setFieldValue: setFieldValue
                                           });
                                         }}
-                                        id={`unitQuantity-${unit.id}`}
+                                        id={`unitQuantity-${unit.keyIndex}`}
                                         onChange={(e) => {
                                           setFieldValue(
                                             `unit[${index}].unitQuantity`,
@@ -1116,11 +1116,11 @@ export const EditProject = () => {
                                     className="containerButton"
                                     minWidth={values.unit.length > 1 ? 80 : 45}
                                   >
-                                    {values.unit.length > 1 && (
+                                    {unit.keyIndex >= 1 && (
                                       <Button
                                         size="30px"
                                         className="btnRemove"
-                                        onClick={() => remove(unit.id)}
+                                        onClick={() => remove(unit.keyIndex)}
                                       >
                                         -
                                       </Button>
@@ -1130,7 +1130,7 @@ export const EditProject = () => {
                                       onClick={() =>
                                         push({
                                           ...unitDefault,
-                                          id: values.unit.length
+                                          keyIndex: values.unit.length
                                         })
                                       }
                                     >

@@ -79,6 +79,7 @@ export type unitSummaryType = {
 
 export type unitHubSummaryType = {
   id: number;
+  keyIndex: number;
   netAmount: number;
   unitHubId: number;
   unitTypeId: number;

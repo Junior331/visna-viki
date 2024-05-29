@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Breadcrumbs, Link, Typography } from '@mui/material';
+import { Breadcrumbs, IconButton, Link, Typography } from '@mui/material';
 import { HeaderBreadcrumbsProps } from './@types';
 import { GenericModal } from '@/components/modules';
 import { Button } from '@/components/elements';
 import * as S from './HeaderBreadcrumbsStyled';
 import { icons } from '@/assets/images/icons';
+import { HomeRounded } from '@mui/icons-material/';
+import { Tooltip } from '@/components/elements/Tooltip';
 
 const HeaderBreadcrumbs = ({
   breadcrumbs,
@@ -32,6 +34,15 @@ const HeaderBreadcrumbs = ({
 
   return (
     <S.ContainerBreadcrumbs>
+      <Tooltip title={'Voltar para home'}>
+        <IconButton
+          size="large"
+          aria-label="home"
+          onClick={() => navigate('/home')}
+        >
+          <HomeRounded fontSize="inherit" />
+        </IconButton>
+      </Tooltip>
       <Breadcrumbs aria-label="breadcrumb" separator="›">
         {breadcrumbs.map(({ path, label }, index) => (
           <Typography
