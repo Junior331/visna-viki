@@ -275,7 +275,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                 <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <Tooltip title={'Área total (m²)'}>
-                      <S.Label>A. total (m²)</S.Label>
+                      <S.Label>A. Total (m²)</S.Label>
                     </Tooltip>
                     <Input
                       id="area"
@@ -426,7 +426,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                 <Grid item xs={12} sm={6} md={6} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <Tooltip title={'Valor total (R$)'}>
-                      <S.Label>V. total (R$)</S.Label>
+                      <S.Label>V. Total (R$)</S.Label>
                     </Tooltip>
                     <Input
                       required

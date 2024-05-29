@@ -457,7 +457,7 @@ export const EditProject = () => {
                       variant="outlined"
                     >
                       <Tooltip title={'Área total (m²)'}>
-                        <S.Label>A. total (m²)</S.Label>
+                        <S.Label>A. Total (m²)</S.Label>
                       </Tooltip>
                       <Input
                         id="area"
@@ -607,7 +607,7 @@ export const EditProject = () => {
                       variant="outlined"
                     >
                       <Tooltip title={'Valor total (R$)'}>
-                        <S.Label>V. total (R$)</S.Label>
+                        <S.Label>V. Total (R$)</S.Label>
                       </Tooltip>
                       <Input
                         required
@@ -727,7 +727,7 @@ export const EditProject = () => {
                                       variant="outlined"
                                     >
                                       <Tooltip title={'Tipos de unidades '}>
-                                        <S.Label>T. unidades </S.Label>
+                                        <S.Label>T. Unidades </S.Label>
                                       </Tooltip>
 
                                       <Select
@@ -832,7 +832,7 @@ export const EditProject = () => {
                                       variant="outlined"
                                     >
                                       <Tooltip title={'Área média'}>
-                                        <S.Label>A. média</S.Label>
+                                        <S.Label>A. Média</S.Label>
                                       </Tooltip>
                                       <Input
                                         required
@@ -891,7 +891,7 @@ export const EditProject = () => {
                                       variant="outlined"
                                     >
                                       <Tooltip title={'Área Privativa total'}>
-                                        <S.Label>A. P. total</S.Label>
+                                        <S.Label>A. P. Total</S.Label>
                                       </Tooltip>
                                       <Input
                                         disabled
@@ -934,7 +934,7 @@ export const EditProject = () => {
                                       variant="outlined"
                                     >
                                       <Tooltip title={'Quantidade de permutas'}>
-                                        <S.Label>Q. permutas</S.Label>
+                                        <S.Label>Q. Permutas</S.Label>
                                       </Tooltip>
                                       <Input
                                         required
@@ -997,7 +997,7 @@ export const EditProject = () => {
                                       <Tooltip
                                         title={'Área total permutada (m²)'}
                                       >
-                                        <S.Label>A. T. permutada (m²)</S.Label>
+                                        <S.Label>A. T. Permutada (m²)</S.Label>
                                       </Tooltip>
                                       <Input
                                         required
@@ -1029,7 +1029,7 @@ export const EditProject = () => {
                                       variant="outlined"
                                     >
                                       <Tooltip title={'Valor de mercado (R$)'}>
-                                        <S.Label>V. mercado (R$)</S.Label>
+                                        <S.Label>V. Mercado (R$)</S.Label>
                                       </Tooltip>
                                       <Input
                                         required
@@ -1081,7 +1081,7 @@ export const EditProject = () => {
                                       variant="outlined"
                                     >
                                       <Tooltip title={'VGV líquido da permuta'}>
-                                        <S.Label>V. L. permuta (R$)</S.Label>
+                                        <S.Label>V. L. Permuta (R$)</S.Label>
                                       </Tooltip>
                                       <Input
                                         required
@@ -1174,7 +1174,7 @@ export const EditProject = () => {
                           variant="outlined"
                         >
                           <Tooltip title={'Unidades por andar'}>
-                            <S.Label>U. andar</S.Label>
+                            <S.Label>U. Andar</S.Label>
                           </Tooltip>
                           <Input
                             required
@@ -1225,7 +1225,7 @@ export const EditProject = () => {
                           variant="outlined"
                         >
                           <Tooltip title={'Unidades Total no empreendimento'}>
-                            <S.Label>U. T. empreendimento </S.Label>
+                            <S.Label>U. T. Empreendimento </S.Label>
                           </Tooltip>
                           <Input
                             required
@@ -1254,7 +1254,7 @@ export const EditProject = () => {
                           variant="outlined"
                         >
                           <Tooltip title={'Total de área privativa'}>
-                            <S.Label>T. A. privativa </S.Label>
+                            <S.Label>T. A. Privativa </S.Label>
                           </Tooltip>
                           <Input
                             required
@@ -1276,7 +1276,7 @@ export const EditProject = () => {
                           variant="outlined"
                         >
                           <Tooltip title={'Área total a construir (m²)'}>
-                            <S.Label>A. T. construir (m²) </S.Label>
+                            <S.Label>A. T. Construir (m²) </S.Label>
                           </Tooltip>
                           <Input
                             required
@@ -1308,7 +1308,7 @@ export const EditProject = () => {
                           <Tooltip
                             title={'Área total privativa sem permuta (m²)'}
                           >
-                            <S.Label>A. T. P. permuta (m²) </S.Label>
+                            <S.Label>A. T. P. Permuta (m²) </S.Label>
                           </Tooltip>
                           <Input
                             required
@@ -1337,7 +1337,7 @@ export const EditProject = () => {
                           variant="outlined"
                         >
                           <Tooltip title={'Valor médio de venda (m²/R$)'}>
-                            <S.Label>V. M. venda (m²/R$) </S.Label>
+                            <S.Label>V. M. Venda (m²/R$) </S.Label>
                           </Tooltip>
                           <Input
                             required
@@ -1413,7 +1413,7 @@ export const EditProject = () => {
                       variant="outlined"
                     >
                       <Tooltip title={'Data de início'}>
-                        <S.Label>D. início</S.Label>
+                        <S.Label>D. Início</S.Label>
                       </Tooltip>
                       <Input
                         required
@@ -1444,7 +1444,7 @@ export const EditProject = () => {
                       variant="outlined"
                     >
                       <Tooltip title={'Aprovação do projeto (mes)'}>
-                        <S.Label>A. projeto (mes)</S.Label>
+                        <S.Label>A. Projeto (mes)</S.Label>
                       </Tooltip>
                       <Input
                         required
@@ -1487,7 +1487,7 @@ export const EditProject = () => {
                       variant="outlined"
                     >
                       <Tooltip title={'Prazo de lançamento (mes)'}>
-                        <S.Label>P. lançamento (mes)</S.Label>
+                        <S.Label>P. Lançamento (mes)</S.Label>
                       </Tooltip>
                       <Input
                         required
@@ -1531,7 +1531,7 @@ export const EditProject = () => {
                       variant="outlined"
                     >
                       <Tooltip title={'Execução da obra (mes)'}>
-                        <S.Label>E. obra (mes)</S.Label>
+                        <S.Label>E. Obra (mes)</S.Label>
                       </Tooltip>
                       <Input
                         required
@@ -1578,7 +1578,7 @@ export const EditProject = () => {
                       variant="outlined"
                     >
                       <Tooltip title={'Prazo total (mes)'}>
-                        <S.Label>P. total (mes)</S.Label>
+                        <S.Label>P. Total (mes)</S.Label>
                       </Tooltip>
                       <Input
                         required
