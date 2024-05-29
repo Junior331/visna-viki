@@ -12,6 +12,7 @@ import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import { landFormSchema, projectNameFormSchema } from './Schema';
 import * as S from './LandFormStyled';
 import { Tooltip } from '@/components/elements/Tooltip';
+import { fetchCepData } from '@/services/services';
 
 const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
   const navigate = useNavigate();
@@ -73,12 +74,23 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
     setFieldValue
   } = formik;
 
+  const getCep = async (cep: string) => {
+    const result = await fetchCepData(cep);
+    setFieldValue('street', result?.logradouro || '');
+    setFieldValue('neighborhood', result?.bairro || '');
+    setFieldValue('state', result?.uf || '');
+  };
+
   useEffect(() => {
     if (!formikProjectName.values.name) {
       setIsShow(false);
     }
   }, [formikProjectName, setIsShow]);
-
+  useEffect(() => {
+    if (!formikProjectName.values.name) {
+      setIsShow(false);
+    }
+  }, [formikProjectName, setIsShow]);
   useEffect(() => {
     if (date.lands.name) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -91,6 +103,13 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, setFieldValue]);
+
+  useEffect(() => {
+    if (values.zipCode) {
+      getCep(values.zipCode);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.zipCode]);
 
   return (
     <S.LandFormContainer>
@@ -148,6 +167,19 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
           {isShow && (
             <>
               <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }} mb={2}>
+                <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Cep</S.Label>
+                    <Input
+                      id="zipCode"
+                      onChange={handleChange}
+                      aria-describedby="zipCode"
+                      placeholder="Digite o Cep"
+                      value={typeMask(MaskType.CEP, values.zipCode)}
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                    />
+                  </FormControl>
+                </Grid>
                 <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <S.Label>Endereço</S.Label>
@@ -234,19 +266,6 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                       inputProps={{ style: { fontSize: '1.4rem' } }}
                       helperText={touched.number && errors.number}
                       error={touched.number && Boolean(errors.number)}
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
-                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <S.Label>Cep</S.Label>
-                    <Input
-                      id="zipCode"
-                      onChange={handleChange}
-                      aria-describedby="zipCode"
-                      placeholder="Digite o Cep"
-                      value={typeMask(MaskType.CEP, values.zipCode)}
-                      inputProps={{ style: { fontSize: '1.4rem' } }}
                     />
                   </FormControl>
                 </Grid>

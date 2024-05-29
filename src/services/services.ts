@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  CepData,
   deadlineSummaryType,
   deadlineType,
   handleExpenseProps,
@@ -713,6 +714,18 @@ export const deleteAportes = async (id: number) => {
           Authorization: `Bearer ${getToken()}`
         }
       }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const fetchCepData = async (cep: string) => {
+  try {
+    const response = await axios.get<CepData>(
+      `https://viacep.com.br/ws/${cep}/json/`
     );
     return response.data;
   } catch (error) {

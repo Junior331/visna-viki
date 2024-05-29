@@ -186,3 +186,15 @@ export type payloadExpense = {
   totalValue: number;
   unitExpenseTypeId: number;
 };
+export type CepData = {
+  uf: string;
+  cep: string;
+  gia: string;
+  ddd: string;
+  ibge: string;
+  siafi: string;
+  bairro: string;
+  localidade: string;
+  logradouro: string;
+  complemento: string;
+};

@@ -95,7 +95,7 @@ export const Aportes = () => {
             })}
           />
           <div>
-            <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
+            <Button $isOutline size="100px" onClick={() => setOpenModal(true)}>
               Voltar
             </Button>
             <Button
@@ -114,13 +114,6 @@ export const Aportes = () => {
             </Backdrop>
           ) : (
             <>
-              <Button
-                $isOutline
-                size="200px"
-                onClick={() => setOpenModalNewAporte(true)}
-              >
-                Novo Aportes
-              </Button>
               <Table
                 rows={list}
                 formik={formik}

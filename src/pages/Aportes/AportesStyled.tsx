@@ -153,3 +153,6 @@ export const Label = styled.label`
   font-size: ${({ theme }) => theme.typography.fontSize}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightLight};
 `;
+export const ContainerButton = styled(GenericContainer)`
+  justify-content: flex-end;
+`;
