@@ -32,7 +32,6 @@ export const Aportes = () => {
   const [perPage, setPerPage] = useState(10);
   const [pageTotal, setPageTotal] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [isUpddate, setisUpddate] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
   const [list, setList] = useState<aportesProps[]>([]);
@@ -61,14 +60,28 @@ export const Aportes = () => {
         expenses: parseFormattedNumber(values.phaseTwo),
         total: parseFormattedNumber(values.totalContributions)
       };
-      handleCreateAporte({
-        payload,
-        setLoading,
-        setSnackbar,
-        setOpenModalNewAporte
-      });
-      formikNewAporte.resetForm({});
-      setisUpddate(true);
+      try {
+        handleCreateAporte({
+          payload,
+          setLoading,
+          setSnackbar,
+          setOpenModalNewAporte
+        });
+      } catch (error) {
+        console.error('error ::', error);
+      } finally {
+        formikNewAporte.resetForm({});
+
+        listAportes({
+          page,
+          setList,
+          perPage,
+          setLoading,
+          setSnackbar,
+          setPageTotal,
+          id: parseFloat(id)
+        });
+      }
     }
   });
 
@@ -82,7 +95,7 @@ export const Aportes = () => {
       setPageTotal,
       id: parseFloat(id)
     });
-  }, [id, page, isUpddate, perPage, setSnackbar]);
+  }, [id, page, perPage, setSnackbar]);
 
   return (
     <Layout>
@@ -98,11 +111,7 @@ export const Aportes = () => {
             <Button $isOutline size="100px" onClick={() => setOpenModal(true)}>
               Voltar
             </Button>
-            <Button
-              $isOutline
-              size="200px"
-              onClick={() => setOpenModalNewAporte(true)}
-            >
+            <Button size="200px" onClick={() => setOpenModalNewAporte(true)}>
               Novo Aportes
             </Button>
           </div>

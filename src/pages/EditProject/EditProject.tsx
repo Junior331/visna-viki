@@ -270,9 +270,7 @@ export const EditProject = () => {
                 <Tab label="Unidades" {...a11yProps(1)} />
                 <Tab label="Prazos" {...a11yProps(2)} />
                 <Tab
-                  disabled
                   label="Aportes"
-                  className="tabDisabled"
                   onClick={() =>
                     navigate(`/aportes?${convertToParams({ id, name })}`)
                   }
