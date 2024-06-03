@@ -49,8 +49,10 @@ export const listAportes = async ({
       };
       return obj;
     });
+    console.log('result.items ::', result.items)
+    console.log('newList ::', newList)
 
-    setPageTotal(result.total);
+    setPageTotal(result.lastPage);
     setList(newList);
   } catch (error) {
     if (error instanceof Error) {

@@ -112,7 +112,7 @@ export const Aportes = () => {
               Voltar
             </Button>
             <Button size="200px" onClick={() => setOpenModalNewAporte(true)}>
-              Novo Aportes
+              Novo Aporte
             </Button>
           </div>
         </S.Header>
@@ -176,7 +176,7 @@ export const Aportes = () => {
       >
         <S.ContainerMessage>
           <S.Title>Novo Aporte</S.Title>
-          <S.Text>Esse novo aporte sera adicionado na tabela</S.Text>
+          <S.Text>Esse novo aporte será adicionado na tabela</S.Text>
           <S.Form onSubmit={formikNewAporte.handleSubmit}>
             <Grid container spacing={{ xs: 0, sm: 2 }} alignItems={'center'}>
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
