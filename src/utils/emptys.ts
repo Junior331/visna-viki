@@ -40,6 +40,8 @@ export const emptyProjectDate: projectDateType = {
     totalValueNoExchange: '',
     totalUnitsInDevelopment: '',
     totalPrivateAreaQuantity: '',
+    totalAreaOfTheDevelopment: '',
+    totalPrivateAreaNetOfExchange: '',
     unit: [
       {
         id: 0,
@@ -84,11 +86,13 @@ export const emptyProjectInfo: projectInfoType = {
     projectId: 0,
     underground: 0,
     unitPerFloor: 0,
+    averageSaleValue: 0,
+    totalToBeBuiltArea: 0,
     totalValueNoExchange: 0,
     totalUnitsInDevelopment: 0,
-    totalToBeBuiltArea: 0,
-    averageSaleValue: 0,
+    totalAreaOfTheDevelopment:0,
     totalPrivateAreaQuantity: 0,
+    totalPrivateAreaNetOfExchange: 0,
     unit: [
       {
         id: 0,
@@ -113,6 +117,7 @@ export const emptyProjectInfo: projectInfoType = {
     topographyTypeId: 0,
     frontage: 0,
     amountPerMeter: 0,
+    quantitySpecies:0,
     totalAmount: 0,
     projectId: 0,
     zoning: '',
@@ -130,6 +135,7 @@ export const emptyProjectInfo: projectInfoType = {
   deadline: {
     id: 0,
     projectId: 0,
+    afterConstruction: 0,
     totalDeadlineInMonth: 0,
     approvalDeadlineInMonth: 0,
     constructionDeadlineInMonth: 0,

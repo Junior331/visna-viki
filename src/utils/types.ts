@@ -51,6 +51,7 @@ export type landSummaryType = {
   addressId: number;
   totalAmount: number;
   amountPerMeter: number;
+  quantitySpecies: number;
   topographyTypeId: number;
   address: {
     id: number;
@@ -100,6 +101,8 @@ export type unitType = {
   totalValueNoExchange: string;
   totalUnitsInDevelopment: string;
   totalPrivateAreaQuantity: string;
+  totalAreaOfTheDevelopment: string;
+  totalPrivateAreaNetOfExchange: string;
   unit: unitSummaryType[];
 };
 
@@ -114,6 +117,8 @@ export type unitHubType = {
   totalValueNoExchange: number;
   totalUnitsInDevelopment: number;
   totalPrivateAreaQuantity: number;
+  totalAreaOfTheDevelopment: number;
+  totalPrivateAreaNetOfExchange: number;
   unit: unitHubSummaryType[];
 };
 
@@ -129,6 +134,7 @@ export type deadlineSummaryType = {
   id: number;
   projectId: number;
   startDate: string;
+  afterConstruction: number;
   totalDeadlineInMonth: number;
   approvalDeadlineInMonth: number;
   constructionDeadlineInMonth: number;

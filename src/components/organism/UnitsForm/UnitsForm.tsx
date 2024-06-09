@@ -265,7 +265,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             variant="outlined"
                           >
                             <Tooltip title={'Quantidades de permutas'}>
-                              <S.Label>Q. Permutas</S.Label>
+                              <S.Label>Qtd. Permutas (m²)</S.Label>
                             </Tooltip>
 
                             <Input
@@ -308,9 +308,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-                            <Tooltip title={'Área total permutada'}>
-                              <S.Label>A. T. Permutada (m²)</S.Label>
-                            </Tooltip>
+                              <S.Label> Área permutada (m²)</S.Label>
                             <Input
                               required
                               disabled
@@ -330,9 +328,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-                            <Tooltip title={'Valor de mercado'}>
-                              <S.Label>V. Mercado (R$)</S.Label>
-                            </Tooltip>
+
+                              <S.Label>Valor de venda/m² (R$)</S.Label>
+
                             <Input
                               required
                               onBlur={(e) => {
@@ -369,7 +367,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             variant="outlined"
                           >
                             <Tooltip title={'VGV líquido da permuta'}>
-                              <S.Label>V. L. Permuta (R$)</S.Label>
+                              <S.Label>VGV Liq. Permuta (R$)</S.Label>
                             </Tooltip>
                             <Input
                               required
@@ -451,7 +449,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
               <Grid item xs={12} sm={6} md={1.5} minWidth={200}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                   <Tooltip title={'Unidades por andar'}>
-                    <S.Label>U. Andar</S.Label>
+                    <S.Label>Uni. / Andar</S.Label>
                   </Tooltip>
                   <Input
                     required
@@ -487,7 +485,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
               <Grid item xs={12} sm={6} md={3} minWidth={280}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                   <Tooltip title={'Unidades Total no empreendimento'}>
-                    <S.Label>U. T. Empreendimento </S.Label>
+                    <S.Label>Uni. T. no Empreendimento </S.Label>
                   </Tooltip>
                   <Input
                     required
@@ -513,7 +511,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
               <Grid item xs={12} sm={6} md={2} minWidth={200}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                   <Tooltip title={'Total de área privativa'}>
-                    <S.Label>T. A. Privativa </S.Label>
+                    <S.Label>T. A. Privativa (m²)</S.Label>
                   </Tooltip>
                   <Input
                     required
@@ -531,8 +529,8 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
 
               <Grid item xs={12} sm={6} md={1.5} minWidth={295}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <Tooltip title={'Área total a construir (m²)'}>
-                    <S.Label>A. T. Construir (m²) </S.Label>
+                  <Tooltip title={'Área total a construída (m²)'}>
+                    <S.Label>A. T. Construída (m²)</S.Label>
                   </Tooltip>
                   <Input
                     required
@@ -551,6 +549,23 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                       touched.totalToBeBuiltArea &&
                       Boolean(errors.totalToBeBuiltArea)
                     }
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6} md={2} minWidth={200}>
+                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                  <S.Label>Área total do empreendimento</S.Label>
+                  <Input
+                    required
+                    onBlur={handleBlur}
+                    id="totalAreaOfTheDevelopment"
+                    onChange={handleChange}
+                    value={values.totalAreaOfTheDevelopment}
+                    aria-describedby="totalAreaOfTheDevelopment"
+                    placeholder="Digite o quantidade"
+                    inputProps={{ style: { fontSize: '1.4rem' } }}
+                    helperText={touched.totalAreaOfTheDevelopment && errors.totalAreaOfTheDevelopment}
+                    error={touched.totalAreaOfTheDevelopment && Boolean(errors.totalAreaOfTheDevelopment)}
                   />
                 </FormControl>
               </Grid>
@@ -605,6 +620,32 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     error={
                       touched.averageSaleValue &&
                       Boolean(errors.averageSaleValue)
+                    }
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
+                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Área total privativa líquida de permuta (m²) </S.Label>
+
+                  <Input
+                    required
+                    disabled
+                    placeholder="0,00"
+                    onBlur={handleBlur}
+                    id="totalPrivateAreaNetOfExchange"
+                    onChange={handleChange}
+                    aria-describedby="totalPrivateAreaNetOfExchange"
+                    inputProps={{ style: { fontSize: '1.4rem' } }}
+                    value={formatCurrency(
+                      values.totalPrivateAreaNetOfExchange.toString() || ''
+                    )}
+                    helperText={
+                      touched.totalPrivateAreaNetOfExchange && errors.totalPrivateAreaNetOfExchange
+                    }
+                    error={
+                      touched.totalPrivateAreaNetOfExchange &&
+                      Boolean(errors.totalPrivateAreaNetOfExchange)
                     }
                   />
                 </FormControl>
