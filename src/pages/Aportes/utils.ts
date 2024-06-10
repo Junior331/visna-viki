@@ -30,7 +30,8 @@ export const listAportes = async ({
   setList,
   setLoading,
   setSnackbar,
-  setPageTotal
+  setPageTotal,
+  setAccumulator
 }: listAportesProps) => {
   setLoading(true);
 
@@ -43,15 +44,16 @@ export const listAportes = async ({
         projectId: item.projectId,
         date: formatDate(item.date || ''),
         observation: item.observation,
-        phaseOne: formatter.format(item.expenses),
         phaseTwo: formatter.format(item.payment),
+        phaseOne: formatter.format(item.expenses),
         TotalContributions: formatter.format(item.total)
       };
       return obj;
     });
 
-    setPageTotal(result.lastPage);
     setList(newList);
+    setAccumulator(result.accumulator);
+    setPageTotal(result.lastPage);
   } catch (error) {
     if (error instanceof Error) {
       setSnackbar({
@@ -123,7 +125,7 @@ export const handleSumValues = ({
 }: handleSumValuesProps) => {
   const sum1 = parseFloat(value1.replace(/\./g, '').replace(',', '.')) || 1;
   const sum2 = parseFloat(value2.replace(/\./g, '').replace(',', '.')) || 1;
-  const sum = sum1 * sum2;
+  const sum = sum1 + sum2;
   sum.toFixed(2);
 
   setFieldValue?.(fieldName, formatterV2.format(sum));

@@ -6,8 +6,13 @@ const Input = ({
   typeElement: InputComponent = TextField,
   ...rest
 }: InputProps) => {
-  return <InputComponent
-  onKeyDown={handleKeyDown} {...rest} />;
+  return (
+    <InputComponent
+      onKeyDown={handleKeyDown}
+      className={rest.disabled ? 'inputDisabled' : ''}
+      {...rest}
+    />
+  );
 };
 
 export { Input };

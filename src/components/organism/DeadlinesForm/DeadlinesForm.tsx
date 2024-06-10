@@ -2,14 +2,16 @@ import { useFormik } from 'formik';
 import { useContext, useEffect } from 'react';
 import { Props } from './@types';
 import { FormControl, Grid } from '@mui/material';
-import { MaskType } from '@/utils/types';
-import { handleKeyDown, typeMask } from '@/utils/utils';
+import { handleKeyDown } from '@/utils/utils';
 import { Button, Input } from '@/components/elements';
 import deadlinesFormSchema from './DeadlinesFormSchema';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import * as S from './DeadlinesFormStyled';
 import { handleSumValues } from './utils';
 import { Tooltip } from '@/components/elements/Tooltip';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 
 const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
   const { stepsIsDone, setStepsIsDone } = useContext(StepsIsDoneContext);
@@ -51,6 +53,15 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, setFieldValue]);
 
+  useEffect(() => {
+    setDate({
+      ...date,
+      deadline: {
+        ...values
+      }
+    });
+  }, [date, setDate, values]);
+
   return (
     <S.DeadlinesFormContainer>
       <S.Form onSubmit={handleSubmit}>
@@ -61,18 +72,17 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                 <Tooltip title={'Data de início'}>
                   <S.Label>D. Início</S.Label>
                 </Tooltip>
-                <Input
-                  required
-                  id="startDate"
-                  onBlur={handleBlur}
-                  value={typeMask(MaskType.DATE, values.startDate)}
-                  onChange={handleChange}
-                  aria-describedby="startDate"
-                  placeholder="Digite a Data"
-                  inputProps={{ style: { fontSize: '1.4rem' } }}
-                  helperText={touched.startDate && errors.startDate}
-                  error={touched.startDate && Boolean(errors.startDate)}
-                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoItem>
+                    <DesktopDatePicker
+                      format={'DD/MM/YYYY'}
+                      value={values.startDate || null}
+                      onChange={(date) =>
+                        setFieldValue('startDate', date || '')
+                      }
+                    />
+                  </DemoItem>
+                </LocalizationProvider>
               </FormControl>
             </Grid>
 

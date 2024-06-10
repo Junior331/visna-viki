@@ -8,6 +8,7 @@ import { handleCreateProject } from './services';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import { formatCurrency, typeMask } from '@/utils/utils';
 import * as S from './SummaryFormStyled';
+import dayjs from 'dayjs';
 
 const SummaryForm = ({ date, handleStep }: Props) => {
   const navigate = useNavigate();
@@ -265,7 +266,7 @@ const SummaryForm = ({ date, handleStep }: Props) => {
             ))}
 
             <Grid container rowGap={2} columnGap={1}>
-            <Grid item xs={12} sm={12} md={3.8} minWidth={280}>
+              <Grid item xs={12} sm={12} md={3.8} minWidth={280}>
                 <S.ContainerText>
                   <S.Title variant="h6" gutterBottom>
                     Unidades por andar:
@@ -357,9 +358,7 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                 </S.ContainerText>
               </Grid>
             </Grid>
-            <Grid container rowGap={2} columnGap={1}>
-
-            </Grid>
+            <Grid container rowGap={2} columnGap={1}></Grid>
             <Grid container rowGap={2} columnGap={1}>
               <Grid item xs={12} sm={12} md={3.7} minWidth={552}>
                 <S.ContainerText>
@@ -371,7 +370,6 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                   </S.Text>
                 </S.ContainerText>
               </Grid>
-
             </Grid>
           </Grid>
         </S.ContainerInfo>
@@ -389,7 +387,7 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                     Data de início:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    {date.deadline.startDate}
+                    {dayjs(date.deadline.startDate).format('DD/MM/YYYY')}
                   </S.Text>
                 </S.ContainerText>
               </Grid>

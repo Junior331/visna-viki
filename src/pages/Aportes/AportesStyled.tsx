@@ -156,3 +156,32 @@ export const Label = styled.label`
 export const ContainerButton = styled(GenericContainer)`
   justify-content: flex-end;
 `;
+export const HeaderCard = styled(Header)`
+  align-items: center;
+
+  > h2 {
+    color: ${({ theme }) => theme.palette.color.regular};
+  }
+`;
+export const ContainerExpenses = styled(GenericContainer)`
+  gap: 10px;
+  margin-top: 10px;
+  flex-direction: column;
+`;
+export const Expense = styled(GenericContainer)`
+  gap: 10px;
+  justify-content: space-between;
+
+  h2,
+  p {
+    color: ${({ theme }) => theme.palette.color.medium};
+  }
+  h2 {
+    font-size: ${({ theme }) => theme.typography.fontSize}rem;
+    font-weight: ${({ theme }) => theme.typography.fontWeightLight};
+  }
+
+  p {
+    font-weight: ${({ theme }) => theme.typography.fontWeightRegular + 100};
+  }
+`;

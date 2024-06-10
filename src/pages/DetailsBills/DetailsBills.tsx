@@ -451,7 +451,53 @@ export const DetailsBills = () => {
               </Grid>
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Tipos de unidades</S.Label>
+                  <S.Label>Data de início de pagamento</S.Label>
+                  <Select
+                    displayEmpty
+                    name="unitExpenseTypeId"
+                    className="SelectComponent"
+                    onChange={formikNewExpense.handleChange}
+                    IconComponent={KeyboardArrowDownRounded}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    value={formikNewExpense.values.unitExpenseTypeId}
+                  >
+                    <MenuItem value={0} disabled>
+                      <em>Selecione a opção</em>
+                    </MenuItem>
+                    <MenuItem value={1}>%</MenuItem>
+                    <MenuItem value={2}>VB</MenuItem>
+                    <MenuItem value={3}>mes</MenuItem>
+                    <MenuItem value={4}>m²</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} minWidth={300}>
+                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                  <S.Label>Periodicidade (de pagamentos)</S.Label>
+                  <Select
+                    displayEmpty
+                    name="unitExpenseTypeId"
+                    className="SelectComponent"
+                    onChange={formikNewExpense.handleChange}
+                    IconComponent={KeyboardArrowDownRounded}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    value={formikNewExpense.values.unitExpenseTypeId}
+                  >
+                    <MenuItem value={0} disabled>
+                      <em>Selecione a opção</em>
+                    </MenuItem>
+                    <MenuItem value={1}>Mensal</MenuItem>
+                    <MenuItem value={2}>Bimensal</MenuItem>
+                    <MenuItem value={3}>Semestral</MenuItem>
+                    <MenuItem value={4}>Quadrimestral</MenuItem>
+                    <MenuItem value={5}>Anual</MenuItem>
+                    <MenuItem value={4}>Isoladas</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} minWidth={300}>
+                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                  <S.Label>Uni. Pagamento</S.Label>
                   <Select
                     displayEmpty
                     name="unitExpenseTypeId"

@@ -10,8 +10,8 @@ import { Button, Input } from '@/components/elements';
 import { formatCurrency, handleKeyDown, typeMask } from '@/utils/utils';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import { calculateTUID, handleSumValues, unitDefault } from './utils';
-import * as S from './UnitsFormStyled';
 import { Tooltip } from '@/components/elements/Tooltip';
+import * as S from './UnitsFormStyled';
 
 const UnitsForm = ({ date, setDate, handleStep }: Props) => {
   const { stepsIsDone, setStepsIsDone } = useContext(StepsIsDoneContext);
@@ -63,7 +63,6 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
       values.unit,
       'areaPrivativaTotal'
     );
-    const totalUnitsInDevelopment = calculateTUID(values.unit, 'unitQuantity');
     const totalExchangeArea = calculateTUID(values.unit, 'totalExchangeArea');
     const netAmount = calculateTUID(values.unit, 'netAmount');
     const unitQuantity = calculateTUID(values.unit, 'unitQuantity');
@@ -71,10 +70,6 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
 
     if (totalPrivateAreaQuantity !== null) {
       setFieldValue('totalPrivateAreaQuantity', totalPrivateAreaQuantity);
-    }
-
-    if (totalUnitsInDevelopment !== null) {
-      setFieldValue('totalUnitsInDevelopment', totalUnitsInDevelopment);
     }
 
     if (totalPrivateAreaQuantity !== null && totalExchangeArea !== null) {
@@ -93,6 +88,15 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
       setFieldValue('averageSaleValue', averageSaleValue);
     }
   }, [values.unit, setFieldValue]);
+
+  useEffect(() => {
+    setDate({
+      ...date,
+      units: {
+        ...values
+      }
+    });
+  }, [date, setDate, values]);
 
   return (
     <S.UnitsFormContainer>
@@ -132,7 +136,17 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                               required
                               displayEmpty
                               onBlur={handleBlur}
-                              onChange={handleChange}
+                              onChange={(e) => {
+                                setFieldValue(
+                                  `unit[${index}].unitTypeId`,
+                                  e.target.value
+                                );
+                                setFieldValue(
+                                  `unit[${index}].unitCharacteristics`,
+                                  ''
+                                );
+                                handleChange(e);
+                              }}
                               className="SelectComponent"
                               id={`unitTypeId-${unit.id}`}
                               name={`unit[${index}].unitTypeId`}
@@ -151,6 +165,49 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             </Select>
                           </FormControl>
                         </Grid>
+                        {/* {isEmptyUnitCharacteristics.includes(
+                          values.unit[index].unitTypeId
+                        ) && (
+                          <Grid item xs={12} sm={6} md={1.5} minWidth={170}>
+                            <FormControl
+                              sx={{ m: 1, width: '25ch' }}
+                              variant="outlined"
+                            >
+                              <S.Label>Características</S.Label>
+
+                              <Select
+                                required
+                                displayEmpty
+                                onBlur={handleBlur}
+                                onChange={(e) => {
+                                  setFieldValue(
+                                    `unit[${index}].unitCharacteristics`,
+                                    e.target.value
+                                  );
+                                  handleChange(e);
+                                }}
+                                className="SelectComponent"
+                                name={`unit[${index}].unitCharacteristics`}
+                                value={values.unit[0].unitCharacteristics || ''}
+                                IconComponent={KeyboardArrowDownRounded}
+                                inputProps={{
+                                  'aria-label': 'Without label'
+                                }}
+                              >
+                                <MenuItem value={''} disabled>
+                                  <em>Selecione a opção </em>
+                                </MenuItem>
+                                {unitCharacteristics[
+                                  values.unit[0].unitTypeId
+                                ]?.map((char, idx) => (
+                                  <MenuItem key={idx} value={char}>
+                                    {char}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
+                          </Grid>
+                        )} */}
                         <Grid item xs={12} sm={6} md={1.3} minWidth={130}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}
@@ -253,7 +310,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                               onChange={handleChange}
                               name={`unit[${index}].areaPrivativaTotal`}
                               value={values.unit[index].areaPrivativaTotal}
-                              placeholder="A. Privativa"
+                              placeholder="0"
                               aria-describedby="areaPrivativaTotal"
                               inputProps={{ style: { fontSize: '1.4rem' } }}
                             />
@@ -308,7 +365,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-                              <S.Label> Área permutada (m²)</S.Label>
+                            <S.Label> Área permutada (m²)</S.Label>
                             <Input
                               required
                               disabled
@@ -328,8 +385,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             sx={{ m: 1, width: '25ch' }}
                             variant="outlined"
                           >
-
-                              <S.Label>Valor de venda/m² (R$)</S.Label>
+                            <S.Label>Valor de venda/m² (R$)</S.Label>
 
                             <Input
                               required
@@ -434,8 +490,18 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                   <S.Label>Pavimentos </S.Label>
                   <Input
                     required
-                    onBlur={handleBlur}
                     id="flooring"
+                    onBlur={(e) => {
+                      setFieldValue(`flooring`, e.target.value);
+                      handleSumValues({
+                        id: '',
+                        type: 'sumLand',
+                        value1: e.target.value,
+                        value2: values.unitPerFloor,
+                        fieldName: 'totalUnitsInDevelopment',
+                        setFieldValue
+                      });
+                    }}
                     onChange={handleChange}
                     value={values.flooring}
                     aria-describedby="flooring"
@@ -446,6 +512,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                   />
                 </FormControl>
               </Grid>
+
               <Grid item xs={12} sm={6} md={1.5} minWidth={200}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                   <Tooltip title={'Unidades por andar'}>
@@ -453,8 +520,18 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                   </Tooltip>
                   <Input
                     required
-                    onBlur={handleBlur}
                     id="unitPerFloor"
+                    onBlur={(e) => {
+                      setFieldValue(`unitPerFloor`, e.target.value);
+                      handleSumValues({
+                        id: '',
+                        type: 'sumLand',
+                        value1: values.flooring,
+                        value2: e.target.value,
+                        fieldName: 'totalUnitsInDevelopment',
+                        setFieldValue
+                      });
+                    }}
                     onChange={handleChange}
                     value={values.unitPerFloor}
                     aria-describedby="unitPerFloor"
@@ -552,7 +629,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                   />
                 </FormControl>
               </Grid>
-              <Grid item xs={12} sm={6} md={2} minWidth={200}>
+              {/* <Grid item xs={12} sm={6} md={2} minWidth={200}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                   <S.Label>Área total do empreendimento</S.Label>
                   <Input
@@ -564,11 +641,17 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     aria-describedby="totalAreaOfTheDevelopment"
                     placeholder="Digite o quantidade"
                     inputProps={{ style: { fontSize: '1.4rem' } }}
-                    helperText={touched.totalAreaOfTheDevelopment && errors.totalAreaOfTheDevelopment}
-                    error={touched.totalAreaOfTheDevelopment && Boolean(errors.totalAreaOfTheDevelopment)}
+                    helperText={
+                      touched.totalAreaOfTheDevelopment &&
+                      errors.totalAreaOfTheDevelopment
+                    }
+                    error={
+                      touched.totalAreaOfTheDevelopment &&
+                      Boolean(errors.totalAreaOfTheDevelopment)
+                    }
                   />
                 </FormControl>
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={12} sm={6} md={2} minWidth={340}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
@@ -624,9 +707,11 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                   />
                 </FormControl>
               </Grid>
-              <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
+              {/* <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <S.Label>Área total privativa líquida de permuta (m²) </S.Label>
+                  <S.Label>
+                    Área total privativa líquida de permuta (m²){' '}
+                  </S.Label>
 
                   <Input
                     required
@@ -641,7 +726,8 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                       values.totalPrivateAreaNetOfExchange.toString() || ''
                     )}
                     helperText={
-                      touched.totalPrivateAreaNetOfExchange && errors.totalPrivateAreaNetOfExchange
+                      touched.totalPrivateAreaNetOfExchange &&
+                      errors.totalPrivateAreaNetOfExchange
                     }
                     error={
                       touched.totalPrivateAreaNetOfExchange &&
@@ -649,7 +735,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     }
                   />
                 </FormControl>
-              </Grid>
+              </Grid> */}
             </Grid>
           </S.ContainerInputs>
           <S.ContainerButtons>
@@ -667,3 +753,8 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
 };
 
 export { UnitsForm };
+
+// "payment": 10000, // fase1
+// 	"expenses": 10000, // fase2
+// 	"investment": 10000, // aporte fundo de reserva
+// 	"total": 10000, // total de aportes

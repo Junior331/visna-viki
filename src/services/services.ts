@@ -20,6 +20,8 @@ import { cleanObject } from '@/utils/utils';
 export const createUnits = async (projectId: number, payload: unitType) => {
   const formattedUnits = payload.unit.map((unit) => ({
     unitTypeId: unit.unitTypeId,
+    totalAreaOfTheDevelopment: 1,
+    totalPrivateAreaNetOfExchange: 1,
     netAmount: parseFloat(unit.netAmount.replace(',', '.')),
     averageArea: parseFloat(unit.averageArea.replace(',', '.')),
     marketAmount: parseFloat(unit.marketAmount.replace(',', '.')),
@@ -32,6 +34,8 @@ export const createUnits = async (projectId: number, payload: unitType) => {
   const formatPayload = {
     ...payload,
     unit: formattedUnits,
+    totalAreaOfTheDevelopment: 1,
+    totalPrivateAreaNetOfExchange: 1,
     flooring: parseFloat(payload.flooring.toString()),
     underground: parseFloat(payload.underground.toString()),
     unitPerFloor: parseFloat(payload.unitPerFloor.toString()),

@@ -44,6 +44,10 @@ export type handleEditDeadlineIdProps = handleGenericProps & {
   deadlineId: number;
   payload: deadlineSummaryType;
 };
+export type handleEditProjectProps = handleGenericProps & {
+  id: number;
+  name: string;
+};
 export type handleEdittUnitsProps = handleGenericProps & {
   unitId: number;
   payload: unitHubType;

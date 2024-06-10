@@ -15,6 +15,12 @@ export type aportesProps = {
   investment: number;
   observation: string;
 };
+export type accumulator = {
+  total: number;
+  payment: number;
+  expenses: number;
+  investment: number;
+};
 
 export type handleGenericProps = {
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -30,6 +36,7 @@ export type listAportesProps = handleGenericProps & {
   perPage: number;
   setPageTotal: Dispatch<SetStateAction<number>>;
   setList: Dispatch<SetStateAction<aportesProps[]>>;
+  setAccumulator: Dispatch<SetStateAction<accumulator>>;
 };
 export type handleSumValuesProps = {
   value1: string;

@@ -1,16 +1,19 @@
 import { useFormik } from 'formik';
 import { useContext, useEffect, useState } from 'react';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { Backdrop, CircularProgress, FormControl, Grid } from '@mui/material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { mocks } from '@/services/mocks';
 import { icons } from '@/assets/images/icons';
 import { Button, Input } from '@/components/elements';
 import {
-  convertDateToISO,
-  convertToParams,
   formatCurrency,
+  convertToParams,
   parseFormattedNumber,
-  typeMask
+  formatter
 } from '@/utils/utils';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import {
@@ -19,11 +22,11 @@ import {
   handleSumValues,
   listAportes
 } from './utils';
-import { GenericModal, Pagination } from '@/components/modules';
+import { accumulator, aportesProps } from './@types';
+import { Card, GenericModal, Pagination } from '@/components/modules';
 import { HeaderBreadcrumbs, Layout, Table } from '@/components/organism';
 import * as S from './AportesStyled';
-import { aportesProps } from './@types';
-import { MaskType } from '@/utils/types';
+import { emptyAccumulator } from '@/utils/emptys';
 
 export const Aportes = () => {
   const navigate = useNavigate();
@@ -36,6 +39,7 @@ export const Aportes = () => {
   const { setSnackbar } = useContext(SnackbarContext);
   const [list, setList] = useState<aportesProps[]>([]);
   const { id, name } = Object.fromEntries([...searchParams]);
+  const [accumulator, setAccumulator] = useState<accumulator>(emptyAccumulator);
   const [openModalNewAporte, setOpenModalNewAporte] = useState(false);
 
   const formik = useFormik({
@@ -44,7 +48,7 @@ export const Aportes = () => {
   });
   const formikNewAporte = useFormik({
     initialValues: {
-      date: '',
+      date: null,
       phaseOne: '',
       phaseTwo: '',
       observation: '',
@@ -53,9 +57,9 @@ export const Aportes = () => {
     onSubmit: async (values) => {
       const payload: aportesProps = {
         investment: 0,
+        date: values.date || '',
         projectId: parseFloat(id),
         observation: values.observation,
-        date: convertDateToISO(values.date || ''),
         payment: parseFormattedNumber(values.phaseOne),
         expenses: parseFormattedNumber(values.phaseTwo),
         total: parseFormattedNumber(values.totalContributions)
@@ -79,6 +83,7 @@ export const Aportes = () => {
           setLoading,
           setSnackbar,
           setPageTotal,
+          setAccumulator,
           id: parseFloat(id)
         });
       }
@@ -93,6 +98,7 @@ export const Aportes = () => {
       setLoading,
       setSnackbar,
       setPageTotal,
+      setAccumulator,
       id: parseFloat(id)
     });
   }, [id, page, perPage, setSnackbar]);
@@ -139,6 +145,30 @@ export const Aportes = () => {
                   setPageTotal={setPageTotal}
                 />
               )}
+
+              <Card width={'100%'} height={'auto'}>
+                <S.HeaderCard>
+                  <S.Title>Totalizadores</S.Title>
+                </S.HeaderCard>
+                <S.ContainerExpenses>
+                  <S.Expense>
+                    <S.Title>Fase 1</S.Title>
+                    <S.Text>{formatter.format(accumulator.payment)}</S.Text>
+                  </S.Expense>
+                  <S.Expense>
+                    <S.Title>Fase 2</S.Title>
+                    <S.Text>{formatter.format(accumulator.expenses)}</S.Text>
+                  </S.Expense>
+                  <S.Expense>
+                    <S.Title>Aporte fundo de reserva</S.Title>
+                    <S.Text>{formatter.format(accumulator.investment)}</S.Text>
+                  </S.Expense>
+                  <S.Expense>
+                    <S.Title>Total de aportes</S.Title>
+                    <S.Text>{formatter.format(accumulator.total)}</S.Text>
+                  </S.Expense>
+                </S.ContainerExpenses>
+              </Card>
             </>
           )}
         </S.Content>
@@ -182,16 +212,17 @@ export const Aportes = () => {
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                   <S.Label>Data</S.Label>
-                  <Input
-                    required
-                    id="date"
-                    aria-describedby="date"
-                    placeholder="Digite a Data"
-                    onBlur={formikNewAporte.handleBlur}
-                    onChange={formikNewAporte.handleChange}
-                    value={typeMask(MaskType.DATE, formikNewAporte.values.date)}
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoItem>
+                      <DesktopDatePicker
+                        value={formikNewAporte.values.date}
+                        format={'DD/MM/YYYY'}
+                        onChange={(date) =>
+                          formikNewAporte.setFieldValue('date', date || '')
+                        }
+                      />
+                    </DemoItem>
+                  </LocalizationProvider>
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
@@ -290,3 +321,4 @@ export const Aportes = () => {
     </Layout>
   );
 };
+('2024-06-14T03:00:00.000Z');

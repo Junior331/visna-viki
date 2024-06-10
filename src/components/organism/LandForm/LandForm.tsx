@@ -49,6 +49,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
           number: values.number,
           zipCode: values.zipCode
         },
+        quantitySpecies: parseFloat(values.quantitySpecies.toString()),
         projectId: 0
       };
       setDate({
@@ -319,7 +320,14 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={values.depave ? 1 : 2}
+                  minWidth={200}
+                  minHeight={117}
+                >
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <S.Label>Depave</S.Label>
 
@@ -340,7 +348,45 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3} minWidth={200} minHeight={117}>
+                {values.depave && (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    md={1}
+                    minWidth={200}
+                    minHeight={117}
+                  >
+                    <FormControl
+                      sx={{ m: 1, width: '25ch' }}
+                      variant="outlined"
+                    >
+                      <Tooltip title={'Quantidade de espécies'}>
+                        <S.Label>Qtd. espécies</S.Label>
+                      </Tooltip>
+                      <Input
+                        required
+                        id="quantitySpecies"
+                        onChange={handleChange}
+                        aria-describedby="quantitySpecies"
+                        placeholder="Digite aqui"
+                        inputProps={{ style: { fontSize: '1.4rem' } }}
+                        value={typeMask(
+                          MaskType.NUMBER,
+                          (values.quantitySpecies || 0).toString()
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
+                )}
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={values.depave ? 2.3 : 3}
+                  minWidth={200}
+                  minHeight={117}
+                >
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <S.Label>Topografia</S.Label>
 

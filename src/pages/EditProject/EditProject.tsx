@@ -31,23 +31,24 @@ import {
   handleDeleteProject,
   handleEditDeadline,
   handleEditLand,
+  handleEditProject,
   handleEdittUnits,
   handleSumValues,
   handleTabs
 } from './utils';
 import {
+  typeMask,
   convertToParams,
   formatCurrency,
-  handleKeyDown,
-  typeMask
+  handleKeyDown
 } from '@/utils/utils';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import { MaskType, projectInfoType } from '@/utils/types';
 import unitsFormSchema from '@/components/organism/UnitsForm/UnitsFormSchema';
-import * as S from './EditProjectStyled';
 import { Tooltip } from '@/components/elements/Tooltip';
-import { fetchCepData } from '@/services/services';
+import { editProject } from '@/services/services';
 import { projectNameFormSchema } from '@/components/organism/LandForm/Schema';
+import * as S from './EditProjectStyled';
 
 const CustomTabPanel = (props: tabPanelProps) => {
   const { children, value, index, ...other } = props;
@@ -92,8 +93,10 @@ export const EditProject = () => {
     onSubmit: async (values) => {
       const payload = {
         ...values,
+        quantitySpecies: parseFloat(values.quantitySpecies.toString()),
         projectId: parseFloat(id)
       };
+
       const landId = values.id;
       handleEditLand({
         landId,
@@ -118,9 +121,12 @@ export const EditProject = () => {
         totalValueNoExchange: values.totalValueNoExchange,
         totalUnitsInDevelopment: values.totalUnitsInDevelopment,
         totalPrivateAreaQuantity: values.totalPrivateAreaQuantity,
-        totalPrivateAreaNetOfExchange: values.totalPrivateAreaNetOfExchange,
-        totalAreaOfTheDevelopment: values.totalAreaOfTheDevelopment,
-        unit: values.unit
+        unit: values.unit.map((unit) => ({
+          ...unit,
+          unitCharacteristics: unit.unitCharacteristics || '',
+          totalPrivateAreaNetOfExchange: 1,
+          totalAreaOfTheDevelopment: 1
+        }))
       };
 
       handleEdittUnits({
@@ -155,7 +161,13 @@ export const EditProject = () => {
       name: name
     },
     onSubmit: async (values) => {
-      console.log('values ::', values);
+      handleEditProject({
+        id: parseFloat(id),
+        name: values.name,
+        setLoading,
+        setSnackbar
+      });
+      await editProject(parseFloat(id), values.name);
     },
     validationSchema: projectNameFormSchema
   });
@@ -169,19 +181,6 @@ export const EditProject = () => {
     setFieldValue,
     handleChange
   } = formik;
-
-  const getCep = async (cep: string) => {
-    const result = await fetchCepData(cep);
-    formikLand.setFieldValue('address.street', result?.logradouro || '');
-    formikLand.setFieldValue('address.neighborhood', result?.bairro || '');
-    formikLand.setFieldValue('address.state', result?.uf || '');
-  };
-  useEffect(() => {
-    if (formikLand.values.address.zipCode) {
-      getCep(formikLand.values.address.zipCode);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formikLand.values.address.zipCode]);
 
   useEffect(() => {
     getInfoProject({ id: parseFloat(id), setDate, setSnackbar });
@@ -233,7 +232,8 @@ export const EditProject = () => {
           marketAmount: 0,
           exchangeQuantity: 0,
           totalExchangeArea: 0,
-          areaPrivativaTotal: 0
+          areaPrivativaTotal: 0,
+          unitCharacteristics: ''
         }
       ];
       setFieldValue('unit', defaultValue);
@@ -306,7 +306,7 @@ export const EditProject = () => {
             <CustomTabPanel value={value} index={0}>
               <S.Form
                 onSubmit={
-                  (formikLand.handleSubmit, formikProjectName.handleSubmit)
+                  (formikProjectName.handleSubmit, formikLand.handleSubmit)
                 }
               >
                 <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
@@ -606,7 +606,7 @@ export const EditProject = () => {
                           inputProps={{ style: { fontSize: '1.4rem' } }}
                           value={typeMask(
                             MaskType.NUMBER,
-                            formikLand.values.quantitySpecies.toString()
+                            (formikLand.values.quantitySpecies || 0).toString()
                           )}
                         />
                       </FormControl>
@@ -798,7 +798,7 @@ export const EditProject = () => {
                                     item
                                     xs={12}
                                     sm={6}
-                                    md={1.5}
+                                    md={1.3}
                                     minWidth={170}
                                   >
                                     <FormControl
@@ -818,6 +818,10 @@ export const EditProject = () => {
                                             `unit[${index}].unitTypeId`,
                                             e.target.value
                                           );
+                                          setFieldValue(
+                                            `unit[${index}].unitCharacteristics`,
+                                            ''
+                                          );
                                           handleChange(e);
                                         }}
                                         className="SelectComponent"
@@ -835,14 +839,70 @@ export const EditProject = () => {
                                           Residencial
                                         </MenuItem>
                                         <MenuItem value={2}>
-                                          Não Residencial{' '}
+                                          Não Residencial
                                         </MenuItem>
                                         <MenuItem value={3}>Loja</MenuItem>
                                         <MenuItem value={4}>Vagas</MenuItem>
                                         <MenuItem value={5}>HMP</MenuItem>
+                                        {/* <MenuItem value={6}>UR</MenuItem>
+                                        <MenuItem value={7}>HIS</MenuItem>
+                                        <MenuItem value={8}>HNP</MenuItem> */}
                                       </Select>
                                     </FormControl>
                                   </Grid>
+                                  {/* {isEmptyUnitCharacteristics.includes(
+                                    values.unit[index].unitTypeId
+                                  ) && (
+                                    <Grid
+                                      item
+                                      xs={12}
+                                      sm={6}
+                                      md={1.5}
+                                      minWidth={170}
+                                    >
+                                      <FormControl
+                                        sx={{ m: 1, width: '25ch' }}
+                                        variant="outlined"
+                                      >
+                                        <S.Label>Características</S.Label>
+
+                                        <Select
+                                          displayEmpty
+                                          onBlur={handleBlur}
+                                          onChange={(e) => {
+                                            setFieldValue(
+                                              `unit[${index}].unitCharacteristics`,
+                                              e.target.value
+                                            );
+                                            handleChange(e);
+                                          }}
+                                          className="SelectComponent"
+                                          name={`unit[${index}].unitCharacteristics`}
+                                          value={
+                                            values.unit[index]
+                                              .unitCharacteristics || ''
+                                          }
+                                          IconComponent={
+                                            KeyboardArrowDownRounded
+                                          }
+                                          inputProps={{
+                                            'aria-label': 'Without label'
+                                          }}
+                                        >
+                                          <MenuItem value={''} disabled>
+                                            <em>Selecione a opção </em>
+                                          </MenuItem>
+                                          {unitCharacteristics[
+                                            values.unit[0].unitTypeId
+                                          ]?.map((char, idx) => (
+                                            <MenuItem key={idx} value={char}>
+                                              {char}
+                                            </MenuItem>
+                                          ))}
+                                        </Select>
+                                      </FormControl>
+                                    </Grid>
+                                  )} */}
                                   <Grid
                                     item
                                     xs={12}
@@ -993,7 +1053,7 @@ export const EditProject = () => {
                                         value={
                                           values.unit[index].areaPrivativaTotal
                                         }
-                                        placeholder="A. Privativa"
+                                        placeholder="0"
                                         aria-describedby="areaPrivativaTotal"
                                         inputProps={{
                                           style: { fontSize: '1.4rem' }
@@ -1005,7 +1065,7 @@ export const EditProject = () => {
                                     item
                                     xs={12}
                                     sm={6}
-                                    md={1.5}
+                                    md={1.3}
                                     minWidth={180}
                                   >
                                     <FormControl
@@ -1073,8 +1133,7 @@ export const EditProject = () => {
                                       sx={{ m: 1, width: '25ch' }}
                                       variant="outlined"
                                     >
-
-                                        <S.Label>Área permutada (m²)</S.Label>
+                                      <S.Label>Área permutada (m²)</S.Label>
 
                                       <Input
                                         required
@@ -1098,15 +1157,14 @@ export const EditProject = () => {
                                     item
                                     xs={12}
                                     sm={6}
-                                    md={1.5}
+                                    md={1.9}
                                     minWidth={160}
                                   >
                                     <FormControl
                                       sx={{ m: 1, width: '25ch' }}
                                       variant="outlined"
                                     >
-
-                                        <S.Label>Valor de venda/m² (R$)</S.Label>
+                                      <S.Label>Valor de venda/m² (R$)</S.Label>
 
                                       <Input
                                         required
@@ -1376,13 +1434,12 @@ export const EditProject = () => {
                           />
                         </FormControl>
                       </Grid>
-                      <Grid item xs={12} sm={6} md={1.5} minWidth={295}>
+                      {/* <Grid item xs={12} sm={6} md={1.5} minWidth={295}>
                         <FormControl
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-
-                            <S.Label>Área total do empreendimento</S.Label>
+                          <S.Label>Área total do empreendimento</S.Label>
 
                           <Input
                             required
@@ -1404,7 +1461,7 @@ export const EditProject = () => {
                             }
                           />
                         </FormControl>
-                      </Grid>
+                      </Grid> */}
 
                       <Grid item xs={12} sm={6} md={2} minWidth={340}>
                         <FormControl
@@ -1468,32 +1525,39 @@ export const EditProject = () => {
                           />
                         </FormControl>
                       </Grid>
-                      <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <S.Label>Área total privativa líquida de permuta (m²) </S.Label>
+                      {/* <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
+                        <FormControl
+                          sx={{ m: 1, width: '25ch' }}
+                          variant="outlined"
+                        >
+                          <S.Label>
+                            Área total privativa líquida de permuta (m²){' '}
+                          </S.Label>
 
-                  <Input
-                    required
-                    disabled
-                    placeholder="0,00"
-                    onBlur={handleBlur}
-                    id="totalPrivateAreaNetOfExchange"
-                    onChange={handleChange}
-                    aria-describedby="totalPrivateAreaNetOfExchange"
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                    value={formatCurrency(
-                      values.totalPrivateAreaNetOfExchange.toString() || ''
-                    )}
-                    helperText={
-                      touched.totalPrivateAreaNetOfExchange && errors.totalPrivateAreaNetOfExchange
-                    }
-                    error={
-                      touched.totalPrivateAreaNetOfExchange &&
-                      Boolean(errors.totalPrivateAreaNetOfExchange)
-                    }
-                  />
-                </FormControl>
-              </Grid>
+                          <Input
+                            required
+                            disabled
+                            placeholder="0,00"
+                            onBlur={handleBlur}
+                            id="totalPrivateAreaNetOfExchange"
+                            onChange={handleChange}
+                            aria-describedby="totalPrivateAreaNetOfExchange"
+                            inputProps={{ style: { fontSize: '1.4rem' } }}
+                            value={formatCurrency(
+                              values.totalPrivateAreaNetOfExchange.toString() ||
+                                ''
+                            )}
+                            helperText={
+                              touched.totalPrivateAreaNetOfExchange &&
+                              errors.totalPrivateAreaNetOfExchange
+                            }
+                            error={
+                              touched.totalPrivateAreaNetOfExchange &&
+                              Boolean(errors.totalPrivateAreaNetOfExchange)
+                            }
+                          />
+                        </FormControl>
+                      </Grid> */}
                     </Grid>
                   </S.ContainerInputs>
                   <S.ContainerButtons>

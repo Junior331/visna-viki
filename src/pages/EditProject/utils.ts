@@ -1,17 +1,73 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   deleteProject,
   editDeadline,
   editLands,
+  editProject,
   editUnits
 } from '@/services/services';
 import {
   handleDeleteProjectProps,
   handleEditDeadlineIdProps,
   handleEditLandProps,
+  handleEditProjectProps,
   handleEdittUnitsProps,
   handleTabsProps
 } from './@types';
 import { handleSumValuesProps } from '@/components/organism/UnitsForm/@types';
+
+export const unitTypeOptions = [
+  { value: 1, label: 'Residencial' },
+  { value: 2, label: 'Não Residencial' },
+  { value: 3, label: 'Loja' },
+  { value: 4, label: 'Vagas' },
+  { value: 5, label: 'HMP' },
+  { value: 6, label: 'UR' },
+  { value: 7, label: 'HIS' },
+  { value: 8, label: 'HNP' }
+];
+export const isEmptyUnitCharacteristics = [1, 2, 6, 7, 8];
+
+export const unitCharacteristics: { [key: number]: string[] } = {
+  1: [
+    '1 Dorm.',
+    '2 Dorm.',
+    '3 Dorm.',
+    '4 Dorm.',
+    '5 Dorm.',
+    'Cobertura',
+    'Cobertura Duplex',
+    'Cobertura Triplex',
+    'Duplex',
+    'Garden',
+    'Loft',
+    'Maison',
+    'Penthouse',
+    'Terrace'
+  ],
+  8: [
+    '1 Dorm.',
+    '2 Dorm.',
+    '3 Dorm.',
+    '4 Dorm.',
+    '5 Dorm.',
+    'Garden',
+    'Cobertura'
+  ],
+  7: ['1 Dorm.', '2 Dorm.', '3 Dorm.', 'Studio'],
+  6: [
+    'Studio',
+    '1 Dorm.',
+    '2 Dorm.',
+    '3 Dorm.',
+    'Cobertura',
+    'Penthouse',
+    'Loft',
+    'Duplex',
+    'Triplex'
+  ],
+  2: ['Loja', 'NR']
+};
 
 export const unitSummaryDefault = {
   id: 0,
@@ -187,6 +243,45 @@ export const handleEditDeadline = async ({
       vertical: 'top',
       horizontal: 'right',
       message: 'Prazos editados com sucesso'
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+export const handleEditProject = async ({
+  id,
+  name,
+  setLoading,
+  setSnackbar
+}: handleEditProjectProps) => {
+  setLoading(true);
+
+  try {
+    await editProject(id, name);
+    setSnackbar({
+      isOpen: true,
+      vertical: 'top',
+      severity: 'success',
+      horizontal: 'right',
+      message: 'Terreno editado com sucesso'
     });
   } catch (error) {
     if (error instanceof Error) {

@@ -42,6 +42,11 @@ export const GlobalStyles = createGlobalStyle`
       -webkit-text-fill-color: rgb(0 0 0 / 70%) !important; 
       color: ${({ theme }) => theme.palette.color.dark} !important;
     }
+    .inputDisabled{
+      cursor: no-drop;
+      border-radius: 5px;
+      background-color: #00000030;
+    }
 
     .SelectComponent {
       height: 53px;
@@ -97,6 +102,22 @@ export const GlobalStyles = createGlobalStyle`
     .MuiSelect-select,.MuiInputBase-input {
       font-size: ${({ theme }) => theme.typography.fontSize - 0.3}rem;
     }
+
+
+    .MuiTypography-caption, .MuiPickersDay-root {
+      color: #000 !important;
+      font-size: 1.2rem !important;
+      font-weight: 600 !important;
+    }
+    .MuiPickersDay-root {
+      font-weight: 400 !important;
+    }
+
+    .MuiDayCalendar-weekContainer{
+      .Mui-selected{
+        color: #fff !important;
+      }
+    }
   
 
     .MuiTooltip-tooltip {
@@ -129,6 +150,8 @@ export const GlobalStyles = createGlobalStyle`
         }
       }
     }
+
+
 
     /* .base-Popper-root  {
       inset: auto auto 0px -130px !important;

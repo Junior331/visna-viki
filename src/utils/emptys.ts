@@ -5,6 +5,8 @@ import {
   projectType,
   unitSummaryType
 } from './types';
+import { accumulator } from '@/pages/Aportes/@types';
+import dayjs from 'dayjs';
 
 export const emptyProject: projectType = {
   id: '',
@@ -29,6 +31,7 @@ export const emptyProjectDate: projectDateType = {
     totalAmount: 0,
     neighborhood: '',
     amountPerMeter: 0,
+    quantitySpecies: 0,
     topographyTypeId: 0
   },
   units: {
@@ -40,8 +43,8 @@ export const emptyProjectDate: projectDateType = {
     totalValueNoExchange: '',
     totalUnitsInDevelopment: '',
     totalPrivateAreaQuantity: '',
-    totalAreaOfTheDevelopment: '',
-    totalPrivateAreaNetOfExchange: '',
+    // totalAreaOfTheDevelopment: '',
+    // totalPrivateAreaNetOfExchange: '',
     unit: [
       {
         id: 0,
@@ -52,16 +55,19 @@ export const emptyProjectDate: projectDateType = {
         marketAmount: '',
         exchangeQuantity: '',
         totalExchangeArea: '',
-        areaPrivativaTotal: ''
+        areaPrivativaTotal: '',
+        unitCharacteristics: '',
+        totalAreaOfTheDevelopment: 0,
+        totalPrivateAreaNetOfExchange: 0
       }
     ]
   },
   deadline: {
-    projectLaunchDeadlineInMonth: 0,
-    startDate: '',
+    startDate: dayjs(''),
     totalDeadlineInMonth: 0,
     approvalDeadlineInMonth: 0,
-    constructionDeadlineInMonth: 0
+    constructionDeadlineInMonth: 0,
+    projectLaunchDeadlineInMonth: 0
   }
 };
 
@@ -74,7 +80,10 @@ export const emptyUnitSummary: unitSummaryType = {
   marketAmount: '',
   exchangeQuantity: '',
   totalExchangeArea: '',
-  areaPrivativaTotal: ''
+  areaPrivativaTotal: '',
+  unitCharacteristics: '',
+  totalAreaOfTheDevelopment: 0,
+  totalPrivateAreaNetOfExchange: 0
 };
 
 export const emptyProjectInfo: projectInfoType = {
@@ -90,9 +99,9 @@ export const emptyProjectInfo: projectInfoType = {
     totalToBeBuiltArea: 0,
     totalValueNoExchange: 0,
     totalUnitsInDevelopment: 0,
-    totalAreaOfTheDevelopment:0,
+    // totalAreaOfTheDevelopment: 0,
     totalPrivateAreaQuantity: 0,
-    totalPrivateAreaNetOfExchange: 0,
+    // totalPrivateAreaNetOfExchange: 0,
     unit: [
       {
         id: 0,
@@ -105,6 +114,7 @@ export const emptyProjectInfo: projectInfoType = {
         exchangeQuantity: 0,
         totalExchangeArea: 0,
         areaPrivativaTotal: 0,
+        unitCharacteristics: '',
         unitHubId: 0
       }
     ]
@@ -117,7 +127,7 @@ export const emptyProjectInfo: projectInfoType = {
     topographyTypeId: 0,
     frontage: 0,
     amountPerMeter: 0,
-    quantitySpecies:0,
+    quantitySpecies: 0,
     totalAmount: 0,
     projectId: 0,
     zoning: '',
@@ -244,4 +254,10 @@ export const emptyCostsV2: costsTypeV2 = {
       }
     }
   }
+};
+export const emptyAccumulator: accumulator = {
+  total: 0,
+  payment: 0,
+  expenses: 0,
+  investment: 0
 };

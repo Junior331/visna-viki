@@ -1,5 +1,6 @@
 // import { v4 as uuidv4 } from 'uuid';
 
+import { Dayjs } from 'dayjs';
 import { Dispatch, MouseEvent } from 'react';
 
 export enum statusColor {
@@ -38,6 +39,7 @@ export type landType = {
   totalAmount: number;
   neighborhood: string;
   amountPerMeter: number;
+  quantitySpecies: number;
   topographyTypeId: number;
 };
 
@@ -76,6 +78,9 @@ export type unitSummaryType = {
   exchangeQuantity: string;
   totalExchangeArea: string;
   areaPrivativaTotal: string;
+  unitCharacteristics: string;
+  totalAreaOfTheDevelopment: number;
+  totalPrivateAreaNetOfExchange: number;
 };
 
 export type unitHubSummaryType = {
@@ -90,6 +95,7 @@ export type unitHubSummaryType = {
   exchangeQuantity: number;
   totalExchangeArea: number;
   areaPrivativaTotal: number;
+  unitCharacteristics: string;
 };
 
 export type unitType = {
@@ -101,8 +107,8 @@ export type unitType = {
   totalValueNoExchange: string;
   totalUnitsInDevelopment: string;
   totalPrivateAreaQuantity: string;
-  totalAreaOfTheDevelopment: string;
-  totalPrivateAreaNetOfExchange: string;
+  // totalAreaOfTheDevelopment: string;
+  // totalPrivateAreaNetOfExchange: string;
   unit: unitSummaryType[];
 };
 
@@ -117,13 +123,13 @@ export type unitHubType = {
   totalValueNoExchange: number;
   totalUnitsInDevelopment: number;
   totalPrivateAreaQuantity: number;
-  totalAreaOfTheDevelopment: number;
-  totalPrivateAreaNetOfExchange: number;
+  // totalAreaOfTheDevelopment: number;
+  // totalPrivateAreaNetOfExchange: number;
   unit: unitHubSummaryType[];
 };
 
 export type deadlineType = {
-  startDate: string;
+  startDate: Dayjs;
   totalDeadlineInMonth: number;
   approvalDeadlineInMonth: number;
   constructionDeadlineInMonth: number;
@@ -132,8 +138,8 @@ export type deadlineType = {
 
 export type deadlineSummaryType = {
   id: number;
-  projectId: number;
   startDate: string;
+  projectId: number;
   afterConstruction: number;
   totalDeadlineInMonth: number;
   approvalDeadlineInMonth: number;
