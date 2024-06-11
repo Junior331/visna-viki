@@ -1,21 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import { Grid, Select, MenuItem, FormControl } from '@mui/material';
 import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { Props } from './@types';
-import { MaskType } from '@/utils/types';
 import unitsFormSchema from './UnitsFormSchema';
+import { SnackbarContext } from '@/contexts/Snackbar';
 import { Button, Input } from '@/components/elements';
-import { formatCurrency, handleKeyDown, typeMask } from '@/utils/utils';
-import { StepsIsDoneContext } from '@/contexts/StepIsDone';
-import { calculateTUID, handleSumValues, unitDefault } from './utils';
 import { Tooltip } from '@/components/elements/Tooltip';
+import { StepsIsDoneContext } from '@/contexts/StepIsDone';
+import { MaskType, unitCharacteristicsType } from '@/utils/types';
+import { calculateTUID, handleSumValues, unitDefault } from './utils';
+import { formatCurrency, handleKeyDown, typeMask } from '@/utils/utils';
+import { handleListUnitCharacteristics } from '@/pages/EditProject/utils';
 import * as S from './UnitsFormStyled';
 
 const UnitsForm = ({ date, setDate, handleStep }: Props) => {
+  const { setSnackbar } = useContext(SnackbarContext);
   const { stepsIsDone, setStepsIsDone } = useContext(StepsIsDoneContext);
-
+  const [listCharacteristics, setListCharacteristics] = useState<
+    unitCharacteristicsType[]
+  >([]);
+  const [selectedCharacteristics, setselectedCharacteristics] =
+    useState<unitCharacteristicsType>();
   const formik = useFormik({
     initialValues: date.units,
     onSubmit: async (values) => {
@@ -41,6 +48,14 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
     handleSubmit,
     setFieldValue
   } = formik;
+
+  useEffect(() => {
+    handleListUnitCharacteristics({
+      setSnackbar,
+      setListCharacteristics
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (date.units.flooring) {
@@ -142,8 +157,14 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                                   e.target.value
                                 );
                                 setFieldValue(
-                                  `unit[${index}].unitCharacteristics`,
+                                  `unit[${index}].unitCharacteristicsId`,
                                   ''
+                                );
+                                setselectedCharacteristics(
+                                  listCharacteristics.find(
+                                    (item) =>
+                                      item.unit_type_id === e.target.value
+                                  )
                                 );
                                 handleChange(e);
                               }}
@@ -157,17 +178,15 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                               <MenuItem value={0} disabled>
                                 <em>Selecione a opção </em>
                               </MenuItem>
-                              <MenuItem value={1}>Residencial</MenuItem>
-                              <MenuItem value={2}>Não Residencial </MenuItem>
-                              <MenuItem value={3}>Loja</MenuItem>
-                              <MenuItem value={4}>Vagas</MenuItem>
-                              <MenuItem value={5}>HMP</MenuItem>
+                              {listCharacteristics.map((item) => (
+                                <MenuItem value={item.unit_type_id}>
+                                  {item.name}
+                                </MenuItem>
+                              ))}
                             </Select>
                           </FormControl>
                         </Grid>
-                        {/* {isEmptyUnitCharacteristics.includes(
-                          values.unit[index].unitTypeId
-                        ) && (
+                        {Boolean(selectedCharacteristics?.children.length) && (
                           <Grid item xs={12} sm={6} md={1.5} minWidth={170}>
                             <FormControl
                               sx={{ m: 1, width: '25ch' }}
@@ -176,19 +195,20 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                               <S.Label>Características</S.Label>
 
                               <Select
-                                required
                                 displayEmpty
                                 onBlur={handleBlur}
                                 onChange={(e) => {
                                   setFieldValue(
-                                    `unit[${index}].unitCharacteristics`,
+                                    `unit[${index}].unitCharacteristicsId`,
                                     e.target.value
                                   );
                                   handleChange(e);
                                 }}
                                 className="SelectComponent"
-                                name={`unit[${index}].unitCharacteristics`}
-                                value={values.unit[0].unitCharacteristics || ''}
+                                name={`unit[${index}].unitCharacteristicsId`}
+                                value={
+                                  values.unit[index].unitCharacteristicsId || ''
+                                }
                                 IconComponent={KeyboardArrowDownRounded}
                                 inputProps={{
                                   'aria-label': 'Without label'
@@ -197,17 +217,17 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                                 <MenuItem value={''} disabled>
                                   <em>Selecione a opção </em>
                                 </MenuItem>
-                                {unitCharacteristics[
-                                  values.unit[0].unitTypeId
-                                ]?.map((char, idx) => (
-                                  <MenuItem key={idx} value={char}>
-                                    {char}
-                                  </MenuItem>
-                                ))}
+                                {selectedCharacteristics?.children.map(
+                                  (item) => (
+                                    <MenuItem value={item.id}>
+                                      {item.name}
+                                    </MenuItem>
+                                  )
+                                )}
                               </Select>
                             </FormControl>
                           </Grid>
-                        )} */}
+                        )}
                         <Grid item xs={12} sm={6} md={1.3} minWidth={130}>
                           <FormControl
                             sx={{ m: 1, width: '25ch' }}

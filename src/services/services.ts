@@ -22,6 +22,7 @@ export const createUnits = async (projectId: number, payload: unitType) => {
     unitTypeId: unit.unitTypeId,
     totalAreaOfTheDevelopment: 1,
     totalPrivateAreaNetOfExchange: 1,
+    unitCharacteristicsId: unit.unitCharacteristicsId,
     netAmount: parseFloat(unit.netAmount.replace(',', '.')),
     averageArea: parseFloat(unit.averageArea.replace(',', '.')),
     marketAmount: parseFloat(unit.marketAmount.replace(',', '.')),
@@ -117,6 +118,23 @@ export const listUnits = async (unitId: number) => {
   try {
     const response = await axios.get(
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.UNITS.BASE_URL}/${unitId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const listUnitCharacteristics = async () => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.UNITS.BASE_URL}/characteristics`,
       {
         headers: {
           Authorization: `Bearer ${getToken()}`

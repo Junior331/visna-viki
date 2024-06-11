@@ -78,7 +78,7 @@ export type unitSummaryType = {
   exchangeQuantity: string;
   totalExchangeArea: string;
   areaPrivativaTotal: string;
-  unitCharacteristics: string;
+  unitCharacteristicsId: string;
   totalAreaOfTheDevelopment: number;
   totalPrivateAreaNetOfExchange: number;
 };
@@ -95,7 +95,7 @@ export type unitHubSummaryType = {
   exchangeQuantity: number;
   totalExchangeArea: number;
   areaPrivativaTotal: number;
-  unitCharacteristics: string;
+  unitCharacteristicsId: string;
 };
 
 export type unitType = {
@@ -210,4 +210,14 @@ export type CepData = {
   localidade: string;
   logradouro: string;
   complemento: string;
+};
+export type unitCharacteristicsType = {
+  name: string;
+  unit_type_id: number;
+  children: [
+    {
+      id: number;
+      name: string;
+    }
+  ];
 };

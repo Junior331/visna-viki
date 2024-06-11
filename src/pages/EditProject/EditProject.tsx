@@ -27,23 +27,28 @@ import { GenericModal } from '@/components/modules';
 import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import {
-  breadCrumbsItems,
-  handleDeleteProject,
-  handleEditDeadline,
+  handleTabs,
   handleEditLand,
-  handleEditProject,
-  handleEdittUnits,
   handleSumValues,
-  handleTabs
+  handleEdittUnits,
+  breadCrumbsItems,
+  handleEditProject,
+  handleEditDeadline,
+  handleDeleteProject,
+  handleListUnitCharacteristics
 } from './utils';
 import {
   typeMask,
-  convertToParams,
+  handleKeyDown,
   formatCurrency,
-  handleKeyDown
+  convertToParams
 } from '@/utils/utils';
 import { HeaderBreadcrumbs } from '@/components/organism';
-import { MaskType, projectInfoType } from '@/utils/types';
+import {
+  MaskType,
+  projectInfoType,
+  unitCharacteristicsType
+} from '@/utils/types';
 import unitsFormSchema from '@/components/organism/UnitsForm/UnitsFormSchema';
 import { Tooltip } from '@/components/elements/Tooltip';
 import { editProject } from '@/services/services';
@@ -87,6 +92,11 @@ export const EditProject = () => {
   const { setSnackbar } = useContext(SnackbarContext);
   const { id, name } = Object.fromEntries([...searchParams]);
   const [date, setDate] = useState<projectInfoType>(emptyProjectInfo);
+  const [listCharacteristics, setListCharacteristics] = useState<
+    unitCharacteristicsType[]
+  >([]);
+  const [selectedCharacteristics, setselectedCharacteristics] =
+    useState<unitCharacteristicsType>();
 
   const formikLand = useFormik({
     initialValues: date.land,
@@ -123,7 +133,6 @@ export const EditProject = () => {
         totalPrivateAreaQuantity: values.totalPrivateAreaQuantity,
         unit: values.unit.map((unit) => ({
           ...unit,
-          unitCharacteristics: unit.unitCharacteristics || '',
           totalPrivateAreaNetOfExchange: 1,
           totalAreaOfTheDevelopment: 1
         }))
@@ -187,6 +196,14 @@ export const EditProject = () => {
   }, [id, setSnackbar]);
 
   useEffect(() => {
+    handleListUnitCharacteristics({
+      setSnackbar,
+      setListCharacteristics
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     const lands: any = date.land || emptyProjectInfo.land;
     Object.keys(lands)?.forEach((key: string) => {
       formikLand.setFieldValue(key, lands[key]);
@@ -233,7 +250,7 @@ export const EditProject = () => {
           exchangeQuantity: 0,
           totalExchangeArea: 0,
           areaPrivativaTotal: 0,
-          unitCharacteristics: ''
+          unitCharacteristicsId: ''
         }
       ];
       setFieldValue('unit', defaultValue);
@@ -257,6 +274,17 @@ export const EditProject = () => {
     if (totalPrivateAreaQuantity !== null) {
       setFieldValue('totalPrivateAreaQuantity', totalPrivateAreaQuantity);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.unit]);
+
+  useEffect(() => {
+    values.unit.map((unit) => {
+      setselectedCharacteristics(
+        listCharacteristics.find(
+          (item) => item.unit_type_id === unit.unitTypeId
+        )
+      );
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.unit]);
 
@@ -819,8 +847,16 @@ export const EditProject = () => {
                                             e.target.value
                                           );
                                           setFieldValue(
-                                            `unit[${index}].unitCharacteristics`,
+                                            `unit[${index}].unitCharacteristicsId`,
                                             ''
+                                          );
+
+                                          setselectedCharacteristics(
+                                            listCharacteristics.find(
+                                              (item) =>
+                                                item.unit_type_id ===
+                                                e.target.value
+                                            )
                                           );
                                           handleChange(e);
                                         }}
@@ -835,23 +871,16 @@ export const EditProject = () => {
                                         <MenuItem value={0} disabled>
                                           <em>Selecione a opção </em>
                                         </MenuItem>
-                                        <MenuItem value={1}>
-                                          Residencial
-                                        </MenuItem>
-                                        <MenuItem value={2}>
-                                          Não Residencial
-                                        </MenuItem>
-                                        <MenuItem value={3}>Loja</MenuItem>
-                                        <MenuItem value={4}>Vagas</MenuItem>
-                                        <MenuItem value={5}>HMP</MenuItem>
-                                        {/* <MenuItem value={6}>UR</MenuItem>
-                                        <MenuItem value={7}>HIS</MenuItem>
-                                        <MenuItem value={8}>HNP</MenuItem> */}
+                                        {listCharacteristics.map((item) => (
+                                          <MenuItem value={item.unit_type_id}>
+                                            {item.name}
+                                          </MenuItem>
+                                        ))}
                                       </Select>
                                     </FormControl>
                                   </Grid>
-                                  {/* {isEmptyUnitCharacteristics.includes(
-                                    values.unit[index].unitTypeId
+                                  {Boolean(
+                                    selectedCharacteristics?.children.length
                                   ) && (
                                     <Grid
                                       item
@@ -871,16 +900,16 @@ export const EditProject = () => {
                                           onBlur={handleBlur}
                                           onChange={(e) => {
                                             setFieldValue(
-                                              `unit[${index}].unitCharacteristics`,
+                                              `unit[${index}].unitCharacteristicsId`,
                                               e.target.value
                                             );
                                             handleChange(e);
                                           }}
                                           className="SelectComponent"
-                                          name={`unit[${index}].unitCharacteristics`}
+                                          name={`unit[${index}].unitCharacteristicsId`}
                                           value={
                                             values.unit[index]
-                                              .unitCharacteristics || ''
+                                              .unitCharacteristicsId || ''
                                           }
                                           IconComponent={
                                             KeyboardArrowDownRounded
@@ -892,17 +921,17 @@ export const EditProject = () => {
                                           <MenuItem value={''} disabled>
                                             <em>Selecione a opção </em>
                                           </MenuItem>
-                                          {unitCharacteristics[
-                                            values.unit[0].unitTypeId
-                                          ]?.map((char, idx) => (
-                                            <MenuItem key={idx} value={char}>
-                                              {char}
-                                            </MenuItem>
-                                          ))}
+                                          {selectedCharacteristics?.children.map(
+                                            (item) => (
+                                              <MenuItem value={item.id}>
+                                                {item.name}
+                                              </MenuItem>
+                                            )
+                                          )}
                                         </Select>
                                       </FormControl>
                                     </Grid>
-                                  )} */}
+                                  )}
                                   <Grid
                                     item
                                     xs={12}

@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  deleteProject,
-  editDeadline,
   editLands,
+  editUnits,
   editProject,
-  editUnits
+  editDeadline,
+  deleteProject,
+  listUnitCharacteristics
 } from '@/services/services';
 import {
   handleDeleteProjectProps,
@@ -12,6 +13,7 @@ import {
   handleEditLandProps,
   handleEditProjectProps,
   handleEdittUnitsProps,
+  handleListUnitCharacteristicsProps,
   handleTabsProps
 } from './@types';
 import { handleSumValuesProps } from '@/components/organism/UnitsForm/@types';
@@ -27,47 +29,6 @@ export const unitTypeOptions = [
   { value: 8, label: 'HNP' }
 ];
 export const isEmptyUnitCharacteristics = [1, 2, 6, 7, 8];
-
-export const unitCharacteristics: { [key: number]: string[] } = {
-  1: [
-    '1 Dorm.',
-    '2 Dorm.',
-    '3 Dorm.',
-    '4 Dorm.',
-    '5 Dorm.',
-    'Cobertura',
-    'Cobertura Duplex',
-    'Cobertura Triplex',
-    'Duplex',
-    'Garden',
-    'Loft',
-    'Maison',
-    'Penthouse',
-    'Terrace'
-  ],
-  8: [
-    '1 Dorm.',
-    '2 Dorm.',
-    '3 Dorm.',
-    '4 Dorm.',
-    '5 Dorm.',
-    'Garden',
-    'Cobertura'
-  ],
-  7: ['1 Dorm.', '2 Dorm.', '3 Dorm.', 'Studio'],
-  6: [
-    'Studio',
-    '1 Dorm.',
-    '2 Dorm.',
-    '3 Dorm.',
-    'Cobertura',
-    'Penthouse',
-    'Loft',
-    'Duplex',
-    'Triplex'
-  ],
-  2: ['Loja', 'NR']
-};
 
 export const unitSummaryDefault = {
   id: 0,
@@ -341,5 +302,32 @@ export const handleEdittUnits = async ({
     }
   } finally {
     setLoading(false);
+  }
+};
+export const handleListUnitCharacteristics = async ({
+  setSnackbar,
+  setListCharacteristics
+}: handleListUnitCharacteristicsProps) => {
+  try {
+    const result = await listUnitCharacteristics();
+    setListCharacteristics(result);
+  } catch (error) {
+    if (error instanceof Error) {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
+    }
   }
 };

@@ -56,7 +56,7 @@ export const emptyProjectDate: projectDateType = {
         exchangeQuantity: '',
         totalExchangeArea: '',
         areaPrivativaTotal: '',
-        unitCharacteristics: '',
+        unitCharacteristicsId: '',
         totalAreaOfTheDevelopment: 0,
         totalPrivateAreaNetOfExchange: 0
       }
@@ -81,7 +81,7 @@ export const emptyUnitSummary: unitSummaryType = {
   exchangeQuantity: '',
   totalExchangeArea: '',
   areaPrivativaTotal: '',
-  unitCharacteristics: '',
+  unitCharacteristicsId: '',
   totalAreaOfTheDevelopment: 0,
   totalPrivateAreaNetOfExchange: 0
 };
@@ -114,7 +114,7 @@ export const emptyProjectInfo: projectInfoType = {
         exchangeQuantity: 0,
         totalExchangeArea: 0,
         areaPrivativaTotal: 0,
-        unitCharacteristics: '',
+        unitCharacteristicsId: '',
         unitHubId: 0
       }
     ]
