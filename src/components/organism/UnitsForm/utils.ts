@@ -9,7 +9,6 @@ export const unitDefault = {
   unitQuantity: 0,
   marketAmount: 0,
   exchangeQuantity: 0,
-  totalExchangeArea: 0,
   areaPrivativaTotal: 0
 };
 

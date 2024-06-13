@@ -11,7 +11,12 @@ import { Tooltip } from '@/components/elements/Tooltip';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import { MaskType, unitCharacteristicsType } from '@/utils/types';
 import { calculateTUID, handleSumValues, unitDefault } from './utils';
-import { formatCurrency, handleKeyDown, typeMask } from '@/utils/utils';
+import {
+  formatCurrency,
+  formatterV2,
+  handleKeyDown,
+  typeMask
+} from '@/utils/utils';
 import { handleListUnitCharacteristics } from '@/pages/EditProject/utils';
 import * as S from './UnitsFormStyled';
 
@@ -78,13 +83,24 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
       values.unit,
       'areaPrivativaTotal'
     );
-    const totalExchangeArea = calculateTUID(values.unit, 'totalExchangeArea');
+    const totalExchangeArea = calculateTUID(values.unit, 'areaExchanged');
     const netAmount = calculateTUID(values.unit, 'netAmount');
     const unitQuantity = calculateTUID(values.unit, 'unitQuantity');
     const exchangeQuantity = calculateTUID(values.unit, 'exchangeQuantity');
+    const totalPrivateAreaNetOfExchange =
+      parseFloat(values.totalAreaOfTheDevelopment) - totalExchangeArea;
 
+    if (totalPrivateAreaNetOfExchange !== null) {
+      setFieldValue(
+        'totalPrivateAreaNetOfExchange',
+        totalPrivateAreaNetOfExchange
+      );
+    }
     if (totalPrivateAreaQuantity !== null) {
       setFieldValue('totalPrivateAreaQuantity', totalPrivateAreaQuantity);
+    }
+    if (totalExchangeArea) {
+      setFieldValue('totalExchangeArea', totalExchangeArea);
     }
 
     if (totalPrivateAreaQuantity !== null && totalExchangeArea !== null) {
@@ -102,7 +118,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
         sumUnitQuantity !== 0 ? netAmount / sumUnitQuantity : 0;
       setFieldValue('averageSaleValue', averageSaleValue);
     }
-  }, [values.unit, setFieldValue]);
+  }, [values.unit, setFieldValue, values.totalAreaOfTheDevelopment]);
 
   useEffect(() => {
     setDate({
@@ -388,14 +404,13 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             <S.Label> Área permutada (m²)</S.Label>
                             <Input
                               required
-                              disabled
                               onBlur={handleBlur}
-                              id={`totalExchangeArea-${unit.id}`}
+                              id={`areaExchanged-${unit.id}`}
                               onChange={handleChange}
-                              name={`unit[${index}].totalExchangeArea`}
-                              value={values.unit[index].totalExchangeArea}
+                              name={`unit[${index}].areaExchanged`}
+                              value={values.unit[index].areaExchanged}
                               placeholder="Digite a area"
-                              aria-describedby="totalExchangeArea"
+                              aria-describedby="areaExchanged"
                               inputProps={{ style: { fontSize: '1.4rem' } }}
                             />
                           </FormControl>
@@ -649,7 +664,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                   />
                 </FormControl>
               </Grid>
-              {/* <Grid item xs={12} sm={6} md={2} minWidth={200}>
+              <Grid item xs={12} sm={6} md={2} minWidth={200}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                   <S.Label>Área total do empreendimento</S.Label>
                   <Input
@@ -671,7 +686,34 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     }
                   />
                 </FormControl>
-              </Grid> */}
+              </Grid>
+
+              <Grid item xs={12} sm={6} md={2} minWidth={340}>
+                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                  <S.Label>Área Total Permutada</S.Label>
+
+                  <Input
+                    required
+                    disabled
+                    placeholder="0,00"
+                    onBlur={handleBlur}
+                    id=" totalExchangeArea"
+                    onChange={handleChange}
+                    aria-describedby=" totalExchangeArea"
+                    inputProps={{ style: { fontSize: '1.4rem' } }}
+                    value={formatterV2.format(
+                      parseFloat(values.totalExchangeArea) || 0
+                    )}
+                    helperText={
+                      touched.totalExchangeArea && errors.totalExchangeArea
+                    }
+                    error={
+                      touched.totalExchangeArea &&
+                      Boolean(errors.totalExchangeArea)
+                    }
+                  />
+                </FormControl>
+              </Grid>
 
               <Grid item xs={12} sm={6} md={2} minWidth={340}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
@@ -727,7 +769,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                   />
                 </FormControl>
               </Grid>
-              {/* <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
+              <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                   <S.Label>
                     Área total privativa líquida de permuta (m²){' '}
@@ -742,8 +784,8 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     onChange={handleChange}
                     aria-describedby="totalPrivateAreaNetOfExchange"
                     inputProps={{ style: { fontSize: '1.4rem' } }}
-                    value={formatCurrency(
-                      values.totalPrivateAreaNetOfExchange.toString() || ''
+                    value={formatterV2.format(
+                      parseFloat(values.totalPrivateAreaNetOfExchange) || 0
                     )}
                     helperText={
                       touched.totalPrivateAreaNetOfExchange &&
@@ -755,7 +797,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     }
                   />
                 </FormControl>
-              </Grid> */}
+              </Grid>
             </Grid>
           </S.ContainerInputs>
           <S.ContainerButtons>
@@ -773,8 +815,3 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
 };
 
 export { UnitsForm };
-
-// "payment": 10000, // fase1
-// 	"expenses": 10000, // fase2
-// 	"investment": 10000, // aporte fundo de reserva
-// 	"total": 10000, // total de aportes

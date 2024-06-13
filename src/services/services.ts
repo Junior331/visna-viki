@@ -28,7 +28,6 @@ export const createUnits = async (projectId: number, payload: unitType) => {
     marketAmount: parseFloat(unit.marketAmount.replace(',', '.')),
     unitQuantity: parseFloat(unit.unitQuantity.replace(',', '.')),
     exchangeQuantity: parseFloat(unit.exchangeQuantity.replace(',', '.')),
-    totalExchangeArea: parseFloat(unit.totalExchangeArea.replace(',', '.')),
     areaPrivativaTotal: parseFloat(unit.areaPrivativaTotal.replace(',', '.'))
   }));
 

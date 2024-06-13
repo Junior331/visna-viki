@@ -69,18 +69,16 @@ export type landSummaryType = {
 
 export type unitSummaryType = {
   id: number;
-  netAmount: string;
+  netAmount: string; // VGV Liq. Permuta (R$)
   isRemove?: boolean;
-  unitTypeId: number;
-  averageArea: string;
-  unitQuantity: string;
-  marketAmount: string;
-  exchangeQuantity: string;
-  totalExchangeArea: string;
-  areaPrivativaTotal: string;
-  unitCharacteristicsId: string;
-  totalAreaOfTheDevelopment: number;
-  totalPrivateAreaNetOfExchange: number;
+  unitTypeId: number; // T. Unidades
+  averageArea: string; // A. Média
+  unitQuantity: string; // Quantidade
+  areaExchanged: string; // Área permutada (m²)
+  marketAmount: string; // Valor de venda/m² (R$)
+  exchangeQuantity: string; // Qtd. Permutas (m²)
+  areaPrivativaTotal: string; // A. P. Total
+  unitCharacteristicsId: string; // Características
 };
 
 export type unitHubSummaryType = {
@@ -92,10 +90,10 @@ export type unitHubSummaryType = {
   averageArea: number;
   marketAmount: number;
   unitQuantity: number;
+  areaExchanged: number;
   exchangeQuantity: number;
-  totalExchangeArea: number;
   areaPrivativaTotal: number;
-  unitCharacteristicsId: string;
+  unitCharacteristicsId: number;
 };
 
 export type unitType = {
@@ -103,12 +101,13 @@ export type unitType = {
   underground: string;
   unitPerFloor: string;
   averageSaleValue: string;
+  totalExchangeArea: string;
   totalToBeBuiltArea: string;
   totalValueNoExchange: string;
   totalUnitsInDevelopment: string;
   totalPrivateAreaQuantity: string;
-  // totalAreaOfTheDevelopment: string;
-  // totalPrivateAreaNetOfExchange: string;
+  totalAreaOfTheDevelopment: string;
+  totalPrivateAreaNetOfExchange: string;
   unit: unitSummaryType[];
 };
 
@@ -119,12 +118,13 @@ export type unitHubType = {
   underground: number;
   unitPerFloor: number;
   averageSaleValue: number;
+  totalExchangeArea:number;
   totalToBeBuiltArea: number;
   totalValueNoExchange: number;
   totalUnitsInDevelopment: number;
   totalPrivateAreaQuantity: number;
-  // totalAreaOfTheDevelopment: number;
-  // totalPrivateAreaNetOfExchange: number;
+  totalAreaOfTheDevelopment: number;
+  totalPrivateAreaNetOfExchange: number;
   unit: unitHubSummaryType[];
 };
 

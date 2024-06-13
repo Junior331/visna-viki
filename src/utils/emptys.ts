@@ -39,12 +39,13 @@ export const emptyProjectDate: projectDateType = {
     underground: '',
     unitPerFloor: '',
     averageSaleValue: '',
+    totalExchangeArea: '',
     totalToBeBuiltArea: '',
     totalValueNoExchange: '',
     totalUnitsInDevelopment: '',
     totalPrivateAreaQuantity: '',
-    // totalAreaOfTheDevelopment: '',
-    // totalPrivateAreaNetOfExchange: '',
+    totalAreaOfTheDevelopment: '',
+    totalPrivateAreaNetOfExchange: '',
     unit: [
       {
         id: 0,
@@ -53,12 +54,10 @@ export const emptyProjectDate: projectDateType = {
         averageArea: '',
         unitQuantity: '',
         marketAmount: '',
+        areaExchanged: '',
         exchangeQuantity: '',
-        totalExchangeArea: '',
         areaPrivativaTotal: '',
-        unitCharacteristicsId: '',
-        totalAreaOfTheDevelopment: 0,
-        totalPrivateAreaNetOfExchange: 0
+        unitCharacteristicsId: ''
       }
     ]
   },
@@ -78,12 +77,10 @@ export const emptyUnitSummary: unitSummaryType = {
   averageArea: '',
   unitQuantity: '',
   marketAmount: '',
+  areaExchanged: '',
   exchangeQuantity: '',
-  totalExchangeArea: '',
   areaPrivativaTotal: '',
   unitCharacteristicsId: '',
-  totalAreaOfTheDevelopment: 0,
-  totalPrivateAreaNetOfExchange: 0
 };
 
 export const emptyProjectInfo: projectInfoType = {
@@ -95,27 +92,28 @@ export const emptyProjectInfo: projectInfoType = {
     projectId: 0,
     underground: 0,
     unitPerFloor: 0,
+    totalExchangeArea:0,
     averageSaleValue: 0,
     totalToBeBuiltArea: 0,
     totalValueNoExchange: 0,
     totalUnitsInDevelopment: 0,
-    // totalAreaOfTheDevelopment: 0,
+    totalAreaOfTheDevelopment: 0,
     totalPrivateAreaQuantity: 0,
-    // totalPrivateAreaNetOfExchange: 0,
+    totalPrivateAreaNetOfExchange: 0,
     unit: [
       {
         id: 0,
         keyIndex: 0,
+        unitHubId: 0,
+        netAmount: 0,
         unitTypeId: 0,
         averageArea: 0,
         marketAmount: 0,
-        netAmount: 0,
         unitQuantity: 0,
+        areaExchanged: 0,
         exchangeQuantity: 0,
-        totalExchangeArea: 0,
         areaPrivativaTotal: 0,
-        unitCharacteristicsId: '',
-        unitHubId: 0
+        unitCharacteristicsId: 0,
       }
     ]
   },

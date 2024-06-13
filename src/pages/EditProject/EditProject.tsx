@@ -41,7 +41,8 @@ import {
   typeMask,
   handleKeyDown,
   formatCurrency,
-  convertToParams
+  convertToParams,
+  formatterV2
 } from '@/utils/utils';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import {
@@ -127,14 +128,15 @@ export const EditProject = () => {
         underground: values.underground,
         unitPerFloor: values.unitPerFloor,
         averageSaleValue: values.averageSaleValue,
+        totalExchangeArea: values.totalExchangeArea,
         totalToBeBuiltArea: values.totalToBeBuiltArea,
         totalValueNoExchange: values.totalValueNoExchange,
         totalUnitsInDevelopment: values.totalUnitsInDevelopment,
         totalPrivateAreaQuantity: values.totalPrivateAreaQuantity,
+        totalAreaOfTheDevelopment: values.totalAreaOfTheDevelopment,
+        totalPrivateAreaNetOfExchange: values.totalPrivateAreaNetOfExchange,
         unit: values.unit.map((unit) => ({
-          ...unit,
-          totalPrivateAreaNetOfExchange: 1,
-          totalAreaOfTheDevelopment: 1
+          ...unit
         }))
       };
 
@@ -248,7 +250,6 @@ export const EditProject = () => {
           unitQuantity: 0,
           marketAmount: 0,
           exchangeQuantity: 0,
-          totalExchangeArea: 0,
           areaPrivativaTotal: 0,
           unitCharacteristicsId: ''
         }
@@ -264,8 +265,21 @@ export const EditProject = () => {
       listUnit,
       'areaPrivativaTotal'
     );
-
+    const totalExchangeArea = calculateTUID(values.unit, 'areaExchanged');
     const totalUnitsInDevelopment = calculateTUID(listUnit, 'unitQuantity');
+    const totalPrivateAreaNetOfExchange =
+      values.totalAreaOfTheDevelopment - totalExchangeArea;
+
+    if (totalPrivateAreaNetOfExchange !== null) {
+      setFieldValue(
+        'totalPrivateAreaNetOfExchange',
+        totalPrivateAreaNetOfExchange
+      );
+    }
+
+    if (totalExchangeArea) {
+      setFieldValue('totalExchangeArea', totalExchangeArea);
+    }
 
     if (totalUnitsInDevelopment !== null) {
       setFieldValue('totalUnitsInDevelopment', totalUnitsInDevelopment);
@@ -275,7 +289,7 @@ export const EditProject = () => {
       setFieldValue('totalPrivateAreaQuantity', totalPrivateAreaQuantity);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values.unit]);
+  }, [values.unit, values.totalAreaOfTheDevelopment]);
 
   useEffect(() => {
     values.unit.map((unit) => {
@@ -1166,16 +1180,13 @@ export const EditProject = () => {
 
                                       <Input
                                         required
-                                        disabled
                                         onBlur={handleBlur}
-                                        id={`totalExchangeArea-${index}`}
+                                        id={`areaExchanged-${index}`}
                                         onChange={handleChange}
-                                        name={`unit[${index}].totalExchangeArea`}
-                                        value={
-                                          values.unit[index].totalExchangeArea
-                                        }
+                                        name={`unit[${index}].areaExchanged`}
+                                        value={values.unit[index].areaExchanged}
                                         placeholder="Digite a area"
-                                        aria-describedby="totalExchangeArea"
+                                        aria-describedby="areaExchanged"
                                         inputProps={{
                                           style: { fontSize: '1.4rem' }
                                         }}
@@ -1463,7 +1474,7 @@ export const EditProject = () => {
                           />
                         </FormControl>
                       </Grid>
-                      {/* <Grid item xs={12} sm={6} md={1.5} minWidth={295}>
+                      <Grid item xs={12} sm={6} md={2} minWidth={200}>
                         <FormControl
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
@@ -1490,9 +1501,39 @@ export const EditProject = () => {
                             }
                           />
                         </FormControl>
-                      </Grid> */}
+                      </Grid>
 
                       <Grid item xs={12} sm={6} md={2} minWidth={340}>
+                        <FormControl
+                          sx={{ m: 1, width: '25ch' }}
+                          variant="outlined"
+                        >
+                          <S.Label>Área Total Permutada</S.Label>
+                          <Input
+                            required
+                            disabled
+                            placeholder="0,00"
+                            onBlur={handleBlur}
+                            id=" totalExchangeArea"
+                            onChange={handleChange}
+                            aria-describedby=" totalExchangeArea"
+                            inputProps={{ style: { fontSize: '1.4rem' } }}
+                            value={formatterV2.format(
+                              values.totalExchangeArea || 0
+                            )}
+                            helperText={
+                              touched.totalExchangeArea &&
+                              errors.totalExchangeArea
+                            }
+                            error={
+                              touched.totalExchangeArea &&
+                              Boolean(errors.totalExchangeArea)
+                            }
+                          />
+                        </FormControl>
+                      </Grid>
+
+                      <Grid item xs={12} sm={6} md={2} minWidth={350}>
                         <FormControl
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
@@ -1523,7 +1564,7 @@ export const EditProject = () => {
                           />
                         </FormControl>
                       </Grid>
-                      <Grid item xs={12} sm={6} md={3} minWidth={280}>
+                      <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
                         <FormControl
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
@@ -1554,7 +1595,7 @@ export const EditProject = () => {
                           />
                         </FormControl>
                       </Grid>
-                      {/* <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
+                      <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
                         <FormControl
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
@@ -1572,9 +1613,8 @@ export const EditProject = () => {
                             onChange={handleChange}
                             aria-describedby="totalPrivateAreaNetOfExchange"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
-                            value={formatCurrency(
-                              values.totalPrivateAreaNetOfExchange.toString() ||
-                                ''
+                            value={formatterV2.format(
+                              values.totalPrivateAreaNetOfExchange || 0
                             )}
                             helperText={
                               touched.totalPrivateAreaNetOfExchange &&
@@ -1586,7 +1626,7 @@ export const EditProject = () => {
                             }
                           />
                         </FormControl>
-                      </Grid> */}
+                      </Grid>
                     </Grid>
                   </S.ContainerInputs>
                   <S.ContainerButtons>
