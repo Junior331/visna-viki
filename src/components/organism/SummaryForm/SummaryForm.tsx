@@ -13,6 +13,9 @@ import dayjs from 'dayjs';
 const SummaryForm = ({ date, handleStep }: Props) => {
   const navigate = useNavigate();
   const { setSnackbar } = useContext(SnackbarContext);
+  const emptyStartDate =
+    dayjs(date.deadline.startDate).format('DD/MM/YYYY') !== 'Invalid Date';
+
   return (
     <S.SummaryFormContainer>
       <S.Section>
@@ -282,7 +285,7 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                     Pavimentos:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                  {date.units.flooring}
+                    {date.units.flooring}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -293,27 +296,27 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                     Subsolos:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                  {date.units.underground}
+                    {date.units.underground}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
               <Grid item xs={12} sm={12} md={3.6} minWidth={520}>
                 <S.ContainerText>
                   <S.Title variant="h6" gutterBottom>
-                  Área total a construída (m²):
+                    Área total a construída (m²):
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                  {date.units.totalToBeBuiltArea}
+                    {date.units.totalToBeBuiltArea}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
               <Grid item xs={12} sm={12} md={3.6} minWidth={347}>
                 <S.ContainerText>
                   <S.Title variant="h6" gutterBottom>
-                    Área total privativa (m²):
+                    Área Total Permutada:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    3.481m²
+                    {date.units.totalExchangeArea}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -323,7 +326,7 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                     Total de area privativa :
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                  {date.units.totalPrivateAreaQuantity}
+                    {date.units.totalPrivateAreaQuantity}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -333,7 +336,7 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                     Unidades total no empreendimento :
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    32
+                    {date.units.totalUnitsInDevelopment}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -343,17 +346,7 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                     Valor médio de venda (m²):
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    14.425m²
-                  </S.Text>
-                </S.ContainerText>
-              </Grid>
-              <Grid item xs={12} sm={12} md={4} minWidth={470}>
-                <S.ContainerText>
-                  <S.Title variant="h6" gutterBottom>
-                    Área total a construir (m²):
-                  </S.Title>
-                  <S.Text variant="body2" gutterBottom>
-                    5.395m²
+                    {date.units.averageSaleValue}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -361,44 +354,31 @@ const SummaryForm = ({ date, handleStep }: Props) => {
               <Grid item xs={12} sm={12} md={3.6} minWidth={440}>
                 <S.ContainerText>
                   <S.Title variant="h6" gutterBottom>
-                  Área total do empreendimento :
+                    Área total do empreendimento :
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    32
+                    {date.units.totalAreaOfTheDevelopment}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
-              <Grid item xs={12} sm={12} md={3.6} minWidth={470}>
+
+              <Grid item xs={12} sm={12} md={3.5} minWidth={535}>
                 <S.ContainerText>
                   <S.Title variant="h6" gutterBottom>
-                  Área Total Permutada:
+                    Área total privativa sem permuta (m²):
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    14.425m²
+                    {date.units.totalValueNoExchange}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
               <Grid item xs={12} sm={12} md={4} minWidth={470}>
                 <S.ContainerText>
                   <S.Title variant="h6" gutterBottom>
-                  Área total privativa líquida de permuta (m²) :
+                    Área total privativa líquida de permuta (m²) :
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    5.395m²
-                  </S.Text>
-                </S.ContainerText>
-              </Grid>
-
-            </Grid>
-
-            <Grid container rowGap={2} columnGap={1}>
-              <Grid item xs={12} sm={12} md={3.7} minWidth={552}>
-                <S.ContainerText>
-                  <S.Title variant="h6" gutterBottom>
-                    Área total privativa sem permuta (m²):
-                  </S.Title>
-                  <S.Text variant="body2" gutterBottom>
-                    2.880m²
+                    {date.units.totalPrivateAreaNetOfExchange}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
@@ -419,7 +399,9 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                     Data de início:
                   </S.Title>
                   <S.Text variant="body2" gutterBottom>
-                    {dayjs(date.deadline.startDate).format('DD/MM/YYYY')}
+                    {emptyStartDate
+                      ? dayjs(date.deadline.startDate).format('DD/MM/YYYY')
+                      : 0}
                   </S.Text>
                 </S.ContainerText>
               </Grid>
