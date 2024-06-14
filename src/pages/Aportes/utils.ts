@@ -8,10 +8,12 @@ import {
   aportesProps,
   breadCrumbsItemsProps,
   createNewAporteProps,
+  handleEditAporteProps,
   handleSumValuesProps,
   listAportesProps
 } from './@types';
 import { createAporte, getAportesByProject } from '@/services/services';
+import dayjs from 'dayjs';
 
 export const breadCrumbsItems = ({ name, id }: breadCrumbsItemsProps) => [
   {
@@ -39,6 +41,12 @@ export const listAportes = async ({
     const result = await getAportesByProject(id, page, perPage);
 
     const newList = result.items.map((item: aportesProps) => {
+      console.log('item.date ::', item.date);
+      console.log('formatDate ::', formatDate(item.date || ''));
+      console.log(
+        'dayjs ::',
+        dayjs(item.date || null).format('DD/MM/YYYY') || ''
+      );
       const obj = {
         id: item.id,
         projectId: item.projectId,
@@ -46,7 +54,8 @@ export const listAportes = async ({
         observation: item.observation,
         phaseTwo: formatter.format(item.payment),
         phaseOne: formatter.format(item.expenses),
-        TotalContributions: formatter.format(item.total)
+        TotalContributions: formatter.format(item.total),
+        action: 'menu'
       };
       return obj;
     });
@@ -123,10 +132,28 @@ export const handleSumValues = ({
   fieldName,
   setFieldValue
 }: handleSumValuesProps) => {
-  const sum1 = parseFloat(value1.replace(/\./g, '').replace(',', '.')) || 1;
-  const sum2 = parseFloat(value2.replace(/\./g, '').replace(',', '.')) || 1;
+  const sum1 = parseFloat(value1.replace(/\./g, '').replace(',', '.')) || 0;
+  const sum2 = parseFloat(value2.replace(/\./g, '').replace(',', '.')) || 0;
   const sum = sum1 + sum2;
   sum.toFixed(2);
 
   setFieldValue?.(fieldName, formatterV2.format(sum));
+};
+export const handleEditAporte = ({
+  id,
+  name,
+  aporte,
+  navigate
+}: handleEditAporteProps) => {
+  navigate(
+    `/aporte?${convertToParams({
+      id,
+      name
+    })}`,
+    {
+      state: {
+        aporte: aporte
+      }
+    }
+  );
 };

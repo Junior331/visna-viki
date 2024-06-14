@@ -52,5 +52,8 @@ export const columnsAportes: columnType[] = [
   },
   {
     label: 'Total de Aportes'
+  },
+  {
+    label: 'AÇÃO'
   }
 ];

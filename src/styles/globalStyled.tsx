@@ -90,15 +90,18 @@ export const GlobalStyles = createGlobalStyle`
         background-color: rgb(0 0 0 / 16.9%);
       }
     }
-    .detailsExpenseMenu {
+
+    .BoxShadowMenu {
       .MuiBackdrop-root{
         background-color: rgb(0 0 0 / 2.3%);
       }
-      .MuiPaper-root {
-        width: 180px;
-        left: 1650px!important;
+    }
+    .BoxShadowAportesMenu {
+      .MuiBackdrop-root{
+        background-color: rgb(0 0 0 / 40%);
       }
     }
+
     .MuiSelect-select,.MuiInputBase-input {
       font-size: ${({ theme }) => theme.typography.fontSize - 0.3}rem;
     }

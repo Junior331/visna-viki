@@ -1,5 +1,6 @@
 import { Snackbar } from '@/contexts/Snackbar';
 import { Dispatch, SetStateAction } from 'react';
+import { NavigateFunction } from 'react-router-dom';
 
 export type breadCrumbsItemsProps = {
   id: string;
@@ -15,6 +16,7 @@ export type aportesProps = {
   investment: number;
   observation: string;
 };
+
 export type accumulator = {
   total: number;
   payment: number;
@@ -47,4 +49,10 @@ export type handleSumValuesProps = {
     value: string,
     shouldValidate?: boolean | undefined
   ) => void;
+};
+export type handleEditAporteProps = {
+  id: string;
+  name: string;
+  aporte: aportesProps;
+  navigate: NavigateFunction;
 };

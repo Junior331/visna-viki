@@ -15,6 +15,7 @@ import {
 import { ENDPOINTS } from '@/utils/endpoints';
 import { getToken } from './sessionStorage';
 import { cleanObject } from '@/utils/utils';
+import { aportesProps } from '@/pages/Aportes/@types';
 
 // crud Units
 export const createUnits = async (projectId: number, payload: unitType) => {
@@ -688,8 +689,7 @@ export const getAportesByProject = async (
     }
   }
 };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const createAporte = async (payload: any) => {
+export const createAporte = async (payload: aportesProps) => {
   try {
     const response = await axios.post(
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/create`,
@@ -707,11 +707,14 @@ export const createAporte = async (payload: any) => {
     }
   }
 };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const editAportes = async (id: number, payload: any) => {
+export const editAporte = async (
+  id: number,
+  payload: unknown,
+  projectId: string
+) => {
   try {
     const response = await axios.patch(
-      `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/edit/${id}`,
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/${projectId}/${id}`,
       payload,
       {
         headers: {
@@ -726,7 +729,7 @@ export const editAportes = async (id: number, payload: any) => {
     }
   }
 };
-export const deleteAportes = async (id: number) => {
+export const deleteAporte = async (id: number) => {
   try {
     const response = await axios.delete(
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/${id}`,

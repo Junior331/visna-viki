@@ -4,6 +4,7 @@ import {
   Bills,
   SignIn,
   SignUp,
+  Aporte,
   Expense,
   Aportes,
   ListBills,
@@ -21,6 +22,7 @@ export const AppRoutes = () => {
       <Route index element={<SignIn />} />
       <Route path="/home" element={<Home />} />
       <Route path="/bills" element={<Bills />} />
+      <Route path="/aporte" element={<Aporte />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/aportes" element={<Aportes />} />
       <Route path="/expense" element={<Expense />} />

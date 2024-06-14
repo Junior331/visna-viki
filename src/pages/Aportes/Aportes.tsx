@@ -19,6 +19,7 @@ import { SnackbarContext } from '@/contexts/Snackbar';
 import {
   breadCrumbsItems,
   handleCreateAporte,
+  handleEditAporte,
   handleSumValues,
   listAportes
 } from './utils';
@@ -42,10 +43,6 @@ export const Aportes = () => {
   const [accumulator, setAccumulator] = useState<accumulator>(emptyAccumulator);
   const [openModalNewAporte, setOpenModalNewAporte] = useState(false);
 
-  const formik = useFormik({
-    initialValues: {},
-    onSubmit: async () => {}
-  });
   const formikNewAporte = useFormik({
     initialValues: {
       date: null,
@@ -74,8 +71,6 @@ export const Aportes = () => {
       } catch (error) {
         console.error('error ::', error);
       } finally {
-        formikNewAporte.resetForm({});
-
         listAportes({
           page,
           setList,
@@ -86,6 +81,7 @@ export const Aportes = () => {
           setAccumulator,
           id: parseFloat(id)
         });
+        formikNewAporte.resetForm({});
       }
     }
   });
@@ -131,8 +127,17 @@ export const Aportes = () => {
             <>
               <Table
                 rows={list}
-                formik={formik}
+                formik={formikNewAporte}
+                className="BoxShadowAportesMenu"
                 columns={mocks.columnsAportes}
+                handleEdit={(item) => {
+                  handleEditAporte({
+                    id,
+                    name,
+                    navigate: item.navigate,
+                    aporte: item.expenseActive
+                  });
+                }}
               />
 
               {pageTotal > 1 && (

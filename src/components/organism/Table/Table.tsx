@@ -10,8 +10,9 @@ const Table = ({
   formik,
   isEdit,
   columns,
-  handleEdit = () => {},
-  expenseActive
+  className,
+  expenseActive,
+  handleEdit = () => {}
 }: Props) => {
   return (
     <S.TableContainer>
@@ -23,8 +24,9 @@ const Table = ({
             cost={cost}
             formik={formik}
             isEdit={isEdit}
-            handleEdit={(item) => handleEdit(item)}
+            className={className}
             itemActive={expenseActive}
+            handleEdit={(item) => handleEdit(item)}
           />
         </MuiTable>
       </TableContainer>
