@@ -316,7 +316,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                                   type: 'sum',
                                   value1: e.target.value,
                                   value2: unit.exchangeQuantity.toString(),
-                                  fieldName: 'totalExchangeArea',
+                                  fieldName: 'areaExchanged',
                                   setFieldValue
                                 });
                               }}
@@ -373,7 +373,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                                   type: 'sum',
                                   value1: unit.averageArea.toString(),
                                   value2: e.target.value,
-                                  fieldName: 'totalExchangeArea',
+                                  fieldName: 'areaExchanged',
                                   setFieldValue
                                 });
                                 handleSumValues({
@@ -404,6 +404,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             <S.Label> Área permutada (m²)</S.Label>
                             <Input
                               required
+                              disabled
                               onBlur={handleBlur}
                               id={`areaExchanged-${unit.id}`}
                               onChange={handleChange}
