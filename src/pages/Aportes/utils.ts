@@ -13,7 +13,6 @@ import {
   listAportesProps
 } from './@types';
 import { createAporte, getAportesByProject } from '@/services/services';
-import dayjs from 'dayjs';
 
 export const breadCrumbsItems = ({ name, id }: breadCrumbsItemsProps) => [
   {
@@ -41,12 +40,6 @@ export const listAportes = async ({
     const result = await getAportesByProject(id, page, perPage);
 
     const newList = result.items.map((item: aportesProps) => {
-      console.log('item.date ::', item.date);
-      console.log('formatDate ::', formatDate(item.date || ''));
-      console.log(
-        'dayjs ::',
-        dayjs(item.date || null).format('DD/MM/YYYY') || ''
-      );
       const obj = {
         id: item.id,
         projectId: item.projectId,
