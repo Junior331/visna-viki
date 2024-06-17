@@ -9,7 +9,6 @@ export const TableContainer = styled(ContainerGeneric)`
   width: 100%;
   height: auto;
   border-radius: 6px;
-  padding: 12px 10px;
   background: #ffffff;
 
   .MuiTableHead-root {

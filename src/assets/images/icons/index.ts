@@ -7,6 +7,7 @@ import trash from './trash.svg';
 import arrow from './arrow.svg';
 import close from './close.svg';
 import files from './files.svg';
+import google from './google.svg';
 import dollar from './dollar.png';
 import invoice from './invoice.svg';
 import plus_circle from './plus_circle.png';
@@ -23,6 +24,7 @@ export const icons = {
   trash,
   close,
   files,
+  google,
   dollar,
   invoice,
   fallback,

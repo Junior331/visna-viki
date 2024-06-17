@@ -113,7 +113,7 @@ export const ContainerButtons = styled(GenericContainer)`
 
   > .btnDelete {
     border: none;
-    background-color: transparent;
+    background: transparent;
     color: ${({ theme }) => theme.palette.error.default};
     border: 1px solid ${({ theme }) => theme.palette.error.default};
     &:hover {

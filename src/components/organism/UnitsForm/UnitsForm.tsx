@@ -133,7 +133,11 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
     <S.UnitsFormContainer>
       <FormikProvider value={formik}>
         <S.Form onSubmit={handleSubmit}>
-          <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
+          <S.ContainerInputs
+            container
+            className="bgWhite"
+            spacing={{ xs: 0, sm: 2 }}
+          >
             <FieldArray name="unit">
               {({ push, remove }) => {
                 return (

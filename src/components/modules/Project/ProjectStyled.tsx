@@ -11,10 +11,10 @@ export const Header = styled(ContainerGeneric)`
   margin-bottom: 6px;
 `;
 export const Status = styled(ContainerGeneric)<styledProps>`
+  color: #ffffff;
   padding: 4px 12px;
-  border-radius: 50px;
-  color: ${({ color }) => color};
-  background-color: ${({ bgColor }) => bgColor};
+  border-radius: 5px;
+  background-color: #339ce9;
 
   font-size: ${({ theme }) => theme.typography.fontSizeLight}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightRegular + 100};
@@ -25,7 +25,7 @@ export const Title = styled.h2`
   max-width: 140px;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: ${({ theme }) => theme.palette.color.regular};
+  color: ${({ theme }) => theme.palette.color.default};
   font-size: ${({ theme }) => theme.typography.fontSize}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
 `;
@@ -35,7 +35,7 @@ export const Text = styled.p`
   -webkit-line-clamp: 8;
   -webkit-box-orient: vertical;
   font-family: 'Inter', sans-serif !important;
-  color: ${({ theme }) => theme.palette.color.medium};
+  color: ${({ theme }) => theme.palette.color.default};
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
 `;
 export const ContainerProgress = styled(ContainerGeneric)`

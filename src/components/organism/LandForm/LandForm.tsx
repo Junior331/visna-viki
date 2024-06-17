@@ -138,6 +138,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     setIsShow(false);
                     formikProjectName.handleChange(e);
                   }}
+                  className="bgWhiteInput"
                   aria-describedby="name"
                   placeholder="Cadastrar nome do projeto"
                   helperText={
@@ -167,7 +168,12 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
         <S.Form onSubmit={handleSubmit}>
           {isShow && (
             <>
-              <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }} mb={2}>
+              <S.ContainerInputs
+                container
+                className="bgWhite"
+                spacing={{ xs: 0, sm: 2 }}
+                mb={2}
+              >
                 <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <S.Label>Cep</S.Label>
@@ -272,7 +278,12 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                 </Grid>
               </S.ContainerInputs>
 
-              <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }} mb={2}>
+              <S.ContainerInputs
+                container
+                className="bgWhite"
+                spacing={{ xs: 0, sm: 2 }}
+                mb={2}
+              >
                 <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <Tooltip title={'Área total (m²)'}>
@@ -437,7 +448,11 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                   </FormControl>
                 </Grid>
               </S.ContainerInputs>
-              <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
+              <S.ContainerInputs
+                container
+                className="bgWhite"
+                spacing={{ xs: 0, sm: 2 }}
+              >
                 <Grid item xs={12} sm={6} md={6} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <S.Label>Valor (m²/R$) </S.Label>

@@ -242,7 +242,12 @@ export const DetailsBills = () => {
                       }));
                       return (
                         <>
-                          <Card width={'100%'} height={'auto'} key={key}>
+                          <Card
+                            width={'100%'}
+                            height={'auto'}
+                            key={key}
+                            className="bgWhite"
+                          >
                             <S.HeaderCard>
                               <S.Title>{cost.name}</S.Title>
                               {Boolean(isEdit) && (

@@ -151,7 +151,7 @@ export const Aportes = () => {
                 />
               )}
 
-              <Card width={'100%'} height={'auto'}>
+              <Card width={'100%'} height={'auto'} className="bgWhite">
                 <S.HeaderCard>
                   <S.Title>Totalizadores</S.Title>
                 </S.HeaderCard>
@@ -190,7 +190,11 @@ export const Aportes = () => {
           <S.Title>Cancelar</S.Title>
           <S.Text>Você perderá as alterações que ainda não foram salvas</S.Text>
           <S.ContainerButtons>
-            <Button size="100px" onClick={() => setOpenModal(false)}>
+            <Button
+              size="100px"
+              className="btnDelete"
+              onClick={() => setOpenModal(false)}
+            >
               Não
             </Button>
             <Button

@@ -113,12 +113,12 @@ export const ContainerButtons = styled(GenericContainer)`
 
   > .btnDelete {
     border: none;
-    background-color: transparent;
+    background: transparent;
     color: ${({ theme }) => theme.palette.error.default};
     border: 1px solid ${({ theme }) => theme.palette.error.default};
     &:hover {
       color: ${({ theme }) => theme.palette.color.default};
-      background-color: ${({ theme }) => theme.palette.error.default};
+      background: ${({ theme }) => theme.palette.error.default};
     }
   }
 
@@ -148,9 +148,9 @@ export const ContainerMessage = styled(GenericContainer)`
     width: auto;
     margin-top: 30px;
     > button:first-child {
-      background-color: #e73d3e;
+      background: #e73d3e;
       &:hover {
-        background-color: #c33334;
+        background: #c33334;
       }
     }
   }

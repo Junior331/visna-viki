@@ -20,6 +20,7 @@ import {
 import * as S from './AporteStyled';
 import {
   convertDateToISO,
+  convertToParams,
   formatCurrency,
   parseFormattedNumber
 } from '@/utils/utils';
@@ -81,13 +82,24 @@ export const Aporte = () => {
           <HeaderBreadcrumbs
             breadcrumbs={breadCrumbsItems(id, name, state.aporte.observation)}
           />
-          <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
+          <Button
+            $isOutline
+            size="200px"
+            onClick={() => {
+              setIsDelete(false);
+              setOpenModal(true);
+            }}
+          >
             Voltar
           </Button>
         </S.Header>
         <S.Content>
           <S.Form onSubmit={handleSubmit}>
-            <S.ContainerInputs container spacing={{ xs: 0, sm: 0.2 }}>
+            <S.ContainerInputs
+              container
+              className="bgWhite"
+              spacing={{ xs: 0, sm: 0.2 }}
+            >
               <Grid
                 item
                 xs={12}
@@ -248,7 +260,11 @@ export const Aporte = () => {
               : 'Você perderá as alterações que ainda não foram salvas'}
           </S.Text>
           <S.ContainerButtons>
-            <Button size="100px" onClick={() => setOpenModal(false)}>
+            <Button
+              size="100px"
+              className="btnDelete"
+              onClick={() => setOpenModal(false)}
+            >
               Não
             </Button>
             <Button
@@ -265,7 +281,7 @@ export const Aporte = () => {
                       projectId: id,
                       id: state.aporte.id
                     })
-                  : navigate(`/listbills`)
+                  : navigate(`/aportes?${convertToParams({ id, name })}`)
               }
             >
               Sim

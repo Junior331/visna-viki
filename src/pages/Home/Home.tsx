@@ -66,7 +66,7 @@ export const Home = () => {
         <Header />
         <S.Content>
           <S.Header>
-            <S.Title>Projetos</S.Title>
+            <S.Title>PROJETOS</S.Title>
             <S.ContainerFilter>
               <FormControl sx={{ m: 1, minWidth: 120, minHeight: 40 }}>
                 <Select
@@ -126,7 +126,6 @@ export const Home = () => {
                     <S.HeaderSkeleton>
                       <Skeleton
                         width={100}
-                        title="Jaja"
                         variant="text"
                         sx={{ fontSize: '1rem', maxWidth: '30%' }}
                       />

@@ -6,3 +6,7 @@ export type signInProps = {
 export type getInfoUserProps = {
   dispatch: any;
 };
+export type styledProps = {
+  size?: string;
+  color?: string;
+};

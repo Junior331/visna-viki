@@ -66,7 +66,11 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
     <S.DeadlinesFormContainer>
       <S.Form onSubmit={handleSubmit}>
         <Grid container spacing={{ xs: 0, sm: 2 }}>
-          <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
+          <S.ContainerInputs
+            container
+            className="bgWhite"
+            spacing={{ xs: 0, sm: 2 }}
+          >
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <Tooltip title={'Data de início'}>

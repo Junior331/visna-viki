@@ -118,7 +118,7 @@ export type unitHubType = {
   underground: number;
   unitPerFloor: number;
   averageSaleValue: number;
-  totalExchangeArea:number;
+  totalExchangeArea: number;
   totalToBeBuiltArea: number;
   totalValueNoExchange: number;
   totalUnitsInDevelopment: number;

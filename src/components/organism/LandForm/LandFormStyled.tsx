@@ -11,7 +11,6 @@ export const LandFormContainer = styled(ContainerGeneric)`
   height: auto;
   border-radius: 6px;
   padding: 12px 10px;
-  background: #ffffff;
 `;
 export const Form = styled.form`
   gap: 15px;

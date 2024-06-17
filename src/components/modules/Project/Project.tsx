@@ -3,7 +3,6 @@ import { Card } from '../Card';
 import { Props } from './@types';
 import { images } from '@/assets/images';
 import { statusColor } from '@/utils/types';
-import { ProgressBar } from '../ProgressBar';
 import useColorManipulation from '@/hooks/lightenColo';
 import * as S from './ProjectStyled';
 
@@ -29,12 +28,6 @@ const Project = ({ text, name, status, progress, handleClick }: Props) => {
       <S.Text>{text}</S.Text>
       <S.ContainerProgress>
         <S.Text>concluido {progress}%</S.Text>
-        <ProgressBar
-          max={100}
-          value={progress}
-          bgColorMax={lighterColor}
-          bgColorValue={statusColor[status as keyof typeof statusColor]}
-        />
       </S.ContainerProgress>
     </Card>
   );

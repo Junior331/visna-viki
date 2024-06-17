@@ -10,7 +10,9 @@ export const GenericContainer = styled.div`
 export const CreateProjectContainer = styled(GenericContainer)`
   gap: 21px;
   padding: 20px;
+  min-height: 100vh;
   flex-direction: column;
+  background-color: rgba(142, 163, 172, 1);
 `;
 export const Header = styled(GenericContainer)`
   gap: 10px;
@@ -51,9 +53,9 @@ export const ContainerMessage = styled(GenericContainer)`
   }
   > div {
     > button:first-child {
-      background-color: #e73d3e;
+      background: #e73d3e;
       &:hover {
-        background-color: #c33334;
+        background: #c33334;
       }
     }
   }

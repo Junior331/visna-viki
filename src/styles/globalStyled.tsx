@@ -65,6 +65,25 @@ export const GlobalStyles = createGlobalStyle`
       background-color: rgb(0 0 0 / 60%);
     }
 
+    .bgWhite {
+      background: rgba(255, 255, 255, 1) !important;
+    }
+    .bgWhiteInput {
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 1) !important;
+    }
+
+    .btnDelete {
+      border: none;
+      color: #e73d3e;
+      background: rgba(255, 255, 255, 1) !important;
+      border: 1px solid ${({ theme }) => theme.palette.error.default};
+      &:hover {
+        color: ${({ theme }) => theme.palette.color.default};
+        background: ${({ theme }) => theme.palette.error.default} !important;
+      }
+    }
+
     .menuEdit {
       .MuiPaper-root {
         width: 180px;

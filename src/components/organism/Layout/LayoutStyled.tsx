@@ -7,6 +7,7 @@ export const LayoutContainer = styled.div`
   max-width: 100%;
   align-items: start;
   justify-content: space-between;
+  background-color: rgba(84, 112, 111, 1);
 `;
 
 export const LayoutContent = styled.div`
@@ -20,8 +21,9 @@ export const LayoutContent = styled.div`
 
 export const Container = styled.div`
   width: 100%;
+  height: auto;
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   align-items: start;
   flex-direction: column;
   justify-content: flex-start;

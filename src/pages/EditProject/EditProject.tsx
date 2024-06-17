@@ -351,7 +351,11 @@ export const EditProject = () => {
                   (formikProjectName.handleSubmit, formikLand.handleSubmit)
                 }
               >
-                <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
+                <S.ContainerInputs
+                  container
+                  className="bgWhite"
+                  spacing={{ xs: 0, sm: 2 }}
+                >
                   <Grid
                     item
                     xs={12}
@@ -814,7 +818,11 @@ export const EditProject = () => {
             <CustomTabPanel value={value} index={1}>
               <FormikProvider value={formik}>
                 <S.Form onSubmit={handleSubmit}>
-                  <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
+                  <S.ContainerInputs
+                    container
+                    className="bgWhite"
+                    spacing={{ xs: 0, sm: 2 }}
+                  >
                     <FieldArray name="unit">
                       {({ push, remove }) => {
                         return (
@@ -1661,7 +1669,11 @@ export const EditProject = () => {
 
             <CustomTabPanel value={value} index={2}>
               <S.Form onSubmit={formikDeadline.handleSubmit}>
-                <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
+                <S.ContainerInputs
+                  container
+                  className="bgWhite"
+                  spacing={{ xs: 0, sm: 2 }}
+                >
                   <Grid
                     item
                     xs={12}
@@ -1934,6 +1946,7 @@ export const EditProject = () => {
           <S.ContainerButtons>
             <Button
               size="100px"
+              className="btnDelete"
               disabled={loading}
               onClick={() => {
                 setIsDelete(false);
