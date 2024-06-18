@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import dayjs from 'dayjs';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
@@ -35,7 +36,8 @@ import {
   handleEditProject,
   handleEditDeadline,
   handleDeleteProject,
-  handleListUnitCharacteristics
+  handleListUnitCharacteristics,
+  handleCreateDeadline
 } from './utils';
 import {
   typeMask,
@@ -153,17 +155,34 @@ export const EditProject = () => {
   const formikDeadline = useFormik({
     initialValues: date.deadline,
     onSubmit: async (values) => {
-      const deadlineId = values.id;
-      const payload = {
-        ...values,
-        projectId: parseFloat(id)
-      };
-      handleEditDeadline({
-        deadlineId,
-        payload,
-        setLoading,
-        setSnackbar
-      });
+      if (!date.deadline.id) {
+        const payloadCreate = {
+          startDate: dayjs(values.startDate),
+          totalDeadlineInMonth: values.totalDeadlineInMonth,
+          approvalDeadlineInMonth: values.approvalDeadlineInMonth,
+          constructionDeadlineInMonth: values.constructionDeadlineInMonth,
+          projectLaunchDeadlineInMonth: values.projectLaunchDeadlineInMonth
+        };
+
+        handleCreateDeadline({
+          projectId: parseFloat(id),
+          payload: payloadCreate,
+          setLoading,
+          setSnackbar
+        });
+      } else {
+        const deadlineId = values.id;
+        const payload: unknown = {
+          ...values,
+          projectId: parseFloat(id)
+        };
+        handleEditDeadline({
+          deadlineId,
+          payload,
+          setLoading,
+          setSnackbar
+        });
+      }
     }
   });
 
@@ -195,7 +214,7 @@ export const EditProject = () => {
 
   useEffect(() => {
     getInfoProject({ id: parseFloat(id), setDate, setSnackbar });
-  }, [id, setSnackbar]);
+  }, [id, loading, setSnackbar]);
 
   useEffect(() => {
     handleListUnitCharacteristics({
@@ -1001,7 +1020,9 @@ export const EditProject = () => {
                                           );
                                         }}
                                         name={`values.unit[${index}].unitQuantity`}
-                                        value={values.unit[index].unitQuantity}
+                                        value={
+                                          values.unit[index].unitQuantity || 0
+                                        }
                                         aria-describedby="unitQuantity"
                                         placeholder="Digite a quantidade"
                                         inputProps={{
@@ -1029,7 +1050,7 @@ export const EditProject = () => {
                                         onBlur={(e) => {
                                           setFieldValue(
                                             `unit[${index}].averageArea`,
-                                            parseFloat(e.target.value)
+                                            parseFloat(e.target.value) || 0
                                           );
                                           handleSumValues({
                                             id: index,
@@ -1131,7 +1152,7 @@ export const EditProject = () => {
                                         onBlur={(e) => {
                                           setFieldValue(
                                             `unit[${index}].exchangeQuantity`,
-                                            parseFloat(e.target.value)
+                                            parseFloat(e.target.value) || 0
                                           );
                                           handleSumValues({
                                             id: index,
@@ -1418,7 +1439,7 @@ export const EditProject = () => {
                             onChange={handleChange}
                             id="totalUnitsInDevelopment"
                             placeholder="Digite a quantidade"
-                            value={values.totalUnitsInDevelopment}
+                            value={values.totalUnitsInDevelopment || 0}
                             aria-describedby="totalUnitsInDevelopment"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
                             helperText={
