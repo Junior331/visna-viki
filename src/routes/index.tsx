@@ -12,6 +12,7 @@ import {
   CostDetails,
   DetailsBills,
   ResetPassword,
+  Profitability,
   CreateProject,
   ForgotPassword
 } from '@/pages';
@@ -32,6 +33,7 @@ export const AppRoutes = () => {
       <Route path="/create" element={<CreateProject />} />
       <Route path="/costdetails" element={<CostDetails />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
+      <Route path="/profitability" element={<Profitability />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
     </Routes>
   );
