@@ -82,7 +82,7 @@ export const Profitability = () => {
     }
   });
 
-  const { values, handleSubmit, handleChange,resetForm } = formik;
+  const { values, handleSubmit, handleChange, resetForm } = formik;
 
   return (
     <Layout>
@@ -97,7 +97,7 @@ export const Profitability = () => {
           <Accordion>
             <AccordionSummary
               expandIcon={<ExpandMore />}
-              className='titleAccordion'
+              className="titleAccordion"
               aria-controls="panel1-content"
               id="panel1-header"
             >
@@ -105,7 +105,7 @@ export const Profitability = () => {
             </AccordionSummary>
             <S.Form onSubmit={handleSubmit}>
               <Grid container spacing={{ xs: 0, sm: 2 }} alignItems={'center'}>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Preço médio de vendas</S.Label>
                     <Input
@@ -118,7 +118,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Desconto</S.Label>
                     <Input
@@ -131,7 +131,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Preço de venda</S.Label>
                     <Input
@@ -144,7 +144,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>VGV</S.Label>
                     <Input
@@ -157,7 +157,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Comissão</S.Label>
                     <Input
@@ -170,7 +170,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>RET</S.Label>
                     <Input
@@ -193,7 +193,7 @@ export const Profitability = () => {
                       spacing={{ xs: 0, sm: 0 }}
                     >
                       <Grid container rowGap={2} columnGap={1}>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -210,13 +210,13 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
                             fullWidth
                           >
-                            <S.Label>maximumExposure</S.Label>
+                            <S.Label>Exposição maxima</S.Label>
                             <Input
                               id="maximumExposure"
                               onChange={handleChange}
@@ -227,13 +227,13 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
                             fullWidth
                           >
-                            <S.Label>maximumExposureLucro nominal</S.Label>
+                            <S.Label>Lucro nominal</S.Label>
                             <Input
                               id="nominalProfit"
                               onChange={handleChange}
@@ -244,7 +244,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -261,7 +261,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -278,7 +278,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -295,7 +295,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -318,7 +318,11 @@ export const Profitability = () => {
                 </S.Section>
                 <Grid item xs={12} sm={12} md={12}>
                   <S.ContainerButtons>
-                    <Button $isOutline size="140px" onClick={() => resetForm({})}>
+                    <Button
+                      $isOutline
+                      size="140px"
+                      onClick={() => resetForm({})}
+                    >
                       Limpar
                     </Button>
                     <Button size="120px" type="submit">
@@ -332,7 +336,7 @@ export const Profitability = () => {
           <Accordion>
             <AccordionSummary
               expandIcon={<ExpandMore />}
-              className='titleAccordion'
+              className="titleAccordion"
               aria-controls="panel2-content"
               id="panel2-header"
             >
@@ -340,7 +344,7 @@ export const Profitability = () => {
             </AccordionSummary>
             <S.Form onSubmit={handleSubmit}>
               <Grid container spacing={{ xs: 0, sm: 2 }} alignItems={'center'}>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Preço médio de vendas</S.Label>
                     <Input
@@ -353,7 +357,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Desconto</S.Label>
                     <Input
@@ -366,7 +370,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Preço de venda</S.Label>
                     <Input
@@ -379,7 +383,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>VGV</S.Label>
                     <Input
@@ -392,7 +396,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Comissão</S.Label>
                     <Input
@@ -405,7 +409,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>RET</S.Label>
                     <Input
@@ -428,7 +432,7 @@ export const Profitability = () => {
                       spacing={{ xs: 0, sm: 0 }}
                     >
                       <Grid container rowGap={2} columnGap={1}>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -445,13 +449,13 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
                             fullWidth
                           >
-                            <S.Label>maximumExposure</S.Label>
+                            <S.Label>Exposição maxima</S.Label>
                             <Input
                               id="maximumExposure"
                               onChange={formikSceneryTwo.handleChange}
@@ -462,13 +466,13 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
                             fullWidth
                           >
-                            <S.Label>maximumExposureLucro nominal</S.Label>
+                            <S.Label>Lucro nominal</S.Label>
                             <Input
                               id="nominalProfit"
                               onChange={formikSceneryTwo.handleChange}
@@ -479,7 +483,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -496,7 +500,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -513,7 +517,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -530,7 +534,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -553,7 +557,11 @@ export const Profitability = () => {
                 </S.Section>
                 <Grid item xs={12} sm={12} md={12}>
                   <S.ContainerButtons>
-                    <Button $isOutline size="140px" onClick={() => resetForm({})}>
+                    <Button
+                      $isOutline
+                      size="140px"
+                      onClick={() => formikSceneryTwo.resetForm({})}
+                    >
                       Limpar
                     </Button>
                     <Button size="120px" type="submit">
@@ -567,7 +575,7 @@ export const Profitability = () => {
           <Accordion>
             <AccordionSummary
               expandIcon={<ExpandMore />}
-              className='titleAccordion'
+              className="titleAccordion"
               aria-controls="panel3-content"
               id="panel3-header"
             >
@@ -575,7 +583,7 @@ export const Profitability = () => {
             </AccordionSummary>
             <S.Form onSubmit={formikSceneryThree.handleSubmit}>
               <Grid container spacing={{ xs: 0, sm: 2 }} alignItems={'center'}>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Preço médio de vendas</S.Label>
                     <Input
@@ -588,7 +596,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Desconto</S.Label>
                     <Input
@@ -601,7 +609,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Preço de venda</S.Label>
                     <Input
@@ -614,7 +622,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>VGV</S.Label>
                     <Input
@@ -627,7 +635,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>Comissão</S.Label>
                     <Input
@@ -640,7 +648,7 @@ export const Profitability = () => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                     <S.Label>RET</S.Label>
                     <Input
@@ -663,7 +671,7 @@ export const Profitability = () => {
                       spacing={{ xs: 0, sm: 0 }}
                     >
                       <Grid container rowGap={2} columnGap={1}>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -680,13 +688,13 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
                             fullWidth
                           >
-                            <S.Label>maximumExposure</S.Label>
+                            <S.Label>Exposição maxima</S.Label>
                             <Input
                               id="maximumExposure"
                               onChange={formikSceneryThree.handleChange}
@@ -697,13 +705,13 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
                             fullWidth
                           >
-                            <S.Label>maximumExposureLucro nominal</S.Label>
+                            <S.Label>Lucro nominal</S.Label>
                             <Input
                               id="nominalProfit"
                               onChange={formikSceneryThree.handleChange}
@@ -714,7 +722,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -731,7 +739,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -748,7 +756,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -765,7 +773,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -788,7 +796,11 @@ export const Profitability = () => {
                 </S.Section>
                 <Grid item xs={12} sm={12} md={12}>
                   <S.ContainerButtons>
-                    <Button $isOutline size="140px" onClick={() => resetForm({})}>
+                    <Button
+                      $isOutline
+                      size="140px"
+                      onClick={() => formikSceneryThree.resetForm({})}
+                    >
                       Limpar
                     </Button>
                     <Button size="120px" type="submit">

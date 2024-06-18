@@ -25,7 +25,8 @@ export const Content = styled(GenericContainer)`
   align-items: center;
   flex-direction: column;
   > div {
-    padding: 20px 24px 18px;
+    padding: 5px 15px;
+    border-radius: 4px;
   }
   .titleAccordion {
     padding: 0;
@@ -58,6 +59,8 @@ export const ContainerMessage = styled(GenericContainer)`
     margin-bottom: 20px;
   }
   > div {
+    margin: 30px 0 0;
+    justify-content: center;
     > button:first-child {
       background: #e73d3e;
       &:hover {
@@ -74,7 +77,7 @@ export const Text = styled.p`
 export const Icon = styled.img``;
 export const ContainerButtons = styled(GenericContainer)`
   gap: 30px;
-  margin-top: 30px;
+  margin-bottom: 15px;
   align-items: center;
   justify-content: flex-end;
 `;
@@ -101,9 +104,9 @@ export const Form = styled.form`
 export const Section = styled(GenericContainer)`
   width: 100%;
   height: auto;
-  padding: 20px 20px 0;
   border-radius: 8px;
   background: #ffffff;
+  padding: 20px 0 0 20px;
   flex-direction: column;
   align-items: flex-start;
 `;
