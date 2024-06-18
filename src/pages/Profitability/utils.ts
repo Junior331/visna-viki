@@ -7,7 +7,7 @@ export const breadCrumbsItems = (id: string, name: string) => [
   },
   {
     path: `/edit?${convertToParams({ id, name })}`,
-    label: 'Profitability'
+    label: 'Rentabilidade'
 
   },
   {
