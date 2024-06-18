@@ -193,7 +193,7 @@ export const Profitability = () => {
                       spacing={{ xs: 0, sm: 0 }}
                     >
                       <Grid container rowGap={2} columnGap={1}>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -210,7 +210,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -227,7 +227,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -244,7 +244,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -261,7 +261,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -278,7 +278,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -295,7 +295,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -432,7 +432,7 @@ export const Profitability = () => {
                       spacing={{ xs: 0, sm: 0 }}
                     >
                       <Grid container rowGap={2} columnGap={1}>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -449,7 +449,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -466,7 +466,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -483,7 +483,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -500,7 +500,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -517,7 +517,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -534,7 +534,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -671,7 +671,7 @@ export const Profitability = () => {
                       spacing={{ xs: 0, sm: 0 }}
                     >
                       <Grid container rowGap={2} columnGap={1}>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -688,7 +688,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -705,7 +705,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -722,7 +722,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -739,7 +739,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -756,7 +756,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
@@ -773,7 +773,7 @@ export const Profitability = () => {
                             />
                           </FormControl>
                         </Grid>
-                        <Grid item xs={12} sm={12} md={4} minWidth={250}>
+                        <Grid item xs={12} sm={12} md={2.96} minWidth={250}>
                           <FormControl
                             sx={{ m: 1 }}
                             variant="outlined"
