@@ -1,4 +1,5 @@
 export type Props = {
+  id: string;
   text: string;
   name: string;
   progress: number;
@@ -6,6 +7,6 @@ export type Props = {
   status: 'Done' | 'In Progress' | 'To Do' | 'In Review' | 'Block' | string;
 };
 export type styledProps = {
-  color: string;
-  bgColor: string;
+  color?: string;
+  bgColor?: string;
 };

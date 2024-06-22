@@ -61,7 +61,7 @@ export const ContainerInputs = styled(Grid)`
       font-size: ${({ theme }) => theme.typography.fontSizeRegular - 0.2}rem;
     }
     > .btnRemove {
-      background-color: ${({ theme }) => theme.palette.error.default};
+      background: ${({ theme }) => theme.palette.error.default};
     }
   }
 `;

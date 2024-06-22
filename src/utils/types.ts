@@ -197,7 +197,9 @@ export type payloadExpense = {
   projectId: number;
   expenseId: number;
   totalValue: number;
+  paymentStartDate: Dayjs;
   unitExpenseTypeId: number;
+  periodicityPayment: number;
 };
 export type CepData = {
   uf: string;

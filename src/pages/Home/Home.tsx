@@ -155,6 +155,7 @@ export const Home = () => {
               <>
                 {filteredList.map((data) => (
                   <Project
+                    id={data.id}
                     key={data.id}
                     name={data.name}
                     text={data.text}

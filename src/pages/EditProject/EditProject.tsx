@@ -361,7 +361,6 @@ export const EditProject = () => {
                   onClick={() =>
                     navigate(`/profitability?${convertToParams({ id, name })}`)
                   }
-
                 />
               </Tabs>
             </Box>
@@ -1435,7 +1434,6 @@ export const EditProject = () => {
                             <S.Label>Uni. T. no Empreendimento </S.Label>
                           </Tooltip>
                           <Input
-                            required
                             disabled
                             onBlur={handleBlur}
                             onChange={handleChange}

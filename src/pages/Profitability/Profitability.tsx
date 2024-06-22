@@ -101,7 +101,7 @@ export const Profitability = () => {
               aria-controls="panel1-content"
               id="panel1-header"
             >
-              Cenario 1: Vendas a partir do inicio da obra
+              Cenário 1: Vendas a partir do lançamento da obra
             </AccordionSummary>
             <S.Form onSubmit={handleSubmit}>
               <Grid container spacing={{ xs: 0, sm: 2 }} alignItems={'center'}>
@@ -149,9 +149,10 @@ export const Profitability = () => {
                     <S.Label>VGV</S.Label>
                     <Input
                       id="VGV"
-                      onChange={handleChange}
+                      disabled
                       value={values.VGV}
                       aria-describedby="VGV"
+                      onChange={handleChange}
                       placeholder="Digite aqui"
                       inputProps={{ style: { fontSize: '1.4rem' } }}
                     />
@@ -172,7 +173,7 @@ export const Profitability = () => {
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                    <S.Label>RET</S.Label>
+                    <S.Label>Regime Especial Tributário</S.Label>
                     <Input
                       id="ret"
                       onChange={handleChange}
@@ -201,6 +202,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Custo total</S.Label>
                             <Input
+                              disabled
                               id="totalCost"
                               onChange={handleChange}
                               value={values.totalCost}
@@ -218,6 +220,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Exposição maxima</S.Label>
                             <Input
+                              disabled
                               id="maximumExposure"
                               onChange={handleChange}
                               value={values.maximumExposure}
@@ -235,6 +238,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Lucro nominal</S.Label>
                             <Input
+                              disabled
                               id="nominalProfit"
                               onChange={handleChange}
                               value={values.nominalProfit}
@@ -252,6 +256,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Lucro/Exposição</S.Label>
                             <Input
+                              disabled
                               id="profitExposure"
                               onChange={handleChange}
                               value={values.profitExposure}
@@ -269,6 +274,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Lucro/VGV</S.Label>
                             <Input
+                              disabled
                               id="profitVGV"
                               onChange={handleChange}
                               value={values.profitVGV}
@@ -286,6 +292,7 @@ export const Profitability = () => {
                           >
                             <S.Label>TIR (a.m)</S.Label>
                             <Input
+                              disabled
                               id="tirAM"
                               onChange={handleChange}
                               value={values.tirAM}
@@ -303,6 +310,7 @@ export const Profitability = () => {
                           >
                             <S.Label>TIR (a.a)</S.Label>
                             <Input
+                              disabled
                               id="tirAA"
                               onChange={handleChange}
                               value={values.tirAA}
@@ -340,7 +348,7 @@ export const Profitability = () => {
               aria-controls="panel2-content"
               id="panel2-header"
             >
-              Cenario 2: Vendas a partir do meio da obra
+              Cenário 2: Vendas a partir do meio da obra
             </AccordionSummary>
             <S.Form onSubmit={handleSubmit}>
               <Grid container spacing={{ xs: 0, sm: 2 }} alignItems={'center'}>
@@ -388,10 +396,11 @@ export const Profitability = () => {
                     <S.Label>VGV</S.Label>
                     <Input
                       id="VGV"
-                      onChange={formikSceneryTwo.handleChange}
-                      value={formikSceneryTwo.values.VGV}
+                      disabled
                       aria-describedby="VGV"
                       placeholder="Digite aqui"
+                      value={formikSceneryTwo.values.VGV}
+                      onChange={formikSceneryTwo.handleChange}
                       inputProps={{ style: { fontSize: '1.4rem' } }}
                     />
                   </FormControl>
@@ -411,7 +420,7 @@ export const Profitability = () => {
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                    <S.Label>RET</S.Label>
+                    <S.Label>Regime Especial Tributário</S.Label>
                     <Input
                       id="ret"
                       onChange={formikSceneryTwo.handleChange}
@@ -440,6 +449,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Custo total</S.Label>
                             <Input
+                              disabled
                               id="totalCost"
                               onChange={formikSceneryTwo.handleChange}
                               value={formikSceneryTwo.values.totalCost}
@@ -457,6 +467,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Exposição maxima</S.Label>
                             <Input
+                              disabled
                               id="maximumExposure"
                               onChange={formikSceneryTwo.handleChange}
                               value={formikSceneryTwo.values.maximumExposure}
@@ -474,6 +485,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Lucro nominal</S.Label>
                             <Input
+                              disabled
                               id="nominalProfit"
                               onChange={formikSceneryTwo.handleChange}
                               value={formikSceneryTwo.values.nominalProfit}
@@ -491,6 +503,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Lucro/Exposição</S.Label>
                             <Input
+                              disabled
                               id="profitExposure"
                               onChange={formikSceneryTwo.handleChange}
                               value={formikSceneryTwo.values.profitExposure}
@@ -508,6 +521,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Lucro/VGV</S.Label>
                             <Input
+                              disabled
                               id="profitVGV"
                               onChange={formikSceneryTwo.handleChange}
                               value={formikSceneryTwo.values.profitVGV}
@@ -525,6 +539,7 @@ export const Profitability = () => {
                           >
                             <S.Label>TIR (a.m)</S.Label>
                             <Input
+                              disabled
                               id="tirAM"
                               onChange={formikSceneryTwo.handleChange}
                               value={formikSceneryTwo.values.tirAM}
@@ -542,6 +557,7 @@ export const Profitability = () => {
                           >
                             <S.Label>TIR (a.a)</S.Label>
                             <Input
+                              disabled
                               id="tirAA"
                               onChange={formikSceneryTwo.handleChange}
                               value={formikSceneryTwo.values.tirAA}
@@ -579,7 +595,7 @@ export const Profitability = () => {
               aria-controls="panel3-content"
               id="panel3-header"
             >
-              Cenario 3: Vendas a partir do término da obra
+              Cenário 3: Vendas a partir do término da obra
             </AccordionSummary>
             <S.Form onSubmit={formikSceneryThree.handleSubmit}>
               <Grid container spacing={{ xs: 0, sm: 2 }} alignItems={'center'}>
@@ -627,10 +643,11 @@ export const Profitability = () => {
                     <S.Label>VGV</S.Label>
                     <Input
                       id="VGV"
-                      onChange={formikSceneryThree.handleChange}
-                      value={formikSceneryThree.values.VGV}
+                      disabled
                       aria-describedby="VGV"
                       placeholder="Digite aqui"
+                      value={formikSceneryThree.values.VGV}
+                      onChange={formikSceneryThree.handleChange}
                       inputProps={{ style: { fontSize: '1.4rem' } }}
                     />
                   </FormControl>
@@ -650,13 +667,13 @@ export const Profitability = () => {
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} minWidth={250}>
                   <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                    <S.Label>RET</S.Label>
+                    <S.Label>Regime Especial Tributário</S.Label>
                     <Input
                       id="ret"
-                      onChange={formikSceneryThree.handleChange}
-                      value={formikSceneryThree.values.ret}
                       aria-describedby="ret"
                       placeholder="Digite aqui"
+                      value={formikSceneryThree.values.ret}
+                      onChange={formikSceneryThree.handleChange}
                       inputProps={{ style: { fontSize: '1.4rem' } }}
                     />
                   </FormControl>
@@ -679,6 +696,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Custo total</S.Label>
                             <Input
+                              disabled
                               id="totalCost"
                               onChange={formikSceneryThree.handleChange}
                               value={formikSceneryThree.values.tirAA}
@@ -696,6 +714,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Exposição maxima</S.Label>
                             <Input
+                              disabled
                               id="maximumExposure"
                               onChange={formikSceneryThree.handleChange}
                               value={formikSceneryThree.values.tirAA}
@@ -713,6 +732,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Lucro nominal</S.Label>
                             <Input
+                              disabled
                               id="nominalProfit"
                               onChange={formikSceneryThree.handleChange}
                               value={formikSceneryThree.values.tirAA}
@@ -730,6 +750,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Lucro/Exposição</S.Label>
                             <Input
+                              disabled
                               id="profitExposure"
                               onChange={formikSceneryThree.handleChange}
                               value={formikSceneryThree.values.tirAA}
@@ -747,6 +768,7 @@ export const Profitability = () => {
                           >
                             <S.Label>Lucro/VGV</S.Label>
                             <Input
+                              disabled
                               id="profitVGV"
                               onChange={formikSceneryThree.handleChange}
                               value={formikSceneryThree.values.tirAA}
@@ -764,6 +786,7 @@ export const Profitability = () => {
                           >
                             <S.Label>TIR (a.m)</S.Label>
                             <Input
+                              disabled
                               id="tirAM"
                               onChange={formikSceneryThree.handleChange}
                               value={formikSceneryThree.values.tirAA}
@@ -781,6 +804,7 @@ export const Profitability = () => {
                           >
                             <S.Label>TIR (a.a)</S.Label>
                             <Input
+                              disabled
                               id="tirAA"
                               onChange={formikSceneryThree.handleChange}
                               value={formikSceneryThree.values.tirAA}
