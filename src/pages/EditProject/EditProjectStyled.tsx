@@ -12,6 +12,16 @@ export const EditProjectContainer = styled(GenericContainer)`
   gap: 21px;
   padding: 20px;
   flex-direction: column;
+
+  .MuiTab-root {
+    color: rgba(255, 255, 255, 1) !important;
+  }
+  .MuiTabs-indicator {
+    background-color: rgba(36, 66, 82, 1) !important;
+  }
+  .Mui-selected {
+    color: rgba(36, 66, 82, 1) !important;
+  }
 `;
 export const Header = styled(GenericContainer)`
   gap: 10px;
@@ -107,17 +117,6 @@ export const ContainerButtons = styled(GenericContainer)`
   align-items: center;
   justify-content: space-between;
 
-  > .btnDelete {
-    border: none;
-    background-color: transparent;
-    color: ${({ theme }) => theme.palette.error.default};
-    border: 1px solid ${({ theme }) => theme.palette.error.default};
-    &:hover {
-      color: ${({ theme }) => theme.palette.color.default};
-      background-color: ${({ theme }) => theme.palette.error.default};
-    }
-  }
-
   > div {
     gap: 20px;
     width: auto;
@@ -145,9 +144,9 @@ export const ContainerMessage = styled(GenericContainer)`
     align-items: center;
     justify-content: center;
     > button:first-child {
-      background-color: #e73d3e;
+      color: e73d3e;
       &:hover {
-        background-color: #c33334;
+        color: #fff;
       }
     }
   }

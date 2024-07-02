@@ -15,6 +15,7 @@
     "deploy": "aws s3 sync dist/ s3://visna.viki.com"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^6.1.12",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.15",
@@ -22,6 +23,7 @@
     "@mui/x-date-pickers": "^7.6.2",
     "@types/jest": "^29.5.12",
     "@types/uuid": "^9.0.8",
+    "aws-amplify": "^6.3.6",
     "axios": "^1.6.8",
     "dayjs": "^1.11.11",
     "formik": "^2.4.5",

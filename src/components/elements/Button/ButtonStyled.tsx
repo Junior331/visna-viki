@@ -15,11 +15,7 @@ export const Button = styled.button<StyledButtonProps>`
   cursor: ${({ disabled }) => (disabled ? 'no-drop' : 'pointer')};
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
-  background-color: ${({ theme }) => theme.palette.background.regular};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.palette.background.medium};
-  }
+  background: linear-gradient(90deg, #1d6e88 0%, #436374 50%, #244252 100%);
 
   ${({ disabled }) =>
     disabled &&
@@ -40,14 +36,9 @@ export const Button = styled.button<StyledButtonProps>`
   ${({ $isOutline }) =>
     $isOutline &&
     css`
-      background-color: transparent;
-      color: ${({ theme }) => theme.palette.background.regular};
-      border: 1px solid ${({ theme }) => theme.palette.background.regular};
-      &:hover {
-        border: none;
-        color: ${({ theme }) => theme.palette.color.default};
-        background-color: ${({ theme }) => theme.palette.background.medium};
-      }
+      color: rgba(36, 66, 82, 1);
+      background: rgba(255, 255, 255, 1);
+      border: 1px solid rgba(36, 66, 82, 1);
     `};
 
   width: ${({ size }) => {

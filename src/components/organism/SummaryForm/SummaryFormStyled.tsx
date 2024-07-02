@@ -13,6 +13,14 @@ export const SummaryFormContainer = styled(ContainerGeneric)`
   height: auto;
   margin-top: 40px;
   border-radius: 8px;
+  flex-direction: column;
+`;
+export const ContainerSections = styled(ContainerGeneric)`
+  gap: 20px;
+  width: 100%;
+  height: auto;
+  padding: 25px;
+  border-radius: 8px;
   background: #ffffff;
   flex-direction: column;
 `;

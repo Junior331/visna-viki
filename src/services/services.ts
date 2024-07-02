@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import {
   CepData,
-  deadlineSummaryType,
   deadlineType,
   handleExpenseProps,
   landSummaryType,
@@ -288,10 +288,7 @@ export const deleteDeadline = async (deadlineId: number) => {
     }
   }
 };
-export const editDeadline = async (
-  deadlineId: number,
-  payload: deadlineSummaryType
-) => {
+export const editDeadline = async (deadlineId: number, payload: any) => {
   const body = {
     ...payload
   };

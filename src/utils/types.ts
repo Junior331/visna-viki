@@ -118,7 +118,7 @@ export type unitHubType = {
   underground: number;
   unitPerFloor: number;
   averageSaleValue: number;
-  totalExchangeArea:number;
+  totalExchangeArea: number;
   totalToBeBuiltArea: number;
   totalValueNoExchange: number;
   totalUnitsInDevelopment: number;
@@ -197,7 +197,9 @@ export type payloadExpense = {
   projectId: number;
   expenseId: number;
   totalValue: number;
+  paymentStartDate: Dayjs;
   unitExpenseTypeId: number;
+  periodicityPayment: number;
 };
 export type CepData = {
   uf: string;

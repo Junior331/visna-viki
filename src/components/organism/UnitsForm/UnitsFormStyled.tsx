@@ -12,7 +12,6 @@ export const UnitsFormContainer = styled(ContainerGeneric)`
   margin-top: 40px;
   border-radius: 6px;
   padding: 12px 10px;
-  background: #ffffff;
 `;
 export const Form = styled.form`
   gap: 15px;
@@ -62,7 +61,7 @@ export const ContainerInputs = styled(Grid)`
       font-size: ${({ theme }) => theme.typography.fontSizeRegular - 0.2}rem;
     }
     > .btnRemove {
-      background-color: ${({ theme }) => theme.palette.error.default};
+      background: ${({ theme }) => theme.palette.error.default};
     }
   }
 `;

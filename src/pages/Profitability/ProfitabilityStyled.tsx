@@ -1,9 +1,5 @@
+import media from '@/styles/breakpoints';
 import styled from 'styled-components';
-
-import {
-  ContainerProgress,
-  Header as CardHeader
-} from '@/components/modules/Project/ProjectStyled';
 
 export const GenericContainer = styled.div`
   width: 100%;
@@ -12,7 +8,7 @@ export const GenericContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
 `;
-export const BillsContainer = styled(GenericContainer)`
+export const ProfitabilityContainer = styled(GenericContainer)`
   gap: 21px;
   padding: 20px;
   flex-direction: column;
@@ -29,7 +25,17 @@ export const Content = styled(GenericContainer)`
   align-items: center;
   flex-direction: column;
   > div {
-    padding: 20px 24px 18px;
+    padding: 5px 15px;
+    border-radius: 4px;
+  }
+  .titleAccordion {
+    padding: 0;
+    color: ${({ theme }) => theme.palette.color.dark};
+    font-size: ${({ theme }) => theme.typography.fontSizeRegular}rem;
+    font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
+    svg {
+      font-size: 3rem;
+    }
   }
   .footer,
   .skeletonfooter {
@@ -53,6 +59,8 @@ export const ContainerMessage = styled(GenericContainer)`
     margin-bottom: 20px;
   }
   > div {
+    margin: 30px 0 0;
+    justify-content: center;
     > button:first-child {
       background: #e73d3e;
       &:hover {
@@ -69,58 +77,58 @@ export const Text = styled.p`
 export const Icon = styled.img``;
 export const ContainerButtons = styled(GenericContainer)`
   gap: 30px;
-  margin-top: 30px;
+  margin-bottom: 15px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 `;
-export const HeaderCard = styled(Header)`
-  align-items: center;
-
-  > h2 {
-    color: ${({ theme }) => theme.palette.color.regular};
-  }
-`;
-export const ContainerExpenses = styled(GenericContainer)`
-  gap: 10px;
-  margin-top: 10px;
+export const Form = styled.form`
+  gap: 15px;
+  width: 100%;
+  height: 100%;
+  display: flex;
   flex-direction: column;
+  justify-content: center;
+
+  .MuiFormControl-root {
+    gap: 3px;
+    width: 100%;
+    margin: 0px;
+  }
+  .MuiGrid-root {
+    > button {
+      height: 53px;
+      margin-left: 10px;
+    }
+  }
 `;
-export const Expense = styled(GenericContainer)`
-  gap: 10px;
+export const Section = styled(GenericContainer)`
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 20px 0 0 20px;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+export const ContainerInfo = styled(GenericContainer)`
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background: #ffffff;
+  flex-direction: column;
+  padding: 20px 20px 10px;
+  border: 1px solid #b9b9c3;
+  ${media.lessThan('regular')`
+    .MuiGrid-grid-sm-6 {
+      min-width: 300px;
+    }
+  `}
+`;
+export const Label = styled.label`
+  width: 100%;
+  display: flex;
   justify-content: space-between;
-
-  h2,
-  p {
-    color: ${({ theme }) => theme.palette.color.medium};
-  }
-  h2 {
-    font-size: ${({ theme }) => theme.typography.fontSize}rem;
-    font-weight: ${({ theme }) => theme.typography.fontWeightLight};
-  }
-
-  p {
-    font-weight: ${({ theme }) => theme.typography.fontWeightRegular + 100};
-  }
-`;
-
-export const FooterExpense = styled(GenericContainer)`
-  gap: 10px;
-  padding-top: 15px;
-  justify-content: space-between;
-  border-top: 2px solid #ebe9f1;
-
-  h2 {
-    color: ${({ theme }) => theme.palette.color.medium};
-  }
-
-  p {
-    color: #28c76f;
-    font-weight: ${({ theme }) => theme.typography.fontWeightRegular + 100};
-  }
-`;
-
-export const HeaderSkeleton = styled(CardHeader)``;
-export const FooterSkeleton = styled(ContainerProgress)``;
-export const ContainerSearch = styled(GenericContainer)`
-  background-color: #f0f8ff;
+  color: ${({ theme }) => theme.palette.color.medium};
+  font-size: ${({ theme }) => theme.typography.fontSize}rem;
+  font-weight: ${({ theme }) => theme.typography.fontWeightLight};
 `;

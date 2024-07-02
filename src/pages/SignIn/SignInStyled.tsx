@@ -10,10 +10,12 @@ export const GenericContainer = styled.div`
 export const ContainerText = styled(GenericContainer)`
   gap: 5px;
   margin-bottom: 10px;
+  align-items: center;
   flex-direction: column;
+  justify-content: center;
 `;
 export const Title = styled.h2`
-  color: ${({ theme }) => theme.palette.color.regular};
+  color: ${({ theme }) => theme.palette.color.dark};
   font-weight: ${({ theme }) => theme.typography.fontWeightBold};
   font-size: ${({ theme }) => theme.typography.fontSizeRegular + 0.2}rem;
 `;
@@ -23,16 +25,16 @@ export const Text = styled.p`
   flex-wrap: wrap;
   max-width: 380px;
   color: ${({ theme }) => theme.palette.color.dark};
-  font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
+  font-size: ${({ theme }) => theme.typography.fontSize}rem;
 `;
 
 export const Form = styled.form`
-  gap: 15px;
+  gap: 30px;
   width: 100%;
-  height: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 
   .MuiFormControl-root {
     gap: 3px;
@@ -54,6 +56,12 @@ export const ContainerButtons = styled(GenericContainer)`
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  > button {
+    background-color: #000;
+    &:hover {
+      background-color: #000;
+    }
+  }
   span {
     font-size: 1.6rem;
   }

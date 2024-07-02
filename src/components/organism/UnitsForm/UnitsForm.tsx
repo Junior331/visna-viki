@@ -133,7 +133,11 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
     <S.UnitsFormContainer>
       <FormikProvider value={formik}>
         <S.Form onSubmit={handleSubmit}>
-          <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
+          <S.ContainerInputs
+            container
+            className="bgWhite"
+            spacing={{ xs: 0, sm: 2 }}
+          >
             <FieldArray name="unit">
               {({ push, remove }) => {
                 return (
@@ -265,15 +269,6 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                                   fieldName: 'areaPrivativaTotal',
                                   setFieldValue
                                 });
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'mult',
-                                  value1: unit.marketAmount,
-                                  value2: e.target.value,
-                                  value3: unit.exchangeQuantity,
-                                  fieldName: 'netAmount',
-                                  setFieldValue
-                                });
                               }}
                               id={`unitQuantity-${unit.id}`}
                               onChange={handleChange}
@@ -319,6 +314,16 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                                   fieldName: 'areaExchanged',
                                   setFieldValue
                                 });
+
+                                handleSumValues({
+                                  id: unit.id,
+                                  type: 'mult',
+                                  value1: unit.areaPrivativaTotal.toString(),
+                                  value2: e.target.value,
+                                  value3: unit.marketAmount.toString(),
+                                  fieldName: 'netAmount',
+                                  setFieldValue
+                                });
                               }}
                               id={`averageArea-${unit.id}`}
                               onChange={handleChange}
@@ -341,13 +346,27 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
 
                             <Input
                               disabled
-                              onBlur={handleBlur}
-                              id={`areaPrivativaTotal-${unit.id}`}
+                              placeholder="0"
+                              onBlur={(e) => {
+                                setFieldValue(
+                                  `unit[${index}].areaPrivativaTotal`,
+                                  e.target.value
+                                );
+                                handleSumValues({
+                                  id: unit.id,
+                                  type: 'mult',
+                                  value1: e.target.value,
+                                  value2: unit.areaExchanged.toString(),
+                                  value3: unit.marketAmount.toString(),
+                                  fieldName: 'netAmount',
+                                  setFieldValue
+                                });
+                              }}
                               onChange={handleChange}
+                              id={`areaPrivativaTotal-${unit.id}`}
+                              aria-describedby="areaPrivativaTotal"
                               name={`unit[${index}].areaPrivativaTotal`}
                               value={values.unit[index].areaPrivativaTotal}
-                              placeholder="0"
-                              aria-describedby="areaPrivativaTotal"
                               inputProps={{ style: { fontSize: '1.4rem' } }}
                             />
                           </FormControl>
@@ -374,15 +393,6 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                                   value1: unit.averageArea.toString(),
                                   value2: e.target.value,
                                   fieldName: 'areaExchanged',
-                                  setFieldValue
-                                });
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'mult',
-                                  value1: unit.marketAmount.toString(),
-                                  value2: unit.unitQuantity.toString(),
-                                  value3: e.target.value,
-                                  fieldName: 'netAmount',
                                   setFieldValue
                                 });
                               }}
@@ -433,9 +443,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                                 handleSumValues({
                                   id: unit.id,
                                   type: 'mult',
-                                  value1: e.target.value,
-                                  value2: unit.unitQuantity.toString(),
-                                  value3: unit.exchangeQuantity.toString(),
+                                  value1: unit.areaPrivativaTotal.toString(),
+                                  value2: unit.areaExchanged.toString(),
+                                  value3: e.target.value,
                                   fieldName: 'netAmount',
                                   setFieldValue
                                 });
@@ -601,7 +611,6 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     <S.Label>Uni. T. no Empreendimento </S.Label>
                   </Tooltip>
                   <Input
-                    required
                     disabled
                     onBlur={handleBlur}
                     onChange={handleChange}

@@ -10,7 +10,7 @@ describe('Project component', () => {
     text: `Lorem Ipsum'is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever.`
   };
   test('should render without crashing', () => {
-    renderCustom(<Project handleClick={() => {}} {...mockProps} />);
+    renderCustom(<Project id={''} handleClick={() => {}} {...mockProps} />);
     expect(screen.getByText('Project')).toBeTruthy();
   });
 });

@@ -5,9 +5,11 @@ import {
   editProject,
   editDeadline,
   deleteProject,
-  listUnitCharacteristics
+  listUnitCharacteristics,
+  createDeadline
 } from '@/services/services';
 import {
+  handleCreateDeadlineProps,
   handleDeleteProjectProps,
   handleEditDeadlineIdProps,
   handleEditLandProps,
@@ -164,6 +166,45 @@ export const handleEditLand = async ({
       vertical: 'top',
       horizontal: 'right',
       message: 'Terreno editado com sucesso'
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+export const handleCreateDeadline = async ({
+  payload,
+  projectId,
+  setLoading,
+  setSnackbar
+}: handleCreateDeadlineProps) => {
+  setLoading(true);
+
+  try {
+    await createDeadline(projectId, payload);
+    setSnackbar({
+      isOpen: true,
+      severity: 'success',
+      vertical: 'top',
+      horizontal: 'right',
+      message: 'Prazos Criado com sucesso'
     });
   } catch (error) {
     if (error instanceof Error) {
