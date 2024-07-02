@@ -42,6 +42,11 @@ export const GlobalStyles = createGlobalStyle`
       -webkit-text-fill-color: rgb(0 0 0 / 70%) !important; 
       color: ${({ theme }) => theme.palette.color.dark} !important;
     }
+    .inputDisabled{
+      cursor: no-drop;
+      border-radius: 5px;
+      background-color: #00000030;
+    }
 
     .SelectComponent {
       height: 53px;
@@ -60,10 +65,34 @@ export const GlobalStyles = createGlobalStyle`
       background-color: rgb(0 0 0 / 60%);
     }
 
+    .bgWhite {
+      background: rgba(255, 255, 255, 1) !important;
+    }
+    .bgWhiteInput {
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 1) !important;
+    }
+
+    .btnDelete {
+      border: none;
+      color: #e73d3e;
+      background: rgba(255, 255, 255, 1) !important;
+      border: 1px solid ${({ theme }) => theme.palette.error.default};
+      &:hover {
+        color: ${({ theme }) => theme.palette.color.default};
+        background: ${({ theme }) => theme.palette.error.default} !important;
+      }
+    }
+
     .menuEdit {
       .MuiPaper-root {
         width: 180px;
-        left: 1702px!important;
+      }
+      .status {
+        cursor: context-menu !important;
+        &:hover {
+          background-color: transparent;
+        }
       }
       li.MuiMenuItem-root {
         gap: 10px;
@@ -86,19 +115,38 @@ export const GlobalStyles = createGlobalStyle`
         background-color: rgb(0 0 0 / 16.9%);
       }
     }
-    .detailsExpenseMenu {
+
+    .BoxShadowMenu {
       .MuiBackdrop-root{
         background-color: rgb(0 0 0 / 2.3%);
       }
-      .MuiPaper-root {
-        width: 180px;
-        left: 1650px!important;
+    }
+
+    .BoxShadowAportesMenu {
+      .MuiBackdrop-root{
+        background-color: rgb(0 0 0 / 40%);
       }
     }
+
     .MuiSelect-select,.MuiInputBase-input {
       font-size: ${({ theme }) => theme.typography.fontSize - 0.3}rem;
     }
-  
+
+    .MuiTypography-caption, .MuiPickersDay-root {
+      color: #000 !important;
+      font-size: 1.2rem !important;
+      font-weight: 600 !important;
+    }
+
+    .MuiPickersDay-root {
+      font-weight: 400 !important;
+    }
+
+    .MuiDayCalendar-weekContainer{
+      .Mui-selected{
+        color: #fff !important;
+      }
+    }
 
     .MuiTooltip-tooltip {
       font-size: 1.2rem;
@@ -131,9 +179,9 @@ export const GlobalStyles = createGlobalStyle`
       }
     }
 
-    /* .base-Popper-root  {
-      inset: auto auto 0px -130px !important;
-    } */
+    .noClick{
+      cursor: context-menu !important;
+    }
   }
 
   &::-webkit-scrollbar {

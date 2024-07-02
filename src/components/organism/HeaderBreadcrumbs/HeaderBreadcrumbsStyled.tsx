@@ -12,6 +12,10 @@ export const ContainerBreadcrumbs = styled(GenericContainer)`
   height: 100%;
   align-items: center;
 
+  .MuiButtonBase-root {
+    color: ${({ theme }) => theme.palette.color.default} !important;
+  }
+
   .MuiTypography-root {
     cursor: context-menu;
     color: ${({ theme }) => theme.palette.color.light} !important;

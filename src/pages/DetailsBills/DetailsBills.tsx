@@ -52,6 +52,10 @@ import * as S from './DetailsBillsStyled';
 import { payloadExpense } from '@/utils/types';
 import { rowsDataType } from './@types';
 import { unitExpenseTypes } from '../ListBills/@types';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DemoItem } from '@mui/x-date-pickers/internals/demo';
+import dayjs from 'dayjs';
 
 export const DetailsBills = () => {
   const navigate = useNavigate();
@@ -91,7 +95,9 @@ export const DetailsBills = () => {
       quantity: '0',
       unitValue: '0',
       totalValue: 0,
-      unitExpenseTypeId: 0
+      unitExpenseTypeId: 0,
+      paymentStartDate: dayjs(''),
+      periodicityPayment: 0
     },
     onSubmit: async (values) => {
       const payload: payloadExpense = {
@@ -99,7 +105,9 @@ export const DetailsBills = () => {
         totalValue: values.totalValue / 100,
         quantity: parseFloat(values.quantity),
         unitValue: parseFloat(values.unitValue),
+        paymentStartDate: values.paymentStartDate,
         unitExpenseTypeId: values.unitExpenseTypeId,
+        periodicityPayment: values.periodicityPayment,
         projectId: parseFloat(idProject)
       };
       const isAnyFieldEmpty = !!values.expenseId;
@@ -154,7 +162,7 @@ export const DetailsBills = () => {
             })}
           />
           <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
-            Cancelar
+            Voltar
           </Button>
         </S.Header>
         <S.Content>
@@ -217,7 +225,7 @@ export const DetailsBills = () => {
                 </>
               ) : (
                 <>
-                  {Object.values(date) // cost: incorporationFeeType | shallowCostType
+                  {Object.values(date)
                     .filter((info): info is genericV2ObjType =>
                       emptyInfo(info as string | number | genericObjType)
                     )
@@ -242,10 +250,15 @@ export const DetailsBills = () => {
                       }));
                       return (
                         <>
-                          <Card width={'100%'} height={'auto'} key={key}>
+                          <Card
+                            width={'100%'}
+                            height={'auto'}
+                            key={key}
+                            className="bgWhite"
+                          >
                             <S.HeaderCard>
                               <S.Title>{cost.name}</S.Title>
-                              {isEdit && (
+                              {Boolean(isEdit) && (
                                 <Box
                                   sx={{
                                     display: 'flex',
@@ -451,7 +464,50 @@ export const DetailsBills = () => {
               </Grid>
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Tipos de unidades</S.Label>
+                  <S.Label>Data de início de pagamento</S.Label>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DemoItem>
+                      <DesktopDatePicker
+                        format={'DD/MM/YYYY'}
+                        value={formikNewExpense.values.paymentStartDate || null}
+                        onChange={(date) =>
+                          formikNewExpense.setFieldValue(
+                            'paymentStartDate',
+                            date || ''
+                          )
+                        }
+                      />
+                    </DemoItem>
+                  </LocalizationProvider>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} minWidth={300}>
+                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                  <S.Label>Periodicidade (de pagamentos)</S.Label>
+                  <Select
+                    displayEmpty
+                    name="periodicityPayment"
+                    className="SelectComponent"
+                    onChange={formikNewExpense.handleChange}
+                    IconComponent={KeyboardArrowDownRounded}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    value={formikNewExpense.values.periodicityPayment}
+                  >
+                    <MenuItem value={0} disabled>
+                      <em>Selecione a opção</em>
+                    </MenuItem>
+                    <MenuItem value={1}>Mensal</MenuItem>
+                    <MenuItem value={2}>Bimensal</MenuItem>
+                    <MenuItem value={3}>Semestral</MenuItem>
+                    <MenuItem value={4}>Quadrimestral</MenuItem>
+                    <MenuItem value={5}>Anual</MenuItem>
+                    <MenuItem value={4}>Isoladas</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} minWidth={300}>
+                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                  <S.Label>Uni. Pagamento</S.Label>
                   <Select
                     displayEmpty
                     name="unitExpenseTypeId"
@@ -541,7 +597,11 @@ export const DetailsBills = () => {
               </Grid>
               <Grid item xs={12} sm={12} md={12} minWidth={300}>
                 <S.ContainerButtons className="containerBtn">
-                  <Button $isOutline size="140px">
+                  <Button
+                    $isOutline
+                    size="140px"
+                    onClick={() => setOpenModalNewExpense(false)}
+                  >
                     Cancelar
                   </Button>
                   <Button size="140px" type="submit">

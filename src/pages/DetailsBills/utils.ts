@@ -140,7 +140,7 @@ export const handleSumTotalValue = ({
   const parsedValue2 = value2.replace(/\./g, '').replace(',', '.');
 
   if (parsedValue1 && parsedValue2) {
-    const sum = parseFloat(parsedValue1) + parseFloat(parsedValue2);
+    const sum = parseFloat(parsedValue1) * parseFloat(parsedValue2);
     sum.toFixed(2);
     setFieldValue?.(fieldName, sum * 100);
   } else {

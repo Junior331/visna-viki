@@ -11,7 +11,6 @@ export const DeadlinesFormContainer = styled(ContainerGeneric)`
   height: auto;
   border-radius: 6px;
   padding: 12px 10px;
-  background: #ffffff;
   @media (min-width: 599px) {
     margin-top: 40px;
   }

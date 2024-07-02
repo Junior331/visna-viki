@@ -73,12 +73,16 @@ export const CostDetails = () => {
             stateParams={{ cost: state.bill }}
           />
           <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
-            Cancelar
+            Voltar
           </Button>
         </S.Header>
         <S.Content>
           <S.Form onSubmit={handleSubmit}>
-            <S.ContainerInputs container spacing={{ xs: 0, sm: 0.2 }}>
+            <S.ContainerInputs
+              container
+              className="bgWhite"
+              spacing={{ xs: 0, sm: 0.2 }}
+            >
               <Grid item xs={12} sm={12} md={3.95} minWidth={250}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                   <S.Label>Nome</S.Label>

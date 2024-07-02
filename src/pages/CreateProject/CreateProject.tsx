@@ -36,7 +36,7 @@ export const CreateProject = () => {
         <S.Header>
           <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems(date.lands.name)} />
           <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
-            Cancelar
+            Voltar
           </Button>
         </S.Header>
         <S.Content>

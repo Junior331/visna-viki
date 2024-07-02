@@ -19,6 +19,7 @@ export type Props = {
   rows: rowData[];
   isEdit?: boolean;
   itemActive?: any;
+  className?: string;
   cost?: genericV2ObjType;
   handleEdit?: (params: handleProps) => void;
   align?: 'center' | 'left' | 'right' | 'justify' | 'inherit';

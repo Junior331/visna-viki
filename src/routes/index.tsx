@@ -4,6 +4,7 @@ import {
   Bills,
   SignIn,
   SignUp,
+  Aporte,
   Expense,
   Aportes,
   ListBills,
@@ -11,6 +12,7 @@ import {
   CostDetails,
   DetailsBills,
   ResetPassword,
+  Profitability,
   CreateProject,
   ForgotPassword
 } from '@/pages';
@@ -21,6 +23,7 @@ export const AppRoutes = () => {
       <Route index element={<SignIn />} />
       <Route path="/home" element={<Home />} />
       <Route path="/bills" element={<Bills />} />
+      <Route path="/aporte" element={<Aporte />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/aportes" element={<Aportes />} />
       <Route path="/expense" element={<Expense />} />
@@ -30,6 +33,7 @@ export const AppRoutes = () => {
       <Route path="/create" element={<CreateProject />} />
       <Route path="/costdetails" element={<CostDetails />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
+      <Route path="/profitability" element={<Profitability />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
     </Routes>
   );

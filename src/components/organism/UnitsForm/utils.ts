@@ -9,7 +9,6 @@ export const unitDefault = {
   unitQuantity: 0,
   marketAmount: 0,
   exchangeQuantity: 0,
-  totalExchangeArea: 0,
   areaPrivativaTotal: 0
 };
 
@@ -51,11 +50,14 @@ export const handleSumValues = ({
       );
     }
   }
+  // VGV líquido da permuta =(Valor total privativa - área permutada) * Valor de venda
+  // VGV líquido da permuta =(areaPrivativaTotal - areaExchanged) * marketAmount
+
   if (type === 'mult') {
-    const sum1 = parseFloat(parsedValue1.replace(/\./g, '').replace(',', '.'));
-    const sum2 = parseFloat(parsedValue2.replace(/\./g, '').replace(',', '.'));
-    const sum3 = parseFloat(parsedValue3.replace(/\./g, '').replace(',', '.'));
-    const sum = sum1 * (sum2 - sum3);
+    const sum1 = parseFloat(parsedValue1.replace(/\./g, '').replace(',', '.')); // Área Privativa total - areaPrivativaTotal
+    const sum2 = parseFloat(parsedValue2.replace(/\./g, '').replace(',', '.')); // Área permutada (m²) - areaExchanged
+    const sum3 = parseFloat(parsedValue3.replace(/\./g, '').replace(',', '.')); // Valor de venda/m² (R$) - marketAmount
+    const sum = (sum1 - sum2) * sum3;
     setFieldValue(`unit[${id}].${fieldName}`, sum.toString());
   }
   if (type === 'TUID') {

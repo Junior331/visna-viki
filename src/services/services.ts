@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import {
-  deadlineSummaryType,
+  CepData,
   deadlineType,
   handleExpenseProps,
   landSummaryType,
@@ -14,23 +15,28 @@ import {
 import { ENDPOINTS } from '@/utils/endpoints';
 import { getToken } from './sessionStorage';
 import { cleanObject } from '@/utils/utils';
+import { aportesProps } from '@/pages/Aportes/@types';
 
 // crud Units
 export const createUnits = async (projectId: number, payload: unitType) => {
   const formattedUnits = payload.unit.map((unit) => ({
     unitTypeId: unit.unitTypeId,
+    totalAreaOfTheDevelopment: 1,
+    totalPrivateAreaNetOfExchange: 1,
+    unitCharacteristicsId: unit.unitCharacteristicsId,
     netAmount: parseFloat(unit.netAmount.replace(',', '.')),
     averageArea: parseFloat(unit.averageArea.replace(',', '.')),
     marketAmount: parseFloat(unit.marketAmount.replace(',', '.')),
     unitQuantity: parseFloat(unit.unitQuantity.replace(',', '.')),
     exchangeQuantity: parseFloat(unit.exchangeQuantity.replace(',', '.')),
-    totalExchangeArea: parseFloat(unit.totalExchangeArea.replace(',', '.')),
     areaPrivativaTotal: parseFloat(unit.areaPrivativaTotal.replace(',', '.'))
   }));
 
   const formatPayload = {
     ...payload,
     unit: formattedUnits,
+    totalAreaOfTheDevelopment: 1,
+    totalPrivateAreaNetOfExchange: 1,
     flooring: parseFloat(payload.flooring.toString()),
     underground: parseFloat(payload.underground.toString()),
     unitPerFloor: parseFloat(payload.unitPerFloor.toString()),
@@ -112,6 +118,23 @@ export const listUnits = async (unitId: number) => {
   try {
     const response = await axios.get(
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.UNITS.BASE_URL}/${unitId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const listUnitCharacteristics = async () => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.UNITS.BASE_URL}/characteristics`,
       {
         headers: {
           Authorization: `Bearer ${getToken()}`
@@ -265,10 +288,7 @@ export const deleteDeadline = async (deadlineId: number) => {
     }
   }
 };
-export const editDeadline = async (
-  deadlineId: number,
-  payload: deadlineSummaryType
-) => {
+export const editDeadline = async (deadlineId: number, payload: any) => {
   const body = {
     ...payload
   };
@@ -666,8 +686,7 @@ export const getAportesByProject = async (
     }
   }
 };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const createAportes = async (payload: any) => {
+export const createAporte = async (payload: aportesProps) => {
   try {
     const response = await axios.post(
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/create`,
@@ -685,11 +704,14 @@ export const createAportes = async (payload: any) => {
     }
   }
 };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const editAportes = async (id: number, payload: any) => {
+export const editAporte = async (
+  id: number,
+  payload: unknown,
+  projectId: string
+) => {
   try {
     const response = await axios.patch(
-      `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/edit/${id}`,
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/${projectId}/${id}`,
       payload,
       {
         headers: {
@@ -704,7 +726,7 @@ export const editAportes = async (id: number, payload: any) => {
     }
   }
 };
-export const deleteAportes = async (id: number) => {
+export const deleteAporte = async (id: number) => {
   try {
     const response = await axios.delete(
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.APORTES.BASE_URL}/${id}`,
@@ -713,6 +735,18 @@ export const deleteAportes = async (id: number) => {
           Authorization: `Bearer ${getToken()}`
         }
       }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const fetchCepData = async (cep: string) => {
+  try {
+    const response = await axios.get<CepData>(
+      `https://viacep.com.br/ws/${cep}/json/`
     );
     return response.data;
   } catch (error) {

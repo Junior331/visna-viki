@@ -204,15 +204,16 @@ export const ListBills = () => {
           {!loading && (
             <>
               <Table
+                formik={formik}
+                rows={filteredList}
+                className="BoxShadowMenu"
+                columns={mocks.columnsExpense}
                 handleEdit={(item) => {
                   handleEditExpense({
                     navigate: item.navigate,
                     expenseActive: item.expenseActive
                   });
                 }}
-                formik={formik}
-                rows={filteredList}
-                columns={mocks.columnsExpense}
               />
             </>
           )}

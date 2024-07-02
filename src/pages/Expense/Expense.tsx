@@ -70,7 +70,7 @@ export const Expense = () => {
         <S.Header>
           <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems(name)} />
           <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
-            Cancelar
+            Voltar
           </Button>
         </S.Header>
         <S.Content>

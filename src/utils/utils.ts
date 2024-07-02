@@ -34,6 +34,21 @@ export const formatter = new Intl.NumberFormat('pt-BR', {
   currency: 'BRL'
 });
 
+export const formatterV2 = new Intl.NumberFormat('pt-BR', {
+  style: 'decimal',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+});
+
+export const parseFormattedNumber = (formattedNumber: string) => {
+  // Remove os pontos de separação de milhares
+  let number = formattedNumber.replace(/\./g, '');
+  // Substitui a vírgula por um ponto para converter em número decimal
+  number = number.replace(',', '.');
+  // Converte a string para número
+  return parseFloat(number);
+};
+
 export const formatCurrency = (value: string): string => {
   // Remove todos os caracteres não numéricos
   const numericValue = value.replace(/\D/g, '');
@@ -60,11 +75,24 @@ export const formatDate = (dateInput: string | Date): string => {
 
   const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
 
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
+  if (isNaN(date.getTime())) {
+    return '-';
+  }
+
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const year = date.getUTCFullYear();
 
   return `${day}/${month}/${year}`;
+};
+
+export const convertDateToISO = (dateString: string) => {
+  if (typeof dateString === 'string' && dateString.trim() === '') {
+    return '-';
+  }
+  const [day, month, year] = dateString.split('/').map(Number);
+  const date = new Date(year, month - 1, day);
+  return date.toISOString();
 };
 
 export const handleClickMenu = ({ event, setAnchorEl }: handleClickProps) => {

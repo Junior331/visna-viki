@@ -1,5 +1,6 @@
 // import { v4 as uuidv4 } from 'uuid';
 
+import { Dayjs } from 'dayjs';
 import { Dispatch, MouseEvent } from 'react';
 
 export enum statusColor {
@@ -28,29 +29,31 @@ export type landType = {
   name: string;
   area: number;
   state: string;
-  zoning: number;
+  zoning: string;
   number: string;
   street: string;
-  depave: number;
+  depave: boolean;
   zipCode: string;
   country: string;
   frontage: number;
   totalAmount: number;
   neighborhood: string;
   amountPerMeter: number;
+  quantitySpecies: number;
   topographyTypeId: number;
 };
 
 export type landSummaryType = {
   id: number;
   area: number;
-  depave: number;
-  zoning: number;
+  depave: boolean;
+  zoning: string;
   frontage: number;
   projectId: number;
   addressId: number;
   totalAmount: number;
   amountPerMeter: number;
+  quantitySpecies: number;
   topographyTypeId: number;
   address: {
     id: number;
@@ -66,28 +69,31 @@ export type landSummaryType = {
 
 export type unitSummaryType = {
   id: number;
-  netAmount: string;
+  netAmount: string; // VGV Liq. Permuta (R$)
   isRemove?: boolean;
-  unitTypeId: number;
-  averageArea: string;
-  unitQuantity: string;
-  marketAmount: string;
-  exchangeQuantity: string;
-  totalExchangeArea: string;
-  areaPrivativaTotal: string;
+  unitTypeId: number; // T. Unidades
+  averageArea: string; // A. Média
+  unitQuantity: string; // Quantidade
+  areaExchanged: string; // Área permutada (m²)
+  marketAmount: string; // Valor de venda/m² (R$)
+  exchangeQuantity: string; // Qtd. Permutas (m²)
+  areaPrivativaTotal: string; // A. P. Total
+  unitCharacteristicsId: string; // Características
 };
 
 export type unitHubSummaryType = {
   id: number;
+  keyIndex: number;
   netAmount: number;
   unitHubId: number;
   unitTypeId: number;
   averageArea: number;
   marketAmount: number;
   unitQuantity: number;
+  areaExchanged: number;
   exchangeQuantity: number;
-  totalExchangeArea: number;
   areaPrivativaTotal: number;
+  unitCharacteristicsId: number;
 };
 
 export type unitType = {
@@ -95,10 +101,13 @@ export type unitType = {
   underground: string;
   unitPerFloor: string;
   averageSaleValue: string;
+  totalExchangeArea: string;
   totalToBeBuiltArea: string;
   totalValueNoExchange: string;
   totalUnitsInDevelopment: string;
   totalPrivateAreaQuantity: string;
+  totalAreaOfTheDevelopment: string;
+  totalPrivateAreaNetOfExchange: string;
   unit: unitSummaryType[];
 };
 
@@ -109,30 +118,33 @@ export type unitHubType = {
   underground: number;
   unitPerFloor: number;
   averageSaleValue: number;
+  totalExchangeArea: number;
   totalToBeBuiltArea: number;
   totalValueNoExchange: number;
   totalUnitsInDevelopment: number;
   totalPrivateAreaQuantity: number;
+  totalAreaOfTheDevelopment: number;
+  totalPrivateAreaNetOfExchange: number;
   unit: unitHubSummaryType[];
 };
 
 export type deadlineType = {
-  endDate: number;
-  startDate: string;
+  startDate: Dayjs;
   totalDeadlineInMonth: number;
   approvalDeadlineInMonth: number;
   constructionDeadlineInMonth: number;
+  projectLaunchDeadlineInMonth: number;
 };
 
 export type deadlineSummaryType = {
   id: number;
-  endDate: number;
-  projectId: number;
   startDate: string;
+  projectId: number;
+  afterConstruction: number;
   totalDeadlineInMonth: number;
   approvalDeadlineInMonth: number;
   constructionDeadlineInMonth: number;
-  projectLaunchDeadlineInMonth: null;
+  projectLaunchDeadlineInMonth: number;
 };
 
 export type projectDateType = {
@@ -185,5 +197,29 @@ export type payloadExpense = {
   projectId: number;
   expenseId: number;
   totalValue: number;
+  paymentStartDate: Dayjs;
   unitExpenseTypeId: number;
+  periodicityPayment: number;
+};
+export type CepData = {
+  uf: string;
+  cep: string;
+  gia: string;
+  ddd: string;
+  ibge: string;
+  siafi: string;
+  bairro: string;
+  localidade: string;
+  logradouro: string;
+  complemento: string;
+};
+export type unitCharacteristicsType = {
+  name: string;
+  unit_type_id: number;
+  children: [
+    {
+      id: number;
+      name: string;
+    }
+  ];
 };

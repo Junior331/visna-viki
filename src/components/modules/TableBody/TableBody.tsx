@@ -23,6 +23,7 @@ const TableBody = ({
   rows,
   isEdit,
   formik,
+  className,
   itemActive,
   align = 'left',
   handleEdit = () => {}
@@ -129,7 +130,7 @@ const TableBody = ({
                               open={open}
                               id="account-menu"
                               anchorEl={anchorEl}
-                              className="menuEdit detailsExpenseMenu"
+                              className={`menuEdit ${className}`}
                               onClick={() => handleCloseMenu({ setAnchorEl })}
                               onClose={() => handleCloseMenu({ setAnchorEl })}
                               PaperProps={{

@@ -29,15 +29,31 @@ export const StepContainer = styled(ContainerGeneric)`
       top: 35px;
       z-index: 1;
       width: auto;
-      color: black;
+      font-weight: 700;
       position: absolute;
+      color: rgba(67, 99, 116, 1);
+      font-family: 'Montserrat', sans-serif !important;
     }
   }
 
   .indexedStep.accomplished {
-    background-color: #664de5;
     color: white;
     border-style: none;
+    background-color: rgba(29, 110, 136, 1);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    > span {
+      font-weight: 600;
+    }
+  }
+  .indexedStep.null {
+    color: #000;
+    border-style: none;
+    background-color: #fff;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    > span {
+      font-weight: 600;
+    }
   }
 
   .RSPBprogressBar {
@@ -46,7 +62,7 @@ export const StepContainer = styled(ContainerGeneric)`
     line-height: 1;
     border-radius: 10px;
     position: relative;
-    background-color: rgb(207, 207, 207);
+    background-color: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -81,7 +97,7 @@ export const StepContainer = styled(ContainerGeneric)`
     top: 0;
     bottom: 0;
     border-radius: 10px;
-    background: #664de5;
+    background: rgba(29, 110, 136, 1);
     z-index: -1;
   }
 

@@ -11,6 +11,8 @@ import { formatCurrency, handleKeyDown, typeMask } from '@/utils/utils';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import { landFormSchema, projectNameFormSchema } from './Schema';
 import * as S from './LandFormStyled';
+import { Tooltip } from '@/components/elements/Tooltip';
+import { fetchCepData } from '@/services/services';
 
 const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
   const navigate = useNavigate();
@@ -47,6 +49,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
           number: values.number,
           zipCode: values.zipCode
         },
+        quantitySpecies: parseFloat(values.quantitySpecies.toString()),
         projectId: 0
       };
       setDate({
@@ -72,12 +75,23 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
     setFieldValue
   } = formik;
 
+  const getCep = async (cep: string) => {
+    const result = await fetchCepData(cep);
+    setFieldValue('street', result?.logradouro || '');
+    setFieldValue('neighborhood', result?.bairro || '');
+    setFieldValue('state', result?.uf || '');
+  };
+
   useEffect(() => {
     if (!formikProjectName.values.name) {
       setIsShow(false);
     }
   }, [formikProjectName, setIsShow]);
-
+  useEffect(() => {
+    if (!formikProjectName.values.name) {
+      setIsShow(false);
+    }
+  }, [formikProjectName, setIsShow]);
   useEffect(() => {
     if (date.lands.name) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -90,6 +104,13 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, setFieldValue]);
+
+  useEffect(() => {
+    if (values.zipCode) {
+      getCep(values.zipCode);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.zipCode]);
 
   return (
     <S.LandFormContainer>
@@ -117,6 +138,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     setIsShow(false);
                     formikProjectName.handleChange(e);
                   }}
+                  className="bgWhiteInput"
                   aria-describedby="name"
                   placeholder="Cadastrar nome do projeto"
                   helperText={
@@ -146,7 +168,25 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
         <S.Form onSubmit={handleSubmit}>
           {isShow && (
             <>
-              <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }} mb={2}>
+              <S.ContainerInputs
+                container
+                className="bgWhite"
+                spacing={{ xs: 0, sm: 2 }}
+                mb={2}
+              >
+                <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>Cep</S.Label>
+                    <Input
+                      id="zipCode"
+                      onChange={handleChange}
+                      aria-describedby="zipCode"
+                      placeholder="Digite o Cep"
+                      value={typeMask(MaskType.CEP, values.zipCode)}
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                    />
+                  </FormControl>
+                </Grid>
                 <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <S.Label>Endereço</S.Label>
@@ -236,25 +276,19 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} minWidth={200} minHeight={117}>
-                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <S.Label>Cep</S.Label>
-                    <Input
-                      id="zipCode"
-                      onChange={handleChange}
-                      aria-describedby="zipCode"
-                      placeholder="Digite o Cep"
-                      value={typeMask(MaskType.CEP, values.zipCode)}
-                      inputProps={{ style: { fontSize: '1.4rem' } }}
-                    />
-                  </FormControl>
-                </Grid>
               </S.ContainerInputs>
 
-              <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }} mb={2}>
+              <S.ContainerInputs
+                container
+                className="bgWhite"
+                spacing={{ xs: 0, sm: 2 }}
+                mb={2}
+              >
                 <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <S.Label>Área total (m²)</S.Label>
+                    <Tooltip title={'Área total (m²)'}>
+                      <S.Label>A. Total (m²)</S.Label>
+                    </Tooltip>
                     <Input
                       id="area"
                       required
@@ -297,7 +331,14 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6} md={2} minWidth={200} minHeight={117}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={values.depave ? 1 : 2}
+                  minWidth={200}
+                  minHeight={117}
+                >
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <S.Label>Depave</S.Label>
 
@@ -305,9 +346,11 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                       required
                       displayEmpty
                       name="depave"
-                      onChange={handleChange}
+                      value={values.depave ? 1 : 0}
+                      onChange={(e) => {
+                        setFieldValue('depave', Boolean(e.target.value));
+                      }}
                       className="SelectComponent"
-                      value={values.depave}
                       IconComponent={KeyboardArrowDownRounded}
                       inputProps={{ 'aria-label': 'Without label' }}
                     >
@@ -316,7 +359,45 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3} minWidth={200} minHeight={117}>
+                {values.depave && (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    md={1}
+                    minWidth={200}
+                    minHeight={117}
+                  >
+                    <FormControl
+                      sx={{ m: 1, width: '25ch' }}
+                      variant="outlined"
+                    >
+                      <Tooltip title={'Quantidade de espécies'}>
+                        <S.Label>Qtd. espécies</S.Label>
+                      </Tooltip>
+                      <Input
+                        required
+                        id="quantitySpecies"
+                        onChange={handleChange}
+                        aria-describedby="quantitySpecies"
+                        placeholder="Digite aqui"
+                        inputProps={{ style: { fontSize: '1.4rem' } }}
+                        value={typeMask(
+                          MaskType.NUMBER,
+                          (values.quantitySpecies || 0).toString()
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
+                )}
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={values.depave ? 2.3 : 3}
+                  minWidth={200}
+                  minHeight={117}
+                >
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <S.Label>Topografia</S.Label>
 
@@ -352,20 +433,26 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                       IconComponent={KeyboardArrowDownRounded}
                       inputProps={{ 'aria-label': 'Without label' }}
                     >
-                      <MenuItem value={0} disabled>
+                      <MenuItem value={''} disabled>
                         <em>Selecione a opção </em>
                       </MenuItem>
-                      <MenuItem value={1}>(ZM)</MenuItem>
-                      <MenuItem value={2}>(ZC)</MenuItem>
-                      <MenuItem value={3}>(ZEU)</MenuItem>
-                      <MenuItem value={4}>(ZER)</MenuItem>
-                      <MenuItem value={5}>(Zcore)</MenuItem>
-                      <MenuItem value={6}>(Operação Urbana)</MenuItem>
+                      <MenuItem value={'ZM'}>(ZM)</MenuItem>
+                      <MenuItem value={'ZC'}>(ZC)</MenuItem>
+                      <MenuItem value={'ZEU'}>(ZEU)</MenuItem>
+                      <MenuItem value={'ZER'}>(ZER)</MenuItem>
+                      <MenuItem value={'Zcore'}>(Zcore)</MenuItem>
+                      <MenuItem value={'Operação Urbana'}>
+                        (Operação Urbana)
+                      </MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
               </S.ContainerInputs>
-              <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
+              <S.ContainerInputs
+                container
+                className="bgWhite"
+                spacing={{ xs: 0, sm: 2 }}
+              >
                 <Grid item xs={12} sm={6} md={6} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <S.Label>Valor (m²/R$) </S.Label>
@@ -399,7 +486,9 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={6} minWidth={200} minHeight={117}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <S.Label>Valor total (R$)</S.Label>
+                    <Tooltip title={'Valor total (R$)'}>
+                      <S.Label>V. Total (R$)</S.Label>
+                    </Tooltip>
                     <Input
                       required
                       disabled

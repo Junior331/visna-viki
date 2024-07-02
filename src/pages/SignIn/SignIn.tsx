@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import signInSchema from './SignInSchema';
 import { LayoutAbstract } from '@/components/organism';
-import { Button, Checkbox, Input } from '@/components/elements';
+import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import { getInfoUser, signIn } from './services';
 import * as S from './SignInStyled';
@@ -68,17 +68,16 @@ export const SignIn = () => {
     <LayoutAbstract>
       <S.Form onSubmit={handleSubmit}>
         <S.ContainerText>
-          <S.Title>Bem vindo ao Visna 👋🏻</S.Title>
-          <S.Text>Faça login em sua conta e comece a experiência</S.Text>
+          <S.Title color="#000000">Entrar</S.Title>
+          <S.Text color="#000000">Entre com seu e-mail.</S.Text>
         </S.ContainerText>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-          <S.Label>Email</S.Label>
           <Input
             id="email"
             value={values.email}
             onChange={handleChange}
             aria-describedby="email"
-            placeholder="Digite seu email"
+            placeholder="email@domain.com"
             inputProps={{ style: { fontSize: '1.4rem' } }}
             helperText={touched.email && errors.email}
             error={touched.email && Boolean(errors.email)}
@@ -88,12 +87,6 @@ export const SignIn = () => {
           />
         </FormControl>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-          <S.Label>
-            Password{' '}
-            <S.Link onClick={() => navigate('/forgotpassword')}>
-              Forgot Password?
-            </S.Link>
-          </S.Label>
           <Input
             id="password"
             variant="outlined"
@@ -123,8 +116,6 @@ export const SignIn = () => {
           )}
         </FormControl>
 
-        <Checkbox label="Lembre-me" />
-
         <S.ContainerButtons>
           <Button
             size="large"
@@ -132,9 +123,10 @@ export const SignIn = () => {
             loading={loading}
             disabled={loading}
           >
-            Login
+            Entrar
           </Button>
         </S.ContainerButtons>
+
         {/* <S.Footer>
           <S.Text>
             Novo em nossa plataforma?{' '}

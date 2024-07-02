@@ -68,9 +68,9 @@ export const ContainerMessage = styled(GenericContainer)`
   }
   > div {
     > button:first-child {
-      background-color: #e73d3e;
+      background: #e73d3e;
       &:hover {
-        background-color: #c33334;
+        background: #c33334;
       }
     }
   }

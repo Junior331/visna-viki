@@ -73,7 +73,7 @@ export const Bills = () => {
         <S.Header>
           <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems(id, name)} />
           <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
-            Cancelar
+            Voltar
           </Button>
         </S.Header>
         <S.Content>
@@ -81,7 +81,12 @@ export const Bills = () => {
             <>
               {Object.values(date.costs).map((cost) => {
                 return (
-                  <Card width={'100%'} height={'auto'} key={cost.id}>
+                  <Card
+                    width={'100%'}
+                    height={'auto'}
+                    key={cost.id}
+                    className="bgWhite"
+                  >
                     <S.HeaderCard>
                       <Skeleton height={20} width={'15%'} variant="rounded" />
                       <Skeleton height={20} width={'10px'} variant="rounded" />
@@ -115,7 +120,7 @@ export const Bills = () => {
                   </Card>
                 );
               })}
-              <Card width={'100%'} height={'auto'} className="footer">
+              <Card width={'100%'} height={'auto'} className="footer bgWhite">
                 <S.FooterExpense>
                   <Skeleton height={20} width={'15%'} variant="rounded" />
                   <Skeleton height={20} width={'5%'} variant="rounded" />
@@ -127,7 +132,12 @@ export const Bills = () => {
             <>
               {Object.values(date.costs).map((cost, key) => {
                 return (
-                  <Card width={'100%'} height={'auto'} key={key}>
+                  <Card
+                    width={'100%'}
+                    height={'auto'}
+                    key={key}
+                    className="bgWhite"
+                  >
                     <S.HeaderCard>
                       <S.Title>{cost.name}</S.Title>
                       <Box
@@ -258,7 +268,7 @@ export const Bills = () => {
                   </Card>
                 );
               })}
-              <Card width={'100%'} height={'auto'} className="footer">
+              <Card width={'100%'} height={'auto'} className="footer bgWhite">
                 <S.FooterExpense>
                   <S.Title>Total </S.Title>
                   <S.Text>{formatter.format(total)}</S.Text>

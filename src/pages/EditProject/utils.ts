@@ -1,17 +1,36 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  deleteProject,
-  editDeadline,
   editLands,
-  editUnits
+  editUnits,
+  editProject,
+  editDeadline,
+  deleteProject,
+  listUnitCharacteristics,
+  createDeadline
 } from '@/services/services';
 import {
+  handleCreateDeadlineProps,
   handleDeleteProjectProps,
   handleEditDeadlineIdProps,
   handleEditLandProps,
+  handleEditProjectProps,
   handleEdittUnitsProps,
+  handleListUnitCharacteristicsProps,
   handleTabsProps
 } from './@types';
 import { handleSumValuesProps } from '@/components/organism/UnitsForm/@types';
+
+export const unitTypeOptions = [
+  { value: 1, label: 'Residencial' },
+  { value: 2, label: 'Não Residencial' },
+  { value: 3, label: 'Loja' },
+  { value: 4, label: 'Vagas' },
+  { value: 5, label: 'HMP' },
+  { value: 6, label: 'UR' },
+  { value: 7, label: 'HIS' },
+  { value: 8, label: 'HNP' }
+];
+export const isEmptyUnitCharacteristics = [1, 2, 6, 7, 8];
 
 export const unitSummaryDefault = {
   id: 0,
@@ -22,7 +41,6 @@ export const unitSummaryDefault = {
   marketAmount: 0,
   unitQuantity: 0,
   exchangeQuantity: 0,
-  totalExchangeArea: 0,
   areaPrivativaTotal: 0
 };
 
@@ -171,6 +189,45 @@ export const handleEditLand = async ({
     setLoading(false);
   }
 };
+export const handleCreateDeadline = async ({
+  payload,
+  projectId,
+  setLoading,
+  setSnackbar
+}: handleCreateDeadlineProps) => {
+  setLoading(true);
+
+  try {
+    await createDeadline(projectId, payload);
+    setSnackbar({
+      isOpen: true,
+      severity: 'success',
+      vertical: 'top',
+      horizontal: 'right',
+      message: 'Prazos Criado com sucesso'
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
+    }
+  } finally {
+    setLoading(false);
+  }
+};
 export const handleEditDeadline = async ({
   deadlineId,
   payload,
@@ -187,6 +244,45 @@ export const handleEditDeadline = async ({
       vertical: 'top',
       horizontal: 'right',
       message: 'Prazos editados com sucesso'
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+export const handleEditProject = async ({
+  id,
+  name,
+  setLoading,
+  setSnackbar
+}: handleEditProjectProps) => {
+  setLoading(true);
+
+  try {
+    await editProject(id, name);
+    setSnackbar({
+      isOpen: true,
+      vertical: 'top',
+      severity: 'success',
+      horizontal: 'right',
+      message: 'Terreno editado com sucesso'
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -246,5 +342,32 @@ export const handleEdittUnits = async ({
     }
   } finally {
     setLoading(false);
+  }
+};
+export const handleListUnitCharacteristics = async ({
+  setSnackbar,
+  setListCharacteristics
+}: handleListUnitCharacteristicsProps) => {
+  try {
+    const result = await listUnitCharacteristics();
+    setListCharacteristics(result);
+  } catch (error) {
+    if (error instanceof Error) {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
+    }
   }
 };

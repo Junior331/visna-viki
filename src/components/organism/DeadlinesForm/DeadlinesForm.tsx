@@ -2,13 +2,16 @@ import { useFormik } from 'formik';
 import { useContext, useEffect } from 'react';
 import { Props } from './@types';
 import { FormControl, Grid } from '@mui/material';
-import { MaskType } from '@/utils/types';
-import { handleKeyDown, typeMask } from '@/utils/utils';
+import { handleKeyDown } from '@/utils/utils';
 import { Button, Input } from '@/components/elements';
 import deadlinesFormSchema from './DeadlinesFormSchema';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import * as S from './DeadlinesFormStyled';
 import { handleSumValues } from './utils';
+import { Tooltip } from '@/components/elements/Tooltip';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoItem } from '@mui/x-date-pickers/internals/demo';
 
 const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
   const { stepsIsDone, setStepsIsDone } = useContext(StepsIsDoneContext);
@@ -50,32 +53,48 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, setFieldValue]);
 
+  useEffect(() => {
+    setDate({
+      ...date,
+      deadline: {
+        ...values
+      }
+    });
+  }, [date, setDate, values]);
+
   return (
     <S.DeadlinesFormContainer>
       <S.Form onSubmit={handleSubmit}>
         <Grid container spacing={{ xs: 0, sm: 2 }}>
-          <S.ContainerInputs container spacing={{ xs: 0, sm: 2 }}>
+          <S.ContainerInputs
+            container
+            className="bgWhite"
+            spacing={{ xs: 0, sm: 2 }}
+          >
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Data de início</S.Label>
-                <Input
-                  required
-                  id="startDate"
-                  onBlur={handleBlur}
-                  value={typeMask(MaskType.DATE, values.startDate)}
-                  onChange={handleChange}
-                  aria-describedby="startDate"
-                  placeholder="Digite a Data"
-                  inputProps={{ style: { fontSize: '1.4rem' } }}
-                  helperText={touched.startDate && errors.startDate}
-                  error={touched.startDate && Boolean(errors.startDate)}
-                />
+                <Tooltip title={'Data de início'}>
+                  <S.Label>D. Início</S.Label>
+                </Tooltip>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoItem>
+                    <DesktopDatePicker
+                      format={'DD/MM/YYYY'}
+                      value={values.startDate || null}
+                      onChange={(date) =>
+                        setFieldValue('startDate', date || '')
+                      }
+                    />
+                  </DemoItem>
+                </LocalizationProvider>
               </FormControl>
             </Grid>
 
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Aprovação do projeto (mes)</S.Label>
+                <Tooltip title={'Aprovação do projeto (mes)'}>
+                  <S.Label>A. Projeto (mes)</S.Label>
+                </Tooltip>
                 <Input
                   required
                   onBlur={(e) => {
@@ -85,7 +104,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                     );
                     handleSumValues({
                       value1: parseFloat(e.target.value),
-                      value2: values.endDate,
+                      value2: values.projectLaunchDeadlineInMonth,
                       value3: values.constructionDeadlineInMonth,
                       fieldName: 'totalDeadlineInMonth',
                       setFieldValue
@@ -111,12 +130,17 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
 
             <Grid item xs={12} sm={12} md={2} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Prazo de lançamento (mes)</S.Label>
+                <Tooltip title={'Prazo de lançamento (mes)'}>
+                  <S.Label>P. Lançamento (mes)</S.Label>
+                </Tooltip>
                 <Input
                   required
-                  id="endDate"
+                  id="projectLaunchDeadlineInMonth"
                   onBlur={(e) => {
-                    setFieldValue('endDate', parseFloat(e.target.value));
+                    setFieldValue(
+                      'projectLaunchDeadlineInMonth',
+                      parseFloat(e.target.value)
+                    );
                     handleSumValues({
                       value1: values.approvalDeadlineInMonth,
                       value2: parseFloat(e.target.value),
@@ -125,20 +149,28 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                       setFieldValue
                     });
                   }}
-                  value={values.endDate}
+                  value={values.projectLaunchDeadlineInMonth}
                   onChange={handleChange}
-                  aria-describedby="endDate"
+                  aria-describedby="projectLaunchDeadlineInMonth"
                   placeholder="Digite os meses"
                   inputProps={{ style: { fontSize: '1.4rem' } }}
-                  helperText={touched.endDate && errors.endDate}
-                  error={touched.endDate && Boolean(errors.endDate)}
+                  helperText={
+                    touched.projectLaunchDeadlineInMonth &&
+                    errors.projectLaunchDeadlineInMonth
+                  }
+                  error={
+                    touched.projectLaunchDeadlineInMonth &&
+                    Boolean(errors.projectLaunchDeadlineInMonth)
+                  }
                 />
               </FormControl>
             </Grid>
 
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Execução da obra (mes)</S.Label>
+                <Tooltip title={'Execução da obra (mes)'}>
+                  <S.Label>E. Obra (mes)</S.Label>
+                </Tooltip>
                 <Input
                   required
                   onBlur={(e) => {
@@ -148,7 +180,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                     );
                     handleSumValues({
                       value1: values.approvalDeadlineInMonth,
-                      value2: values.endDate,
+                      value2: values.projectLaunchDeadlineInMonth,
                       value3: parseFloat(e.target.value),
                       fieldName: 'totalDeadlineInMonth',
                       setFieldValue
@@ -175,7 +207,9 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
 
             <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <S.Label>Prazo total (mes)</S.Label>
+                <Tooltip title={'Prazo total (mes)'}>
+                  <S.Label>P. Total (mes)</S.Label>
+                </Tooltip>
                 <Input
                   required
                   disabled
