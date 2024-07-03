@@ -42,9 +42,9 @@ import {
 import {
   typeMask,
   handleKeyDown,
-  formatCurrency,
   convertToParams,
-  formatterV2
+  formatterV2,
+  parseFormattedNumber
 } from '@/utils/utils';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import {
@@ -98,8 +98,6 @@ export const EditProject = () => {
   const [listCharacteristics, setListCharacteristics] = useState<
     unitCharacteristicsType[]
   >([]);
-  const [selectedCharacteristics, setselectedCharacteristics] =
-    useState<unitCharacteristicsType>();
 
   const formikLand = useFormik({
     initialValues: date.land,
@@ -126,16 +124,18 @@ export const EditProject = () => {
       const payload = {
         id: values.id,
         projectId: parseFloat(id),
-        flooring: values.flooring,
-        underground: values.underground,
-        unitPerFloor: values.unitPerFloor,
+        flooring: parseFloat(values.flooring.toString()),
+        underground: parseFloat(values.underground.toString()),
+        unitPerFloor: parseFloat(values.unitPerFloor.toString()),
         averageSaleValue: values.averageSaleValue,
         totalExchangeArea: values.totalExchangeArea,
-        totalToBeBuiltArea: values.totalToBeBuiltArea,
+        totalToBeBuiltArea: parseFloat(values.totalToBeBuiltArea.toString()),
         totalValueNoExchange: values.totalValueNoExchange,
         totalUnitsInDevelopment: values.totalUnitsInDevelopment,
         totalPrivateAreaQuantity: values.totalPrivateAreaQuantity,
-        totalAreaOfTheDevelopment: values.totalAreaOfTheDevelopment,
+        totalAreaOfTheDevelopment: parseFloat(
+          values.totalAreaOfTheDevelopment.toString()
+        ),
         totalPrivateAreaNetOfExchange: values.totalPrivateAreaNetOfExchange,
         unit: values.unit.map((unit) => ({
           ...unit
@@ -158,6 +158,7 @@ export const EditProject = () => {
       if (!date.deadline.id) {
         const payloadCreate = {
           startDate: dayjs(values.startDate),
+          afterConstruction: values.afterConstruction,
           totalDeadlineInMonth: values.totalDeadlineInMonth,
           approvalDeadlineInMonth: values.approvalDeadlineInMonth,
           constructionDeadlineInMonth: values.constructionDeadlineInMonth,
@@ -309,14 +310,17 @@ export const EditProject = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.unit, values.totalAreaOfTheDevelopment]);
-
   useEffect(() => {
-    values.unit.map((unit) => {
-      setselectedCharacteristics(
-        listCharacteristics.find(
-          (item) => item.unit_type_id === unit.unitTypeId
-        )
-      );
+    const listUnit = values.unit;
+    listUnit.map((unit, index) => {
+      handleSumValues({
+        id: index,
+        type: 'sum',
+        value1: unit.averageArea.toString(),
+        value2: unit.exchangeQuantity.toString(),
+        fieldName: 'areaExchanged',
+        setFieldValue: setFieldValue
+      });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.unit]);
@@ -731,8 +735,8 @@ export const EditProject = () => {
                         onChange={formikLand.handleChange}
                         onKeyDown={handleKeyDown}
                         placeholder="Digite o valor"
-                        value={formatCurrency(
-                          formikLand.values.amountPerMeter.toString()
+                        value={formatterV2.format(
+                          formikLand.values.amountPerMeter
                         )}
                         aria-describedby="amountPerMeter"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
@@ -761,8 +765,8 @@ export const EditProject = () => {
                         aria-describedby="totalAmount"
                         placeholder="Digite o valor total"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
-                        value={formatCurrency(
-                          formikLand.values.totalAmount.toString()
+                        value={formatterV2.format(
+                          formikLand.values.totalAmount
                         )}
                       />
                     </FormControl>
@@ -892,14 +896,6 @@ export const EditProject = () => {
                                             `unit[${index}].unitCharacteristicsId`,
                                             ''
                                           );
-
-                                          setselectedCharacteristics(
-                                            listCharacteristics.find(
-                                              (item) =>
-                                                item.unit_type_id ===
-                                                e.target.value
-                                            )
-                                          );
                                           handleChange(e);
                                         }}
                                         className="SelectComponent"
@@ -921,9 +917,7 @@ export const EditProject = () => {
                                       </Select>
                                     </FormControl>
                                   </Grid>
-                                  {Boolean(
-                                    selectedCharacteristics?.children.length
-                                  ) && (
+                                  {Boolean(values.unit[index].unitTypeId) && (
                                     <Grid
                                       item
                                       xs={12}
@@ -939,6 +933,11 @@ export const EditProject = () => {
 
                                         <Select
                                           displayEmpty
+                                          disabled={
+                                            !listCharacteristics[
+                                              values.unit[index].unitTypeId - 1
+                                            ].children.length
+                                          }
                                           onBlur={handleBlur}
                                           onChange={(e) => {
                                             setFieldValue(
@@ -963,13 +962,13 @@ export const EditProject = () => {
                                           <MenuItem value={''} disabled>
                                             <em>Selecione a opção </em>
                                           </MenuItem>
-                                          {selectedCharacteristics?.children.map(
-                                            (item) => (
-                                              <MenuItem value={item.id}>
-                                                {item.name}
-                                              </MenuItem>
-                                            )
-                                          )}
+                                          {listCharacteristics[
+                                            values.unit[index].unitTypeId - 1
+                                          ].children.map((item) => (
+                                            <MenuItem value={item.id}>
+                                              {item.name}
+                                            </MenuItem>
+                                          ))}
                                         </Select>
                                       </FormControl>
                                     </Grid>
@@ -1259,9 +1258,16 @@ export const EditProject = () => {
                                         id={`marketAmount-${index}`}
                                         onChange={(e) => {
                                           handleChange(e);
+                                          setFieldValue(
+                                            `unit[${index}].marketAmount`,
+                                            e.target.value
+                                          );
                                         }}
+                                        defaultValue={formatterV2.format(
+                                          values.unit[index].marketAmount
+                                        )}
                                         name={`unit[${index}].marketAmount`}
-                                        value={formatCurrency(
+                                        value={parseFormattedNumber(
                                           values.unit[
                                             index
                                           ].marketAmount.toString()
@@ -1298,10 +1304,8 @@ export const EditProject = () => {
                                         placeholder="0,00"
                                         aria-describedby="netAmount"
                                         name={`unit[${index}].netAmount`}
-                                        value={formatCurrency(
-                                          values.unit[
-                                            index
-                                          ].netAmount.toString()
+                                        value={formatterV2.format(
+                                          values.unit[index].netAmount
                                         )}
                                         inputProps={{
                                           style: { fontSize: '1.4rem' }
@@ -1611,9 +1615,7 @@ export const EditProject = () => {
                             onChange={handleChange}
                             aria-describedby="averageSaleValue"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
-                            value={formatCurrency(
-                              values.averageSaleValue.toString()
-                            )}
+                            value={formatterV2.format(values.averageSaleValue)}
                             helperText={
                               touched.averageSaleValue &&
                               errors.averageSaleValue

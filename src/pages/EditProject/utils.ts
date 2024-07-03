@@ -350,7 +350,8 @@ export const handleListUnitCharacteristics = async ({
 }: handleListUnitCharacteristicsProps) => {
   try {
     const result = await listUnitCharacteristics();
-    setListCharacteristics(result);
+    const updatedList = result.filter((item: any) => item.name !== 'UR');
+    setListCharacteristics(updatedList);
   } catch (error) {
     if (error instanceof Error) {
       setSnackbar({

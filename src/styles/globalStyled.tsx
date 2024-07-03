@@ -42,6 +42,9 @@ export const GlobalStyles = createGlobalStyle`
       -webkit-text-fill-color: rgb(0 0 0 / 70%) !important; 
       color: ${({ theme }) => theme.palette.color.dark} !important;
     }
+    .MuiSelect-select.Mui-disabled {
+      background-color: rgba(0, 0, 0, 0.18)!important;
+    }
     .inputDisabled{
       cursor: no-drop;
       border-radius: 5px;

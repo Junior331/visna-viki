@@ -26,15 +26,17 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
   const [listCharacteristics, setListCharacteristics] = useState<
     unitCharacteristicsType[]
   >([]);
-  const [selectedCharacteristics, setselectedCharacteristics] =
-    useState<unitCharacteristicsType>();
+
   const formik = useFormik({
     initialValues: date.units,
     onSubmit: async (values) => {
       setDate({
         ...date,
         units: {
-          ...values
+          ...values,
+          unit: values.unit.map((unit) => ({
+            ...unit
+          }))
         }
       });
       setStepsIsDone([...stepsIsDone, '2']);
@@ -180,12 +182,6 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                                   `unit[${index}].unitCharacteristicsId`,
                                   ''
                                 );
-                                setselectedCharacteristics(
-                                  listCharacteristics.find(
-                                    (item) =>
-                                      item.unit_type_id === e.target.value
-                                  )
-                                );
                                 handleChange(e);
                               }}
                               className="SelectComponent"
@@ -206,7 +202,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                             </Select>
                           </FormControl>
                         </Grid>
-                        {Boolean(selectedCharacteristics?.children.length) && (
+                        {Boolean(values.unit[index].unitTypeId) && (
                           <Grid item xs={12} sm={6} md={1.5} minWidth={170}>
                             <FormControl
                               sx={{ m: 1, width: '25ch' }}
@@ -215,6 +211,11 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                               <S.Label>Características</S.Label>
 
                               <Select
+                                disabled={
+                                  !listCharacteristics[
+                                    values.unit[index].unitTypeId - 1
+                                  ].children.length
+                                }
                                 displayEmpty
                                 onBlur={handleBlur}
                                 onChange={(e) => {
@@ -226,9 +227,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                                 }}
                                 className="SelectComponent"
                                 name={`unit[${index}].unitCharacteristicsId`}
-                                value={
-                                  values.unit[index].unitCharacteristicsId || ''
-                                }
+                                value={values.unit[index].unitCharacteristicsId}
                                 IconComponent={KeyboardArrowDownRounded}
                                 inputProps={{
                                   'aria-label': 'Without label'
@@ -237,13 +236,13 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                                 <MenuItem value={''} disabled>
                                   <em>Selecione a opção </em>
                                 </MenuItem>
-                                {selectedCharacteristics?.children.map(
-                                  (item) => (
-                                    <MenuItem value={item.id}>
-                                      {item.name}
-                                    </MenuItem>
-                                  )
-                                )}
+                                {listCharacteristics[
+                                  values.unit[index].unitTypeId - 1
+                                ].children.map((item) => (
+                                  <MenuItem value={item.id}>
+                                    {item.name}
+                                  </MenuItem>
+                                ))}
                               </Select>
                             </FormControl>
                           </Grid>
