@@ -23,7 +23,7 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .idea
-.hisstory
+.history
 .DS_Store
 *.suo
 *.ntvs*

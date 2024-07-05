@@ -2,15 +2,18 @@
 import axios from 'axios';
 import {
   CepData,
-  deadlineType,
-  handleExpenseProps,
-  landSummaryType,
   landType,
-  payloadExpense,
-  payloadExpenseType,
-  payloadUserType,
+  unitType,
   unitHubType,
-  unitType
+  payloadSteps,
+  deadlineType,
+  payloadExpense,
+  payloadUserType,
+  landSummaryType,
+  payloadScenarios,
+  handleExpenseProps,
+  payloadExpenseType,
+  handleExpenseGenericProps
 } from '@/utils/types';
 import { ENDPOINTS } from '@/utils/endpoints';
 import { getToken } from './sessionStorage';
@@ -747,6 +750,222 @@ export const fetchCepData = async (cep: string) => {
   try {
     const response = await axios.get<CepData>(
       `https://viacep.com.br/ws/${cep}/json/`
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+
+// crud steps
+export const listAllStepsByProject = async ({
+  projectId
+}: handleExpenseGenericProps) => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.STEPS.BASE_URL}/${projectId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const listStepsTimestamps = async () => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.STEPS.BASE_URL}/timestamps/values`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const listStepsOptions = async () => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.STEPS.BASE_URL}/options/values`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const listStepsById = async (id: number) => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.STEPS.BASE_URL}/find/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const createSteps = async (payload: payloadSteps) => {
+  try {
+    const response = await axios.post(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.STEPS.BASE_URL}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const editSteps = async (id: number, payload: payloadSteps) => {
+  try {
+    const response = await axios.patch(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.STEPS.BASE_URL}/${id}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const deleteSteps = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.STEPS.BASE_URL}/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+
+// crud scenarios
+export const listAllScenariosByProject = async ({
+  projectId
+}: handleExpenseGenericProps) => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.SCENARIOS.BASE_URL}/${projectId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const listScenariosById = async (id: number) => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.SCENARIOS.BASE_URL}/find/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const createScenarios = async (payload: payloadScenarios) => {
+  try {
+    const response = await axios.post(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.SCENARIOS.BASE_URL}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const editScenarios = async (id: number, payload: payloadScenarios) => {
+  try {
+    const response = await axios.patch(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.SCENARIOS.BASE_URL}/${id}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const deleteScenarios = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.SCENARIOS.BASE_URL}/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
     );
     return response.data;
   } catch (error) {

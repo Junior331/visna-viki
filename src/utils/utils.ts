@@ -57,14 +57,14 @@ export const formatCurrency = (value: string): string => {
   if (!numericValue || isNaN(parseFloat(numericValue))) {
     return '';
   }
-
   // Converte o valor para um número e formata como moeda brasileira (BRL)
   const numberValue = parseFloat(numericValue) / 100;
+
   const formattedValue = numberValue.toLocaleString('pt-BR', {
+    style: 'decimal',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   });
-
   return formattedValue;
 };
 

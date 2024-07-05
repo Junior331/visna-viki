@@ -130,6 +130,7 @@ export type unitHubType = {
 
 export type deadlineType = {
   startDate: Dayjs;
+  afterConstruction: number;
   totalDeadlineInMonth: number;
   approvalDeadlineInMonth: number;
   constructionDeadlineInMonth: number;
@@ -200,6 +201,21 @@ export type payloadExpense = {
   paymentStartDate: Dayjs;
   unitExpenseTypeId: number;
   periodicityPayment: number;
+};
+export type payloadSteps = {
+  startDate: string;
+  projectId: number;
+  totalDeadlineInMonth: number;
+  approvalDeadlineInMonth: number;
+  constructionDeadlineInMonth: number;
+  projectLaunchDeadlineInMonth: number;
+};
+export type payloadScenarios = {
+  value: number;
+  label: string;
+  unity: string;
+  projectId: number;
+  projectStepId: number;
 };
 export type CepData = {
   uf: string;
