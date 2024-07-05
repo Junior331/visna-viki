@@ -129,7 +129,8 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
         ...values
       }
     });
-  }, [date, setDate, values]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
 
   return (
     <S.UnitsFormContainer>
