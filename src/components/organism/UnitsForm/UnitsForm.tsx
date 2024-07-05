@@ -9,13 +9,12 @@ import { SnackbarContext } from '@/contexts/Snackbar';
 import { Button, Input } from '@/components/elements';
 import { Tooltip } from '@/components/elements/Tooltip';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
-import { MaskType, unitCharacteristicsType } from '@/utils/types';
+import { unitCharacteristicsType } from '@/utils/types';
 import { calculateTUID, handleSumValues, unitDefault } from './utils';
 import {
-  formatCurrency,
   formatterV2,
   handleKeyDown,
-  typeMask
+  parseFormattedNumber
 } from '@/utils/utils';
 import { handleListUnitCharacteristics } from '@/pages/EditProject/utils';
 import * as S from './UnitsFormStyled';
@@ -146,377 +145,430 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                   <Grid
                     pl={4}
                     mb={2}
-                    pt={2.5}
+                    pt={5}
                     container
                     rowGap={4}
                     className="containerUnits"
                     spacing={{ xs: 0, sm: 2 }}
                   >
-                    {values.unit.map((unit, index) => (
-                      <S.ContainerInputs
-                        pl={0.5}
-                        container
-                        rowGap={1}
-                        key={unit.id}
-                        spacing={{ xs: 0, sm: 2 }}
-                      >
-                        <Grid item xs={12} sm={6} md={1.5} minWidth={170}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <Tooltip title={'Tipos de unidades'}>
-                              <S.Label>T. Unidades </S.Label>
-                            </Tooltip>
-
-                            <Select
-                              required
-                              displayEmpty
-                              onBlur={handleBlur}
-                              onChange={(e) => {
-                                setFieldValue(
-                                  `unit[${index}].unitTypeId`,
-                                  e.target.value
-                                );
-                                setFieldValue(
-                                  `unit[${index}].unitCharacteristicsId`,
-                                  ''
-                                );
-                                handleChange(e);
-                              }}
-                              className="SelectComponent"
-                              id={`unitTypeId-${unit.id}`}
-                              name={`unit[${index}].unitTypeId`}
-                              value={values.unit[index].unitTypeId}
-                              IconComponent={KeyboardArrowDownRounded}
-                              inputProps={{ 'aria-label': 'Without label' }}
-                            >
-                              <MenuItem value={0} disabled>
-                                <em>Selecione a opção </em>
-                              </MenuItem>
-                              {listCharacteristics.map((item) => (
-                                <MenuItem value={item.unit_type_id}>
-                                  {item.name}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                        {Boolean(values.unit[index].unitTypeId) && (
-                          <Grid item xs={12} sm={6} md={1.5} minWidth={170}>
+                    {values.unit.map((unit, index) => {
+                      return (
+                        <S.ContainerInputs
+                          pl={0.5}
+                          container
+                          rowGap={1}
+                          key={unit.id}
+                          spacing={{ xs: 0, sm: 2 }}
+                        >
+                          <Grid item xs={12} sm={6} md={1.3} minWidth={170}>
                             <FormControl
                               sx={{ m: 1, width: '25ch' }}
                               variant="outlined"
                             >
-                              <S.Label>Características</S.Label>
+                              <Tooltip title={'Tipos de unidades '}>
+                                <S.Label>T. Unidades </S.Label>
+                              </Tooltip>
 
                               <Select
-                                disabled={
-                                  !listCharacteristics[
-                                    values.unit[index].unitTypeId - 1
-                                  ].children.length
-                                }
+                                required
                                 displayEmpty
                                 onBlur={handleBlur}
                                 onChange={(e) => {
                                   setFieldValue(
-                                    `unit[${index}].unitCharacteristicsId`,
+                                    `unit[${index}].unitTypeId`,
                                     e.target.value
+                                  );
+                                  setFieldValue(
+                                    `unit[${index}].unitCharacteristicsId`,
+                                    ''
                                   );
                                   handleChange(e);
                                 }}
                                 className="SelectComponent"
-                                name={`unit[${index}].unitCharacteristicsId`}
-                                value={values.unit[index].unitCharacteristicsId}
+                                name={`unit[${index}].unitTypeId`}
+                                value={values.unit[index].unitTypeId}
                                 IconComponent={KeyboardArrowDownRounded}
                                 inputProps={{
                                   'aria-label': 'Without label'
                                 }}
                               >
-                                <MenuItem value={''} disabled>
+                                <MenuItem value={0} disabled>
                                   <em>Selecione a opção </em>
                                 </MenuItem>
-                                {listCharacteristics[
-                                  values.unit[index].unitTypeId - 1
-                                ].children.map((item) => (
-                                  <MenuItem value={item.id}>
+                                {listCharacteristics.map((item) => (
+                                  <MenuItem value={item.unit_type_id}>
                                     {item.name}
                                   </MenuItem>
                                 ))}
                               </Select>
                             </FormControl>
                           </Grid>
-                        )}
-                        <Grid item xs={12} sm={6} md={1.3} minWidth={130}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <S.Label>Quantidade</S.Label>
-                            <Input
-                              required
-                              onBlur={(e) => {
-                                setFieldValue(
-                                  `unit[${index}].unitQuantity`,
-                                  e.target.value
-                                );
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'sum',
-                                  value1: e.target.value,
-                                  value2: unit.averageArea,
-                                  fieldName: 'areaPrivativaTotal',
-                                  setFieldValue
-                                });
-                              }}
-                              id={`unitQuantity-${unit.id}`}
-                              onChange={handleChange}
-                              name={`unit[${index}].unitQuantity`}
-                              value={typeMask(
-                                MaskType.NUMBER,
-                                values.unit[index].unitQuantity
-                              )}
-                              aria-describedby="unitQuantity"
-                              placeholder="Digite a quantidade"
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={0.8} minWidth={145}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <Tooltip title={'Área média'}>
-                              <S.Label>A. Média</S.Label>
-                            </Tooltip>
-                            <Input
-                              required
-                              onBlur={(e) => {
-                                setFieldValue(
-                                  `unit[${index}].averageArea`,
-                                  e.target.value
-                                );
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'sum',
-                                  value1: e.target.value,
-                                  value2: unit.unitQuantity.toString(),
-                                  fieldName: 'areaPrivativaTotal',
-                                  setFieldValue
-                                });
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'sum',
-                                  value1: e.target.value,
-                                  value2: unit.exchangeQuantity.toString(),
-                                  fieldName: 'areaExchanged',
-                                  setFieldValue
-                                });
+                          {Boolean(values.unit[index].unitTypeId) && (
+                            <Grid item xs={12} sm={6} md={1.5} minWidth={170}>
+                              <FormControl
+                                sx={{ m: 1, width: '25ch' }}
+                                variant="outlined"
+                              >
+                                <S.Label>Características</S.Label>
 
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'mult',
-                                  value1: unit.areaPrivativaTotal.toString(),
-                                  value2: e.target.value,
-                                  value3: unit.marketAmount.toString(),
-                                  fieldName: 'netAmount',
-                                  setFieldValue
-                                });
-                              }}
-                              id={`averageArea-${unit.id}`}
-                              onChange={handleChange}
-                              name={`unit[${index}].averageArea`}
-                              value={values.unit[index].averageArea}
-                              aria-describedby="averageArea"
-                              placeholder="Digite a area"
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={1.1} minWidth={175}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <Tooltip title={'Área Privativa total'}>
-                              <S.Label>A. P. Total</S.Label>
-                            </Tooltip>
+                                <Select
+                                  displayEmpty
+                                  disabled={
+                                    !listCharacteristics[
+                                      values.unit[index].unitTypeId - 1
+                                    ].children.length
+                                  }
+                                  onBlur={handleBlur}
+                                  onChange={(e) => {
+                                    setFieldValue(
+                                      `unit[${index}].unitCharacteristicsId`,
+                                      e.target.value
+                                    );
+                                    handleChange(e);
+                                  }}
+                                  className="SelectComponent"
+                                  name={`unit[${index}].unitCharacteristicsId`}
+                                  value={
+                                    values.unit[index].unitCharacteristicsId ||
+                                    ''
+                                  }
+                                  IconComponent={KeyboardArrowDownRounded}
+                                  inputProps={{
+                                    'aria-label': 'Without label'
+                                  }}
+                                >
+                                  <MenuItem value={''} disabled>
+                                    <em>Selecione a opção </em>
+                                  </MenuItem>
+                                  {listCharacteristics[
+                                    values.unit[index].unitTypeId - 1
+                                  ].children.map((item) => (
+                                    <MenuItem value={item.id}>
+                                      {item.name}
+                                    </MenuItem>
+                                  ))}
+                                </Select>
+                              </FormControl>
+                            </Grid>
+                          )}
+                          <Grid item xs={12} sm={6} md={1.3} minWidth={120}>
+                            <FormControl
+                              sx={{ m: 1, width: '25ch' }}
+                              variant="outlined"
+                            >
+                              <S.Label>Quantidade</S.Label>
+                              <Input
+                                required
+                                onBlur={(e) => {
+                                  setFieldValue(
+                                    `unit[${index}].unitQuantity`,
+                                    parseFloat(e.target.value)
+                                  );
+                                  handleSumValues({
+                                    id: unit.id,
+                                    type: 'sum',
+                                    value1: e.target.value,
+                                    value2: unit.averageArea,
+                                    setFieldValue: setFieldValue,
+                                    fieldName: 'areaPrivativaTotal'
+                                  });
+                                  handleSumValues({
+                                    id: index,
+                                    type: 'mult',
+                                    value1: unit.marketAmount.toString(),
+                                    value2: e.target.value,
+                                    value3: unit.exchangeQuantity.toString(),
+                                    fieldName: 'netAmount',
+                                    setFieldValue: setFieldValue
+                                  });
+                                }}
+                                id={`unitQuantity-${unit.id}`}
+                                onChange={(e) => {
+                                  setFieldValue(
+                                    `unit[${index}].unitQuantity`,
+                                    parseFloat(e.target.value)
+                                  );
+                                }}
+                                name={`values.unit[${index}].unitQuantity`}
+                                value={values.unit[index].unitQuantity || 0}
+                                aria-describedby="unitQuantity"
+                                placeholder="Digite a quantidade"
+                                inputProps={{
+                                  style: { fontSize: '1.4rem' }
+                                }}
+                              />
+                            </FormControl>
+                          </Grid>
+                          <Grid item xs={12} sm={6} md={1} minWidth={165}>
+                            <FormControl
+                              sx={{ m: 1, width: '25ch' }}
+                              variant="outlined"
+                            >
+                              <Tooltip title={'Área média'}>
+                                <S.Label>A. Média</S.Label>
+                              </Tooltip>
+                              <Input
+                                required
+                                onBlur={(e) => {
+                                  setFieldValue(
+                                    `unit[${index}].averageArea`,
+                                    parseFloat(e.target.value) || 0
+                                  );
+                                  handleSumValues({
+                                    id: unit.id,
+                                    type: 'sum',
+                                    value1: e.target.value,
+                                    value2: unit.unitQuantity.toString(),
+                                    fieldName: 'areaPrivativaTotal',
+                                    setFieldValue: setFieldValue
+                                  });
+                                  handleSumValues({
+                                    id: unit.id,
+                                    type: 'sum',
+                                    value1: e.target.value,
+                                    value2: unit.exchangeQuantity.toString(),
+                                    fieldName: 'areaExchanged',
+                                    setFieldValue: setFieldValue
+                                  });
+                                }}
+                                id={`averageArea-${unit.id}`}
+                                onChange={(e) => {
+                                  setFieldValue(
+                                    `unit[${index}].averageArea`,
+                                    parseFloat(e.target.value)
+                                  );
+                                  handleChange(e);
+                                }}
+                                name={`unit[${index}].averageArea`}
+                                value={values.unit[index].averageArea}
+                                aria-describedby="averageArea"
+                                placeholder="Digite a area"
+                                inputProps={{
+                                  style: { fontSize: '1.4rem' }
+                                }}
+                              />
+                            </FormControl>
+                          </Grid>
 
-                            <Input
-                              disabled
-                              placeholder="0"
-                              onBlur={(e) => {
-                                setFieldValue(
-                                  `unit[${index}].areaPrivativaTotal`,
-                                  e.target.value
-                                );
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'mult',
-                                  value1: e.target.value,
-                                  value2: unit.areaExchanged.toString(),
-                                  value3: unit.marketAmount.toString(),
-                                  fieldName: 'netAmount',
-                                  setFieldValue
-                                });
-                              }}
-                              onChange={handleChange}
-                              id={`areaPrivativaTotal-${unit.id}`}
-                              aria-describedby="areaPrivativaTotal"
-                              name={`unit[${index}].areaPrivativaTotal`}
-                              value={values.unit[index].areaPrivativaTotal}
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={1.2} minWidth={190}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <Tooltip title={'Quantidades de permutas'}>
-                              <S.Label>Qtd. Permutas (m²)</S.Label>
-                            </Tooltip>
+                          <Grid item xs={12} sm={6} md={1.3} minWidth={165}>
+                            <FormControl
+                              sx={{ m: 1, width: '25ch' }}
+                              variant="outlined"
+                            >
+                              <Tooltip title={'Área Privativa total'}>
+                                <S.Label>A. P. Total</S.Label>
+                              </Tooltip>
+                              <Input
+                                disabled
+                                onBlur={(e) => {
+                                  setFieldValue(
+                                    `unit[${index}].areaPrivativaTotal`,
+                                    parseFloat(e.target.value)
+                                  );
+                                  handleBlur(e);
+                                }}
+                                id={`areaPrivativaTotal-${index}`}
+                                onChange={(e) => {
+                                  setFieldValue(
+                                    `unit[${index}].areaPrivativaTotal`,
+                                    parseFloat(e.target.value)
+                                  );
+                                  handleChange(e);
+                                }}
+                                name={`unit[${index}].areaPrivativaTotal`}
+                                value={values.unit[index].areaPrivativaTotal}
+                                placeholder="0"
+                                aria-describedby="areaPrivativaTotal"
+                                inputProps={{
+                                  style: { fontSize: '1.4rem' }
+                                }}
+                              />
+                            </FormControl>
+                          </Grid>
+                          <Grid item xs={12} sm={6} md={1.3} minWidth={180}>
+                            <FormControl
+                              sx={{ m: 1, width: '25ch' }}
+                              variant="outlined"
+                            >
+                              <Tooltip title={'Quantidade de permutas'}>
+                                <S.Label>Qtd. Permutas (m²)</S.Label>
+                              </Tooltip>
+                              <Input
+                                required
+                                onBlur={(e) => {
+                                  setFieldValue(
+                                    `unit[${index}].exchangeQuantity`,
+                                    parseFloat(e.target.value) || 0
+                                  );
+                                  handleSumValues({
+                                    id: index,
+                                    type: 'sum',
+                                    value1: unit.averageArea.toString(),
+                                    value2: e.target.value,
+                                    fieldName: 'areaExchanged',
+                                    setFieldValue: setFieldValue
+                                  });
+                                  handleSumValues({
+                                    id: unit.id,
+                                    type: 'mult',
+                                    value1: unit.marketAmount.toString(),
+                                    value2: unit.unitQuantity.toString(),
+                                    value3: e.target.value,
+                                    fieldName: 'netAmount',
+                                    setFieldValue: setFieldValue
+                                  });
+                                }}
+                                onChange={(e) => {
+                                  setFieldValue(
+                                    `unit[${index}].exchangeQuantity`,
+                                    parseFloat(e.target.value)
+                                  );
+                                  handleChange(e);
+                                }}
+                                id={`exchangeQuantity-${index}`}
+                                name={`unit[${index}].exchangeQuantity`}
+                                value={values.unit[index].exchangeQuantity}
+                                placeholder="Digite a quantidade"
+                                aria-describedby="exchangeQuantity"
+                                inputProps={{
+                                  style: { fontSize: '1.4rem' }
+                                }}
+                              />
+                            </FormControl>
+                          </Grid>
+                          <Grid item xs={12} sm={6} md={1.5} minWidth={240}>
+                            <FormControl
+                              sx={{ m: 1, width: '25ch' }}
+                              variant="outlined"
+                            >
+                              <S.Label>Área permutada (m²)</S.Label>
 
-                            <Input
-                              required
-                              onBlur={(e) => {
-                                setFieldValue(
-                                  `unit[${index}].exchangeQuantity`,
-                                  e.target.value
-                                );
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'sum',
-                                  value1: unit.averageArea.toString(),
-                                  value2: e.target.value,
-                                  fieldName: 'areaExchanged',
-                                  setFieldValue
-                                });
-                              }}
-                              onChange={handleChange}
-                              id={`exchangeQuantity-${unit.id}`}
-                              name={`unit[${index}].exchangeQuantity`}
-                              value={values.unit[index].exchangeQuantity}
-                              placeholder="Digite a quantidade"
-                              aria-describedby="exchangeQuantity"
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={1.6} minWidth={250}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <S.Label> Área permutada (m²)</S.Label>
-                            <Input
-                              required
-                              disabled
-                              onBlur={handleBlur}
-                              id={`areaExchanged-${unit.id}`}
-                              onChange={handleChange}
-                              name={`unit[${index}].areaExchanged`}
-                              value={values.unit[index].areaExchanged}
-                              placeholder="Digite a area"
-                              aria-describedby="areaExchanged"
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6} md={1.5} minWidth={220}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
-                          >
-                            <S.Label>Valor de venda/m² (R$)</S.Label>
+                              <Input
+                                required
+                                disabled
+                                onBlur={handleBlur}
+                                id={`areaExchanged-${index}`}
+                                onChange={handleChange}
+                                name={`unit[${index}].areaExchanged`}
+                                value={values.unit[index].areaExchanged}
+                                placeholder="Digite a area"
+                                aria-describedby="areaExchanged"
+                                inputProps={{
+                                  style: { fontSize: '1.4rem' }
+                                }}
+                              />
+                            </FormControl>
+                          </Grid>
+                          <Grid item xs={12} sm={6} md={1.9} minWidth={160}>
+                            <FormControl
+                              sx={{ m: 1, width: '25ch' }}
+                              variant="outlined"
+                            >
+                              <S.Label>Valor de venda/m² (R$)</S.Label>
 
-                            <Input
-                              required
-                              onBlur={(e) => {
-                                setFieldValue(
-                                  `unit[${index}].marketAmount`,
-                                  e.target.value
-                                );
-                                handleSumValues({
-                                  id: unit.id,
-                                  type: 'mult',
-                                  value1: unit.areaPrivativaTotal.toString(),
-                                  value2: unit.areaExchanged.toString(),
-                                  value3: e.target.value,
-                                  fieldName: 'netAmount',
-                                  setFieldValue
-                                });
-                              }}
-                              id={`marketAmount-${unit.id}`}
-                              onChange={handleChange}
-                              name={`unit[${index}].marketAmount`}
-                              value={formatCurrency(
-                                values.unit[index].marketAmount || ''
-                              )}
-                              placeholder="Digite o valor"
-                              aria-describedby="marketAmount"
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                            />
-                          </FormControl>
-                        </Grid>
+                              <Input
+                                required
+                                onBlur={(e) => {
+                                  setFieldValue(
+                                    `unit[${index}].marketAmount`,
+                                    e.target.value
+                                  );
+                                  handleSumValues({
+                                    id: unit.id,
+                                    type: 'mult',
+                                    value1: e.target.value,
+                                    value2: unit.unitQuantity.toString(),
+                                    value3: unit.exchangeQuantity.toString(),
+                                    fieldName: 'netAmount',
+                                    setFieldValue: setFieldValue
+                                  });
+                                }}
+                                id={`marketAmount-${index}`}
+                                onChange={(e) => {
+                                  handleChange(e);
+                                  setFieldValue(
+                                    `unit[${index}].marketAmount`,
+                                    e.target.value
+                                  );
+                                }}
+                                defaultValue={formatterV2.format(
+                                  parseFloat(
+                                    values.unit[index].marketAmount.toString()
+                                  )
+                                )}
+                                name={`unit[${index}].marketAmount`}
+                                value={parseFormattedNumber(
+                                  values.unit[index].marketAmount.toString()
+                                )}
+                                placeholder="Digite o valor"
+                                aria-describedby="marketAmount"
+                                inputProps={{
+                                  style: { fontSize: '1.4rem' }
+                                }}
+                              />
+                            </FormControl>
+                          </Grid>
 
-                        <Grid item xs={12} sm={6} md={1.9} minWidth={280}>
-                          <FormControl
-                            sx={{ m: 1, width: '25ch' }}
-                            variant="outlined"
+                          <Grid item xs={12} sm={6} md={1.5} minWidth={160}>
+                            <FormControl
+                              sx={{ m: 1, width: '25ch' }}
+                              variant="outlined"
+                            >
+                              <Tooltip title={'VGV líquido da permuta'}>
+                                <S.Label>VGV Liq. Permuta (R$)</S.Label>
+                              </Tooltip>
+                              <Input
+                                required
+                                disabled
+                                onBlur={handleBlur}
+                                id={`netAmount-${index}`}
+                                onChange={handleChange}
+                                placeholder="0,00"
+                                aria-describedby="netAmount"
+                                name={`unit[${index}].netAmount`}
+                                value={formatterV2.format(
+                                  parseFloat(
+                                    values.unit[index].netAmount.toString()
+                                  )
+                                )}
+                                inputProps={{
+                                  style: { fontSize: '1.4rem' }
+                                }}
+                              />
+                            </FormControl>
+                          </Grid>
+                          <Grid
+                            item
+                            xs={12}
+                            sm={6}
+                            md={1}
+                            className="containerButton"
+                            minWidth={values.unit.length > 1 ? 80 : 45}
                           >
-                            <Tooltip title={'VGV líquido da permuta'}>
-                              <S.Label>VGV Liq. Permuta (R$)</S.Label>
-                            </Tooltip>
-                            <Input
-                              required
-                              disabled
-                              onBlur={handleBlur}
-                              id={`netAmount-${unit.id}`}
-                              onChange={handleChange}
-                              placeholder="0,00"
-                              aria-describedby="netAmount"
-                              name={`unit[${index}].netAmount`}
-                              value={formatCurrency(
-                                values.unit[index].netAmount.toString() || ''
-                              )}
-                              inputProps={{ style: { fontSize: '1.4rem' } }}
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid
-                          item
-                          xs={12}
-                          sm={6}
-                          md={1}
-                          className="containerButton"
-                          minWidth={values.unit.length > 1 ? 80 : 45}
-                        >
-                          {values.unit.length > 1 && (
+                            {unit.id >= 1 && (
+                              <Button
+                                size="30px"
+                                className="btnRemove"
+                                onClick={() => remove(unit.id)}
+                              >
+                                -
+                              </Button>
+                            )}
                             <Button
                               size="30px"
-                              className="btnRemove"
-                              onClick={() => remove(unit.id)}
+                              onClick={() =>
+                                push({
+                                  ...unitDefault,
+                                  keyIndex: values.unit.length
+                                })
+                              }
                             >
-                              -
+                              +
                             </Button>
-                          )}
-                          <Button
-                            size="30px"
-                            onClick={() =>
-                              push({
-                                ...unitDefault,
-                                id: values.unit.length
-                              })
-                            }
-                          >
-                            +
-                          </Button>
-                        </Grid>
-                      </S.ContainerInputs>
-                    ))}
+                          </Grid>
+                        </S.ContainerInputs>
+                      );
+                    })}
                   </Grid>
                 );
               }}
@@ -536,16 +588,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                   <Input
                     required
                     id="flooring"
-                    onBlur={(e) => {
-                      handleSumValues({
-                        id: '',
-                        type: 'sumLand',
-                        value1: e.target.value,
-                        value2: values.unitPerFloor,
-                        fieldName: 'totalUnitsInDevelopment',
-                        setFieldValue
-                      });
-                    }}
+                    onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.flooring}
                     aria-describedby="flooring"
@@ -556,7 +599,6 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                   />
                 </FormControl>
               </Grid>
-
               <Grid item xs={12} sm={6} md={1.5} minWidth={200}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                   <Tooltip title={'Unidades por andar'}>
@@ -565,17 +607,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                   <Input
                     required
                     id="unitPerFloor"
-                    onBlur={(e) => {
-                      setFieldValue(`unitPerFloor`, e.target.value);
-                      handleSumValues({
-                        id: '',
-                        type: 'sumLand',
-                        value1: values.flooring,
-                        value2: e.target.value,
-                        fieldName: 'totalUnitsInDevelopment',
-                        setFieldValue
-                      });
-                    }}
+                    onBlur={handleBlur}
                     onChange={handleChange}
                     value={values.unitPerFloor}
                     aria-describedby="unitPerFloor"
@@ -614,7 +646,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     onChange={handleChange}
                     id="totalUnitsInDevelopment"
                     placeholder="Digite a quantidade"
-                    value={values.totalUnitsInDevelopment || ''}
+                    value={values.totalUnitsInDevelopment || 0}
                     aria-describedby="totalUnitsInDevelopment"
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                     helperText={
@@ -640,7 +672,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     onBlur={handleBlur}
                     onChange={handleChange}
                     id="totalPrivateAreaQuantity"
-                    value={values.totalPrivateAreaQuantity || ''}
+                    value={values.totalPrivateAreaQuantity || '0'}
                     aria-describedby="totalPrivateAreaQuantity"
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                   />
@@ -675,14 +707,16 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
               <Grid item xs={12} sm={6} md={2} minWidth={200}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                   <S.Label>Área total do empreendimento</S.Label>
+
                   <Input
                     required
                     onBlur={handleBlur}
                     id="totalAreaOfTheDevelopment"
                     onChange={handleChange}
+                    onKeyDown={handleKeyDown}
                     value={values.totalAreaOfTheDevelopment}
                     aria-describedby="totalAreaOfTheDevelopment"
-                    placeholder="Digite o quantidade"
+                    placeholder="Digite a quantidade"
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                     helperText={
                       touched.totalAreaOfTheDevelopment &&
@@ -699,7 +733,6 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
               <Grid item xs={12} sm={6} md={2} minWidth={340}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                   <S.Label>Área Total Permutada</S.Label>
-
                   <Input
                     required
                     disabled
@@ -710,7 +743,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     aria-describedby=" totalExchangeArea"
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                     value={formatterV2.format(
-                      parseFloat(values.totalExchangeArea) || 0
+                      parseFloat(values.totalExchangeArea.toString()) || 0
                     )}
                     helperText={
                       touched.totalExchangeArea && errors.totalExchangeArea
@@ -723,7 +756,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={2} minWidth={340}>
+              <Grid item xs={12} sm={6} md={2} minWidth={350}>
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                   <Tooltip title={'Área total privativa sem permuta (m²)'}>
                     <S.Label>A. T. P. Permuta (m²) </S.Label>
@@ -735,7 +768,7 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     onBlur={handleBlur}
                     id="totalValueNoExchange"
                     onChange={handleChange}
-                    value={values.totalValueNoExchange || ''}
+                    value={values.totalValueNoExchange || '0'}
                     aria-describedby="totalValueNoExchange"
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                     helperText={
@@ -754,7 +787,6 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                   <Tooltip title={'Valor médio de venda (m²/R$)'}>
                     <S.Label>V. M. Venda (m²/R$) </S.Label>
                   </Tooltip>
-
                   <Input
                     required
                     disabled
@@ -764,8 +796,8 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     onChange={handleChange}
                     aria-describedby="averageSaleValue"
                     inputProps={{ style: { fontSize: '1.4rem' } }}
-                    value={formatCurrency(
-                      values.averageSaleValue.toString() || ''
+                    value={formatterV2.format(
+                      parseFloat(values.averageSaleValue.toString()) || 0
                     )}
                     helperText={
                       touched.averageSaleValue && errors.averageSaleValue
@@ -793,7 +825,9 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     aria-describedby="totalPrivateAreaNetOfExchange"
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                     value={formatterV2.format(
-                      parseFloat(values.totalPrivateAreaNetOfExchange) || 0
+                      parseFloat(
+                        values.totalPrivateAreaNetOfExchange.toString()
+                      ) || 0
                     )}
                     helperText={
                       touched.totalPrivateAreaNetOfExchange &&

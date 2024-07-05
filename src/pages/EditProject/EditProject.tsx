@@ -310,6 +310,7 @@ export const EditProject = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.unit, values.totalAreaOfTheDevelopment]);
+
   useEffect(() => {
     const listUnit = values.unit;
     listUnit.map((unit, index) => {
