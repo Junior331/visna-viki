@@ -35,6 +35,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
     },
     validationSchema: projectNameFormSchema
   });
+  console.log('chegou ::');
 
   const formik = useFormik({
     initialValues: date.lands,
