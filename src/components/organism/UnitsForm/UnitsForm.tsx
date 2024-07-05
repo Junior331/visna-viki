@@ -59,21 +59,21 @@ export const UnitsForm = ({ date, setDate, handleStep }: Props) => {
   }, []);
   console.log('listCharacteristics ::', listCharacteristics);
 
-  // useEffect(() => {
-  //   if (date.units.flooring) {
-  //     const units: any = date.units;
-  //     units.unit.forEach((unit: any, index: number) => {
-  //       Object.keys(unit).forEach((unitKey: string) => {
-  //         const fieldName = `unit.${index}.${unitKey}`;
-  //         setFieldValue(fieldName, unit[unitKey]);
-  //       });
-  //     });
+  useEffect(() => {
+    if (date.units.flooring) {
+      const units: any = date.units;
+      units.unit.forEach((unit: any, index: number) => {
+        Object.keys(unit).forEach((unitKey: string) => {
+          const fieldName = `unit.${index}.${unitKey}`;
+          setFieldValue(fieldName, unit[unitKey]);
+        });
+      });
 
-  //     Object.keys(units).forEach((key: string) => {
-  //       setFieldValue(key, units[key]);
-  //     });
-  //   }
-  // }, [date, setFieldValue]);
+      Object.keys(units).forEach((key: string) => {
+        setFieldValue(key, units[key]);
+      });
+    }
+  }, [date, setFieldValue]);
 
   useEffect(() => {
     const totalPrivateAreaQuantity = calculateTUID(
@@ -117,14 +117,15 @@ export const UnitsForm = ({ date, setDate, handleStep }: Props) => {
     }
   }, [values.unit, setFieldValue, values.totalAreaOfTheDevelopment]);
 
-  // useEffect(() => {
-  //   setDate({
-  //     ...date,
-  //     units: {
-  //       ...values
-  //     }
-  //   });
-  // }, [date, setDate, values]);
+  useEffect(() => {
+    setDate({
+      ...date,
+      units: {
+        ...values
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
 
   return (
     <S.UnitsFormContainer>
