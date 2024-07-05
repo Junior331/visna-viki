@@ -1,12 +1,7 @@
-import { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { LayoutProps } from './@types';
 import { Snackbar } from '@/components/modules';
-import { UserContext } from '@/state/user/state';
 import { GlobalStyles } from '@/styles/globalStyled';
-import { getInfoUser } from '@/pages/SignIn/services';
 import * as S from './LayoutStyled';
-import { getToken } from '@/services/sessionStorage';
 
 const Layout = ({ children }: LayoutProps) => {
   // const navigate = useNavigate();

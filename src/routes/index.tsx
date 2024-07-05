@@ -2,7 +2,6 @@ import { Route, Routes } from 'react-router-dom';
 import {
   Home,
   Bills,
-  SignIn,
   SignUp,
   Aporte,
   Expense,
