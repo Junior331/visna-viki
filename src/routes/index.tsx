@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import {
   Home,
   Bills,
+  SignIn,
   SignUp,
   Aporte,
   Expense,
@@ -21,8 +22,8 @@ import {
 export const AppRoutes = () => {
   return (
     <Routes>
-      {/* <Route index element={<SignIn />} /> */}
-      <Route index element={<Home />} />
+      <Route index element={<SignIn />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/bills" element={<Bills />} />
       <Route path="/aporte" element={<Aporte />} />
       <Route path="/signup" element={<SignUp />} />
