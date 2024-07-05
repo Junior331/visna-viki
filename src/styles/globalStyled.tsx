@@ -86,6 +86,13 @@ export const GlobalStyles = createGlobalStyle`
         background: ${({ theme }) => theme.palette.error.default} !important;
       }
     }
+    .btnDeleteSolid {
+      background: #e73d3e !important;
+      color: ${({ theme }) => theme.palette.color.default};
+      &:hover {
+        background-color: #c33334 !important;
+      }
+    }
 
     .menuEdit {
       .MuiPaper-root {

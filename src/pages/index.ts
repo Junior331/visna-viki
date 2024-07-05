@@ -6,6 +6,7 @@ import { Aporte } from './Aporte';
 import { Expense } from './Expense';
 import { Aportes } from './Aportes';
 import { ListBills } from './ListBills';
+import { Scenarios } from './Scenarios';
 import { CostDetails } from './CostDetails';
 import { EditProject } from './EditProject';
 import { DetailsBills } from './DetailsBills';
@@ -13,6 +14,7 @@ import { Profitability } from './Profitability';
 import { CreateProject } from './CreateProject';
 import { ResetPassword } from './ResetPassword';
 import { ForgotPassword } from './ForgotPassword';
+import { DetailsScenario } from './DetailsScenario';
 
 export {
   Home,
@@ -23,11 +25,13 @@ export {
   Expense,
   Aportes,
   ListBills,
+  Scenarios,
   CostDetails,
   EditProject,
   DetailsBills,
   ResetPassword,
   CreateProject,
   Profitability,
-  ForgotPassword
+  ForgotPassword,
+  DetailsScenario
 };

@@ -537,7 +537,6 @@ const UnitsForm = ({ date, setDate, handleStep }: Props) => {
                     required
                     id="flooring"
                     onBlur={(e) => {
-                      setFieldValue(`flooring`, e.target.value);
                       handleSumValues({
                         id: '',
                         type: 'sumLand',

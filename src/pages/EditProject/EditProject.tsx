@@ -366,6 +366,13 @@ export const EditProject = () => {
                     navigate(`/profitability?${convertToParams({ id, name })}`)
                   }
                 />
+                <Tab
+                  label="Cenários"
+                  {...a11yProps(4)}
+                  onClick={() =>
+                    navigate(`/scenarios?${convertToParams({ id, name })}`)
+                  }
+                />
               </Tabs>
             </Box>
 
@@ -1366,8 +1373,8 @@ export const EditProject = () => {
                           <S.Label>Pavimentos </S.Label>
                           <Input
                             required
-                            onBlur={handleBlur}
                             id="flooring"
+                            onBlur={handleBlur}
                             onChange={handleChange}
                             value={values.flooring}
                             aria-describedby="flooring"
@@ -1388,8 +1395,8 @@ export const EditProject = () => {
                           </Tooltip>
                           <Input
                             required
-                            onBlur={handleBlur}
                             id="unitPerFloor"
+                            onBlur={handleBlur}
                             onChange={handleChange}
                             value={values.unitPerFloor}
                             aria-describedby="unitPerFloor"

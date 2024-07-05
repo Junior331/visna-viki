@@ -7,45 +7,45 @@ export const GenericContainer = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
 `;
-export const ContainerBreadcrumbs = styled(GenericContainer)`
-  width: auto;
-  height: 100%;
+export const DetailsScenarioContainer = styled(GenericContainer)`
+  gap: 21px;
+  padding: 20px;
+  flex-direction: column;
+`;
+export const Header = styled(GenericContainer)`
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ebe9f1;
+  justify-content: space-between;
+`;
+export const Content = styled(GenericContainer)`
+  gap: 20px;
   align-items: center;
-
-  .MuiButtonBase-root {
-    color: ${({ theme }) => theme.palette.color.default} !important;
-  }
-
-  .MuiTypography-root {
-    cursor: context-menu;
-    color: ${({ theme }) => theme.palette.color.light} !important;
-    font-size: ${({ theme }) => theme.typography.fontSize}rem !important;
-  }
-  > nav {
-    > ol {
-      > li:last-child {
-        > span {
-          color: ${({ theme }) => theme.palette.color.dark}!important;
-          font-weight: ${({ theme }) =>
-            theme.typography.fontWeightRegular}!important;
-        }
-      }
+  flex-direction: column;
+  > div {
+    width: 100%;
+    > div:firt-child {
+      margin: 20px 0 10px;
     }
-  }
-  .MuiLink-root {
-    cursor: pointer;
-    text-decoration: none;
   }
 `;
 export const ContainerMessage = styled(GenericContainer)`
+  padding: 20px 60px;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  > img {
-    margin-bottom: 20px;
+  > div {
+    margin: 30px 0 0;
+    justify-content: center;
+    > button:first-child {
+      background: #e73d3e;
+      &:hover {
+        background: #c33334;
+      }
+    }
   }
 `;
-export const Icon = styled.img``;
 export const Title = styled.h2`
   letter-spacing: 1px;
   color: ${({ theme }) => theme.palette.color.dark};
@@ -57,9 +57,10 @@ export const Text = styled.p`
   color: ${({ theme }) => theme.palette.color.dark};
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
 `;
+export const Icon = styled.img``;
 export const ContainerButtons = styled(GenericContainer)`
   gap: 30px;
-  margin-top: 30px;
+  margin-bottom: 15px;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 `;
