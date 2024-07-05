@@ -57,3 +57,14 @@ export const columnsAportes: columnType[] = [
     label: 'AÇÃO'
   }
 ];
+export const columnsScenarios: columnType[] = [
+  {
+    label: 'mês'
+  },
+  {
+    label: 'velocidade de vendas'
+  },
+  {
+    label: 'recebimentos'
+  }
+];

@@ -33,8 +33,6 @@ const TableBody = ({
   const open = Boolean(anchorEl);
   const [expenseActive, setExpenseActive] = useState<rowData>({});
 
-  const { handleSubmit, setFieldValue, setValues, values } = formik;
-
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     fieldName: string,
@@ -43,7 +41,7 @@ const TableBody = ({
   ) => {
     const { value } = e.target;
 
-    const updatedRows = values[itemActive.type].rows.map(
+    const updatedRows = formik?.values[itemActive.type].rows.map(
       (row: any, index: number) => {
         if (index === rowIndex) {
           return {
@@ -56,16 +54,16 @@ const TableBody = ({
     );
 
     const newValues = {
-      ...values,
+      ...formik?.values,
       [itemActive.type]: {
-        ...values[itemActive.type],
+        ...formik?.values[itemActive.type],
         rows: updatedRows
       }
     };
 
-    setValues(newValues);
+    formik?.setValues(newValues);
 
-    setFieldValue(`${sectionName}.rows`, updatedRows);
+    formik?.setFieldValue(`${sectionName}.rows`, updatedRows);
   };
 
   return (
@@ -79,7 +77,7 @@ const TableBody = ({
                 return (
                   <TableCell align={align} key={key}>
                     {isEdit ? (
-                      <S.Form onSubmit={handleSubmit}>
+                      <S.Form onSubmit={formik?.handleSubmit}>
                         <FormControl sx={{ m: 1 }} variant="outlined">
                           <Input
                             required
@@ -94,8 +92,9 @@ const TableBody = ({
                               );
                             }}
                             value={
-                              values[itemActive.type]?.rows?.[index]?.[key] ||
-                              ''
+                              formik?.values[itemActive.type]?.rows?.[index]?.[
+                                key
+                              ] || ''
                             }
                             aria-describedby={`input-${index}-${key}`}
                             placeholder={row[key].toString()}

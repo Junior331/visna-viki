@@ -25,5 +25,11 @@ export const ENDPOINTS = {
   },
   APORTES: {
     BASE_URL: 'deposit'
+  },
+  STEPS: {
+    BASE_URL: 'project/steps'
+  },
+  SCENARIOS: {
+    BASE_URL: 'project/scenarios'
   }
 };

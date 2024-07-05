@@ -71,7 +71,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
             className="bgWhite"
             spacing={{ xs: 0, sm: 2 }}
           >
-            <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
+            <Grid item xs={12} sm={12} md={1.9} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <Tooltip title={'Data de início'}>
                   <S.Label>D. Início</S.Label>
@@ -166,7 +166,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
               </FormControl>
             </Grid>
 
-            <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
+            <Grid item xs={12} sm={12} md={1.9} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <Tooltip title={'Execução da obra (mes)'}>
                   <S.Label>E. Obra (mes)</S.Label>
@@ -205,7 +205,23 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
               </FormControl>
             </Grid>
 
-            <Grid item xs={12} sm={12} md={2.5} minWidth={250} minHeight={117}>
+            <Grid item xs={12} sm={12} md={1.8} minWidth={250} minHeight={117}>
+              <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                <S.Label>Pós obra</S.Label>
+                <Input
+                  required
+                  onBlur={handleBlur}
+                  id="afterConstruction"
+                  onChange={handleChange}
+                  placeholder="Digite os meses"
+                  value={values.afterConstruction}
+                  aria-describedby="afterConstruction"
+                  inputProps={{ style: { fontSize: '1.4rem' } }}
+                />
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} sm={12} md={1.9} minWidth={250} minHeight={117}>
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <Tooltip title={'Prazo total (mes)'}>
                   <S.Label>P. Total (mes)</S.Label>

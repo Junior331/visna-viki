@@ -63,6 +63,7 @@ export const emptyProjectDate: projectDateType = {
   },
   deadline: {
     startDate: dayjs(''),
+    afterConstruction: 0,
     totalDeadlineInMonth: 0,
     approvalDeadlineInMonth: 0,
     constructionDeadlineInMonth: 0,
@@ -80,7 +81,7 @@ export const emptyUnitSummary: unitSummaryType = {
   areaExchanged: '',
   exchangeQuantity: '',
   areaPrivativaTotal: '',
-  unitCharacteristicsId: '',
+  unitCharacteristicsId: ''
 };
 
 export const emptyProjectInfo: projectInfoType = {
@@ -92,7 +93,7 @@ export const emptyProjectInfo: projectInfoType = {
     projectId: 0,
     underground: 0,
     unitPerFloor: 0,
-    totalExchangeArea:0,
+    totalExchangeArea: 0,
     averageSaleValue: 0,
     totalToBeBuiltArea: 0,
     totalValueNoExchange: 0,
@@ -113,7 +114,7 @@ export const emptyProjectInfo: projectInfoType = {
         areaExchanged: 0,
         exchangeQuantity: 0,
         areaPrivativaTotal: 0,
-        unitCharacteristicsId: 0,
+        unitCharacteristicsId: 0
       }
     ]
   },
