@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useEffect } from 'react';
 import { FormikProvider, useFormik } from 'formik';
 import { Grid, FormControl } from '@mui/material';
 
@@ -13,11 +13,6 @@ import { formatterV2, handleKeyDown, formatCurrency } from '@/utils/utils';
 import * as S from './UnitsFormStyled';
 
 const UnitsForm = memo(({ date, handleStep, listCharacteristics }: Props) => {
-  const visibleTodos = useMemo(
-    () => listCharacteristics,
-    [listCharacteristics]
-  );
-
   const formik = useFormik({
     initialValues: date.units,
     onSubmit: async () => {},
@@ -28,10 +23,6 @@ const UnitsForm = memo(({ date, handleStep, listCharacteristics }: Props) => {
     console.log('Componente UnitsForm atualizado');
   }, []);
   console.log('listCharacteristics ::', listCharacteristics);
-
-  if (!visibleTodos.length) {
-    return null;
-  }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   return (
