@@ -36,7 +36,7 @@ import {
   handleEditDeadline,
   handleDeleteProject,
   handleCreateDeadline,
-  handleListUnitCharacteristics
+  getListUnitCharacteristics
 } from './utils';
 import {
   typeMask,
@@ -223,7 +223,7 @@ export const EditProject = () => {
   }, [id, loading, setSnackbar]);
 
   useEffect(() => {
-    handleListUnitCharacteristics({
+    getListUnitCharacteristics({
       setSnackbar,
       setListCharacteristics
     });

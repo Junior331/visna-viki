@@ -15,7 +15,7 @@ import {
   handleEditLandProps,
   handleEditProjectProps,
   handleEdittUnitsProps,
-  handleListUnitCharacteristicsProps,
+  getListUnitCharacteristicsProps,
   handleTabsProps
 } from './@types';
 import { handleSumValuesProps } from '@/components/organism/UnitsForm/@types';
@@ -343,10 +343,10 @@ export const handleEdittUnits = async ({
     setLoading(false);
   }
 };
-export const handleListUnitCharacteristics = async ({
+export const getListUnitCharacteristics = async ({
   setSnackbar,
   setListCharacteristics
-}: handleListUnitCharacteristicsProps) => {
+}: getListUnitCharacteristicsProps) => {
   try {
     const result = await listUnitCharacteristics();
     const updatedList = result.filter((item: any) => item.name !== 'UR');

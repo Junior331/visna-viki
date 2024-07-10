@@ -53,7 +53,7 @@ export type handleEdittUnitsProps = handleGenericProps & {
   unitId: number;
   payload: unitHubType;
 };
-export type handleListUnitCharacteristicsProps = {
+export type getListUnitCharacteristicsProps = {
   setSnackbar: (snackbarData: Snackbar) => void;
   setListCharacteristics: Dispatch<SetStateAction<unitCharacteristicsType[]>>;
 };

@@ -18,7 +18,7 @@ import {
 export const AppRoutes = () => {
   return (
     <Routes>
-      <Route index element={<SignIn />} />
+      <Route path="/signin" element={<SignIn />} />
       <Route path="/home" element={<Home />} />
       <Route path="/aporte" element={<Aporte />} />
       <Route path="/signup" element={<SignUp />} />
@@ -26,7 +26,7 @@ export const AppRoutes = () => {
       <Route path="/edit" element={<EditProject />} />
       <Route path="/listbills" element={<ListBills />} />
       <Route path="/details" element={<DetailsBills />} />
-      <Route path="/create" element={<CreateProject />} />
+      <Route index element={<CreateProject />} />
       <Route path="/costdetails" element={<CostDetails />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />

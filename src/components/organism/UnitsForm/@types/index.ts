@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch, SetStateAction } from 'react';
-import { projectDateType, unitSummaryType, unitType } from '@/utils/types';
+import {
+  unitType,
+  projectDateType,
+  unitSummaryType,
+  unitCharacteristicsType
+} from '@/utils/types';
 
 export type genericProps = {
   values: unitType;
@@ -14,6 +19,7 @@ export type genericProps = {
 export type Props = {
   date: projectDateType;
   handleStep: (step: number) => void;
+  listCharacteristics: unitCharacteristicsType[];
   setDate: Dispatch<SetStateAction<projectDateType>>;
 };
 

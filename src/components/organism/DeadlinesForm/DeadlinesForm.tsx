@@ -47,6 +47,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const lands: any = date.deadline;
       Object.keys(lands).forEach((key: string) => {
+        console.log('key, lands[key] ::', key, lands[key]);
         setFieldValue(key, lands[key]);
       });
     }
@@ -60,7 +61,10 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
         ...values
       }
     });
-  }, [date, setDate, values]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
+
+  console.log('chegou ::');
 
   return (
     <S.DeadlinesFormContainer>
