@@ -10,24 +10,23 @@ import { mocks } from '@/services/mocks';
 import { icons } from '@/assets/images/icons';
 import { Button, Input } from '@/components/elements';
 import {
+  formatter,
   formatCurrency,
   convertToParams,
-  parseFormattedNumber,
-  formatter
+  parseFormattedNumber
 } from '@/utils/utils';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import {
-  breadCrumbsItems,
-  handleCreateAporte,
-  handleEditAporte,
+  listAportes,
   handleSumValues,
-  listAportes
+  handleEditAporte,
+  handleCreateAporte
 } from './utils';
-import { accumulator, aportesProps } from './@types';
-import { Card, GenericModal, Pagination } from '@/components/modules';
-import { HeaderBreadcrumbs, Layout, Table } from '@/components/organism';
-import * as S from './AportesStyled';
 import { emptyAccumulator } from '@/utils/emptys';
+import { accumulator, aportesProps } from './@types';
+import { Layout, Table } from '@/components/organism';
+import { Card, GenericModal, Pagination } from '@/components/modules';
+import * as S from './AportesStyled';
 
 export const Aportes = () => {
   const navigate = useNavigate();
@@ -103,20 +102,9 @@ export const Aportes = () => {
     <Layout>
       <S.AportesContainer>
         <S.Header>
-          <HeaderBreadcrumbs
-            breadcrumbs={breadCrumbsItems({
-              id,
-              name
-            })}
-          />
-          <div>
-            <Button $isOutline size="100px" onClick={() => setOpenModal(true)}>
-              Voltar
-            </Button>
-            <Button size="200px" onClick={() => setOpenModalNewAporte(true)}>
-              Novo Aporte
-            </Button>
-          </div>
+          <Button size="200px" onClick={() => setOpenModalNewAporte(true)}>
+            Novo Aporte
+          </Button>
         </S.Header>
         <S.Content>
           {loading ? (

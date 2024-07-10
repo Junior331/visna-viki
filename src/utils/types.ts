@@ -1,5 +1,6 @@
 // import { v4 as uuidv4 } from 'uuid';
 
+import { payloadPhasesProps } from '@/pages/Scenarios/@types';
 import { Dayjs } from 'dayjs';
 import { Dispatch, MouseEvent } from 'react';
 
@@ -203,19 +204,20 @@ export type payloadExpense = {
   periodicityPayment: number;
 };
 export type payloadSteps = {
-  startDate: string;
+  startDate: Dayjs;
   projectId: number;
+  afterConstruction: number;
   totalDeadlineInMonth: number;
   approvalDeadlineInMonth: number;
   constructionDeadlineInMonth: number;
   projectLaunchDeadlineInMonth: number;
 };
+
 export type payloadScenarios = {
-  value: number;
-  label: string;
-  unity: string;
+  name: string;
   projectId: number;
   projectStepId: number;
+  phases: payloadPhasesProps[];
 };
 export type CepData = {
   uf: string;

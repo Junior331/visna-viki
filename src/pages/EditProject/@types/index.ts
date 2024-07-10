@@ -6,7 +6,8 @@ import {
   landSummaryType,
   projectInfoType,
   unitCharacteristicsType,
-  deadlineType
+  deadlineType,
+  payloadSteps
 } from '@/utils/types';
 
 export type tabPanelProps = {
@@ -38,8 +39,7 @@ export type handleEditLandProps = handleGenericProps & {
   payload: landSummaryType;
 };
 export type handleEditDeadlineIdProps = handleGenericProps & {
-  deadlineId: number;
-  payload: unknown;
+  payload: payloadSteps;
 };
 export type handleCreateDeadlineProps = handleGenericProps & {
   projectId: number;

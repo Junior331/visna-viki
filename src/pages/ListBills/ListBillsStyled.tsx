@@ -150,9 +150,11 @@ export const ContainerPagination = styled(GenericContainer)`
   }
 `;
 export const ContainerMessage = styled(GenericContainer)`
+  max-height: 100%;
+  overflow-y: auto;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 33px;
   > img {
     margin-bottom: 20px;

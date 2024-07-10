@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { MaskType, handleClickProps, handleProps } from './types';
 
 export const typeMask = (type: MaskType, value: string): string => {
@@ -68,6 +70,29 @@ export const formatCurrency = (value: string): string => {
   return formattedValue;
 };
 
+export const formatMMYYYYDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const months = [
+    'JAN',
+    'FEV',
+    'MAR',
+    'ABR',
+    'MAI',
+    'JUN',
+    'JUL',
+    'AGO',
+    'SET',
+    'OUT',
+    'NOV',
+    'DEZ'
+  ];
+
+  const month = months[date.getUTCMonth()];
+  const year = date.getUTCFullYear();
+
+  return `${month} - ${year}`;
+};
+
 export const formatDate = (dateInput: string | Date): string => {
   if (typeof dateInput === 'string' && dateInput.trim() === '') {
     return '-';
@@ -84,6 +109,22 @@ export const formatDate = (dateInput: string | Date): string => {
   const year = date.getUTCFullYear();
 
   return `${day}/${month}/${year}`;
+};
+export const formatDateInMonth = (dateInput: string | Date): string => {
+  if (typeof dateInput === 'string' && dateInput.trim() === '') {
+    return '-';
+  }
+
+  const date = typeof dateInput === 'string' ? new Date(dateInput) : dateInput;
+
+  if (isNaN(date.getTime())) {
+    return '-';
+  }
+
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const year = date.getUTCFullYear();
+
+  return `${month}/${year}`;
 };
 
 export const convertDateToISO = (dateString: string) => {
@@ -141,4 +182,13 @@ export const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
   if (event.key === 'Enter') {
     event.preventDefault();
   }
+};
+export const removePropertyFromArray = (
+  arr: any[],
+  property: keyof any
+): Partial<any>[] => {
+  return arr.map((obj) => {
+    const { [property]: _, ...newObj } = obj;
+    return newObj;
+  });
 };

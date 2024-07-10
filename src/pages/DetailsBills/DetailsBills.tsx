@@ -412,7 +412,7 @@ export const DetailsBills = () => {
             <Button
               size="100px"
               onClick={() =>
-                navigate(`/bills?${convertToParams({ id: idProject, name })}`)
+                navigate(`/edit?${convertToParams({ id: idProject, name })}`)
               }
             >
               Sim

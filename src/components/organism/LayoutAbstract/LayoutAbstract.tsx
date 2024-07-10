@@ -3,7 +3,6 @@ import { Snackbar } from '@/components/modules';
 import { GlobalStyles } from '@/styles/globalStyled';
 import * as S from './LayoutAbstractStyled';
 import { images } from '@/assets/images';
-import { icons } from '@/assets/images/icons';
 
 const LayoutAbstract = ({ children }: LayoutProps) => {
   return (
@@ -26,15 +25,6 @@ const LayoutAbstract = ({ children }: LayoutProps) => {
           <div className="children">
             {children}
             <S.Footer>
-              <S.ContainerOthers>
-                <S.Line />
-                <S.Text size="2">Ou continue com</S.Text>
-                <S.Line />
-              </S.ContainerOthers>
-              <S.GoogleButton>
-                <S.Icon src={icons.google} alt="Icon google" />
-                Google
-              </S.GoogleButton>
               <S.Text size="2">
                 By clicking continue, you agree to our{' '}
                 <S.Span color="#000">Terms of Service</S.Span> and{' '}

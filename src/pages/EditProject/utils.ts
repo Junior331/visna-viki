@@ -3,10 +3,10 @@ import {
   editLands,
   editUnits,
   editProject,
-  editDeadline,
   deleteProject,
   listUnitCharacteristics,
-  createDeadline
+  createDeadline,
+  editSteps
 } from '@/services/services';
 import {
   handleCreateDeadlineProps,
@@ -229,7 +229,6 @@ export const handleCreateDeadline = async ({
   }
 };
 export const handleEditDeadline = async ({
-  deadlineId,
   payload,
   setLoading,
   setSnackbar
@@ -237,7 +236,7 @@ export const handleEditDeadline = async ({
   setLoading(true);
 
   try {
-    await editDeadline(deadlineId, payload);
+    await editSteps(payload);
     setSnackbar({
       isOpen: true,
       severity: 'success',

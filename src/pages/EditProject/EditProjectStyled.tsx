@@ -34,12 +34,17 @@ export const Content = styled(GenericContainer)`
   gap: 20px;
   align-items: center;
   flex-direction: column;
-  .MuiBox-root {
-  }
   > div {
     > div {
       > .MuiBox-root {
         padding: 35px 0px 0 15px !important;
+      }
+    }
+  }
+  > div {
+    > div:nth-last-child(-n + 4) {
+      > .MuiBox-root {
+        padding: 10px 0 !important;
       }
     }
   }
@@ -132,9 +137,11 @@ export const Title = styled.h2`
 `;
 
 export const ContainerMessage = styled(GenericContainer)`
+  max-height: 100%;
+  overflow-y: auto;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   > img {
     margin-bottom: 20px;
   }

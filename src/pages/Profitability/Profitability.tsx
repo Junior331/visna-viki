@@ -1,18 +1,16 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-
-import { Layout } from '@/components/organism';
-import { breadCrumbsItems } from './utils';
-import { icons } from '@/assets/images/icons';
-import { Button, Input } from '@/components/elements';
-
-import { GenericModal } from '@/components/modules';
-import { HeaderBreadcrumbs } from '@/components/organism';
-import { convertToParams } from '@/utils/utils';
-import * as S from './ProfitabilityStyled';
-import { Accordion, AccordionSummary, FormControl, Grid } from '@mui/material';
 import { useFormik } from 'formik';
 import { ExpandMore } from '@mui/icons-material';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+
+import { icons } from '@/assets/images/icons';
+import { Layout } from '@/components/organism';
+import { Button, Input } from '@/components/elements';
+
+import { convertToParams } from '@/utils/utils';
+import { GenericModal } from '@/components/modules';
+import { Accordion, AccordionSummary, FormControl, Grid } from '@mui/material';
+import * as S from './ProfitabilityStyled';
 
 export const Profitability = () => {
   const navigate = useNavigate();
@@ -87,12 +85,6 @@ export const Profitability = () => {
   return (
     <Layout>
       <S.ProfitabilityContainer>
-        <S.Header>
-          <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems(id, name)} />
-          <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
-            Voltar
-          </Button>
-        </S.Header>
         <S.Content>
           <Accordion>
             <AccordionSummary

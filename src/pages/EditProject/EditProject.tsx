@@ -15,10 +15,9 @@ import {
 } from '@mui/material';
 import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import {
-  calculateTUID,
-  unitDefault
+  unitDefault,
+  calculateTUID
 } from '@/components/organism/UnitsForm/utils';
-import { handleSumValues as handleSumValuesV2 } from '@/components/organism/DeadlinesForm/utils';
 import { tabPanelProps } from './@types';
 import { getInfoProject } from './services';
 import { icons } from '@/assets/images/icons';
@@ -36,26 +35,28 @@ import {
   handleEditProject,
   handleEditDeadline,
   handleDeleteProject,
-  handleListUnitCharacteristics,
-  handleCreateDeadline
+  handleCreateDeadline,
+  handleListUnitCharacteristics
 } from './utils';
 import {
   typeMask,
-  handleKeyDown,
-  convertToParams,
   formatterV2,
+  handleKeyDown,
   parseFormattedNumber
 } from '@/utils/utils';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import {
   MaskType,
+  payloadSteps,
   projectInfoType,
   unitCharacteristicsType
 } from '@/utils/types';
-import unitsFormSchema from '@/components/organism/UnitsForm/UnitsFormSchema';
-import { Tooltip } from '@/components/elements/Tooltip';
 import { editProject } from '@/services/services';
+import { Tooltip } from '@/components/elements/Tooltip';
+import { Aportes, Bills, Profitability, Scenarios } from '@/pages';
+import unitsFormSchema from '@/components/organism/UnitsForm/UnitsFormSchema';
 import { projectNameFormSchema } from '@/components/organism/LandForm/Schema';
+import { handleSumValues as handleSumValuesV2 } from '@/components/organism/DeadlinesForm/utils';
 import * as S from './EditProjectStyled';
 
 const CustomTabPanel = (props: tabPanelProps) => {
@@ -172,13 +173,17 @@ export const EditProject = () => {
           setSnackbar
         });
       } else {
-        const deadlineId = values.id;
-        const payload: unknown = {
-          ...values,
-          projectId: parseFloat(id)
+        const payload: payloadSteps = {
+          projectId: parseFloat(id),
+          startDate: dayjs(values.startDate),
+          totalDeadlineInMonth: values.totalDeadlineInMonth,
+          approvalDeadlineInMonth: values.approvalDeadlineInMonth,
+          constructionDeadlineInMonth: values.constructionDeadlineInMonth,
+          projectLaunchDeadlineInMonth: values.projectLaunchDeadlineInMonth,
+          afterConstruction: parseFloat(values.afterConstruction.toString())
         };
+
         handleEditDeadline({
-          deadlineId,
           payload,
           setLoading,
           setSnackbar
@@ -310,6 +315,7 @@ export const EditProject = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.unit, values.totalAreaOfTheDevelopment]);
+
   useEffect(() => {
     const listUnit = values.unit;
     listUnit.map((unit, index) => {
@@ -347,32 +353,10 @@ export const EditProject = () => {
                 <Tab label="Terreno" {...a11yProps(0)} />
                 <Tab label="Unidades" {...a11yProps(1)} />
                 <Tab label="Prazos" {...a11yProps(2)} />
-                <Tab
-                  label="Aportes"
-                  onClick={() =>
-                    navigate(`/aportes?${convertToParams({ id, name })}`)
-                  }
-                />
-                <Tab
-                  label="Contas"
-                  onClick={() =>
-                    navigate(`/bills?${convertToParams({ id, name })}`)
-                  }
-                />
-                <Tab
-                  label="Rentabilidade"
-                  {...a11yProps(3)}
-                  onClick={() =>
-                    navigate(`/profitability?${convertToParams({ id, name })}`)
-                  }
-                />
-                <Tab
-                  label="Cenários"
-                  {...a11yProps(4)}
-                  onClick={() =>
-                    navigate(`/scenarios?${convertToParams({ id, name })}`)
-                  }
-                />
+                <Tab label="Aportes" {...a11yProps(3)} />
+                <Tab label="Contas" {...a11yProps(4)} />
+                <Tab label="Rentabilidade" {...a11yProps(5)} />
+                <Tab label="Cenários" {...a11yProps(6)} />
               </Tabs>
             </Box>
 
@@ -1953,7 +1937,16 @@ export const EditProject = () => {
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={3}>
-              Rentabilidade
+              <Aportes />
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={4}>
+              <Bills />
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={5}>
+              <Profitability />
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={6}>
+              <Scenarios />
             </CustomTabPanel>
           </Box>
         </S.Content>

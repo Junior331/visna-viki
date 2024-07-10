@@ -2,21 +2,20 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Box,
-  Divider,
-  IconButton,
-  ListItemIcon,
   Menu,
+  Divider,
+  Skeleton,
   MenuItem,
-  Skeleton
+  IconButton,
+  ListItemIcon
 } from '@mui/material';
 import { Layout } from '@/components/organism';
 import {
   listCosts,
   handleView,
+  emptyInfo,
   handleEdit,
   handleDelete,
-  breadCrumbsItems,
-  emptyInfo,
   calculateTotalValueCost
 } from './utils';
 import { emptyCosts } from '@/utils/emptys';
@@ -30,7 +29,6 @@ import {
 } from './@types';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import { Card, GenericModal } from '@/components/modules';
-import { HeaderBreadcrumbs } from '@/components/organism';
 import {
   convertToParams,
   formatter,
@@ -70,12 +68,6 @@ export const Bills = () => {
   return (
     <Layout>
       <S.BillsContainer>
-        <S.Header>
-          <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems(id, name)} />
-          <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
-            Voltar
-          </Button>
-        </S.Header>
         <S.Content>
           {loading && (
             <>

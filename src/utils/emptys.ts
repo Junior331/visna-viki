@@ -1,12 +1,13 @@
+import dayjs from 'dayjs';
 import { costsType, costsTypeV2 } from '@/pages/Bills/@types';
 import {
+  projectType,
   projectDateType,
   projectInfoType,
-  projectType,
   unitSummaryType
 } from './types';
 import { accumulator } from '@/pages/Aportes/@types';
-import dayjs from 'dayjs';
+import { phasesProps, scenariosProps } from '@/pages/Scenarios/@types';
 
 export const emptyProject: projectType = {
   id: '',
@@ -259,4 +260,57 @@ export const emptyAccumulator: accumulator = {
   payment: 0,
   expenses: 0,
   investment: 0
+};
+
+export const emptyPhases: phasesProps[] = [
+  {
+    id: 0,
+    name: 'Lançamento',
+    value: 0,
+    projectStepId: 0, // 'Lançamento'
+    scenarioTypesId: 0 // id referente a date => project
+  },
+  {
+    id: 0,
+    name: 'Obra',
+    value: 0,
+    projectStepId: 0, // 'Lançamento'
+    scenarioTypesId: 0 // id referente a date => project
+  },
+  {
+    id: 0,
+    name: 'Pós Obras',
+    value: 0,
+    projectStepId: 0, // 'Lançamento'
+    scenarioTypesId: 0 // id referente a date => project
+  }
+];
+
+export const emptySummaryScenarios: scenariosProps = {
+  hub: '',
+  project_scenarios_hub_id: 0,
+  phases: [
+    {
+      id: 0,
+      hub: '',
+      date: '',
+      value: '',
+      unity: '',
+      step_id: 0,
+      step_name: '',
+      timestamp_id: null,
+      timestamp_name: null,
+      project_name: '',
+      project_step_id: null,
+      project_scenarios_hub_id: 0,
+      months: [
+        {
+          date: '',
+          month: 0,
+          receipts: null,
+          salesPercents: 0
+        }
+      ]
+    }
+  ]
 };

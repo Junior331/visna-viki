@@ -1,41 +1,50 @@
-import dayjs from 'dayjs';
 import { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import {
   Box,
   Grid,
+  Menu,
   Select,
+  Divider,
+  Skeleton,
   MenuItem,
   IconButton,
   FormControl,
-  Menu,
-  ListItemIcon,
-  Divider,
-  Skeleton
+  ListItemIcon
 } from '@mui/material';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
   convertToParams,
+  formatMMYYYYDate,
   handleClickMenu,
-  handleCloseMenu
+  handleCloseMenu,
+  removePropertyFromArray
 } from '@/utils/utils';
-import { scenariosProps } from './@types';
+import {
+  payloadPhasesProps,
+  phasesProps,
+  scenariosProps,
+  stepsProps
+} from './@types';
 import { icons } from '@/assets/images/icons';
 import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import { Card, GenericModal } from '@/components/modules';
 import {
   handleView,
-  handleDelete,
-  breadCrumbsItems,
-  getListScenarios
+  handleStartChange,
+  handleSalesPercentesChange
 } from './utils';
-import { HeaderBreadcrumbs, Layout } from '@/components/organism';
+import { Layout } from '@/components/organism';
+import { emptyPhases, emptySummaryScenarios } from '@/utils/emptys';
+import {
+  deleteScenario,
+  getListAllSteps,
+  getListScenarios,
+  postScenarios
+} from './services';
+import { payloadScenarios } from '@/utils/types';
 import * as S from './ScenariosStyled';
 
 export const Scenarios = () => {
@@ -46,23 +55,49 @@ export const Scenarios = () => {
   const [openModal, setOpenModal] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
   const [newScenarios, setNewScenarios] = useState(false);
-  const [listScenarios, setListScenarios] = useState<scenariosProps[]>([]);
   const { id, name } = Object.fromEntries([...searchParams]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [listPhases, setListPhases] = useState<phasesProps[]>(emptyPhases);
+  const [listScenarios, setListScenarios] = useState<scenariosProps[]>([]);
+  const [scenariosActive, setscenariosActive] = useState<scenariosProps>(
+    emptySummaryScenarios
+  );
+  const [listAllSteps, setListAllSteps] = useState<stepsProps[][]>([]);
   const open = Boolean(anchorEl);
+  const totalSalesPercentes = listPhases.reduce(
+    (acc, phase) => acc + (phase.value || 0),
+    0
+  );
 
   const formik = useFormik({
     initialValues: {
       name: '',
-      phase: 0,
-      startType: 0,
-      salesSpeed: '',
-      startDateSales: ''
+      start: 0,
+      phases: listPhases
     },
     onSubmit: async (values) => {
-      console.log('values ::', values);
+      const updatedPhases = removePropertyFromArray(
+        listPhases,
+        'name'
+      ) as payloadPhasesProps[];
+      const payload: payloadScenarios = {
+        name: values.name,
+        phases: updatedPhases,
+        projectId: parseFloat(id),
+        projectStepId: updatedPhases[0].id
+      };
+      postScenarios({
+        payload,
+        setLoading,
+        setSnackbar,
+        setNewScenarios,
+        setListAllSteps,
+        setListScenarios,
+        id: parseFloat(id)
+      });
     }
   });
+  const { values, handleSubmit, resetForm, handleChange } = formik;
 
   useEffect(() => {
     getListScenarios({
@@ -71,21 +106,21 @@ export const Scenarios = () => {
       setListScenarios,
       id: parseFloat(id)
     });
+    getListAllSteps({
+      setLoading,
+      setSnackbar,
+      setListAllSteps,
+      id: parseFloat(id)
+    });
   }, [id, setSnackbar]);
-  const { values, handleSubmit, handleChange, setFieldValue } = formik;
+
   return (
     <Layout>
       <S.ScenariosContainer>
         <S.Header>
-          <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems(id, name)} />
-          <S.ContainerButtons>
-            <Button $isOutline size="150px" onClick={() => setOpenModal(true)}>
-              Voltar
-            </Button>
-            <Button size="200px" onClick={() => setNewScenarios(true)}>
-              Novo Cenário
-            </Button>
-          </S.ContainerButtons>
+          <Button size="200px" onClick={() => setNewScenarios(true)}>
+            Novo Cenário
+          </Button>
         </S.Header>
         <S.Content>
           {loading ? (
@@ -109,118 +144,124 @@ export const Scenarios = () => {
             <>
               {listScenarios.length ? (
                 <S.ListScenarios>
-                  <Card width={'100%'} height={'auto'} className="bgWhite">
-                    <S.HeaderCard>
-                      <S.Title>Cenário 01 </S.Title>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          textAlign: 'center'
-                        }}
+                  {listScenarios.map((scenario, index) => {
+                    return (
+                      <Card
+                        key={index}
+                        width={'100%'}
+                        height={'auto'}
+                        className="bgWhite"
                       >
-                        <IconButton
-                          size="small"
-                          sx={{ ml: 2 }}
-                          aria-haspopup="true"
-                          aria-expanded={open ? 'true' : undefined}
-                          aria-controls={open ? 'account-menu' : undefined}
-                          onClick={(e) => {
-                            handleClickMenu({ event: e, setAnchorEl });
-                          }}
-                        >
-                          <S.Icon src={icons.menu} alt="Icon menu" />
-                        </IconButton>
-                      </Box>
+                        <S.HeaderCard>
+                          <S.Title>{scenario.hub}</S.Title>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              textAlign: 'center'
+                            }}
+                          >
+                            <IconButton
+                              size="small"
+                              sx={{ ml: 2 }}
+                              aria-haspopup="true"
+                              aria-expanded={open ? 'true' : undefined}
+                              aria-controls={open ? 'account-menu' : undefined}
+                              onClick={(e) => {
+                                setscenariosActive(scenario);
+                                handleClickMenu({ event: e, setAnchorEl });
+                              }}
+                            >
+                              <S.Icon src={icons.menu} alt="Icon menu" />
+                            </IconButton>
+                          </Box>
 
-                      <Menu
-                        open={open}
-                        id="account-menu"
-                        anchorEl={anchorEl}
-                        className="menuEdit billsMenu"
-                        onClose={() => handleCloseMenu({ setAnchorEl })}
-                        PaperProps={{
-                          elevation: 0,
-                          sx: {
-                            overflow: 'visible',
-                            mt: 1.5,
-                            '& .MuiAvatar-root': {
-                              width: 32,
-                              height: 32,
-                              ml: -0.5,
-                              mr: 1
-                            },
-                            '&::before': {
-                              content: '""',
-                              display: 'block',
-                              position: 'absolute',
-                              top: 0,
-                              right: 14,
-                              width: 10,
-                              height: 10,
-                              bgcolor: 'background.paper',
-                              transform: 'translateY(-50%) rotate(45deg)',
-                              zIndex: 0
-                            }
-                          }
-                        }}
-                        transformOrigin={{
-                          horizontal: 'right',
-                          vertical: 'top'
-                        }}
-                        anchorOrigin={{
-                          horizontal: 'right',
-                          vertical: 'bottom'
-                        }}
-                      >
-                        <MenuItem
-                          onClick={() =>
-                            handleView({
-                              name,
-                              id: 1,
-                              navigate,
-                              idProject: id
-                            })
-                          }
-                        >
-                          Ver detalhes
-                          <ListItemIcon>
-                            <S.Icon src={icons.eye} alt="Icon eye" />
-                          </ListItemIcon>
-                        </MenuItem>
-                        <Divider />
-                        <MenuItem
-                          onClick={() => {
-                            setIsDelete(true);
-                            setOpenModal(true);
-                          }}
-                        >
-                          Deletar
-                          <ListItemIcon>
-                            <S.Icon src={icons.trash} alt="Icon trash" />
-                          </ListItemIcon>
-                        </MenuItem>
-                      </Menu>
-                    </S.HeaderCard>
-                    <S.ContainerScenarios>
-                      <S.Scenario>
-                        <S.Title>Lançamento</S.Title>
-                        <S.Text>10%</S.Text>
-                      </S.Scenario>
-                      <S.Scenario>
-                        <S.Title>Obras</S.Title>
-                        <S.Text>40%</S.Text>
-                      </S.Scenario>
-                      <S.Scenario>
-                        <S.Title>Pós Obras</S.Title>
-                        <S.Text>50%</S.Text>
-                      </S.Scenario>
-                      <S.FooterScenario>
-                        <S.Title>Total</S.Title>
-                        <S.Text>100%</S.Text>
-                      </S.FooterScenario>
-                    </S.ContainerScenarios>
-                  </Card>
+                          <Menu
+                            open={open}
+                            id="account-menu"
+                            anchorEl={anchorEl}
+                            className="menuEdit billsMenu"
+                            onClose={() => handleCloseMenu({ setAnchorEl })}
+                            PaperProps={{
+                              elevation: 0,
+                              sx: {
+                                overflow: 'visible',
+                                mt: 1.5,
+                                '& .MuiAvatar-root': {
+                                  width: 32,
+                                  height: 32,
+                                  ml: -0.5,
+                                  mr: 1
+                                },
+                                '&::before': {
+                                  content: '""',
+                                  display: 'block',
+                                  position: 'absolute',
+                                  top: 0,
+                                  right: 14,
+                                  width: 10,
+                                  height: 10,
+                                  bgcolor: 'background.paper',
+                                  transform: 'translateY(-50%) rotate(45deg)',
+                                  zIndex: 0
+                                }
+                              }
+                            }}
+                            transformOrigin={{
+                              horizontal: 'right',
+                              vertical: 'top'
+                            }}
+                            anchorOrigin={{
+                              horizontal: 'right',
+                              vertical: 'bottom'
+                            }}
+                          >
+                            <MenuItem
+                              onClick={() => {
+                                handleView({
+                                  name,
+                                  navigate,
+                                  idProject: id,
+                                  id: scenariosActive?.project_scenarios_hub_id
+                                });
+                              }}
+                            >
+                              Ver detalhes
+                              <ListItemIcon>
+                                <S.Icon src={icons.eye} alt="Icon eye" />
+                              </ListItemIcon>
+                            </MenuItem>
+                            <Divider />
+                            <MenuItem
+                              onClick={() => {
+                                setIsDelete(true);
+                                setOpenModal(true);
+                              }}
+                            >
+                              Deletar
+                              <ListItemIcon>
+                                <S.Icon src={icons.trash} alt="Icon trash" />
+                              </ListItemIcon>
+                            </MenuItem>
+                          </Menu>
+                        </S.HeaderCard>
+                        <S.ContainerScenarios>
+                          {scenario.phases.map((phase) => {
+                            return (
+                              <S.Scenario key={phase.id}>
+                                <S.Title>{phase.step_name}</S.Title>
+                                <S.Text>{phase.value}%</S.Text>
+                              </S.Scenario>
+                            );
+                          })}
+                          <S.FooterScenario>
+                            <S.Title>Total</S.Title>
+                            <S.Text>100%</S.Text>
+                          </S.FooterScenario>
+                        </S.ContainerScenarios>
+                      </Card>
+                    );
+                  })}
                 </S.ListScenarios>
               ) : (
                 <S.Message width={'100%'} height={'auto'}>
@@ -228,7 +269,9 @@ export const Scenarios = () => {
                     Ainda não há cenários de vendas criados. Por favor, crie um
                     novo cenário para que ele seja listado aqui.
                   </S.Title>
-                  <Button size="200px">Novo Cenário</Button>
+                  <Button size="200px" onClick={() => setNewScenarios(true)}>
+                    Novo Cenário
+                  </Button>
                 </S.Message>
               )}
             </>
@@ -237,9 +280,9 @@ export const Scenarios = () => {
       </S.ScenariosContainer>
 
       <GenericModal
+        open={openModal}
         maxWidth={'650px'}
         maxHeight={'300px'}
-        open={openModal}
         setOpen={setOpenModal}
       >
         <S.ContainerMessage>
@@ -262,13 +305,13 @@ export const Scenarios = () => {
 
       <GenericModal
         maxWidth={'900px'}
-        maxHeight={'350px'}
+        maxHeight={'500px'}
         open={newScenarios}
         setOpen={setNewScenarios}
       >
         <S.ContainerMessage>
           <S.Title>Novo Cenário </S.Title>
-          <S.Text>
+          <S.Text margin="0 0 20px">
             Esse novo cenário poderá ser usado nos próximos cadastros
           </S.Text>
           <S.Form onSubmit={handleSubmit}>
@@ -278,7 +321,7 @@ export const Scenarios = () => {
                   <S.Label>Nome</S.Label>
                   <Input
                     required
-                    id="username"
+                    id="name"
                     value={values.name}
                     onChange={handleChange}
                     aria-describedby="name"
@@ -293,9 +336,16 @@ export const Scenarios = () => {
                   <Select
                     required
                     displayEmpty
-                    name="startType"
-                    onChange={handleChange}
-                    value={values.startType}
+                    name="start"
+                    value={values.start}
+                    onChange={(e) => {
+                      handleChange(e);
+                      handleStartChange({
+                        event: e,
+                        listPhases,
+                        setListPhases
+                      });
+                    }}
                     className="SelectComponent"
                     IconComponent={KeyboardArrowDownRounded}
                     inputProps={{ 'aria-label': 'Without label' }}
@@ -303,76 +353,141 @@ export const Scenarios = () => {
                     <MenuItem value={0} disabled>
                       <em>Selecione a opção </em>
                     </MenuItem>
-                    <MenuItem value={1}>Lançamento</MenuItem>
-                    <MenuItem value={2}>Obra</MenuItem>
-                    <MenuItem value={3}>Pós Obras</MenuItem>
+                    <MenuItem value={49}>Lançamento</MenuItem>
+                    <MenuItem value={50}>Obra</MenuItem>
+                    <MenuItem value={51}>Pós Obras</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
-            </Grid>
-            <Grid container spacing={{ xs: 0, sm: 1 }} alignItems={'center'}>
-              <Grid item xs={12} sm={12} md={4}>
-                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Fase</S.Label>
-                  <Select
-                    required
-                    displayEmpty
-                    name="phase"
-                    value={values.phase}
-                    onChange={handleChange}
-                    className="SelectComponent"
-                    IconComponent={KeyboardArrowDownRounded}
-                    inputProps={{ 'aria-label': 'Without label' }}
-                  >
-                    <MenuItem value={0} disabled>
-                      <em>Selecione a opção </em>
-                    </MenuItem>
-                    <MenuItem value={1}>Lançamento</MenuItem>
-                    <MenuItem value={2}>Obra</MenuItem>
-                    <MenuItem value={3}>Pós Obras</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={12} md={4}>
-                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Inicio</S.Label>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoContainer components={['DatePicker']}>
-                      <DatePicker
-                        views={['month', 'year']}
-                        minDate={dayjs('2024-05-12')}
-                        maxDate={dayjs('2024-08-12')}
-                        onChange={(date) =>
-                          setFieldValue('startDateSales', date || '')
-                        }
-                      />
-                    </DemoContainer>
-                  </LocalizationProvider>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={12} md={4}>
-                <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Velocidade de Vendas (%)</S.Label>
+              {listPhases.map((phase, index) => {
+                return (
+                  <>
+                    <Grid item xs={12} sm={12} md={4}>
+                      <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                        <S.Label>Fase</S.Label>
+                        <Input
+                          required
+                          disabled
+                          id="phase"
+                          aria-describedby="type"
+                          value={listPhases[index].name}
+                          inputProps={{ style: { fontSize: '1.4rem' } }}
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={4}>
+                      <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                        <S.Label>Data de inicio das vendas </S.Label>
 
-                  <Input
-                    required
-                    id="salesSpeed"
-                    value={values.salesSpeed}
-                    onChange={handleChange}
-                    aria-describedby="salesSpeed"
-                    placeholder="Digite aqui..."
-                    inputProps={{ style: { fontSize: '1.4rem' } }}
-                  />
-                </FormControl>
-              </Grid>
+                        <Select
+                          required
+                          displayEmpty
+                          disabled={
+                            totalSalesPercentes >= 100 && phase.value === 0
+                          }
+                          onChange={(e) => {
+                            const id = e.target.value as number;
+                            const updatedPhases = [...listPhases];
+                            updatedPhases[index].id = id;
+                            updatedPhases[index].projectStepId = id;
+                            updatedPhases[index].scenarioTypesId = values.start;
+                            setListPhases(updatedPhases);
+                          }}
+                          className="SelectComponent"
+                          value={phase.projectStepId}
+                          id={`phase[${index}].projectStepId`}
+                          name={`phase[${index}].projectStepId`}
+                          inputProps={{ 'aria-label': 'Without label' }}
+                        >
+                          <MenuItem value={0} disabled>
+                            <em>Selecione a opção </em>
+                          </MenuItem>
+                          {listAllSteps[index]?.map((item) => (
+                            <MenuItem value={item.id}>
+                              {formatMMYYYYDate(item.date || '')}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DemoContainer components={['DatePicker']}>
+                            <DatePicker
+                              className={
+                                totalSalesPercentes >= 100 && phase.value === 0
+                                  ? 'Mui-disabled'
+                                  : ''
+                              }
+                              disabled={
+                                totalSalesPercentes >= 100 && phase.value === 0
+                              }
+                              views={['month', 'year']}
+                              minDate={dayjs('2024-05-12')}
+                              maxDate={dayjs('2024-08-12')}
+                              // value={phase.startDate}
+                              // onChange={(date) => {
+                              //   const updatedPhases = [...listPhases];
+                              //   updatedPhases[index].startDate = date;
+                              //   setListPhases(updatedPhases);
+                              // }}
+                            />
+                          </DemoContainer>
+                        </LocalizationProvider> */}
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={4}>
+                      <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                        <S.Label>Velocidade de Vendas (%)</S.Label>
+                        <Input
+                          required
+                          id="value"
+                          name="value"
+                          value={phase.value}
+                          disabled={
+                            totalSalesPercentes >= 100 && phase.value === 0
+                          }
+                          onChange={(e) => {
+                            let value = parseFloat(e.target.value);
+                            if (isNaN(value) || value < 0) value = 0;
+                            if (value > 100) value = 100;
+                            handleSalesPercentesChange({
+                              value,
+                              index,
+                              listPhases,
+                              setListPhases
+                            });
+                          }}
+                          aria-describedby="value"
+                          placeholder="Digite aqui..."
+                          inputProps={{
+                            style: { fontSize: '1.4rem' }
+                          }}
+                        />
+                      </FormControl>
+                    </Grid>
+                  </>
+                );
+              })}
             </Grid>
+
             <Grid container spacing={{ xs: 0, sm: 1 }} alignItems={'center'}>
               <Grid item xs={12} sm={12} md={12}>
                 <S.ContainerButtons className="containerBtn">
-                  <Button $isOutline size="140px">
+                  <Button
+                    $isOutline
+                    size="140px"
+                    onClick={() => {
+                      resetForm({});
+                      setNewScenarios(false);
+                      setListPhases(emptyPhases);
+                    }}
+                  >
                     Cancelar
                   </Button>
-                  <Button size="140px" type="submit">
+                  <Button
+                    size="140px"
+                    type="submit"
+                    loading={loading}
+                    disabled={loading}
+                  >
                     Adicionar
                   </Button>
                 </S.ContainerButtons>
@@ -403,11 +518,15 @@ export const Scenarios = () => {
             </Button>
             <Button
               size="100px"
-              onClick={() =>
+              onClick={() => {
                 isDelete
-                  ? handleDelete()
-                  : navigate(`/scenarios?${convertToParams({ id, name })}`)
-              }
+                  ? deleteScenario({
+                      id: scenariosActive.project_scenarios_hub_id,
+                      setLoading,
+                      setSnackbar
+                    })
+                  : navigate(`/edit?${convertToParams({ id, name })}`);
+              }}
             >
               Sim
             </Button>
