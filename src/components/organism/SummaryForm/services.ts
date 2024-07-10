@@ -1,8 +1,8 @@
 import { Snackbar } from '@/contexts/Snackbar';
 import {
-  createDeadline,
   createLands,
   createProject,
+  createSteps,
   createUnits
 } from '@/services/services';
 import { projectDateType } from '@/utils/types';
@@ -46,7 +46,11 @@ export const handleCreateProject = async (
       }
     }
     try {
-      await createDeadline(projectId, date.deadline);
+      const payload = {
+        ...date.deadline,
+        projectId
+      };
+      await createSteps(payload);
     } catch (error) {
       if (error instanceof Error) {
         setSnackbar({

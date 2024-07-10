@@ -62,9 +62,11 @@ export const ContainerButtons = styled(ContainerGeneric)`
   }
 `;
 export const ContainerMessage = styled(ContainerGeneric)`
+  max-height: 100%;
+  overflow-y: auto;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   > img {
     margin-bottom: 20px;
   }

@@ -1,5 +1,6 @@
 import { Card } from '@/components/modules';
 import styled from 'styled-components';
+import { styledProps } from './@types';
 
 export const GenericContainer = styled.div`
   width: 100%;
@@ -9,22 +10,11 @@ export const GenericContainer = styled.div`
   justify-content: flex-start;
 `;
 export const ScenariosContainer = styled(GenericContainer)`
-  gap: 21px;
-  padding: 20px;
+  gap: 5px;
   flex-direction: column;
 `;
 export const Header = styled(GenericContainer)`
-  gap: 10px;
-  flex-wrap: wrap;
-  padding-bottom: 10px;
-  justify-content: space-between;
-  border-bottom: 2px solid #ebe9f1;
-
-  > div:last-child {
-    gap: 5px;
-    width: auto;
-    margin-bottom: 0px;
-  }
+  justify-content: flex-end;
 `;
 export const Content = styled(GenericContainer)`
   gap: 20px;
@@ -51,10 +41,13 @@ export const Title = styled.h2`
   font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
 `;
 export const ContainerMessage = styled(GenericContainer)`
+  max-height: 100%;
+  overflow-y: auto;
   padding: 20px 60px;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+
   > div {
     margin: 30px 0 0;
     justify-content: center;
@@ -66,8 +59,9 @@ export const ContainerMessage = styled(GenericContainer)`
     }
   }
 `;
-export const Text = styled.p`
+export const Text = styled.p<styledProps>`
   margin-top: 5px;
+  margin: ${({ margin }) => margin};
   color: ${({ theme }) => theme.palette.color.dark};
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
 `;
@@ -111,7 +105,10 @@ export const Label = styled.label`
   font-weight: ${({ theme }) => theme.typography.fontWeightLight};
 `;
 export const HeaderCard = styled(Header)`
-  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  justify-content: space-between;
+  border-bottom: 2px solid #ebe9f1;
 
   > h2 {
     color: ${({ theme }) => theme.palette.color.regular};
@@ -156,8 +153,10 @@ export const FooterScenario = styled(GenericContainer)`
   }
 `;
 export const ListScenarios = styled(GenericContainer)`
+  gap: 20px;
   padding: 0 !important;
+  flex-direction: column;
   > div {
-    padding: 20px 24px 18px;
+    padding: 10px;
   }
 `;

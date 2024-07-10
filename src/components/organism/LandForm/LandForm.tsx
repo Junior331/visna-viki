@@ -88,11 +88,13 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
       setIsShow(false);
     }
   }, [formikProjectName, setIsShow]);
+
   useEffect(() => {
     if (!formikProjectName.values.name) {
       setIsShow(false);
     }
   }, [formikProjectName, setIsShow]);
+
   useEffect(() => {
     if (date.lands.name) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -112,6 +114,8 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.zipCode]);
+
+  console.log('Componente UnitsForm atualizado');
 
   return (
     <S.LandFormContainer>

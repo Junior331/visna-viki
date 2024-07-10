@@ -10,7 +10,7 @@ export const breadCrumbsItems = (
     label: `${nameProject}`
   },
   {
-    path: `/scenarios?${convertToParams({ id, name: nameProject })}`,
+    path: `/edit?${convertToParams({ id, name: nameProject })}`,
     label: 'Cenários de Venda'
   },
   {

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Layout,
@@ -13,22 +13,37 @@ import { Button } from '@/components/elements';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 
-import { projectDateType } from '@/utils/types';
+import { projectDateType, unitCharacteristicsType } from '@/utils/types';
 import { emptyProjectDate } from '@/utils/emptys';
 import { GenericModal, StepProgress } from '@/components/modules';
 import * as S from './CreateProjectStyled';
+import { getListUnitCharacteristics } from '../EditProject/utils';
+import { SnackbarContext } from '@/contexts/Snackbar';
 
 export const CreateProject = () => {
   const navigate = useNavigate();
   const [isShow, setIsShow] = useState(false);
   const [stepActive, setStepActive] = useState(1);
   const [openModal, setOpenModal] = useState(false);
+  const { setSnackbar } = useContext(SnackbarContext);
   const { stepsIsDone } = useContext(StepsIsDoneContext);
   const [date, setDate] = useState<projectDateType>(emptyProjectDate);
-
+  const [listCharacteristics, setListCharacteristics] = useState<
+    unitCharacteristicsType[]
+  >([]);
   const handleStep = (step: number) => {
     if (step > 0 && step < 5) setStepActive(step);
   };
+
+  useEffect(() => {
+    if (stepActive && stepsIsDone.length < 2) {
+      getListUnitCharacteristics({
+        setSnackbar,
+        setListCharacteristics
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setSnackbar, setListCharacteristics]);
 
   return (
     <Layout>
@@ -56,6 +71,7 @@ export const CreateProject = () => {
                 date={date}
                 setDate={setDate}
                 handleStep={handleStep}
+                listCharacteristics={listCharacteristics}
               />
             )}
             {stepActive === 3 && (

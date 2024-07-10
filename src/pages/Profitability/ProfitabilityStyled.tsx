@@ -10,7 +10,6 @@ export const GenericContainer = styled.div`
 `;
 export const ProfitabilityContainer = styled(GenericContainer)`
   gap: 21px;
-  padding: 20px;
   flex-direction: column;
 `;
 export const Header = styled(GenericContainer)`
@@ -52,9 +51,11 @@ export const Title = styled.h2`
   font-weight: ${({ theme }) => theme.typography.fontWeightRegular};
 `;
 export const ContainerMessage = styled(GenericContainer)`
+  max-height: 100%;
+  overflow-y: auto;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   > img {
     margin-bottom: 20px;
   }

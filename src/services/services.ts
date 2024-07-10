@@ -848,10 +848,10 @@ export const createSteps = async (payload: payloadSteps) => {
     }
   }
 };
-export const editSteps = async (id: number, payload: payloadSteps) => {
+export const editSteps = async (payload: any) => {
   try {
     const response = await axios.patch(
-      `${ENDPOINTS.BASE_URL}${ENDPOINTS.STEPS.BASE_URL}/${id}`,
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.STEPS.BASE_URL}`,
       payload,
       {
         headers: {
@@ -904,10 +904,10 @@ export const listAllScenariosByProject = async ({
     }
   }
 };
-export const listScenariosById = async (id: number) => {
+export const listScenariosById = async (projectId: number, id: number) => {
   try {
     const response = await axios.get(
-      `${ENDPOINTS.BASE_URL}${ENDPOINTS.SCENARIOS.BASE_URL}/find/${id}`,
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.SCENARIOS.BASE_URL}/find/${projectId}/${id}`,
       {
         headers: {
           Authorization: `Bearer ${getToken()}`

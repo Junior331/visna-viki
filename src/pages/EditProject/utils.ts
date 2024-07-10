@@ -3,10 +3,10 @@ import {
   editLands,
   editUnits,
   editProject,
-  editDeadline,
   deleteProject,
   listUnitCharacteristics,
-  createDeadline
+  createDeadline,
+  editSteps
 } from '@/services/services';
 import {
   handleCreateDeadlineProps,
@@ -15,7 +15,7 @@ import {
   handleEditLandProps,
   handleEditProjectProps,
   handleEdittUnitsProps,
-  handleListUnitCharacteristicsProps,
+  getListUnitCharacteristicsProps,
   handleTabsProps
 } from './@types';
 import { handleSumValuesProps } from '@/components/organism/UnitsForm/@types';
@@ -229,7 +229,6 @@ export const handleCreateDeadline = async ({
   }
 };
 export const handleEditDeadline = async ({
-  deadlineId,
   payload,
   setLoading,
   setSnackbar
@@ -237,7 +236,7 @@ export const handleEditDeadline = async ({
   setLoading(true);
 
   try {
-    await editDeadline(deadlineId, payload);
+    await editSteps(payload);
     setSnackbar({
       isOpen: true,
       severity: 'success',
@@ -344,10 +343,10 @@ export const handleEdittUnits = async ({
     setLoading(false);
   }
 };
-export const handleListUnitCharacteristics = async ({
+export const getListUnitCharacteristics = async ({
   setSnackbar,
   setListCharacteristics
-}: handleListUnitCharacteristicsProps) => {
+}: getListUnitCharacteristicsProps) => {
   try {
     const result = await listUnitCharacteristics();
     const updatedList = result.filter((item: any) => item.name !== 'UR');

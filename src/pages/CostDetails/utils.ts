@@ -27,7 +27,7 @@ export const breadCrumbsItems = ({
     label: `${name}` // PROJETO MINHA CASA MINHA VIDA
   },
   {
-    path: `/bills?${convertToParams({ id: idProject, name })}`,
+    path: `/edit?${convertToParams({ id: idProject, name })}`,
     label: 'Contas'
   },
   {

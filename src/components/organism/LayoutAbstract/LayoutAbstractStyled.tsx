@@ -69,7 +69,7 @@ export const Span = styled.span<StyledProps>`
 `;
 export const LayoutContent = styled.div`
   width: 100%;
-  height: 70%;
+  height: autp;
   display: flex;
   max-width: 650px;
   min-width: 450px;
@@ -103,6 +103,7 @@ export const LayoutContent = styled.div`
 export const Footer = styled.div`
   width: 100%;
   display: flex;
+  margin-top: 20px;
   flex-direction: column;
   p,
   span {

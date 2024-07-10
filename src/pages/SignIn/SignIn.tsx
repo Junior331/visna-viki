@@ -68,8 +68,8 @@ export const SignIn = () => {
     <LayoutAbstract>
       <S.Form onSubmit={handleSubmit}>
         <S.ContainerText>
-          <S.Title color="#000000">Entrar</S.Title>
-          <S.Text color="#000000">Entre com seu e-mail.</S.Text>
+          <S.Title>Entrar</S.Title>
+          <S.Text>Entre com seu e-mail.</S.Text>
         </S.ContainerText>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
           <Input

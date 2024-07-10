@@ -15,7 +15,7 @@ export const ContainerText = styled(GenericContainer)`
   justify-content: center;
 `;
 export const Title = styled.h2`
-  color: ${({ theme }) => theme.palette.color.dark};
+  color: ${({ theme }) => theme.palette.color.default};
   font-weight: ${({ theme }) => theme.typography.fontWeightBold};
   font-size: ${({ theme }) => theme.typography.fontSizeRegular + 0.2}rem;
 `;
@@ -24,7 +24,7 @@ export const Text = styled.p`
   display: flex;
   flex-wrap: wrap;
   max-width: 380px;
-  color: ${({ theme }) => theme.palette.color.dark};
+  color: ${({ theme }) => theme.palette.color.default};
   font-size: ${({ theme }) => theme.typography.fontSize}rem;
 `;
 

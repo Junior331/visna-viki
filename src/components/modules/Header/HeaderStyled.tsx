@@ -61,10 +61,12 @@ export const Text = styled.p`
 `;
 
 export const ContainerMessage = styled(ContainerGeneric)`
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 10px 45px;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
-  padding: 10px 45px;
+  justify-content: flex-start;
   > div {
     > button:first-child {
       background-color: #e73d3e;

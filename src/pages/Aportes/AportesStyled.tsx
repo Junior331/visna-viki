@@ -9,21 +9,10 @@ export const GenericContainer = styled.div`
 `;
 export const AportesContainer = styled(GenericContainer)`
   gap: 21px;
-  padding: 20px;
   flex-direction: column;
 `;
 export const Header = styled(GenericContainer)`
-  gap: 10px;
-  flex-wrap: wrap;
-  padding-bottom: 10px;
-  justify-content: space-between;
-  border-bottom: 2px solid #ebe9f1;
-
-  > div:last-child {
-    gap: 12px;
-    display: flex;
-    align-items: center;
-  }
+  justify-content: flex-end;
 `;
 export const Content = styled(GenericContainer)`
   gap: 20px;
@@ -34,9 +23,11 @@ export const Content = styled(GenericContainer)`
   }
 `;
 export const ContainerMessage = styled(GenericContainer)`
+  max-height: 100%;
+  overflow-y: auto;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   > img {
     margin-bottom: 20px;
   }
@@ -157,7 +148,10 @@ export const ContainerButton = styled(GenericContainer)`
   justify-content: flex-end;
 `;
 export const HeaderCard = styled(Header)`
-  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  justify-content: space-between;
+  border-bottom: 2px solid #ebe9f1;
 
   > h2 {
     color: ${({ theme }) => theme.palette.color.regular};

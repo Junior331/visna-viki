@@ -62,6 +62,9 @@ export const columnsScenarios: columnType[] = [
     label: 'mês'
   },
   {
+    label: 'data'
+  },
+  {
     label: 'velocidade de vendas'
   },
   {

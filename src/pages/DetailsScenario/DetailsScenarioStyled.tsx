@@ -29,12 +29,29 @@ export const Content = styled(GenericContainer)`
       margin: 20px 0 10px;
     }
   }
+
+  > .containerTable {
+    gap: 10px;
+    padding: 0;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    > h2 {
+      padding: 10px 0 0 10px;
+    }
+  }
 `;
 export const ContainerMessage = styled(GenericContainer)`
+  max-height: 100%;
+  overflow-y: auto;
+  max-height: 100%;
+  overflow-y: auto;
   padding: 20px 60px;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   > div {
     margin: 30px 0 0;
     justify-content: center;
