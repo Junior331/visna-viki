@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import { Grid, FormControl, Select, MenuItem } from '@mui/material';
 
@@ -26,10 +26,6 @@ const UnitsForm = memo(
       onSubmit: async () => {},
       validationSchema: unitsFormSchema
     });
-
-    useEffect(() => {
-      console.log('Componente UnitsForm atualizado');
-    }, []);
 
     useEffect(() => {
       if (date.units.flooring) {
@@ -110,6 +106,19 @@ const UnitsForm = memo(
       });
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formik.values]);
+
+    const visibleTodos = useMemo(
+      () => listCharacteristics,
+      [listCharacteristics]
+    );
+
+    useEffect(() => {
+      console.log('Componente UnitsForm atualizado');
+    }, []);
+
+    if (!visibleTodos.length) {
+      return null;
+    }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     return (
