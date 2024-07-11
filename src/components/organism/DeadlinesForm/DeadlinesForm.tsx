@@ -32,15 +32,6 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
     },
     validationSchema: deadlinesFormSchema
   });
-  const {
-    values,
-    touched,
-    errors,
-    handleSubmit,
-    handleBlur,
-    setFieldValue,
-    handleChange
-  } = formik;
 
   useEffect(() => {
     if (date.deadline.startDate) {
@@ -48,27 +39,25 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
       const lands: any = date.deadline;
       Object.keys(lands).forEach((key: string) => {
         console.log('key, lands[key] ::', key, lands[key]);
-        setFieldValue(key, lands[key]);
+        formik.setFieldValue(key, lands[key]);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [date, setFieldValue]);
+  }, []);
 
   useEffect(() => {
     setDate({
       ...date,
       deadline: {
-        ...values
+        ...formik.values
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values]);
-
-  console.log('chegou ::');
+  }, [formik.values]);
 
   return (
     <S.DeadlinesFormContainer>
-      <S.Form onSubmit={handleSubmit}>
+      <S.Form onSubmit={formik.handleSubmit}>
         <Grid container spacing={{ xs: 0, sm: 2 }}>
           <S.ContainerInputs
             container
@@ -84,9 +73,9 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                   <DemoItem>
                     <DesktopDatePicker
                       format={'DD/MM/YYYY'}
-                      value={values.startDate || null}
+                      value={formik.values.startDate || null}
                       onChange={(date) =>
-                        setFieldValue('startDate', date || '')
+                        formik.setFieldValue('startDate', date || '')
                       }
                     />
                   </DemoItem>
@@ -102,31 +91,31 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                 <Input
                   required
                   onBlur={(e) => {
-                    setFieldValue(
+                    formik.setFieldValue(
                       'approvalDeadlineInMonth',
                       parseFloat(e.target.value)
                     );
                     handleSumValues({
                       value1: parseFloat(e.target.value),
-                      value2: values.projectLaunchDeadlineInMonth,
-                      value3: values.constructionDeadlineInMonth,
+                      value2: formik.values.projectLaunchDeadlineInMonth,
+                      value3: formik.values.constructionDeadlineInMonth,
                       fieldName: 'totalDeadlineInMonth',
-                      setFieldValue
+                      setFieldValue: formik.setFieldValue
                     });
                   }}
-                  onChange={handleChange}
+                  onChange={formik.handleChange}
                   id="approvalDeadlineInMonth"
                   placeholder="Digite os meses"
-                  value={values.approvalDeadlineInMonth}
+                  value={formik.values.approvalDeadlineInMonth}
                   aria-describedby="approvalDeadlineInMonth"
                   inputProps={{ style: { fontSize: '1.4rem' } }}
                   helperText={
-                    touched.approvalDeadlineInMonth &&
-                    errors.approvalDeadlineInMonth
+                    formik.touched.approvalDeadlineInMonth &&
+                    formik.errors.approvalDeadlineInMonth
                   }
                   error={
-                    touched.approvalDeadlineInMonth &&
-                    Boolean(errors.approvalDeadlineInMonth)
+                    formik.touched.approvalDeadlineInMonth &&
+                    Boolean(formik.errors.approvalDeadlineInMonth)
                   }
                 />
               </FormControl>
@@ -141,30 +130,30 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                   required
                   id="projectLaunchDeadlineInMonth"
                   onBlur={(e) => {
-                    setFieldValue(
+                    formik.setFieldValue(
                       'projectLaunchDeadlineInMonth',
                       parseFloat(e.target.value)
                     );
                     handleSumValues({
-                      value1: values.approvalDeadlineInMonth,
+                      value1: formik.values.approvalDeadlineInMonth,
                       value2: parseFloat(e.target.value),
-                      value3: values.constructionDeadlineInMonth,
+                      value3: formik.values.constructionDeadlineInMonth,
                       fieldName: 'totalDeadlineInMonth',
-                      setFieldValue
+                      setFieldValue: formik.setFieldValue
                     });
                   }}
-                  value={values.projectLaunchDeadlineInMonth}
-                  onChange={handleChange}
+                  value={formik.values.projectLaunchDeadlineInMonth}
+                  onChange={formik.handleChange}
                   aria-describedby="projectLaunchDeadlineInMonth"
                   placeholder="Digite os meses"
                   inputProps={{ style: { fontSize: '1.4rem' } }}
                   helperText={
-                    touched.projectLaunchDeadlineInMonth &&
-                    errors.projectLaunchDeadlineInMonth
+                    formik.touched.projectLaunchDeadlineInMonth &&
+                    formik.errors.projectLaunchDeadlineInMonth
                   }
                   error={
-                    touched.projectLaunchDeadlineInMonth &&
-                    Boolean(errors.projectLaunchDeadlineInMonth)
+                    formik.touched.projectLaunchDeadlineInMonth &&
+                    Boolean(formik.errors.projectLaunchDeadlineInMonth)
                   }
                 />
               </FormControl>
@@ -178,32 +167,32 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                 <Input
                   required
                   onBlur={(e) => {
-                    setFieldValue(
+                    formik.setFieldValue(
                       'constructionDeadlineInMonth',
                       parseFloat(e.target.value)
                     );
                     handleSumValues({
-                      value1: values.approvalDeadlineInMonth,
-                      value2: values.projectLaunchDeadlineInMonth,
+                      value1: formik.values.approvalDeadlineInMonth,
+                      value2: formik.values.projectLaunchDeadlineInMonth,
                       value3: parseFloat(e.target.value),
                       fieldName: 'totalDeadlineInMonth',
-                      setFieldValue
+                      setFieldValue: formik.setFieldValue
                     });
                   }}
-                  onChange={handleChange}
+                  onChange={formik.handleChange}
                   onKeyDown={handleKeyDown}
                   placeholder="Digite os meses"
                   id="constructionDeadlineInMonth"
-                  value={values.constructionDeadlineInMonth}
+                  value={formik.values.constructionDeadlineInMonth}
                   aria-describedby="constructionDeadlineInMonth"
                   inputProps={{ style: { fontSize: '1.4rem' } }}
                   helperText={
-                    touched.constructionDeadlineInMonth &&
-                    errors.constructionDeadlineInMonth
+                    formik.touched.constructionDeadlineInMonth &&
+                    formik.errors.constructionDeadlineInMonth
                   }
                   error={
-                    touched.constructionDeadlineInMonth &&
-                    Boolean(errors.constructionDeadlineInMonth)
+                    formik.touched.constructionDeadlineInMonth &&
+                    Boolean(formik.errors.constructionDeadlineInMonth)
                   }
                 />
               </FormControl>
@@ -214,11 +203,11 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                 <S.Label>Pós obra</S.Label>
                 <Input
                   required
-                  onBlur={handleBlur}
+                  onBlur={formik.handleBlur}
                   id="afterConstruction"
-                  onChange={handleChange}
+                  onChange={formik.handleChange}
                   placeholder="Digite os meses"
-                  value={values.afterConstruction}
+                  value={formik.values.afterConstruction}
                   aria-describedby="afterConstruction"
                   inputProps={{ style: { fontSize: '1.4rem' } }}
                 />
@@ -233,19 +222,20 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                 <Input
                   required
                   disabled
-                  onBlur={handleBlur}
-                  onChange={handleChange}
                   id="totalDeadlineInMonth"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
                   placeholder="Digite os meses"
-                  value={values.totalDeadlineInMonth || 0}
+                  value={formik.values.totalDeadlineInMonth || 0}
                   aria-describedby="totalDeadlineInMonth"
                   inputProps={{ style: { fontSize: '1.4rem' } }}
                   helperText={
-                    touched.totalDeadlineInMonth && errors.totalDeadlineInMonth
+                    formik.touched.totalDeadlineInMonth &&
+                    formik.errors.totalDeadlineInMonth
                   }
                   error={
-                    touched.totalDeadlineInMonth &&
-                    Boolean(errors.totalDeadlineInMonth)
+                    formik.touched.totalDeadlineInMonth &&
+                    Boolean(formik.errors.totalDeadlineInMonth)
                   }
                 />
               </FormControl>

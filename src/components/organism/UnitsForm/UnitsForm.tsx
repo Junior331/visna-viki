@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useContext, useEffect, useMemo } from 'react';
+import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import { Grid, FormControl, Select, MenuItem } from '@mui/material';
 
@@ -7,6 +8,7 @@ import { Props } from './@types';
 import unitsFormSchema from './UnitsFormSchema';
 import { Button, Input } from '@/components/elements';
 import { Tooltip } from '@/components/elements/Tooltip';
+import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import { calculateTUID, handleSumValues, unitDefault } from './utils';
 import {
   formatterV2,
@@ -16,14 +18,28 @@ import {
 } from '@/utils/utils';
 
 import * as S from './UnitsFormStyled';
-import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { MaskType } from '@/utils/types';
 
 const UnitsForm = memo(
   ({ date, handleStep, setDate, listCharacteristics }: Props) => {
+    const { stepsIsDone, setStepsIsDone } = useContext(StepsIsDoneContext);
+
     const formik = useFormik({
       initialValues: date.units,
-      onSubmit: async () => {},
+      onSubmit: async (values) => {
+        setDate({
+          ...date,
+          units: {
+            ...values,
+            unit: values.unit.map((unit) => ({
+              ...unit
+            }))
+          }
+        });
+        setStepsIsDone([...stepsIsDone, '2']);
+
+        handleStep(3);
+      },
       validationSchema: unitsFormSchema
     });
 

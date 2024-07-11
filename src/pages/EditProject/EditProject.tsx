@@ -1705,6 +1705,7 @@ export const EditProject = () => {
                       </Tooltip>
                       <Input
                         required
+                        disabled
                         id="startDate"
                         onBlur={formikDeadline.handleBlur}
                         value={typeMask(
@@ -1736,6 +1737,7 @@ export const EditProject = () => {
                       </Tooltip>
                       <Input
                         required
+                        disabled
                         onBlur={(e) => {
                           formikDeadline.setFieldValue(
                             'approvalDeadlineInMonth',
@@ -1779,6 +1781,7 @@ export const EditProject = () => {
                       </Tooltip>
                       <Input
                         required
+                        disabled
                         id="projectLaunchDeadlineInMonth"
                         onBlur={(e) => {
                           formikDeadline.setFieldValue(
@@ -1823,6 +1826,7 @@ export const EditProject = () => {
                       </Tooltip>
                       <Input
                         required
+                        disabled
                         onBlur={(e) => {
                           formikDeadline.setFieldValue(
                             'constructionDeadlineInMonth',
@@ -1868,6 +1872,7 @@ export const EditProject = () => {
                       <S.Label>Pós obra</S.Label>
                       <Input
                         required
+                        disabled
                         id="afterConstruction"
                         onBlur={formikDeadline.handleBlur}
                         value={formikDeadline.values.afterConstruction}
@@ -1907,32 +1912,6 @@ export const EditProject = () => {
                     </FormControl>
                   </Grid>
                 </S.ContainerInputs>
-
-                <S.ContainerButtons>
-                  <Button
-                    $isOutline
-                    size="80px"
-                    className="btnDelete"
-                    onClick={() => {
-                      setIsDelete(true);
-                      setOpenModal(true);
-                    }}
-                  >
-                    Deletar
-                  </Button>
-                  <div>
-                    <Button
-                      $isOutline
-                      size="80px"
-                      onClick={() => setOpenModal(true)}
-                    >
-                      Cancelar
-                    </Button>
-                    <Button size="100px" type="submit">
-                      Salvar
-                    </Button>
-                  </div>
-                </S.ContainerButtons>
               </S.Form>
             </CustomTabPanel>
 

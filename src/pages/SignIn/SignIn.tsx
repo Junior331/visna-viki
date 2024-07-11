@@ -69,7 +69,7 @@ export const SignIn = () => {
       <S.Form onSubmit={handleSubmit}>
         <S.ContainerText>
           <S.Title>Entrar</S.Title>
-          <S.Text>Entre com seu e-mail.</S.Text>
+          <S.Text>Entre com seu e-mail.. </S.Text>
         </S.ContainerText>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
           <Input
