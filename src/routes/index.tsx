@@ -18,14 +18,14 @@ import {
 export const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/signin" element={<SignIn />} />
+      <Route index element={<SignIn />} />
       <Route path="/home" element={<Home />} />
-      <Route index element={<CreateProject />} />
       <Route path="/aporte" element={<Aporte />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/expense" element={<Expense />} />
       <Route path="/edit" element={<EditProject />} />
       <Route path="/listbills" element={<ListBills />} />
+      <Route path="/create" element={<CreateProject />} />s
       <Route path="/details" element={<DetailsBills />} />
       <Route path="/costdetails" element={<CostDetails />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
