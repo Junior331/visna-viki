@@ -42,7 +42,8 @@ import {
   typeMask,
   formatterV2,
   handleKeyDown,
-  parseFormattedNumber
+  parseFormattedNumber,
+  formatCurrency
 } from '@/utils/utils';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import {
@@ -53,7 +54,7 @@ import {
 } from '@/utils/types';
 import { editProject } from '@/services/services';
 import { Tooltip } from '@/components/elements/Tooltip';
-import { Aportes, Bills, Profitability, Scenarios } from '@/pages';
+import { Aportes, Bills, Flow, Profitability, Scenarios } from '@/pages';
 import unitsFormSchema from '@/components/organism/UnitsForm/UnitsFormSchema';
 import { projectNameFormSchema } from '@/components/organism/LandForm/Schema';
 import { handleSumValues as handleSumValuesV2 } from '@/components/organism/DeadlinesForm/utils';
@@ -125,11 +126,14 @@ export const EditProject = () => {
       const payload = {
         id: values.id,
         projectId: parseFloat(id),
+        VGVTotal: values.VGVTotal,
+        TotalExchanges: values.TotalExchanges,
+        averageSaleValue: values.averageSaleValue,
+        projectEfficiency: values.projectEfficiency,
+        totalExchangeArea: values.totalExchangeArea,
         flooring: parseFloat(values.flooring.toString()),
         underground: parseFloat(values.underground.toString()),
         unitPerFloor: parseFloat(values.unitPerFloor.toString()),
-        averageSaleValue: values.averageSaleValue,
-        totalExchangeArea: values.totalExchangeArea,
         totalToBeBuiltArea: parseFloat(values.totalToBeBuiltArea.toString()),
         totalValueNoExchange: values.totalValueNoExchange,
         totalUnitsInDevelopment: values.totalUnitsInDevelopment,
@@ -137,7 +141,7 @@ export const EditProject = () => {
         totalAreaOfTheDevelopment: parseFloat(
           values.totalAreaOfTheDevelopment.toString()
         ),
-        totalPrivateAreaNetOfExchange: values.totalPrivateAreaNetOfExchange,
+        totalPrivateAreaNetOfExchange: '',
         unit: values.unit.map((unit) => ({
           ...unit
         }))
@@ -236,19 +240,19 @@ export const EditProject = () => {
       formikLand.setFieldValue(key, lands[key]);
     });
 
-    if (date.unitHub) {
-      const units: any = date.unitHub;
-      units.unit.forEach((unit: any, index: number) => {
-        Object.keys(unit).forEach((unitKey: string) => {
-          const fieldName = `unit.${index}.${unitKey}`;
-          setFieldValue(fieldName, unit[unitKey]);
-        });
-      });
+    // if (date.unitHub) {
+    //   const units: any = date.unitHub;
+    //   units.unit.forEach((unit: any, index: number) => {
+    //     Object.keys(unit).forEach((unitKey: string) => {
+    //       const fieldName = `unit.${index}.${unitKey}`;
+    //       setFieldValue(fieldName, unit[unitKey]);
+    //     });
+    //   });
 
-      Object.keys(units).forEach((key: string) => {
-        setFieldValue(key, units[key]);
-      });
-    }
+    //   Object.keys(units).forEach((key: string) => {
+    //     setFieldValue(key, units[key]);
+    //   });
+    // }
     if (date.deadline) {
       const lands: any = date.deadline;
       Object.keys(lands)?.forEach((key: string) => {
@@ -357,6 +361,11 @@ export const EditProject = () => {
                 <Tab label="Contas" {...a11yProps(4)} />
                 <Tab label="Rentabilidade" {...a11yProps(5)} />
                 <Tab label="Cenários" {...a11yProps(6)} />
+                <Tab
+                  disabled
+                  label="Fluxo"
+                  {...a11yProps(7)}
+                />
               </Tabs>
             </Box>
 
@@ -1426,7 +1435,7 @@ export const EditProject = () => {
                           variant="outlined"
                         >
                           <Tooltip title={'Unidades Total no empreendimento'}>
-                            <S.Label>Uni. T. no Empreendimento </S.Label>
+                            <S.Label>Total de uni. no emp.</S.Label>
                           </Tooltip>
                           <Input
                             disabled
@@ -1453,34 +1462,45 @@ export const EditProject = () => {
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <Tooltip title={'Total de área privativa'}>
-                            <S.Label>T. A. Privativa (m²)</S.Label>
-                          </Tooltip>
+                          <S.Label>Total de permutas</S.Label>
                           <Input
                             required
                             disabled
                             placeholder="0"
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            id="totalPrivateAreaQuantity"
-                            value={values.totalPrivateAreaQuantity}
-                            aria-describedby="totalPrivateAreaQuantity"
+                            id="TotalExchanges"
+                            value={values.TotalExchanges}
+                            aria-describedby="TotalExchanges"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
                           />
                         </FormControl>
                       </Grid>
 
-                      <Grid item xs={12} sm={6} md={1.5} minWidth={295}>
+                      <Grid item xs={12} sm={6} md={2} minWidth={295}>
                         <FormControl
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <Tooltip title={'Área total a construída (m²)'}>
-                            <S.Label>A. T. Construída (m²)</S.Label>
-                          </Tooltip>
+                          <S.Label>Área total a construir</S.Label>
                           <Input
                             required
-                            onBlur={handleBlur}
+                            onBlur={(e) => {
+                              setFieldValue(
+                                `totalToBeBuiltArea`,
+                                e.target.value
+                              );
+                              console.log('totalPrivateAreaQuantity :: ', values.totalPrivateAreaQuantity)
+                              handleSumValues({
+                                id: '',
+                                type: 'split',
+                                value1:
+                                  values.totalPrivateAreaQuantity.toString(),
+                                value2: e.target.value,
+                                fieldName: 'projectEfficiency',
+                                setFieldValue: setFieldValue
+                              });
+                            }}
                             id="totalToBeBuiltArea"
                             onChange={handleChange}
                             onKeyDown={handleKeyDown}
@@ -1504,36 +1524,40 @@ export const EditProject = () => {
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <S.Label>Área total do empreendimento</S.Label>
-
+                          <S.Label>Área total privativa</S.Label>
                           <Input
                             required
-                            onBlur={handleBlur}
-                            id="totalAreaOfTheDevelopment"
+                            disabled
+                            placeholder="0"
+                            onBlur={(e) => {
+                              setFieldValue(
+                                `totalPrivateAreaQuantity`,
+                                e.target.value
+                              );
+                              handleSumValues({
+                                id: '',
+                                type: 'split',
+                                value1: e.target.value,
+                                value2: values.totalToBeBuiltArea.toString(),
+                                fieldName: 'projectEfficiency',
+                                setFieldValue: setFieldValue
+                              });
+                            }}
                             onChange={handleChange}
-                            onKeyDown={handleKeyDown}
-                            value={values.totalAreaOfTheDevelopment}
-                            aria-describedby="totalAreaOfTheDevelopment"
-                            placeholder="Digite a quantidade"
+                            id="totalPrivateAreaQuantity"
+                            value={values.totalPrivateAreaQuantity}
+                            aria-describedby="totalPrivateAreaQuantity"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
-                            helperText={
-                              touched.totalAreaOfTheDevelopment &&
-                              errors.totalAreaOfTheDevelopment
-                            }
-                            error={
-                              touched.totalAreaOfTheDevelopment &&
-                              Boolean(errors.totalAreaOfTheDevelopment)
-                            }
                           />
                         </FormControl>
                       </Grid>
 
-                      <Grid item xs={12} sm={6} md={2} minWidth={340}>
+                      <Grid item xs={12} sm={6} md={2.2} minWidth={350}>
                         <FormControl
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <S.Label>Área Total Permutada</S.Label>
+                          <S.Label>Área total de permutas</S.Label>
                           <Input
                             required
                             disabled
@@ -1566,7 +1590,7 @@ export const EditProject = () => {
                           <Tooltip
                             title={'Área total privativa sem permuta (m²)'}
                           >
-                            <S.Label>A. T. P. Permuta (m²) </S.Label>
+                            <S.Label>Área total pri. S/permuta</S.Label>
                           </Tooltip>
                           <Input
                             required
@@ -1594,8 +1618,30 @@ export const EditProject = () => {
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
+                          <S.Label>VGV Total</S.Label>
+                          <Input
+                            required
+                            disabled
+                            placeholder="0,00"
+                            onBlur={handleBlur}
+                            id="VGVTotal"
+                            onChange={handleChange}
+                            aria-describedby="VGVTotal"
+                            inputProps={{ style: { fontSize: '1.4rem' } }}
+                            value={formatCurrency(values.VGVTotal.toString())}
+                            helperText={touched.VGVTotal && errors.VGVTotal}
+                            error={touched.VGVTotal && Boolean(errors.VGVTotal)}
+                          />
+                        </FormControl>
+                      </Grid>
+
+                      <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
+                        <FormControl
+                          sx={{ m: 1, width: '25ch' }}
+                          variant="outlined"
+                        >
                           <Tooltip title={'Valor médio de venda (m²/R$)'}>
-                            <S.Label>V. M. Venda (m²/R$) </S.Label>
+                            <S.Label>V. Médio Venda</S.Label>
                           </Tooltip>
                           <Input
                             required
@@ -1618,34 +1664,32 @@ export const EditProject = () => {
                           />
                         </FormControl>
                       </Grid>
-                      <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
+                      <Grid item xs={12} sm={6} md={2} minWidth={280}>
                         <FormControl
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <S.Label>
-                            Área total privativa líquida de permuta (m²){' '}
-                          </S.Label>
+                          <S.Label>Eficiência do projeto</S.Label>
 
                           <Input
                             required
                             disabled
                             placeholder="0,00"
                             onBlur={handleBlur}
-                            id="totalPrivateAreaNetOfExchange"
+                            id="projectEfficiency"
                             onChange={handleChange}
-                            aria-describedby="totalPrivateAreaNetOfExchange"
+                            aria-describedby="projectEfficiency"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
                             value={formatterV2.format(
-                              values.totalPrivateAreaNetOfExchange || 0
+                              values.projectEfficiency || 0
                             )}
                             helperText={
-                              touched.totalPrivateAreaNetOfExchange &&
-                              errors.totalPrivateAreaNetOfExchange
+                              touched.projectEfficiency &&
+                              errors.projectEfficiency
                             }
                             error={
-                              touched.totalPrivateAreaNetOfExchange &&
-                              Boolean(errors.totalPrivateAreaNetOfExchange)
+                              touched.projectEfficiency &&
+                              Boolean(errors.projectEfficiency)
                             }
                           />
                         </FormControl>
@@ -1947,6 +1991,9 @@ export const EditProject = () => {
             </CustomTabPanel>
             <CustomTabPanel value={value} index={6}>
               <Scenarios />
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={6}>
+              <Flow />
             </CustomTabPanel>
           </Box>
         </S.Content>

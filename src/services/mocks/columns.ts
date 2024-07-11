@@ -35,6 +35,24 @@ export const columnsExpense: columnType[] = [
     label: 'AÇÃO'
   }
 ];
+export const columnsFlow: columnType[] = [
+  {
+    label: 'Data'
+  },
+  {
+    label: 'A. terreno ',
+    description: 'Aquisição terreno'
+  },
+  {
+    label: 'obra + despesas',
+  },
+  {
+    label: 'TOTAL',
+  },
+  {
+    label: 'CRONOGRAMA'
+  }
+];
 export const columnsAportes: columnType[] = [
   {
     label: 'Data'

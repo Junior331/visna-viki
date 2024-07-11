@@ -37,16 +37,18 @@ export const emptyProjectDate: projectDateType = {
   },
   units: {
     flooring: '',
+    VGVTotal: '',
     underground: '',
     unitPerFloor: '',
+    TotalExchanges: '',
     averageSaleValue: '',
+    projectEfficiency: '',
     totalExchangeArea: '',
     totalToBeBuiltArea: '',
     totalValueNoExchange: '',
     totalUnitsInDevelopment: '',
     totalPrivateAreaQuantity: '',
     totalAreaOfTheDevelopment: '',
-    totalPrivateAreaNetOfExchange: '',
     unit: [
       {
         id: 0,
@@ -91,17 +93,19 @@ export const emptyProjectInfo: projectInfoType = {
   unitHub: {
     id: 0,
     flooring: 0,
+    VGVTotal: 0,
     projectId: 0,
     underground: 0,
     unitPerFloor: 0,
-    totalExchangeArea: 0,
+    TotalExchanges: 0,
+    totalExchangeArea:0,
     averageSaleValue: 0,
+    projectEfficiency: 0,
     totalToBeBuiltArea: 0,
     totalValueNoExchange: 0,
     totalUnitsInDevelopment: 0,
     totalAreaOfTheDevelopment: 0,
     totalPrivateAreaQuantity: 0,
-    totalPrivateAreaNetOfExchange: 0,
     unit: [
       {
         id: 0,

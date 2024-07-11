@@ -23,7 +23,7 @@ const UnitsForm = memo(
   ({ date, handleStep, setDate, listCharacteristics }: Props) => {
     const formik = useFormik({
       initialValues: date.units,
-      onSubmit: async () => {},
+      onSubmit: async () => { },
       validationSchema: unitsFormSchema
     });
 
@@ -809,19 +809,19 @@ const UnitsForm = memo(
                       onChange={formik.handleChange}
                       aria-describedby="totalPrivateAreaNetOfExchange"
                       inputProps={{ style: { fontSize: '1.4rem' } }}
-                      value={formatterV2.format(
-                        parseFloat(
-                          formik.values.totalPrivateAreaNetOfExchange
-                        ) || 0
-                      )}
-                      helperText={
-                        formik.touched.totalPrivateAreaNetOfExchange &&
-                        formik.errors.totalPrivateAreaNetOfExchange
-                      }
-                      error={
-                        formik.touched.totalPrivateAreaNetOfExchange &&
-                        Boolean(formik.errors.totalPrivateAreaNetOfExchange)
-                      }
+                      // value={formatterV2.format(
+                      //   parseFloat(
+                      //     formik.values.totalPrivateAreaNetOfExchange
+                      //   ) || 0
+                      // )}
+                      // helperText={
+                      //   formik.touched.totalPrivateAreaNetOfExchange &&
+                      //   formik.errors.totalPrivateAreaNetOfExchange
+                      // }
+                      // error={
+                      //   formik.touched.totalPrivateAreaNetOfExchange &&
+                      //   Boolean(formik.errors.totalPrivateAreaNetOfExchange)
+                      // }
                     />
                   </FormControl>
                 </Grid>

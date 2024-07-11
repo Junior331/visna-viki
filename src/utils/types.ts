@@ -99,33 +99,37 @@ export type unitHubSummaryType = {
 
 export type unitType = {
   flooring: string;
+  VGVTotal: string;
   underground: string;
   unitPerFloor: string;
+  TotalExchanges: string;
   averageSaleValue: string;
   totalExchangeArea: string;
+  projectEfficiency: string;
   totalToBeBuiltArea: string;
   totalValueNoExchange: string;
   totalUnitsInDevelopment: string;
   totalPrivateAreaQuantity: string;
   totalAreaOfTheDevelopment: string;
-  totalPrivateAreaNetOfExchange: string;
   unit: unitSummaryType[];
 };
 
 export type unitHubType = {
   id: number;
   flooring: number;
+  VGVTotal: number;
   projectId: number;
   underground: number;
   unitPerFloor: number;
+  TotalExchanges: number;
   averageSaleValue: number;
+  projectEfficiency: number;
   totalExchangeArea: number;
   totalToBeBuiltArea: number;
   totalValueNoExchange: number;
   totalUnitsInDevelopment: number;
   totalPrivateAreaQuantity: number;
   totalAreaOfTheDevelopment: number;
-  totalPrivateAreaNetOfExchange: number;
   unit: unitHubSummaryType[];
 };
 

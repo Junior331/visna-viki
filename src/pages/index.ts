@@ -1,4 +1,5 @@
 import { Home } from './Home';
+import { Flow } from './Flow';
 import { Bills } from './Bills';
 import { SignIn } from './SignIn';
 import { SignUp } from './SignUp';
@@ -18,6 +19,7 @@ import { DetailsScenario } from './DetailsScenario';
 
 export {
   Home,
+  Flow,
   Bills,
   SignIn,
   SignUp,

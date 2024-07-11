@@ -20,13 +20,13 @@ export const AppRoutes = () => {
     <Routes>
       <Route path="/signin" element={<SignIn />} />
       <Route path="/home" element={<Home />} />
+      <Route index element={<CreateProject />} />
       <Route path="/aporte" element={<Aporte />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/expense" element={<Expense />} />
       <Route path="/edit" element={<EditProject />} />
       <Route path="/listbills" element={<ListBills />} />
       <Route path="/details" element={<DetailsBills />} />
-      <Route index element={<CreateProject />} />
       <Route path="/costdetails" element={<CostDetails />} />
       <Route path="/resetpassword" element={<ResetPassword />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />

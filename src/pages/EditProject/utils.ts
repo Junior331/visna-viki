@@ -107,6 +107,14 @@ export const handleSumValues = ({
 
     setFieldValue?.(fieldName, sum);
   }
+  if (type === 'split') {
+    const sum1 = parseFloat(parsedValue1.replace(/\./g, '').replace(',', '.'));
+    const sum2 = parseFloat(parsedValue2.replace(/\./g, '').replace(',', '.'));
+
+    const sum = sum1 / sum2;
+
+    setFieldValue?.(fieldName, sum);
+  }
 };
 
 export const handleTabs = ({ setValue, newValue }: handleTabsProps) => {
