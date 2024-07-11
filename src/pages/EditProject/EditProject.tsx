@@ -355,7 +355,7 @@ export const EditProject = () => {
                 <Tab label="Prazos" {...a11yProps(2)} />
                 <Tab label="Aportes" {...a11yProps(3)} />
                 <Tab label="Contas" {...a11yProps(4)} />
-                <Tab label="Rentabilidade" {...a11yProps(5)} />
+                <Tab disabled label="Rentabilidade" {...a11yProps(5)} />
                 <Tab label="Cenários" {...a11yProps(6)} />
               </Tabs>
             </Box>
