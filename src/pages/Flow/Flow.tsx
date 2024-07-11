@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { HeaderBreadcrumbs, Layout, Table } from '@/components/organism';
+import { Layout, Table } from '@/components/organism';
 import { icons } from '@/assets/images/icons';
 import { Button } from '@/components/elements';
 import { Card, GenericModal } from '@/components/modules';
 import { convertToParams } from '@/utils/utils';
 import * as S from './FlowStyled';
-import { breadCrumbsItems } from './utils';
 import { Switch } from '@mui/material';
 import { mocks } from '@/services/mocks';
 import { useFormik } from 'formik';
@@ -19,7 +18,6 @@ export const Flow = () => {
   const [showLaunchDeadline, setShowLaunchDeadline] = useState(false);
   const [showWork, setshowWork] = useState(false);
 
-
   const [openModal, setOpenModal] = useState(false);
   const { id, name } = Object.fromEntries([...searchParams]);
   const formik = useFormik({
@@ -29,12 +27,6 @@ export const Flow = () => {
   return (
     <Layout>
       <S.FlowContainer>
-        <S.Header>
-          <HeaderBreadcrumbs breadcrumbs={breadCrumbsItems(id, name)} />
-          <Button $isOutline size="200px" onClick={() => setOpenModal(true)}>
-            Voltar
-          </Button>
-        </S.Header>
         <S.Content>
           <S.Box>
             <S.HeaderBox>
@@ -79,7 +71,7 @@ export const Flow = () => {
                 onClick={() => setshowWork(!showWork)}
               />
             </S.HeaderBox>
-            {showWork  ? (
+            {showWork ? (
               <Table formik={formik} rows={[]} columns={mocks.columnsFlow} />
             ) : (
               <Card width={'100%'} height={'auto'} className="bgWhite">

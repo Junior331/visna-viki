@@ -357,15 +357,11 @@ export const EditProject = () => {
                 <Tab label="Terreno" {...a11yProps(0)} />
                 <Tab label="Unidades" {...a11yProps(1)} />
                 <Tab label="Prazos" {...a11yProps(2)} />
-                <Tab label="Aportes" {...a11yProps(3)} />
-                <Tab label="Contas" {...a11yProps(4)} />
-                <Tab label="Rentabilidade" {...a11yProps(5)} />
-                <Tab label="Cenários" {...a11yProps(6)} />
-                <Tab
-                  disabled
-                  label="Fluxo"
-                  {...a11yProps(7)}
-                />
+                <Tab label="Contas" {...a11yProps(3)} />
+                <Tab label="Cenários" {...a11yProps(4)} />
+                <Tab label="Aportes" {...a11yProps(5)} />
+                <Tab disabled label="Fluxo" {...a11yProps(6)} />
+                <Tab label="Rentabilidade" {...a11yProps(7)} />
               </Tabs>
             </Box>
 
@@ -1490,7 +1486,10 @@ export const EditProject = () => {
                                 `totalToBeBuiltArea`,
                                 e.target.value
                               );
-                              console.log('totalPrivateAreaQuantity :: ', values.totalPrivateAreaQuantity)
+                              console.log(
+                                'totalPrivateAreaQuantity :: ',
+                                values.totalPrivateAreaQuantity
+                              );
                               handleSumValues({
                                 id: '',
                                 type: 'split',
@@ -1981,19 +1980,23 @@ export const EditProject = () => {
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={3}>
-              <Aportes />
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={4}>
               <Bills />
             </CustomTabPanel>
-            <CustomTabPanel value={value} index={5}>
-              <Profitability />
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={6}>
+
+            <CustomTabPanel value={value} index={4}>
               <Scenarios />
             </CustomTabPanel>
+
+            <CustomTabPanel value={value} index={5}>
+              <Aportes />
+            </CustomTabPanel>
+
             <CustomTabPanel value={value} index={6}>
               <Flow />
+            </CustomTabPanel>
+
+            <CustomTabPanel value={value} index={7}>
+              <Profitability />
             </CustomTabPanel>
           </Box>
         </S.Content>

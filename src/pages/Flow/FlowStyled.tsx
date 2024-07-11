@@ -9,7 +9,6 @@ export const GenericContainer = styled.div`
 `;
 export const FlowContainer = styled(GenericContainer)`
   gap: 21px;
-  padding: 20px;
   flex-direction: column;
 `;
 export const Content = styled(GenericContainer)`
