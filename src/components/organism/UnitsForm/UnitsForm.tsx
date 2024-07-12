@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useContext, useEffect, useMemo, useState } from 'react';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
 import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { Grid, FormControl, Select, MenuItem } from '@mui/material';
@@ -8,6 +8,7 @@ import { Props } from './@types';
 import unitsFormSchema from './UnitsFormSchema';
 import { Button, Input } from '@/components/elements';
 import { Tooltip } from '@/components/elements/Tooltip';
+import { StepsIsDoneContext } from '@/contexts/StepIsDone';
 import { calculateTUID, handleSumValues, unitDefault } from './utils';
 import {
   formatterV2,
@@ -22,9 +23,24 @@ const UnitsForm = memo(
   ({ date, handleStep, setDate, listCharacteristics }: Props) => {
     const [VGVTotal, setVGVTotal] = useState(0);
     const [projectEfficiency, setProjectEfficiency] = useState(0);
+    const { stepsIsDone, setStepsIsDone } = useContext(StepsIsDoneContext);
+
     const formik = useFormik({
       initialValues: date.units,
-      onSubmit: async () => {},
+      onSubmit: async (values) => {
+        setDate({
+          ...date,
+          units: {
+            ...values,
+            unit: values.unit.map((unit) => ({
+              ...unit
+            }))
+          }
+        });
+        setStepsIsDone([...stepsIsDone, '2']);
+
+        handleStep(3);
+      },
       validationSchema: unitsFormSchema
     });
 
