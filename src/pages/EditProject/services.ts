@@ -8,6 +8,7 @@ export const getInfoProject = async ({
 }: getInfoProjectProps) => {
   try {
     const result = await listProject(id);
+
     setDate(result);
   } catch (error) {
     if (error instanceof Error) {
