@@ -42,7 +42,8 @@ import {
   typeMask,
   formatterV2,
   handleKeyDown,
-  parseFormattedNumber
+  parseFormattedNumber,
+  formatDate
 } from '@/utils/utils';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import {
@@ -1774,10 +1775,7 @@ export const EditProject = () => {
                         disabled
                         id="startDate"
                         onBlur={formikDeadline.handleBlur}
-                        value={typeMask(
-                          MaskType.DATE,
-                          formikDeadline.values.startDate
-                        )}
+                        value={formatDate(formikDeadline.values.startDate)}
                         onChange={(e) => formikDeadline.handleChange(e)}
                         aria-describedby="startDate"
                         placeholder="Digite a Data"

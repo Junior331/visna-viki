@@ -8,8 +8,12 @@ export const getInfoProject = async ({
 }: getInfoProjectProps) => {
   try {
     const result = await listProject(id);
-
-    setDate(result);
+    setDate({
+      ...result,
+      deadline: {
+        ...result.steps
+      }
+    });
   } catch (error) {
     if (error instanceof Error) {
       setSnackbar({
