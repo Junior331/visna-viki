@@ -373,16 +373,6 @@ const SummaryForm = ({ date, handleStep }: Props) => {
                     </S.Text>
                   </S.ContainerText>
                 </Grid>
-                <Grid item xs={12} sm={12} md={4} minWidth={470}>
-                  <S.ContainerText>
-                    <S.Title variant="h6" gutterBottom>
-                      Área total privativa líquida de permuta (m²) :
-                    </S.Title>
-                    <S.Text variant="body2" gutterBottom>
-                      {date.units.totalPrivateAreaNetOfExchange}
-                    </S.Text>
-                  </S.ContainerText>
-                </Grid>
               </Grid>
             </Grid>
           </S.ContainerInfo>
