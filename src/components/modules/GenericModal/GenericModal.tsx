@@ -15,6 +15,7 @@ export const GenericModal = ({
       open={open}
       closeAfterTransition
       slots={{ backdrop: Backdrop }}
+      onClick={(e) => e.stopPropagation()}
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       slotProps={{

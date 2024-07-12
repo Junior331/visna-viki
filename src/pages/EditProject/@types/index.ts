@@ -31,6 +31,7 @@ export type getInfoProjectProps = {
 export type handleDeleteProjectProps = handleGenericProps & {
   id: string;
   navigate: NavigateFunction;
+  setIsUpdate: Dispatch<React.SetStateAction<boolean>>;
   setIsDelete: Dispatch<React.SetStateAction<boolean>>;
   setOpenModal: Dispatch<React.SetStateAction<boolean>>;
 };

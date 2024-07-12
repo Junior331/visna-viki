@@ -31,6 +31,7 @@ export const Home = () => {
   const [page, setPage] = useState(1);
   const [option, setOption] = useState('');
   const [perPage, setPerPage] = useState(10);
+  const [isUpdate, setIsUpdate] = useState(false);
   const [pageTotal, setPageTotal] = useState(0);
   const { setSnackbar } = useContext(SnackbarContext);
   const [loading, setLoading] = useState<boolean>(true);
@@ -58,7 +59,7 @@ export const Home = () => {
       setPageTotal
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, perPage]);
+  }, [isUpdate, page, perPage]);
 
   return (
     <Layout>
@@ -161,6 +162,7 @@ export const Home = () => {
                     text={data.text}
                     status={data.status}
                     progress={data.progress}
+                    setIsUpdate={setIsUpdate}
                     handleClick={() =>
                       handleChangeProject({
                         navigate,

@@ -21,7 +21,7 @@ export const Status = styled(ContainerGeneric)<styledProps>`
 export const Img = styled.img``;
 export const Title = styled.h2<styledProps>`
   overflow: hidden;
-  max-width: 140px;
+  max-width: 130px;
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: ${({ theme }) => theme.typography.fontSize}rem;
@@ -79,6 +79,26 @@ export const ContainerMessage = styled(ContainerGeneric)`
       color: e73d3e;
       &:hover {
         color: #fff;
+      }
+    }
+  }
+`;
+export const Footer = styled(ContainerProgress)`
+  flex-direction: row;
+  justify-content: space-between;
+
+  .btnDelete {
+    padding: 3px;
+    border: none;
+    height: 30px;
+    > img {
+      width: 100%;
+      object-fit: cover;
+    }
+    &:hover {
+      img {
+        filter: grayscale(100%) sepia(100%) saturate(1000%) hue-rotate(-50deg)
+          brightness(500%);
       }
     }
   }

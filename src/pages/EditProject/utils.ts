@@ -127,7 +127,8 @@ export const handleDeleteProject = async ({
   setLoading,
   setIsDelete,
   setSnackbar,
-  setOpenModal
+  setOpenModal,
+  setIsUpdate
 }: handleDeleteProjectProps) => {
   setLoading(true);
   try {
@@ -141,6 +142,7 @@ export const handleDeleteProject = async ({
       horizontal: 'right',
       message: 'Projeto deletado com sucesso'
     });
+    setIsUpdate(true);
     navigate('/home');
   } catch (error) {
     if (error instanceof Error) {
