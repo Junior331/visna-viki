@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { FieldArray, FormikProvider, useFormik } from 'formik';
+import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { Grid, FormControl, Select, MenuItem } from '@mui/material';
 
 import { Props } from './@types';
@@ -14,16 +15,16 @@ import {
   formatCurrency,
   typeMask
 } from '@/utils/utils';
-
-import * as S from './UnitsFormStyled';
-import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { MaskType } from '@/utils/types';
+import * as S from './UnitsFormStyled';
 
 const UnitsForm = memo(
   ({ date, handleStep, setDate, listCharacteristics }: Props) => {
+    const [VGVTotal, setVGVTotal] = useState(0);
+    const [projectEfficiency, setProjectEfficiency] = useState(0);
     const formik = useFormik({
       initialValues: date.units,
-      onSubmit: async () => { },
+      onSubmit: async () => {},
       validationSchema: unitsFormSchema
     });
 
@@ -53,12 +54,16 @@ const UnitsForm = memo(
         formik.values.unit,
         'areaExchanged'
       );
-      const netAmount = calculateTUID(formik.values.unit, 'netAmount');
-      const unitQuantity = calculateTUID(formik.values.unit, 'unitQuantity');
-      const exchangeQuantity = calculateTUID(
+      const marketAmountSum = calculateTUID(formik.values.unit, 'marketAmount');
+      const totalExchanges = calculateTUID(
         formik.values.unit,
         'exchangeQuantity'
       );
+
+      if (totalExchanges) {
+        formik.setFieldValue('TotalExchanges', totalExchanges);
+      }
+
       const totalPrivateAreaNetOfExchange =
         parseFloat(formik.values.totalAreaOfTheDevelopment) - totalExchangeArea;
 
@@ -84,16 +89,18 @@ const UnitsForm = memo(
         formik.setFieldValue('totalValueNoExchange', totalValueNoExchange);
       }
 
-      if (
-        netAmount !== null &&
-        unitQuantity !== null &&
-        exchangeQuantity !== null
-      ) {
-        const sumUnitQuantity = unitQuantity - exchangeQuantity;
-        const averageSaleValue =
-          sumUnitQuantity !== 0 ? netAmount / sumUnitQuantity : 0;
-        formik.setFieldValue('averageSaleValue', averageSaleValue);
+      if (totalPrivateAreaQuantity && totalExchangeArea && marketAmountSum) {
+        const sum =
+          (totalPrivateAreaQuantity - totalExchangeArea) * marketAmountSum;
+        setVGVTotal(sum);
       }
+
+      if (totalPrivateAreaQuantity !== null && totalExchangeArea !== null) {
+        const totalValueNoExchange =
+          totalPrivateAreaQuantity - totalExchangeArea;
+        formik.setFieldValue('totalValueNoExchange', totalValueNoExchange);
+      }
+
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formik.values.unit, formik.values.totalAreaOfTheDevelopment]);
 
@@ -106,6 +113,36 @@ const UnitsForm = memo(
       });
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [formik.values]);
+
+    useEffect(() => {
+      if (VGVTotal && formik.values.totalValueNoExchange) {
+        const sum = VGVTotal / parseFloat(formik.values.totalValueNoExchange);
+        formik.setFieldValue('averageSaleValue', sum.toFixed());
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [VGVTotal, formik.values.totalValueNoExchange]);
+
+    useEffect(() => {
+      if (
+        formik.values.totalToBeBuiltArea &&
+        formik.values.totalPrivateAreaQuantity
+      ) {
+        const sum1 = parseFloat(
+          formik.values.totalPrivateAreaQuantity ||
+            '0'.replace(/\./g, '').replace(',', '.')
+        );
+        const sum2 = parseFloat(
+          formik.values.totalToBeBuiltArea.replace(/\./g, '').replace(',', '.')
+        );
+        const sum = (sum1 / sum2 - 1) * 100;
+        sum.toFixed();
+        setProjectEfficiency(sum > 0 ? sum : 0);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+      formik.values.totalToBeBuiltArea,
+      formik.values.totalPrivateAreaQuantity
+    ]);
 
     const visibleTodos = useMemo(
       () => listCharacteristics,
@@ -120,7 +157,6 @@ const UnitsForm = memo(
       return null;
     }
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     return (
       <S.UnitsFormContainer>
         <FormikProvider value={formik}>
@@ -619,8 +655,8 @@ const UnitsForm = memo(
                 </Grid>
                 <Grid item xs={12} sm={6} md={3} minWidth={280}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <Tooltip title={'Unidades Total no empreendimento'}>
-                      <S.Label>Uni. T. no Empreendimento </S.Label>
+                    <Tooltip title={'Total de Unidades no empreendimento'}>
+                      <S.Label>Total de uni. no emp.</S.Label>
                     </Tooltip>
                     <Input
                       disabled
@@ -642,20 +678,19 @@ const UnitsForm = memo(
                     />
                   </FormControl>
                 </Grid>
+
                 <Grid item xs={12} sm={6} md={2} minWidth={200}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <Tooltip title={'Total de área privativa'}>
-                      <S.Label>T. A. Privativa (m²)</S.Label>
-                    </Tooltip>
+                    <S.Label>Total de permutas</S.Label>
                     <Input
                       required
                       disabled
                       placeholder="0"
                       onBlur={formik.handleBlur}
                       onChange={formik.handleChange}
-                      id="totalPrivateAreaQuantity"
-                      value={formik.values.totalPrivateAreaQuantity || ''}
-                      aria-describedby="totalPrivateAreaQuantity"
+                      id="TotalExchanges"
+                      value={formik.values.TotalExchanges}
+                      aria-describedby="TotalExchanges"
                       inputProps={{ style: { fontSize: '1.4rem' } }}
                     />
                   </FormControl>
@@ -663,9 +698,7 @@ const UnitsForm = memo(
 
                 <Grid item xs={12} sm={6} md={1.5} minWidth={295}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <Tooltip title={'Área total a construída (m²)'}>
-                      <S.Label>A. T. Construída (m²)</S.Label>
-                    </Tooltip>
+                    <S.Label>Área total a construir </S.Label>
                     <Input
                       required
                       onBlur={formik.handleBlur}
@@ -687,33 +720,27 @@ const UnitsForm = memo(
                     />
                   </FormControl>
                 </Grid>
+
                 <Grid item xs={12} sm={6} md={2} minWidth={200}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <S.Label>Área total do empreendimento</S.Label>
+                    <S.Label>Área total privativa</S.Label>
                     <Input
                       required
+                      disabled
+                      placeholder="0"
                       onBlur={formik.handleBlur}
-                      id="totalAreaOfTheDevelopment"
                       onChange={formik.handleChange}
-                      value={formik.values.totalAreaOfTheDevelopment}
-                      aria-describedby="totalAreaOfTheDevelopment"
-                      placeholder="Digite o quantidade"
+                      id="totalPrivateAreaQuantity"
+                      value={formik.values.totalPrivateAreaQuantity || ''}
+                      aria-describedby="totalPrivateAreaQuantity"
                       inputProps={{ style: { fontSize: '1.4rem' } }}
-                      helperText={
-                        formik.touched.totalAreaOfTheDevelopment &&
-                        formik.errors.totalAreaOfTheDevelopment
-                      }
-                      error={
-                        formik.touched.totalAreaOfTheDevelopment &&
-                        Boolean(formik.errors.totalAreaOfTheDevelopment)
-                      }
                     />
                   </FormControl>
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={2} minWidth={340}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <S.Label>Área Total Permutada</S.Label>
+                    <S.Label>Área total de permutas</S.Label>
 
                     <Input
                       required
@@ -742,7 +769,7 @@ const UnitsForm = memo(
                 <Grid item xs={12} sm={6} md={2} minWidth={340}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <Tooltip title={'Área total privativa sem permuta (m²)'}>
-                      <S.Label>A. T. P. Permuta (m²) </S.Label>
+                      <S.Label>Área total pri. S/permuta </S.Label>
                     </Tooltip>
                     <Input
                       required
@@ -765,10 +792,26 @@ const UnitsForm = memo(
                     />
                   </FormControl>
                 </Grid>
+
+                <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                    <S.Label>VGV Total</S.Label>
+                    <Input
+                      required
+                      disabled
+                      id="VGVTotal"
+                      placeholder="0,00"
+                      aria-describedby="VGVTotal"
+                      value={formatterV2.format(VGVTotal)}
+                      inputProps={{ style: { fontSize: '1.4rem' } }}
+                    />
+                  </FormControl>
+                </Grid>
+
                 <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                     <Tooltip title={'Valor médio de venda (m²/R$)'}>
-                      <S.Label>V. M. Venda (m²/R$) </S.Label>
+                      <S.Label>V. Médio Venda (m²/R$) </S.Label>
                     </Tooltip>
 
                     <Input
@@ -780,8 +823,8 @@ const UnitsForm = memo(
                       onChange={formik.handleChange}
                       aria-describedby="averageSaleValue"
                       inputProps={{ style: { fontSize: '1.4rem' } }}
-                      value={formatCurrency(
-                        formik.values.averageSaleValue.toString() || ''
+                      value={formatterV2.format(
+                        parseFloat(formik.values.averageSaleValue) || 0
                       )}
                       helperText={
                         formik.touched.averageSaleValue &&
@@ -794,34 +837,18 @@ const UnitsForm = memo(
                     />
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6} md={2.72} minWidth={280}>
+                <Grid item xs={12} sm={6} md={2} minWidth={280}>
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                    <S.Label>
-                      Área total privativa líquida de permuta (m²){' '}
-                    </S.Label>
+                    <S.Label>Eficiência do projeto(%)</S.Label>
 
                     <Input
                       required
                       disabled
                       placeholder="0,00"
-                      onBlur={formik.handleBlur}
-                      id="totalPrivateAreaNetOfExchange"
-                      onChange={formik.handleChange}
-                      aria-describedby="totalPrivateAreaNetOfExchange"
+                      id="projectEfficiency"
+                      aria-describedby="projectEfficiency"
                       inputProps={{ style: { fontSize: '1.4rem' } }}
-                      // value={formatterV2.format(
-                      //   parseFloat(
-                      //     formik.values.totalPrivateAreaNetOfExchange
-                      //   ) || 0
-                      // )}
-                      // helperText={
-                      //   formik.touched.totalPrivateAreaNetOfExchange &&
-                      //   formik.errors.totalPrivateAreaNetOfExchange
-                      // }
-                      // error={
-                      //   formik.touched.totalPrivateAreaNetOfExchange &&
-                      //   Boolean(formik.errors.totalPrivateAreaNetOfExchange)
-                      // }
+                      value={projectEfficiency || 0}
                     />
                   </FormControl>
                 </Grid>

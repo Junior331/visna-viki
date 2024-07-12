@@ -42,8 +42,7 @@ import {
   typeMask,
   formatterV2,
   handleKeyDown,
-  parseFormattedNumber,
-  formatCurrency
+  parseFormattedNumber
 } from '@/utils/utils';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import {
@@ -240,19 +239,19 @@ export const EditProject = () => {
       formikLand.setFieldValue(key, lands[key]);
     });
 
-    // if (date.unitHub) {
-    //   const units: any = date.unitHub;
-    //   units.unit.forEach((unit: any, index: number) => {
-    //     Object.keys(unit).forEach((unitKey: string) => {
-    //       const fieldName = `unit.${index}.${unitKey}`;
-    //       setFieldValue(fieldName, unit[unitKey]);
-    //     });
-    //   });
+    if (date.unitHub) {
+      const units: any = date.unitHub;
+      units.unit.forEach((unit: any, index: number) => {
+        Object.keys(unit).forEach((unitKey: string) => {
+          const fieldName = `unit.${index}.${unitKey}`;
+          setFieldValue(fieldName, unit[unitKey]);
+        });
+      });
 
-    //   Object.keys(units).forEach((key: string) => {
-    //     setFieldValue(key, units[key]);
-    //   });
-    // }
+      Object.keys(units).forEach((key: string) => {
+        setFieldValue(key, units[key]);
+      });
+    }
     if (date.deadline) {
       const lands: any = date.deadline;
       Object.keys(lands)?.forEach((key: string) => {
@@ -294,8 +293,10 @@ export const EditProject = () => {
       listUnit,
       'areaPrivativaTotal'
     );
+    const marketAmountSum = calculateTUID(listUnit, 'marketAmount');
     const totalExchangeArea = calculateTUID(values.unit, 'areaExchanged');
     const totalUnitsInDevelopment = calculateTUID(listUnit, 'unitQuantity');
+    const totalExchanges = calculateTUID(listUnit, 'exchangeQuantity');
     const totalPrivateAreaNetOfExchange =
       values.totalAreaOfTheDevelopment - totalExchangeArea;
 
@@ -304,6 +305,20 @@ export const EditProject = () => {
         'totalPrivateAreaNetOfExchange',
         totalPrivateAreaNetOfExchange
       );
+    }
+
+    if (totalPrivateAreaQuantity !== null && totalExchangeArea !== null) {
+      const totalValueNoExchange = totalPrivateAreaQuantity - totalExchangeArea;
+      formik.setFieldValue('totalValueNoExchange', totalValueNoExchange);
+    }
+
+    if (totalPrivateAreaQuantity && totalExchangeArea && marketAmountSum) {
+      const sum =
+        (totalPrivateAreaQuantity - totalExchangeArea) * marketAmountSum;
+      formik.setFieldValue('VGVTotal', sum);
+    }
+    if (totalExchanges) {
+      formik.setFieldValue('TotalExchanges', totalExchanges);
     }
 
     if (totalExchangeArea) {
@@ -319,6 +334,14 @@ export const EditProject = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.unit, values.totalAreaOfTheDevelopment]);
+
+  useEffect(() => {
+    if (values.VGVTotal !== null && values.totalValueNoExchange !== null) {
+      const sum = values.VGVTotal / values.totalValueNoExchange;
+      setFieldValue('averageSaleValue', sum || 0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.VGVTotal, values.totalValueNoExchange]);
 
   useEffect(() => {
     const listUnit = values.unit;
@@ -1430,7 +1453,9 @@ export const EditProject = () => {
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <Tooltip title={'Unidades Total no empreendimento'}>
+                          <Tooltip
+                            title={'Total de Unidades no empreendimento'}
+                          >
                             <S.Label>Total de uni. no emp.</S.Label>
                           </Tooltip>
                           <Input
@@ -1627,7 +1652,7 @@ export const EditProject = () => {
                             onChange={handleChange}
                             aria-describedby="VGVTotal"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
-                            value={formatCurrency(values.VGVTotal.toString())}
+                            value={formatterV2.format(values.VGVTotal)}
                             helperText={touched.VGVTotal && errors.VGVTotal}
                             error={touched.VGVTotal && Boolean(errors.VGVTotal)}
                           />
@@ -1668,7 +1693,7 @@ export const EditProject = () => {
                           sx={{ m: 1, width: '25ch' }}
                           variant="outlined"
                         >
-                          <S.Label>Eficiência do projeto</S.Label>
+                          <S.Label>Eficiência do projeto(%)</S.Label>
 
                           <Input
                             required
@@ -1679,9 +1704,7 @@ export const EditProject = () => {
                             onChange={handleChange}
                             aria-describedby="projectEfficiency"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
-                            value={formatterV2.format(
-                              values.projectEfficiency || 0
-                            )}
+                            value={values.projectEfficiency || 0}
                             helperText={
                               touched.projectEfficiency &&
                               errors.projectEfficiency

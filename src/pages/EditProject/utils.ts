@@ -111,9 +111,9 @@ export const handleSumValues = ({
     const sum1 = parseFloat(parsedValue1.replace(/\./g, '').replace(',', '.'));
     const sum2 = parseFloat(parsedValue2.replace(/\./g, '').replace(',', '.'));
 
-    const sum = sum1 / sum2;
+    const sum = (sum1 / sum2 - 1) * 100;
 
-    setFieldValue?.(fieldName, sum);
+    setFieldValue?.(fieldName, sum > 0 ? sum.toFixed() : 0);
   }
 };
 
