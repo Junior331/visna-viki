@@ -23,7 +23,7 @@ import { SnackbarContext } from '@/contexts/Snackbar';
 export const CreateProject = () => {
   const navigate = useNavigate();
   const [isShow, setIsShow] = useState(false);
-  const [stepActive, setStepActive] = useState(2);
+  const [stepActive, setStepActive] = useState(1);
   const [openModal, setOpenModal] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
   const { stepsIsDone } = useContext(StepsIsDoneContext);
