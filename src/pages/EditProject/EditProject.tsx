@@ -2040,7 +2040,8 @@ export const EditProject = () => {
                       setLoading,
                       setIsDelete,
                       setSnackbar,
-                      setOpenModal
+                      setOpenModal,
+                      setIsUpdate: () => {}
                     })
                   : navigate('/home')
               }
