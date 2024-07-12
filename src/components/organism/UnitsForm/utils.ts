@@ -50,8 +50,6 @@ export const handleSumValues = ({
       );
     }
   }
-  // VGV líquido da permuta =(Valor total privativa - área permutada) * Valor de venda
-  // VGV líquido da permuta =(areaPrivativaTotal - areaExchanged) * marketAmount
 
   if (type === 'mult') {
     const sum1 = parseFloat(parsedValue1.replace(/\./g, '').replace(',', '.')); // Área Privativa total - areaPrivativaTotal

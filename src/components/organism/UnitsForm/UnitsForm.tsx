@@ -133,7 +133,7 @@ const UnitsForm = memo(
     useEffect(() => {
       if (VGVTotal && formik.values.totalValueNoExchange) {
         const sum = VGVTotal / parseFloat(formik.values.totalValueNoExchange);
-        formik.setFieldValue('averageSaleValue', sum.toFixed());
+        formik.setFieldValue('averageSaleValue', sum.toFixed() || 0);
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [VGVTotal, formik.values.totalValueNoExchange]);
@@ -831,7 +831,6 @@ const UnitsForm = memo(
                     </Tooltip>
 
                     <Input
-                      required
                       disabled
                       placeholder="0,00"
                       id="averageSaleValue"
@@ -842,14 +841,6 @@ const UnitsForm = memo(
                       value={formatterV2.format(
                         parseFloat(formik.values.averageSaleValue) || 0
                       )}
-                      helperText={
-                        formik.touched.averageSaleValue &&
-                        formik.errors.averageSaleValue
-                      }
-                      error={
-                        formik.touched.averageSaleValue &&
-                        Boolean(formik.errors.averageSaleValue)
-                      }
                     />
                   </FormControl>
                 </Grid>

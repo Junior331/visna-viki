@@ -44,7 +44,7 @@ export const createUnits = async (projectId: number, payload: unitType) => {
     underground: parseFloat(payload.underground.toString()),
     unitPerFloor: parseFloat(payload.unitPerFloor.toString()),
     totalValueNoExchange: parseFloat(payload.totalValueNoExchange),
-    averageSaleValue: parseFloat(payload.averageSaleValue.toString()),
+    averageSaleValue: parseFloat(payload.averageSaleValue.toString() || '0'),
     totalToBeBuiltArea: parseFloat(payload.totalToBeBuiltArea.toString())
   };
 

@@ -99,6 +99,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                       value1: parseFloat(e.target.value),
                       value2: formik.values.projectLaunchDeadlineInMonth,
                       value3: formik.values.constructionDeadlineInMonth,
+                      value4: formik.values.afterConstruction,
                       fieldName: 'totalDeadlineInMonth',
                       setFieldValue: formik.setFieldValue
                     });
@@ -138,6 +139,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                       value1: formik.values.approvalDeadlineInMonth,
                       value2: parseFloat(e.target.value),
                       value3: formik.values.constructionDeadlineInMonth,
+                      value4: formik.values.afterConstruction,
                       fieldName: 'totalDeadlineInMonth',
                       setFieldValue: formik.setFieldValue
                     });
@@ -175,6 +177,7 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                       value1: formik.values.approvalDeadlineInMonth,
                       value2: formik.values.projectLaunchDeadlineInMonth,
                       value3: parseFloat(e.target.value),
+                      value4: formik.values.afterConstruction,
                       fieldName: 'totalDeadlineInMonth',
                       setFieldValue: formik.setFieldValue
                     });
@@ -203,7 +206,20 @@ const DeadlinesForm = ({ date, setDate, handleStep }: Props) => {
                 <S.Label>Pós obra</S.Label>
                 <Input
                   required
-                  onBlur={formik.handleBlur}
+                  onBlur={(e) => {
+                    formik.setFieldValue(
+                      'afterConstruction',
+                      parseFloat(e.target.value)
+                    );
+                    handleSumValues({
+                      value1: formik.values.approvalDeadlineInMonth,
+                      value2: formik.values.projectLaunchDeadlineInMonth,
+                      value3: formik.values.constructionDeadlineInMonth,
+                      value4: parseFloat(e.target.value),
+                      fieldName: 'totalDeadlineInMonth',
+                      setFieldValue: formik.setFieldValue
+                    });
+                  }}
                   id="afterConstruction"
                   onChange={formik.handleChange}
                   placeholder="Digite os meses"

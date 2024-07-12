@@ -141,7 +141,7 @@ export const EditProject = () => {
         totalAreaOfTheDevelopment: parseFloat(
           values.totalAreaOfTheDevelopment.toString()
         ),
-        totalPrivateAreaNetOfExchange: '',
+        totalPrivateAreaNetOfExchange: 1,
         unit: values.unit.map((unit) => ({
           ...unit
         }))
