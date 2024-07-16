@@ -35,7 +35,6 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
     },
     validationSchema: projectNameFormSchema
   });
-  console.log('chegou ::');
 
   const formik = useFormik({
     initialValues: date.lands,
@@ -114,8 +113,6 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.zipCode]);
-
-  console.log('Componente UnitsForm atualizado');
 
   return (
     <S.LandFormContainer>
@@ -463,6 +460,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                     <S.Label>Valor (m²/R$) </S.Label>
                     <Input
                       required
+                      name="amountPerMeter"
                       id="amountPerMeter"
                       onBlur={(e) => {
                         handleSumValues({
@@ -474,7 +472,12 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
                           fieldName: 'totalAmount'
                         });
                       }}
-                      onChange={handleChange}
+                      onChange={(e) => {
+                        setFieldValue(
+                          `amountPerMeter`,
+                          formatCurrency(e.target.value)
+                        );
+                      }}
                       onKeyDown={handleKeyDown}
                       placeholder="Digite o valor"
                       value={formatCurrency(values.amountPerMeter.toString())}

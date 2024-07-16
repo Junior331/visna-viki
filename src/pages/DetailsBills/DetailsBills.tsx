@@ -365,7 +365,6 @@ export const DetailsBills = () => {
                               <S.FooterExpense>
                                 <S.Title>Total </S.Title>
                                 <S.Text>
-                                  R$
                                   {formatter.format(cost?.totalValue)}
                                 </S.Text>
                               </S.FooterExpense>

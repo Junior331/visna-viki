@@ -113,7 +113,7 @@ export const handleSumValues = ({
 
     const sum = (sum1 / sum2 - 1) * 100;
 
-    setFieldValue?.(fieldName, sum > 0 ? sum.toFixed() : 0);
+    setFieldValue?.(fieldName, sum > 0 ? sum : 0);
   }
 };
 

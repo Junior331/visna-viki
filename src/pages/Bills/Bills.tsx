@@ -262,7 +262,7 @@ export const Bills = () => {
               })}
               <Card width={'100%'} height={'auto'} className="footer bgWhite">
                 <S.FooterExpense>
-                  <S.Title>Total </S.Title>
+                  <S.Title>Custo total</S.Title>
                   <S.Text>{formatter.format(total)}</S.Text>
                 </S.FooterExpense>
               </Card>

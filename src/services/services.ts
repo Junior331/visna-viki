@@ -17,7 +17,7 @@ import {
 } from '@/utils/types';
 import { ENDPOINTS } from '@/utils/endpoints';
 import { getToken } from './sessionStorage';
-import { cleanObject } from '@/utils/utils';
+import { cleanObject, parseFormattedCurrency } from '@/utils/utils';
 import { aportesProps } from '@/pages/Aportes/@types';
 
 // crud Units
@@ -154,12 +154,21 @@ export const listUnitCharacteristics = async () => {
 
 // crud Lands
 export const createLands = async (projectId: number, payload: landType) => {
+  const numericValue = payload.amountPerMeter
+    .toString()
+    .replace(/\./g, '')
+    .replace(',', '.');
+
+  const amountPerMeterFormated = parseFormattedCurrency(
+    (parseFloat(numericValue) * 100).toString()
+  );
+
   const formatPayload = {
     ...payload,
     area: parseFloat(payload.area.toString()),
     frontage: parseFloat(payload.frontage.toString()),
     totalAmount: parseFloat(payload.totalAmount.toString()),
-    amountPerMeter: parseFloat(payload.amountPerMeter.toString())
+    amountPerMeter: amountPerMeterFormated
   };
 
   const body = {

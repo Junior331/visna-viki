@@ -42,8 +42,8 @@ import {
   typeMask,
   formatterV2,
   handleKeyDown,
-  parseFormattedNumber,
-  formatDate
+  formatDate,
+  formatCurrency
 } from '@/utils/utils';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import {
@@ -285,6 +285,7 @@ export const EditProject = () => {
       ];
       setFieldValue('unit', defaultValue);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formik, values]);
 
@@ -294,12 +295,13 @@ export const EditProject = () => {
       listUnit,
       'areaPrivativaTotal'
     );
-    const marketAmountSum = calculateTUID(listUnit, 'marketAmount');
     const totalExchangeArea = calculateTUID(values.unit, 'areaExchanged');
     const totalUnitsInDevelopment = calculateTUID(listUnit, 'unitQuantity');
     const totalExchanges = calculateTUID(listUnit, 'exchangeQuantity');
     const totalPrivateAreaNetOfExchange =
       values.totalAreaOfTheDevelopment - totalExchangeArea;
+
+    const totalVGVTotal = calculateTUID(listUnit, 'netAmount');
 
     if (totalPrivateAreaNetOfExchange !== null) {
       setFieldValue(
@@ -313,15 +315,13 @@ export const EditProject = () => {
       formik.setFieldValue('totalValueNoExchange', totalValueNoExchange);
     }
 
-    if (totalPrivateAreaQuantity && totalExchangeArea && marketAmountSum) {
-      const sum =
-        (totalPrivateAreaQuantity - totalExchangeArea) * marketAmountSum;
-      formik.setFieldValue('VGVTotal', sum);
-    }
     if (totalExchanges) {
       formik.setFieldValue('TotalExchanges', totalExchanges);
     }
 
+    if (totalVGVTotal) {
+      setFieldValue('VGVTotal', totalVGVTotal);
+    }
     if (totalExchangeArea) {
       setFieldValue('totalExchangeArea', totalExchangeArea);
     }
@@ -343,6 +343,31 @@ export const EditProject = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.VGVTotal, values.totalValueNoExchange]);
+
+  useEffect(() => {
+    if (
+      formik.values.totalToBeBuiltArea &&
+      formik.values.totalPrivateAreaQuantity
+    ) {
+      const sum1 = parseFloat(
+        formik.values.totalPrivateAreaQuantity.toString() ||
+          '0'.replace(/\./g, '').replace(',', '.')
+      );
+      const sum2 = parseFloat(
+        formik.values.totalToBeBuiltArea
+          .toString()
+          .replace(/\./g, '')
+          .replace(',', '.')
+      );
+      const sum = (sum1 / sum2 - 1) * 100;
+      sum.toFixed();
+      setFieldValue?.('projectEfficiency', sum > 0 ? sum : 0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    formik.values.totalToBeBuiltArea,
+    formik.values.totalPrivateAreaQuantity
+  ]);
 
   useEffect(() => {
     const listUnit = values.unit;
@@ -752,14 +777,20 @@ export const EditProject = () => {
                       <Input
                         required
                         id="amountPerMeter"
-                        onChange={formikLand.handleChange}
                         onKeyDown={handleKeyDown}
                         placeholder="Digite o valor"
-                        value={formatterV2.format(
-                          formikLand.values.amountPerMeter
-                        )}
                         aria-describedby="amountPerMeter"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
+                        onChange={(e) => {
+                          formikLand.setFieldValue(
+                            `amountPerMeter`,
+                            e.target.value
+                          );
+                        }}
+                        name={`amountPerMeter`}
+                        value={formatCurrency(
+                          formikLand.values.amountPerMeter.toString()
+                        )}
                       />
                     </FormControl>
                   </Grid>
@@ -779,14 +810,15 @@ export const EditProject = () => {
                         <S.Label>V. Total (R$)</S.Label>
                       </Tooltip>
                       <Input
+                        disabled
                         required
                         id="totalAmount"
                         onChange={formikLand.handleChange}
                         aria-describedby="totalAmount"
                         placeholder="Digite o valor total"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
-                        value={formatterV2.format(
-                          formikLand.values.totalAmount
+                        value={formatCurrency(
+                          formikLand.values.totalAmount.toString()
                         )}
                       />
                     </FormControl>
@@ -1277,21 +1309,23 @@ export const EditProject = () => {
                                         }}
                                         id={`marketAmount-${index}`}
                                         onChange={(e) => {
-                                          handleChange(e);
                                           setFieldValue(
                                             `unit[${index}].marketAmount`,
-                                            e.target.value
+                                            formatCurrency(e.target.value)
                                           );
                                         }}
                                         defaultValue={formatterV2.format(
                                           values.unit[index].marketAmount
                                         )}
                                         name={`unit[${index}].marketAmount`}
-                                        value={parseFormattedNumber(
-                                          values.unit[
-                                            index
-                                          ].marketAmount.toString()
-                                        )}
+                                        value={
+                                          values.unit[index].marketAmount !==
+                                          date.unitHub.unit[index].marketAmount
+                                            ? values.unit[index].marketAmount
+                                            : formatterV2.format(
+                                                values.unit[index].marketAmount
+                                              )
+                                        }
                                         placeholder="Digite o valor"
                                         aria-describedby="marketAmount"
                                         inputProps={{
@@ -1324,8 +1358,10 @@ export const EditProject = () => {
                                         placeholder="0,00"
                                         aria-describedby="netAmount"
                                         name={`unit[${index}].netAmount`}
-                                        value={formatterV2.format(
-                                          values.unit[index].netAmount
+                                        value={formatCurrency(
+                                          values.unit[
+                                            index
+                                          ].netAmount.toString()
                                         )}
                                         inputProps={{
                                           style: { fontSize: '1.4rem' }
@@ -1511,10 +1547,6 @@ export const EditProject = () => {
                               setFieldValue(
                                 `totalToBeBuiltArea`,
                                 e.target.value
-                              );
-                              console.log(
-                                'totalPrivateAreaQuantity :: ',
-                                values.totalPrivateAreaQuantity
                               );
                               handleSumValues({
                                 id: '',
@@ -1706,14 +1738,6 @@ export const EditProject = () => {
                             aria-describedby="projectEfficiency"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
                             value={values.projectEfficiency || 0}
-                            helperText={
-                              touched.projectEfficiency &&
-                              errors.projectEfficiency
-                            }
-                            error={
-                              touched.projectEfficiency &&
-                              Boolean(errors.projectEfficiency)
-                            }
                           />
                         </FormControl>
                       </Grid>

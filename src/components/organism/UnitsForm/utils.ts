@@ -81,7 +81,6 @@ export const calculateTUID = (
   field: string = ''
 ): number => {
   let totalTUID = 0;
-
   listUnit.forEach((unit: any) => {
     totalTUID += parseFloat(unit[field]);
   });

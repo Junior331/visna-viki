@@ -1,19 +1,21 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Skeleton } from '@mui/material';
 import { mocks } from '@/services/mocks';
 import { breadCrumbsItems } from './utils';
 import { icons } from '@/assets/images/icons';
 import { Button } from '@/components/elements';
-import { convertToParams, formatMMYYYYDate } from '@/utils/utils';
 import { getDetailsScenario } from './services';
-import { Card, GenericModal } from '@/components/modules';
 import { scenariosProps } from '../Scenarios/@types';
 import { Layout, Table } from '@/components/organism';
 import { SnackbarContext } from '@/contexts/Snackbar';
 import { emptySummaryScenarios } from '@/utils/emptys';
 import { HeaderBreadcrumbs } from '@/components/organism';
-import * as S from './DetailsScenarioStyled';
+import { Card, GenericModal } from '@/components/modules';
 import { rowData } from '@/components/modules/TableBody/@types';
+import { convertToParams, formatMMYYYYDate } from '@/utils/utils';
+import * as S from './DetailsScenarioStyled';
+import * as M from '../Scenarios/ScenariosStyled';
 
 export const DetailsScenario = () => {
   const navigate = useNavigate();
@@ -35,11 +37,6 @@ export const DetailsScenario = () => {
       projectId: parseFloat(idProject)
     });
   }, [id, idProject, setSnackbar]);
-  useEffect(() => {
-    console.log('loading ::', loading);
-    console.log('summaryScenarios ::', summaryScenarios);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [summaryScenarios]);
 
   return (
     <Layout>
@@ -53,32 +50,53 @@ export const DetailsScenario = () => {
           </Button>
         </S.Header>
         <S.Content>
-          {summaryScenarios.phases.map((phase) => {
-            const months = phase.months.map((month) => {
-              const obj = {
-                month: month.month,
-                date: formatMMYYYYDate(month.date),
-                salesPercents: `${month.salesPercents} %`,
-                receipts: month.receipts || '-'
-              };
-              return obj;
-            });
-            return (
-              <Card
-                width={'100%'}
-                height={'auto'}
-                className="bgWhite containerTable"
-              >
-                <S.Title>{phase.step_name}</S.Title>
-                <Table
-                  handleEdit={() => {}}
-                  className="BoxShadowMenu"
-                  rows={months as rowData[]}
-                  columns={mocks.columnsScenarios}
-                />
-              </Card>
-            );
-          })}
+          {loading ? (
+            <Card width={'100%'} height={'auto'} className="bgWhite">
+              <M.HeaderCard>
+                <Skeleton height={20} width={'15%'} variant="rounded" />
+                <Skeleton height={20} width={'10px'} variant="rounded" />
+              </M.HeaderCard>
+              <M.ContainerScenarios>
+                <M.Scenario>
+                  <Skeleton height={20} width={'15%'} variant="rounded" />
+                  <Skeleton height={20} width={'5%'} variant="rounded" />
+                </M.Scenario>
+                <M.FooterScenario>
+                  <Skeleton height={20} width={'15%'} variant="rounded" />
+                  <Skeleton height={20} width={'5%'} variant="rounded" />
+                </M.FooterScenario>
+              </M.ContainerScenarios>
+            </Card>
+          ) : (
+            <>
+              {summaryScenarios.phases.map((phase) => {
+                const months = phase.months.map((month) => {
+                  const obj = {
+                    month: month.month,
+                    date: formatMMYYYYDate(month.date),
+                    salesPercents: `${month.salesPercents} %`,
+                    receipts: month.receipts || '-'
+                  };
+                  return obj;
+                });
+                return (
+                  <Card
+                    width={'100%'}
+                    height={'auto'}
+                    className="bgWhite containerTable"
+                  >
+                    <S.Title>{phase.step_name}</S.Title>
+                    <Table
+                      handleEdit={() => {}}
+                      className="BoxShadowMenu"
+                      rows={months as rowData[]}
+                      columns={mocks.columnsScenarios}
+                    />
+                  </Card>
+                );
+              })}
+            </>
+          )}
         </S.Content>
       </S.DetailsScenarioContainer>
 

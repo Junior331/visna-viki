@@ -70,11 +70,11 @@ const UnitsForm = memo(
         formik.values.unit,
         'areaExchanged'
       );
-      const marketAmountSum = calculateTUID(formik.values.unit, 'marketAmount');
       const totalExchanges = calculateTUID(
         formik.values.unit,
         'exchangeQuantity'
       );
+      const totalVGVTotal = calculateTUID(formik.values.unit, 'netAmount');
 
       if (totalExchanges) {
         formik.setFieldValue('TotalExchanges', totalExchanges);
@@ -105,10 +105,8 @@ const UnitsForm = memo(
         formik.setFieldValue('totalValueNoExchange', totalValueNoExchange);
       }
 
-      if (totalPrivateAreaQuantity && totalExchangeArea && marketAmountSum) {
-        const sum =
-          (totalPrivateAreaQuantity - totalExchangeArea) * marketAmountSum;
-        setVGVTotal(sum);
+      if (totalVGVTotal) {
+        setVGVTotal(totalVGVTotal);
       }
 
       if (totalPrivateAreaQuantity !== null && totalExchangeArea !== null) {
@@ -150,6 +148,7 @@ const UnitsForm = memo(
         const sum2 = parseFloat(
           formik.values.totalToBeBuiltArea.replace(/\./g, '').replace(',', '.')
         );
+
         const sum = (sum1 / sum2 - 1) * 100;
         sum.toFixed();
         setProjectEfficiency(sum > 0 ? sum : 0);
@@ -164,10 +163,6 @@ const UnitsForm = memo(
       () => listCharacteristics,
       [listCharacteristics]
     );
-
-    useEffect(() => {
-      console.log('Componente UnitsForm atualizado');
-    }, []);
 
     if (!visibleTodos.length) {
       return null;

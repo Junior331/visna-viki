@@ -51,10 +51,19 @@ export const parseFormattedNumber = (formattedNumber: string) => {
   return parseFloat(number);
 };
 
+export const parseFormattedCurrency = (value: string = '0.00'): number => {
+  if (!value) return 0;
+  // Remove pontos de separação de milhar e substitui a vírgula decimal por ponto
+  const numericValue = value.replace(/\./g, '').replace(',', '.');
+  const number = parseFloat(numericValue);
+  number.toFixed(2);
+  // Converte para número
+  return number;
+};
+
 export const formatCurrency = (value: string): string => {
   // Remove todos os caracteres não numéricos
   const numericValue = value.replace(/\D/g, '');
-
   // Verifica se o valor é vazio ou não numérico
   if (!numericValue || isNaN(parseFloat(numericValue))) {
     return '';
@@ -67,6 +76,7 @@ export const formatCurrency = (value: string): string => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   });
+
   return formattedValue;
 };
 
