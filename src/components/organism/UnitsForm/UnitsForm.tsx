@@ -813,7 +813,7 @@ const UnitsForm = memo(
                       id="VGVTotal"
                       placeholder="0,00"
                       aria-describedby="VGVTotal"
-                      value={formatterV2.format(VGVTotal)}
+                      value={formatCurrency(VGVTotal.toString())}
                       inputProps={{ style: { fontSize: '1.4rem' } }}
                     />
                   </FormControl>
@@ -850,7 +850,7 @@ const UnitsForm = memo(
                       id="projectEfficiency"
                       aria-describedby="projectEfficiency"
                       inputProps={{ style: { fontSize: '1.4rem' } }}
-                      value={projectEfficiency || 0}
+                      value={projectEfficiency.toFixed(2) || 0}
                     />
                   </FormControl>
                 </Grid>

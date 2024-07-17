@@ -1685,7 +1685,7 @@ export const EditProject = () => {
                             onChange={handleChange}
                             aria-describedby="VGVTotal"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
-                            value={formatterV2.format(values.VGVTotal)}
+                            value={formatCurrency(values.VGVTotal.toString())}
                             helperText={touched.VGVTotal && errors.VGVTotal}
                             error={touched.VGVTotal && Boolean(errors.VGVTotal)}
                           />
@@ -1737,7 +1737,7 @@ export const EditProject = () => {
                             onChange={handleChange}
                             aria-describedby="projectEfficiency"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
-                            value={values.projectEfficiency || 0}
+                            value={values.projectEfficiency.toFixed(2) || 0}
                           />
                         </FormControl>
                       </Grid>
