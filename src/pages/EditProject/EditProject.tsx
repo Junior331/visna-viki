@@ -1737,7 +1737,11 @@ export const EditProject = () => {
                             onChange={handleChange}
                             aria-describedby="projectEfficiency"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
-                            value={values.projectEfficiency.toFixed(2) || 0}
+                            value={
+                              values.projectEfficiency > 0
+                                ? values.projectEfficiency.toFixed(2)
+                                : 0
+                            }
                           />
                         </FormControl>
                       </Grid>

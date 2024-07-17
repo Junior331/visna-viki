@@ -850,7 +850,9 @@ const UnitsForm = memo(
                       id="projectEfficiency"
                       aria-describedby="projectEfficiency"
                       inputProps={{ style: { fontSize: '1.4rem' } }}
-                      value={projectEfficiency.toFixed(2) || 0}
+                      value={
+                        projectEfficiency > 0 ? projectEfficiency.toFixed(2) : 0
+                      }
                     />
                   </FormControl>
                 </Grid>
