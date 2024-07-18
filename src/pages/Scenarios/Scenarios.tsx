@@ -1,7 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import dayjs from 'dayjs';
 import { useFormik } from 'formik';
+import { useContext, useEffect, useState } from 'react';
 import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import {
   Box,
   Grid,
@@ -16,7 +21,6 @@ import {
 } from '@mui/material';
 import {
   convertToParams,
-  formatMMYYYYDate,
   handleClickMenu,
   handleCloseMenu,
   removePropertyFromArray
@@ -34,7 +38,8 @@ import { Card, GenericModal } from '@/components/modules';
 import {
   handleView,
   handleStartChange,
-  handleSalesPercentesChange
+  handleSalesPercentesChange,
+  handleDateChange
 } from './utils';
 import { Layout } from '@/components/organism';
 import { emptyPhases, emptySummaryScenarios } from '@/utils/emptys';
@@ -45,6 +50,7 @@ import {
   postScenarios
 } from './services';
 import { payloadScenarios } from '@/utils/types';
+import 'dayjs/locale/pt-br';
 import * as S from './ScenariosStyled';
 
 export const Scenarios = () => {
@@ -378,37 +384,10 @@ export const Scenarios = () => {
                     <Grid item xs={12} sm={12} md={4}>
                       <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                         <S.Label>Data de inicio das vendas </S.Label>
-
-                        <Select
-                          required
-                          displayEmpty
-                          disabled={
-                            totalSalesPercentes >= 100 && phase.value === 0
-                          }
-                          onChange={(e) => {
-                            const id = e.target.value as number;
-                            const updatedPhases = [...listPhases];
-                            updatedPhases[index].id = id;
-                            updatedPhases[index].projectStepId = id;
-                            updatedPhases[index].scenarioTypesId = values.start;
-                            setListPhases(updatedPhases);
-                          }}
-                          className="SelectComponent"
-                          value={phase.projectStepId}
-                          id={`phase[${index}].projectStepId`}
-                          name={`phase[${index}].projectStepId`}
-                          inputProps={{ 'aria-label': 'Without label' }}
+                        <LocalizationProvider
+                          dateAdapter={AdapterDayjs}
+                          adapterLocale="PT-BR"
                         >
-                          <MenuItem value={0} disabled>
-                            <em>Selecione a opção </em>
-                          </MenuItem>
-                          {listAllSteps[index]?.map((item) => (
-                            <MenuItem value={item.id}>
-                              {formatMMYYYYDate(item.date || '')}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DemoContainer components={['DatePicker']}>
                             <DatePicker
                               className={
@@ -420,17 +399,31 @@ export const Scenarios = () => {
                                 totalSalesPercentes >= 100 && phase.value === 0
                               }
                               views={['month', 'year']}
-                              minDate={dayjs('2024-05-12')}
-                              maxDate={dayjs('2024-08-12')}
-                              // value={phase.startDate}
-                              // onChange={(date) => {
-                              //   const updatedPhases = [...listPhases];
-                              //   updatedPhases[index].startDate = date;
-                              //   setListPhases(updatedPhases);
-                              // }}
+                              minDate={dayjs(
+                                listAllSteps.length
+                                  ? listAllSteps[index][0].date
+                                  : ''
+                              )}
+                              maxDate={dayjs(
+                                listAllSteps.length
+                                  ? listAllSteps[index][
+                                      listAllSteps[index].length - 1
+                                    ].date
+                                  : ''
+                              )}
+                              onChange={(date) => {
+                                handleDateChange({
+                                  date,
+                                  index,
+                                  listPhases,
+                                  listAllSteps,
+                                  setListPhases,
+                                  start: values.start
+                                });
+                              }}
                             />
                           </DemoContainer>
-                        </LocalizationProvider> */}
+                        </LocalizationProvider>
                       </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={12} md={4}>

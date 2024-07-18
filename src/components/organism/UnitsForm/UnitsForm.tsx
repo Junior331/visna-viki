@@ -833,8 +833,8 @@ const UnitsForm = memo(
                       onChange={formik.handleChange}
                       aria-describedby="averageSaleValue"
                       inputProps={{ style: { fontSize: '1.4rem' } }}
-                      value={formatterV2.format(
-                        parseFloat(formik.values.averageSaleValue) || 0
+                      value={formatCurrency(
+                        formik.values.averageSaleValue.toString() || ''
                       )}
                     />
                   </FormControl>

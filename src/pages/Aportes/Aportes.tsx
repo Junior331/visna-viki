@@ -101,11 +101,6 @@ export const Aportes = () => {
   return (
     <Layout>
       <S.AportesContainer>
-        <S.Header>
-          <Button size="200px" onClick={() => setOpenModalNewAporte(true)}>
-            Novo Aporte
-          </Button>
-        </S.Header>
         <S.Content>
           {loading ? (
             <Backdrop open={loading}>

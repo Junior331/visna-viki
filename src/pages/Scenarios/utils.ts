@@ -1,10 +1,16 @@
-import { convertToParams } from '@/utils/utils';
+import {
+  convertDateToISO,
+  convertToParams,
+  formatDateInMonth
+} from '@/utils/utils';
 import {
   handleProps,
   handleStartChangeProps,
   handleSalesPercentesChangeProps,
-  stepNamePhase
+  stepNamePhase,
+  handleDateChangeProps
 } from './@types';
+import dayjs from 'dayjs';
 
 export const listNamePhases = ['Lançamento', 'Obra', 'Pós Obras'];
 
@@ -91,4 +97,26 @@ export const handleView = ({ id, name, navigate, idProject }: handleProps) => {
       id: formatedId
     })}`
   );
+};
+export const handleDateChange = ({
+  date,
+  index,
+  start,
+  listPhases,
+  listAllSteps,
+  setListPhases
+}: handleDateChangeProps) => {
+  const dateIso = convertDateToISO(dayjs(date).format('DD/MM/YYYY'));
+  const obj = listAllSteps[index].find(
+    (item) => formatDateInMonth(item.date) === formatDateInMonth(dateIso)
+  );
+
+  const updatedPhases = [...listPhases];
+  updatedPhases[index] = {
+    ...updatedPhases[index],
+    id: obj?.id || 0,
+    projectStepId: obj?.id || 0,
+    scenarioTypesId: start
+  };
+  setListPhases(updatedPhases);
 };

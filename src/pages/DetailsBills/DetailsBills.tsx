@@ -32,8 +32,10 @@ import { SnackbarContext } from '@/contexts/Snackbar';
 import { Card, GenericModal } from '@/components/modules';
 import { HeaderBreadcrumbs } from '@/components/organism';
 import {
+  convertDateToISO,
   convertToParams,
   formatCurrency,
+  formatDateInMonth,
   formatter,
   handleClickMenu,
   handleCloseMenu
@@ -53,9 +55,11 @@ import { payloadExpense } from '@/utils/types';
 import { rowsDataType } from './@types';
 import { unitExpenseTypes } from '../ListBills/@types';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import dayjs from 'dayjs';
+import { getListAllSteps } from './services';
+import { stepsProps } from '../Scenarios/@types';
 
 export const DetailsBills = () => {
   const navigate = useNavigate();
@@ -69,7 +73,9 @@ export const DetailsBills = () => {
   const [list, setList] = useState<rowsDataType[]>([]);
   const [isUpdate, setIsUpdate] = useState(false);
   const [openModalNewExpense, setOpenModalNewExpense] = useState(false);
+  const [projectStepId, setProjectStepId] = useState(0);
   const [optionsExpense, setOptionsExpense] = useState<rowsDataType[]>([]);
+  const [listAllSteps, setListAllSteps] = useState<stepsProps[]>([]);
 
   const { id, idProject, name, isEdit } = Object.fromEntries([...searchParams]);
   const [date, setDate] = useState<shallowCostType | incorporationFeeType>(
@@ -96,11 +102,12 @@ export const DetailsBills = () => {
       unitValue: '0',
       totalValue: 0,
       unitExpenseTypeId: 0,
-      paymentStartDate: dayjs(''),
-      periodicityPayment: 0
+      periodicityPayment: 0,
+      paymentStartDate: dayjs('')
     },
     onSubmit: async (values) => {
       const payload: payloadExpense = {
+        projectStepId,
         expenseId: values.expenseId,
         totalValue: values.totalValue / 100,
         quantity: parseFloat(values.quantity),
@@ -110,6 +117,7 @@ export const DetailsBills = () => {
         periodicityPayment: values.periodicityPayment,
         projectId: parseFloat(idProject)
       };
+
       const isAnyFieldEmpty = !!values.expenseId;
       if (!isAnyFieldEmpty) {
         setShowError(true);
@@ -149,6 +157,15 @@ export const DetailsBills = () => {
 
     setOptionsExpense(filteredList);
   }, [expenseActive.id, id, list]);
+
+  useEffect(() => {
+    getListAllSteps({
+      setLoading,
+      setSnackbar,
+      setListAllSteps,
+      id: parseFloat(idProject)
+    });
+  }, [idProject, setSnackbar]);
 
   return (
     <Layout>
@@ -464,19 +481,39 @@ export const DetailsBills = () => {
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
                   <S.Label>Data de início de pagamento</S.Label>
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DemoItem>
-                      <DesktopDatePicker
-                        format={'DD/MM/YYYY'}
-                        value={formikNewExpense.values.paymentStartDate || null}
-                        onChange={(date) =>
+
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    adapterLocale="PT-BR"
+                  >
+                    <DemoContainer components={['DatePicker']}>
+                      <DatePicker
+                        views={['month', 'year']}
+                        minDate={dayjs(
+                          listAllSteps.length ? listAllSteps[0].date : ''
+                        )}
+                        maxDate={dayjs(
+                          listAllSteps.length
+                            ? listAllSteps[listAllSteps.length - 1].date
+                            : ''
+                        )}
+                        onChange={(date) => {
+                          const dateIso = convertDateToISO(
+                            dayjs(date).format('DD/MM/YYYY')
+                          );
+                          const obj = listAllSteps.find(
+                            (item) =>
+                              formatDateInMonth(item.date) ===
+                              formatDateInMonth(dateIso)
+                          );
+                          setProjectStepId(obj?.id || 0);
                           formikNewExpense.setFieldValue(
                             'paymentStartDate',
                             date || ''
-                          )
-                        }
+                          );
+                        }}
                       />
-                    </DemoItem>
+                    </DemoContainer>
                   </LocalizationProvider>
                 </FormControl>
               </Grid>

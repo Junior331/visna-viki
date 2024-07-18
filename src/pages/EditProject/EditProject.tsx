@@ -1709,7 +1709,9 @@ export const EditProject = () => {
                             onChange={handleChange}
                             aria-describedby="averageSaleValue"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
-                            value={formatterV2.format(values.averageSaleValue)}
+                            value={formatCurrency(
+                              values.averageSaleValue.toString() || ''
+                            )}
                             helperText={
                               touched.averageSaleValue &&
                               errors.averageSaleValue

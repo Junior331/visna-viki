@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { NavigateFunction } from 'react-router-dom';
 import { SelectChangeEvent } from '@mui/material';
 import { payloadScenarios } from '@/utils/types';
+import dayjs from 'dayjs';
 
 export type stepsProps = {
   id: number;
@@ -92,6 +93,16 @@ export type handleStartChangeProps = {
   listPhases: phasesProps[];
   setListPhases: Dispatch<SetStateAction<phasesProps[]>>;
 };
+
+export type handleDateChangeProps = {
+  index: number;
+  start: number;
+  date: dayjs.Dayjs | null;
+  listPhases: phasesProps[];
+  listAllSteps: stepsProps[][];
+  setListPhases: Dispatch<SetStateAction<phasesProps[]>>;
+};
+
 export type handleSalesPercentesChangeProps = {
   value: number;
   index: number;

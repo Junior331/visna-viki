@@ -203,6 +203,7 @@ export type payloadExpense = {
   projectId: number;
   expenseId: number;
   totalValue: number;
+  projectStepId: number;
   paymentStartDate: Dayjs;
   unitExpenseTypeId: number;
   periodicityPayment: number;

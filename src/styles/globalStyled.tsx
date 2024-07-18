@@ -42,8 +42,17 @@ export const GlobalStyles = createGlobalStyle`
       -webkit-text-fill-color: rgb(0 0 0 / 70%) !important; 
       color: ${({ theme }) => theme.palette.color.dark} !important;
     }
-    .MuiTextField-root.Mui-disabled, .MuiSelect-select.Mui-disabled {
+    .MuiTextField-root.Mui-disabled, .MuiSelect-select.Mui-disabled, .MuiPickersMonth-root > button.Mui-disabled {
       background-color: rgba(0, 0, 0, 0.18)!important;
+    }
+
+    .MuiPickersCalendarHeader-label, .MuiPickersMonth-root,.MuiPickersYear-root > button {
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .MuiPickersMonth-root,.MuiPickersYear-root > button.Mui-disabled {
+      font-weight: 400;
     }
     .MuiTextField-root.Mui-disabled {
       border-radius: 5px;

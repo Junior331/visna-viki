@@ -10,6 +10,7 @@ import { payloadExpense } from '@/utils/types';
 import { expense } from '@/pages/ListBills/@types';
 import { NavigateFunction } from 'react-router-dom';
 import { rowData } from '@/components/modules/TableBody/@types';
+import { stepsProps } from '@/pages/Scenarios/@types';
 
 export type handleGenericProps = {
   setLoading: Dispatch<SetStateAction<boolean>>;
@@ -105,4 +106,8 @@ export type handleEditCostProps = {
   cost: genericV2ObjType;
   expenseActive: rowData;
   navigate: NavigateFunction;
+};
+export type getListAllStepsProps = handleGenericProps & {
+  id: number;
+  setListAllSteps: Dispatch<SetStateAction<stepsProps[]>>;
 };
