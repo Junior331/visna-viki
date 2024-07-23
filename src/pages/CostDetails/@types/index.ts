@@ -26,6 +26,8 @@ export type deleteExpenseProps = handleGenericProps & {
   projectId: string;
   projectName: string;
   navigate: NavigateFunction;
+  setIsDelete: Dispatch<SetStateAction<boolean>>;
+  setOpenModal: Dispatch<SetStateAction<boolean>>;
 };
 export type editExpenseProps = handleGenericProps & {
   id: number;

@@ -23,6 +23,7 @@ const TableBody = ({
   rows,
   isEdit,
   formik,
+  isDelete,
   className,
   itemActive,
   align = 'left',
@@ -171,7 +172,7 @@ const TableBody = ({
                                   handleEdit({ expenseActive, navigate });
                                 }}
                               >
-                                Editar
+                                {isDelete ? 'Delete' : 'Editar'}
                                 <ListItemIcon>
                                   <S.Icon src={icons.edit} alt="Icon edit" />
                                 </ListItemIcon>

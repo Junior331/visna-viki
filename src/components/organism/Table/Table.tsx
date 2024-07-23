@@ -10,6 +10,7 @@ const Table = ({
   formik,
   isEdit,
   columns,
+  isDelete,
   className,
   expenseActive,
   handleEdit = () => {}
@@ -24,6 +25,7 @@ const Table = ({
             cost={cost}
             formik={formik}
             isEdit={isEdit}
+            isDelete={isDelete}
             className={className}
             itemActive={expenseActive}
             handleEdit={(item) => handleEdit(item)}

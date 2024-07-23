@@ -7,7 +7,7 @@ import {
   SummaryForm,
   DeadlinesForm
 } from '@/components/organism';
-import { breadCrumbsItems, handleSaveInfosByStep } from './utils';
+import { breadCrumbsItems } from './utils';
 import { icons } from '@/assets/images/icons';
 import { Button } from '@/components/elements';
 import { HeaderBreadcrumbs } from '@/components/organism';
@@ -96,16 +96,8 @@ export const CreateProject = () => {
       >
         <S.ContainerMessage>
           <S.Icon src={icons.AlertTriangle} alt="Icon alert triangle" />
-          <S.Title>
-            {stepsIsDone.length ? 'Salvar alterações' : 'Cancelar'}{' '}
-          </S.Title>
-          <S.Text>
-            {stepsIsDone.length
-              ? `Deseja salvar as alterações das etapas (${stepsIsDone.join(
-                  ' - '
-                )}) que foram concluidas ?`
-              : 'Você perderá as alterações que ainda não foram salvas'}
-          </S.Text>
+          <S.Title>Salvar alterações</S.Title>
+          <S.Text>Você perderá as alterações que ainda não foram salvas</S.Text>
           <S.ContainerButtons>
             <Button
               size="100px"
@@ -115,19 +107,7 @@ export const CreateProject = () => {
             >
               Não
             </Button>
-            <Button
-              size="100px"
-              onClick={() =>
-                stepsIsDone.length
-                  ? handleSaveInfosByStep({
-                      date,
-                      navigate,
-                      stepsIsDone,
-                      setOpenModal
-                    })
-                  : navigate('/home')
-              }
-            >
+            <Button size="100px" onClick={() => navigate('/home')}>
               Sim
             </Button>
           </S.ContainerButtons>

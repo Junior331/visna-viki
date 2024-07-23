@@ -220,6 +220,8 @@ export const CostDetails = () => {
                       setSnackbar,
                       cost: state.bill,
                       costId: state.bill.id,
+                      setIsDelete: () => {},
+                      setOpenModal: () => {},
                       projectId: state.expense.projectId,
                       projectName: state.projectName,
                       id: parseFloat(expenseId)

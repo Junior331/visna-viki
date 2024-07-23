@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dispatch, SetStateAction } from 'react';
 import { Snackbar } from '@/contexts/Snackbar';
@@ -6,7 +7,7 @@ import {
   incorporationFeeType,
   genericV2ObjType
 } from '@/pages/Bills/@types';
-import { payloadExpense } from '@/utils/types';
+import { landSummaryType, payloadExpense } from '@/utils/types';
 import { expense } from '@/pages/ListBills/@types';
 import { NavigateFunction } from 'react-router-dom';
 import { rowData } from '@/components/modules/TableBody/@types';
@@ -111,3 +112,23 @@ export type getListAllStepsProps = handleGenericProps & {
   id: number;
   setListAllSteps: Dispatch<SetStateAction<stepsProps[]>>;
 };
+
+export type handleSumValuesProps = {
+  type: string;
+  value1: string;
+  value2: landSummaryType | string;
+  fieldName: string;
+  setFieldValue: (
+    field: string,
+    value: any,
+    shouldValidate?: boolean | undefined
+  ) => void;
+};
+
+export enum unitExpenseType {
+  'type_0' = 'R$',
+  'type_1' = '%',
+  'type_2' = 'VB',
+  'type_3' = 'mes',
+  'type_4' = 'm²'
+}

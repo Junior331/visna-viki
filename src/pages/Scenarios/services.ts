@@ -131,9 +131,13 @@ export const postScenarios = async ({
 export const deleteScenario = async ({
   id,
   setLoading,
-  setSnackbar
+  setSnackbar,
+  setIsDelete,
+  setOpenModal
 }: deleteScenarioProps) => {
   setLoading(true);
+  setIsDelete(false);
+  setOpenModal(false);
   try {
     await deleteScenarios(id);
     setSnackbar({

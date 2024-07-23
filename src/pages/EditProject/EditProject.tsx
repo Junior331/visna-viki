@@ -240,9 +240,13 @@ export const EditProject = () => {
       formikLand.setFieldValue(key, lands[key]);
     });
 
-    if (date.unitHub) {
+    console.log('date.unitHub ::', date.unitHub);
+
+    if (date.unitHub.unit) {
       const units: any = date.unitHub;
       units.unit.forEach((unit: any, index: number) => {
+        console.log('unit ::', unit);
+
         Object.keys(unit).forEach((unitKey: string) => {
           const fieldName = `unit.${index}.${unitKey}`;
           setFieldValue(fieldName, unit[unitKey]);
@@ -1319,8 +1323,10 @@ export const EditProject = () => {
                                         )}
                                         name={`unit[${index}].marketAmount`}
                                         value={
+                                          date.unitHub?.unit &&
                                           values.unit[index].marketAmount !==
-                                          date.unitHub.unit[index].marketAmount
+                                            date.unitHub?.unit[index]
+                                              ?.marketAmount
                                             ? values.unit[index].marketAmount
                                             : formatterV2.format(
                                                 values.unit[index].marketAmount

@@ -11,10 +11,10 @@ export const columns: columnType[] = [
     label: 'Quantidade'
   },
   {
-    label: 'Valor Unitário'
+    label: 'Data'
   },
   {
-    label: 'Valor Total'
+    label: 'Valor'
   },
   {
     label: 'AÇÃO'
@@ -44,10 +44,10 @@ export const columnsFlow: columnType[] = [
     description: 'Aquisição terreno'
   },
   {
-    label: 'obra + despesas',
+    label: 'obra + despesas'
   },
   {
-    label: 'TOTAL',
+    label: 'TOTAL'
   },
   {
     label: 'CRONOGRAMA'

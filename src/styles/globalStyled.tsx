@@ -76,9 +76,6 @@ export const GlobalStyles = createGlobalStyle`
     .MuiBackdrop-root{
       background-color: rgb(0 0 0 / 60%);
     }
-    .MuiBackdrop-root{
-      background-color: rgb(0 0 0 / 60%);
-    }
 
     .bgWhite {
       background: rgba(255, 255, 255, 1) !important;
@@ -132,7 +129,7 @@ export const GlobalStyles = createGlobalStyle`
         background-color: rgb(0 0 0 / 37%);
       }
     }
-    .detailsBillsMenu {
+    .detailsBillsMenu, .detailsExpensesMenu {
       .MuiBackdrop-root{
         background-color: rgb(0 0 0 / 16.9%);
       }

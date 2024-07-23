@@ -106,19 +106,26 @@ export const Scenarios = () => {
   const { values, handleSubmit, resetForm, handleChange } = formik;
 
   useEffect(() => {
-    getListScenarios({
-      setLoading,
-      setSnackbar,
-      setListScenarios,
-      id: parseFloat(id)
-    });
-    getListAllSteps({
-      setLoading,
-      setSnackbar,
-      setListAllSteps,
-      id: parseFloat(id)
-    });
-  }, [id, setSnackbar]);
+    if (!openModal) {
+      getListScenarios({
+        setLoading,
+        setSnackbar,
+        setListScenarios,
+        id: parseFloat(id)
+      });
+      getListAllSteps({
+        setLoading,
+        setSnackbar,
+        setListAllSteps,
+        id: parseFloat(id)
+      });
+    }
+  }, [id, openModal, setSnackbar]);
+  useEffect(() => {
+    if (listPhases.length === 1) {
+      listPhases[0].value = 100;
+    }
+  }, [listPhases]);
 
   return (
     <Layout>
@@ -151,6 +158,10 @@ export const Scenarios = () => {
               {listScenarios.length ? (
                 <S.ListScenarios>
                   {listScenarios.map((scenario, index) => {
+                    let total = 0;
+                    scenario.phases.forEach((phase) => {
+                      total += parseFloat(phase.value);
+                    });
                     return (
                       <Card
                         key={index}
@@ -187,6 +198,7 @@ export const Scenarios = () => {
                             id="account-menu"
                             anchorEl={anchorEl}
                             className="menuEdit billsMenu"
+                            onClick={() => handleCloseMenu({ setAnchorEl })}
                             onClose={() => handleCloseMenu({ setAnchorEl })}
                             PaperProps={{
                               elevation: 0,
@@ -262,7 +274,7 @@ export const Scenarios = () => {
                           })}
                           <S.FooterScenario>
                             <S.Title>Total</S.Title>
-                            <S.Text>100%</S.Text>
+                            <S.Text>{total}%</S.Text>
                           </S.FooterScenario>
                         </S.ContainerScenarios>
                       </Card>
@@ -516,7 +528,9 @@ export const Scenarios = () => {
                   ? deleteScenario({
                       id: scenariosActive.project_scenarios_hub_id,
                       setLoading,
-                      setSnackbar
+                      setSnackbar,
+                      setIsDelete,
+                      setOpenModal
                     })
                   : navigate(`/edit?${convertToParams({ id, name })}`);
               }}

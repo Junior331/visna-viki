@@ -87,6 +87,8 @@ export type postScenariosProps = handleServicesProps & {
 };
 export type deleteScenarioProps = handleServicesProps & {
   id: number;
+  setIsDelete: Dispatch<SetStateAction<boolean>>;
+  setOpenModal: Dispatch<SetStateAction<boolean>>;
 };
 export type handleStartChangeProps = {
   event: SelectChangeEvent<number>;

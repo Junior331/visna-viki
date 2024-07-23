@@ -80,6 +80,12 @@ export const handleSalesPercentesChange = ({
     (acc, phase) => acc + (phase.value || 0),
     0
   );
+
+  if (listPhases.length === 1) {
+    const remainingPercent = 100 - total;
+    updatedPhases[index].value += remainingPercent;
+  }
+
   if (total > 100) {
     const remainingPercent = 100 - (total - value);
     updatedPhases[index].value = remainingPercent >= 0 ? remainingPercent : 0;

@@ -7,6 +7,7 @@ export type Props = {
   formik?: any;
   rows: rowData[];
   isEdit?: boolean;
+  isDelete?: boolean;
   className?: string;
   expenseActive?: any;
   columns: columnType[];

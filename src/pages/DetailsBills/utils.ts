@@ -1,4 +1,6 @@
+/* eslint-disable valid-typeof */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { deleteExpense } from '@/services/services';
 import { getBills, getCostsByProject } from '../Bills/services';
 import { costsType } from '../ListBills/@types';
 import {
@@ -9,12 +11,14 @@ import {
   handleEditProps,
   handleFilterProps,
   handleSumTotalValueProps,
+  handleSumValuesProps,
   listBillsProps,
   listCostsProps,
   rowsDataType
 } from './@types';
 import { createCost } from './services';
 import { convertToParams } from '@/utils/utils';
+import { deleteExpenseProps } from '../CostDetails/@types';
 
 export const breadCrumbsItems = ({
   bill,
@@ -139,6 +143,9 @@ export const handleSumTotalValue = ({
   const parsedValue1 = value1.replace(/\./g, '').replace(',', '.');
   const parsedValue2 = value2.replace(/\./g, '').replace(',', '.');
 
+  console.log('parsedValue1 ::', parsedValue1);
+  console.log('parsedValue2 ::', parsedValue2);
+
   if (parsedValue1 && parsedValue2) {
     const sum = parseFloat(parsedValue1) * parseFloat(parsedValue2);
     sum.toFixed(2);
@@ -241,4 +248,106 @@ export const handleEditCost = ({
       expense: expenseActive
     }
   });
+};
+
+export const handleDeleteCost = async ({
+  id,
+  cost,
+  costId,
+  navigate,
+  projectId,
+  setLoading,
+  projectName,
+  setSnackbar,
+  setIsDelete,
+  setOpenModal
+}: deleteExpenseProps) => {
+  setLoading(true);
+  setIsDelete(false);
+  setOpenModal(false);
+
+  try {
+    await deleteExpense(id);
+    setSnackbar({
+      isOpen: true,
+      severity: 'success',
+      vertical: 'top',
+      horizontal: 'right',
+      message: 'Custo deletada com sucesso'
+    });
+    navigate(
+      `/details?isEdit=true&${convertToParams({
+        idProject: projectId,
+        name: projectName,
+        id: costId
+      })}`,
+      {
+        state: { cost: cost }
+      }
+    );
+  } catch (error) {
+    if (error instanceof Error) {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: error.message
+      });
+    } else {
+      setSnackbar({
+        isOpen: true,
+        severity: 'error',
+        vertical: 'bottom',
+        horizontal: 'left',
+        message: 'Ocorreu um erro inesperado'
+      });
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+
+export const handleSumValues = ({
+  type,
+  value1,
+  value2,
+  fieldName,
+  setFieldValue
+}: handleSumValuesProps) => {
+  let result = 0;
+  if (type === '%' && typeof value2 !== 'string') {
+    const sum1 = parseFloat(value1.replace(/\./g, '').replace(',', '.'));
+    const sum2 = parseFloat(
+      value2.totalAmount.toString().replace(/\./g, '').replace(',', '.')
+    );
+    const sum = (sum1 / 100) * sum2;
+    result = sum;
+  }
+  if (type === 'm²' && typeof value2 !== 'string') {
+    const sum1 = parseFloat(value1.replace(/\./g, '').replace(',', '.'));
+    const sum = sum1 * value2.amountPerMeter;
+    setFieldValue(fieldName, sum.toString());
+    result = sum;
+  }
+  if (type === 'VB') {
+    result = parseFloat(value1);
+    setFieldValue(fieldName, value1);
+  }
+  if (typeof value2 == 'string') {
+    const parsedValue1 = value1.replace(/\./g, '').replace(',', '.');
+    const parsedValue2 = value2.replace(/\./g, '').replace(',', '.');
+
+    if (parsedValue1 && parsedValue2) {
+      const sum = parseFloat(parsedValue1) * parseFloat(parsedValue2);
+      sum.toFixed(2);
+      setFieldValue?.(fieldName, sum * 100);
+      result = sum;
+    } else {
+      console.error(
+        'Um ou ambos os valores fornecidos não são números válidos.'
+      );
+    }
+  }
+  return result;
 };

@@ -19,13 +19,14 @@ import {
   breadCrumbsItems,
   listDetailsBill,
   initialValues,
-  handleSumTotalValue,
-  createNewCost,
   listCosts,
   handleFilter,
-  handleEditCost
+  createNewCost,
+  handleDeleteCost,
+  handleSumTotalValue,
+  handleSumValues
 } from './utils';
-import { emptyCosts } from '@/utils/emptys';
+import { emptyCosts, emptyProjectInfo } from '@/utils/emptys';
 import { icons } from '@/assets/images/icons';
 import { Button, Input } from '@/components/elements';
 import { SnackbarContext } from '@/contexts/Snackbar';
@@ -35,15 +36,16 @@ import {
   convertDateToISO,
   convertToParams,
   formatCurrency,
+  formatMMYYYYDate,
   formatDateInMonth,
   formatter,
   handleClickMenu,
-  handleCloseMenu
+  handleCloseMenu,
+  parseFormattedNumber
 } from '@/utils/utils';
 import { useFormik } from 'formik';
 import { mocks } from '@/services/mocks';
 import {
-  expenseType,
   genericObjType,
   genericV2ObjType,
   incorporationFeeType,
@@ -51,8 +53,8 @@ import {
 } from '../Bills/@types';
 import { emptyInfo } from '../Bills/utils';
 import * as S from './DetailsBillsStyled';
-import { payloadExpense } from '@/utils/types';
-import { rowsDataType } from './@types';
+import { payloadExpense, projectInfoType } from '@/utils/types';
+import { rowsDataType, unitExpenseType } from './@types';
 import { unitExpenseTypes } from '../ListBills/@types';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -60,20 +62,22 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import dayjs from 'dayjs';
 import { getListAllSteps } from './services';
 import { stepsProps } from '../Scenarios/@types';
+import { getInfoProject } from '../EditProject/services';
 
 export const DetailsBills = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [showError, setShowError] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
   const [isFormEdit, setIsFormEdit] = useState(false);
   const [list, setList] = useState<rowsDataType[]>([]);
-  const [isUpdate, setIsUpdate] = useState(false);
-  const [openModalNewExpense, setOpenModalNewExpense] = useState(false);
   const [projectStepId, setProjectStepId] = useState(0);
+  const [openModalNewExpense, setOpenModalNewExpense] = useState(false);
   const [optionsExpense, setOptionsExpense] = useState<rowsDataType[]>([]);
   const [listAllSteps, setListAllSteps] = useState<stepsProps[]>([]);
 
@@ -81,9 +85,12 @@ export const DetailsBills = () => {
   const [date, setDate] = useState<shallowCostType | incorporationFeeType>(
     emptyCosts.costs.shallowCost
   );
+  const [projectInfo, setProjectInfo] =
+    useState<projectInfoType>(emptyProjectInfo);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const [expenseActive, setExpenseActive] = useState<expenseType>(
+  const [expenseActive, setExpenseActive] = useState<any>(
     emptyCosts.costs.shallowCost.land.expenses[0]
   );
 
@@ -102,22 +109,21 @@ export const DetailsBills = () => {
       unitValue: '0',
       totalValue: 0,
       unitExpenseTypeId: 0,
-      periodicityPayment: 0,
+      periodicityPayment: -1,
       paymentStartDate: dayjs('')
     },
     onSubmit: async (values) => {
       const payload: payloadExpense = {
         projectStepId,
         expenseId: values.expenseId,
-        totalValue: values.totalValue / 100,
+        totalValue: values.totalValue,
         quantity: parseFloat(values.quantity),
-        unitValue: parseFloat(values.unitValue),
+        unitValue: parseFormattedNumber(values.unitValue),
         paymentStartDate: values.paymentStartDate,
         unitExpenseTypeId: values.unitExpenseTypeId,
         periodicityPayment: values.periodicityPayment,
         projectId: parseFloat(idProject)
       };
-
       const isAnyFieldEmpty = !!values.expenseId;
       if (!isAnyFieldEmpty) {
         setShowError(true);
@@ -129,6 +135,15 @@ export const DetailsBills = () => {
       }
     }
   });
+
+  const emptyMask = [3, 2, 0].includes(
+    formikNewExpense.values.unitExpenseTypeId
+  );
+
+  const handleModalDelete = () => {
+    setIsDelete(true);
+    setOpenModal(true);
+  };
 
   useEffect(() => {
     listDetailsBill({
@@ -165,7 +180,31 @@ export const DetailsBills = () => {
       setListAllSteps,
       id: parseFloat(idProject)
     });
+
+    getInfoProject({
+      id: parseFloat(idProject),
+      setDate: setProjectInfo,
+      setSnackbar
+    });
   }, [idProject, setSnackbar]);
+
+  useEffect(() => {
+    handleSumValues({
+      type: unitExpenseType[
+        `type_${
+          formikNewExpense.values.unitExpenseTypeId || 0
+        }` as keyof typeof unitExpenseType
+      ],
+      value2: projectInfo.land,
+      fieldName: 'totalValue',
+      value1: formikNewExpense.values.unitValue,
+      setFieldValue: formikNewExpense.setFieldValue
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    formikNewExpense.values.unitExpenseTypeId,
+    formikNewExpense.values.unitValue
+  ]);
 
   return (
     <Layout>
@@ -254,10 +293,30 @@ export const DetailsBills = () => {
                           unitExpenseTypes[
                             `unitType${item.unitType}` as keyof typeof unitExpenseTypes
                           ],
-                        quantity: item.quantity,
-                        unitValue: formatter.format(item.unitValue),
+                        quantity:
+                          unitExpenseType[
+                            `type_${item.unitTypeId}` as keyof typeof unitExpenseType
+                          ] === '%'
+                            ? `${item.unitValue}`
+                            : item.quantity || '-',
+                        date: formatMMYYYYDate(item.date),
+                        unitValue: [3, 2, 0].includes(item.unitTypeId)
+                          ? formatter.format(item.unitValue)
+                          : formatter.format(
+                              handleSumValues({
+                                type: unitExpenseType[
+                                  `type_${item.unitTypeId}` as keyof typeof unitExpenseType
+                                ],
+                                value1: item?.unitValue
+                                  ? item.unitValue.toString()
+                                  : '0',
+                                fieldName: 'totalValue',
+                                value2: projectInfo.land,
+                                setFieldValue: () => {}
+                              })
+                            ),
                         unitTypeById: item.unitType,
-                        totalValue: formatter.format(item.totalValue),
+                        totalValueNoId: formatter.format(item.totalValue),
                         unitValueByIdNumber: item.unitValue,
                         totalValueByIdNumber: item.totalValue,
                         expenseHubId: item.expenseHubId,
@@ -360,19 +419,16 @@ export const DetailsBills = () => {
                             </S.HeaderCard>
                             <S.ContainerExpenses>
                               <Table
+                                isDelete
                                 cost={cost}
                                 formik={formik}
+                                className="menuEdit detailsExpensesMenu"
                                 rows={transformData}
                                 columns={mocks.columns}
                                 expenseActive={expenseActive}
                                 handleEdit={(item) => {
-                                  handleEditCost({
-                                    cost,
-                                    bill: state.cost,
-                                    projectName: name,
-                                    navigate: item.navigate,
-                                    expenseActive: item.expenseActive
-                                  });
+                                  setExpenseActive(item.expenseActive);
+                                  handleModalDelete();
                                 }}
                                 isEdit={
                                   isFormEdit && expenseActive.id === cost.id
@@ -419,17 +475,39 @@ export const DetailsBills = () => {
       >
         <S.ContainerMessage>
           <S.Icon src={icons.AlertTriangle} alt="Icon alert triangle" />
-          <S.Title>Cancelar</S.Title>
-          <S.Text>Você perderá as alterações que ainda não foram salvas</S.Text>
+          <S.Title>{isDelete ? 'Deletar' : 'Cancelar'}</S.Title>
+          <S.Text>
+            {isDelete
+              ? 'Você perderá essa informação. Esta ação não poderá ser desfeita'
+              : 'Você perderá as alterações que ainda não foram salvas'}
+          </S.Text>
           <S.ContainerButtons>
             <Button size="100px" onClick={() => setOpenModal(false)}>
               Não
             </Button>
             <Button
               size="100px"
-              onClick={() =>
-                navigate(`/edit?${convertToParams({ id: idProject, name })}`)
-              }
+              onClick={() => {
+                console.log('state ::', state);
+                console.log('expenseActive ::', expenseActive);
+
+                isDelete
+                  ? handleDeleteCost({
+                      navigate,
+                      setLoading,
+                      setSnackbar,
+                      setIsDelete,
+                      setOpenModal,
+                      cost: state.cost,
+                      costId: state.cost.id,
+                      projectId: idProject,
+                      projectName: name,
+                      id: expenseActive?.expenseHubId
+                    })
+                  : navigate(
+                      `/edit?${convertToParams({ id: idProject, name })}`
+                    );
+              }}
             >
               Sim
             </Button>
@@ -524,20 +602,25 @@ export const DetailsBills = () => {
                     displayEmpty
                     name="periodicityPayment"
                     className="SelectComponent"
-                    onChange={formikNewExpense.handleChange}
                     IconComponent={KeyboardArrowDownRounded}
                     inputProps={{ 'aria-label': 'Without label' }}
                     value={formikNewExpense.values.periodicityPayment}
+                    onChange={(e) => {
+                      if (!e.target.value) {
+                        formikNewExpense.setFieldValue('quantity', 1);
+                      }
+                      formikNewExpense.handleChange(e);
+                    }}
                   >
-                    <MenuItem value={0} disabled>
+                    <MenuItem value={-1} disabled>
                       <em>Selecione a opção</em>
                     </MenuItem>
                     <MenuItem value={1}>Mensal</MenuItem>
-                    <MenuItem value={2}>Bimensal</MenuItem>
-                    <MenuItem value={3}>Semestral</MenuItem>
+                    <MenuItem value={2}>Bimestral</MenuItem>
                     <MenuItem value={4}>Quadrimestral</MenuItem>
-                    <MenuItem value={5}>Anual</MenuItem>
-                    <MenuItem value={4}>Isoladas</MenuItem>
+                    <MenuItem value={6}>Semestral</MenuItem>
+                    <MenuItem value={12}>Anual</MenuItem>
+                    <MenuItem value={0}>Isoladas</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -548,7 +631,10 @@ export const DetailsBills = () => {
                     displayEmpty
                     name="unitExpenseTypeId"
                     className="SelectComponent"
-                    onChange={formikNewExpense.handleChange}
+                    onChange={(e) => {
+                      formikNewExpense.handleChange(e);
+                      formikNewExpense.setFieldValue('unitValue', '0');
+                    }}
                     IconComponent={KeyboardArrowDownRounded}
                     inputProps={{ 'aria-label': 'Without label' }}
                     value={formikNewExpense.values.unitExpenseTypeId}
@@ -569,6 +655,7 @@ export const DetailsBills = () => {
                   <Input
                     required
                     id="quantity"
+                    disabled={!formikNewExpense.values.periodicityPayment}
                     aria-describedby="quantity"
                     placeholder="Digite a quantidade"
                     onBlur={(e) => {
@@ -576,12 +663,14 @@ export const DetailsBills = () => {
                         'quantity',
                         e.target.value
                       );
-                      handleSumTotalValue({
-                        value2: e.target.value,
-                        fieldName: 'totalValue',
-                        value1: formikNewExpense.values.unitValue,
-                        setFieldValue: formikNewExpense.setFieldValue
-                      });
+                      if (emptyMask) {
+                        handleSumTotalValue({
+                          value2: e.target.value,
+                          fieldName: 'totalValue',
+                          value1: formikNewExpense.values.unitValue,
+                          setFieldValue: formikNewExpense.setFieldValue
+                        });
+                      }
                     }}
                     onChange={formikNewExpense.handleChange}
                     value={formikNewExpense.values.quantity}
@@ -591,7 +680,17 @@ export const DetailsBills = () => {
               </Grid>
               <Grid item xs={12} sm={12} md={6} minWidth={300}>
                 <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                  <S.Label>Valor unitario (R$)</S.Label>
+                  <S.Label>
+                    Valor unitario (
+                    {
+                      unitExpenseType[
+                        `type_${
+                          formikNewExpense.values.unitExpenseTypeId || 0
+                        }` as keyof typeof unitExpenseType
+                      ]
+                    }
+                    )
+                  </S.Label>
                   <Input
                     required
                     id="unitValue"
@@ -602,7 +701,10 @@ export const DetailsBills = () => {
                         'unitValue',
                         e.target.value
                       );
-                      handleSumTotalValue({
+                      handleSumValues({
+                        type: unitExpenseType[
+                          `type_${formikNewExpense.values.unitExpenseTypeId}` as keyof typeof unitExpenseType
+                        ],
                         value1: e.target.value,
                         fieldName: 'totalValue',
                         value2: formikNewExpense.values.quantity,
@@ -610,7 +712,11 @@ export const DetailsBills = () => {
                       });
                     }}
                     onChange={formikNewExpense.handleChange}
-                    value={formatCurrency(formikNewExpense.values.unitValue)}
+                    value={
+                      !emptyMask
+                        ? formikNewExpense.values.unitValue
+                        : formatCurrency(formikNewExpense.values.unitValue)
+                    }
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                   />
                 </FormControl>
@@ -621,6 +727,7 @@ export const DetailsBills = () => {
                   <Input
                     disabled
                     id="totalValue"
+                    name="totalValue"
                     placeholder="0,00"
                     aria-describedby="totalValue"
                     onChange={formikNewExpense.handleChange}
