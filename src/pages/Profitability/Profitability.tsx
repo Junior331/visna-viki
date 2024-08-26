@@ -164,7 +164,7 @@ export const Profitability = () => {
                               aria-describedby="avarageSellingPrice"
                               inputProps={{ style: { fontSize: '1.4rem' } }}
                               value={formatterV2.format(
-                                parseFloat(item.avarageSellingPrice)
+                                parseFloat(item.avarageSellingPrice || '0')
                               )}
                             />
                           </FormControl>
@@ -202,7 +202,7 @@ export const Profitability = () => {
                               aria-describedby="salePrice"
                               inputProps={{ style: { fontSize: '1.4rem' } }}
                               value={formatterV2.format(
-                                parseFloat(item.salePrice)
+                                parseFloat(item.salePrice || '0')
                               )}
                             />
                           </FormControl>
@@ -221,7 +221,9 @@ export const Profitability = () => {
                               onChange={handleChange}
                               placeholder="Digite aqui"
                               inputProps={{ style: { fontSize: '1.4rem' } }}
-                              value={formatterV2.format(parseFloat(item.vgv))}
+                              value={formatterV2.format(
+                                parseFloat(item.vgv || '0')
+                              )}
                             />
                           </FormControl>
                         </Grid>
@@ -256,7 +258,9 @@ export const Profitability = () => {
                               onChange={handleChange}
                               aria-describedby="ret"
                               placeholder="Digite aqui"
-                              value={formatterV2.format(parseFloat(item.ret))}
+                              value={formatterV2.format(
+                                parseFloat(item.ret || '0')
+                              )}
                               inputProps={{ style: { fontSize: '1.4rem' } }}
                             />
                           </FormControl>
@@ -294,7 +298,7 @@ export const Profitability = () => {
                                         style: { fontSize: '1.4rem' }
                                       }}
                                       value={formatterV2.format(
-                                        parseFloat(item.totalCost)
+                                        parseFloat(item.totalCost || '0')
                                       )}
                                     />
                                   </FormControl>
@@ -322,7 +326,7 @@ export const Profitability = () => {
                                         style: { fontSize: '1.4rem' }
                                       }}
                                       value={formatterV2.format(
-                                        parseFloat(item.maxExposure)
+                                        parseFloat(item.maxExposure || '0')
                                       )}
                                     />
                                   </FormControl>
@@ -350,7 +354,7 @@ export const Profitability = () => {
                                         style: { fontSize: '1.4rem' }
                                       }}
                                       value={formatterV2.format(
-                                        parseFloat(item.nominalProfit)
+                                        parseFloat(item.nominalProfit || '0')
                                       )}
                                     />
                                   </FormControl>
@@ -378,7 +382,7 @@ export const Profitability = () => {
                                         style: { fontSize: '1.4rem' }
                                       }}
                                       value={formatterV2.format(
-                                        parseFloat(item.profitExposure)
+                                        parseFloat(item.profitExposure || '0')
                                       )}
                                     />
                                   </FormControl>
@@ -406,7 +410,7 @@ export const Profitability = () => {
                                         style: { fontSize: '1.4rem' }
                                       }}
                                       value={formatterV2.format(
-                                        parseFloat(item.profitGmv)
+                                        parseFloat(item.profitGmv || '0')
                                       )}
                                     />
                                   </FormControl>
@@ -434,7 +438,7 @@ export const Profitability = () => {
                                         style: { fontSize: '1.4rem' }
                                       }}
                                       value={formatterV2.format(
-                                        parseFloat(item.irrMonthly)
+                                        parseFloat(item.irrMonthly || '0')
                                       )}
                                     />
                                   </FormControl>
@@ -462,7 +466,7 @@ export const Profitability = () => {
                                         style: { fontSize: '1.4rem' }
                                       }}
                                       value={formatterV2.format(
-                                        parseFloat(item.irrAnnual)
+                                        parseFloat(item.irrAnnual || '0')
                                       )}
                                     />
                                   </FormControl>
