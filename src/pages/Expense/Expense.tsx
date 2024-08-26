@@ -75,7 +75,11 @@ export const Expense = () => {
         </S.Header>
         <S.Content>
           <S.Form onSubmit={handleSubmit}>
-            <S.ContainerInputs container spacing={{ xs: 0, sm: 0.2 }}>
+            <S.ContainerInputs
+              container
+              spacing={{ xs: 0, sm: 0.2 }}
+              className="bgWhite"
+            >
               <Grid
                 item
                 xs={12}

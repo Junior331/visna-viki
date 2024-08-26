@@ -1,12 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import dayjs from 'dayjs';
 import { useFormik } from 'formik';
 import { useContext, useEffect, useState } from 'react';
 import { KeyboardArrowDownRounded } from '@mui/icons-material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import {
   Box,
   Grid,
@@ -21,11 +17,13 @@ import {
 } from '@mui/material';
 import {
   convertToParams,
+  formatMMYYYYDate,
   handleClickMenu,
   handleCloseMenu,
   removePropertyFromArray
 } from '@/utils/utils';
 import {
+  allStepNamePhase,
   payloadPhasesProps,
   phasesProps,
   scenariosProps,
@@ -38,8 +36,8 @@ import { Card, GenericModal } from '@/components/modules';
 import {
   handleView,
   handleStartChange,
-  handleSalesPercentesChange,
-  handleDateChange
+  handleSalesPercentesChange
+  // handleDateChange
 } from './utils';
 import { Layout } from '@/components/organism';
 import { emptyPhases, emptySummaryScenarios } from '@/utils/emptys';
@@ -121,11 +119,6 @@ export const Scenarios = () => {
       });
     }
   }, [id, openModal, setSnackbar]);
-  useEffect(() => {
-    if (listPhases.length === 1) {
-      listPhases[0].value = 100;
-    }
-  }, [listPhases]);
 
   return (
     <Layout>
@@ -378,11 +371,20 @@ export const Scenarios = () => {
                 </FormControl>
               </Grid>
               {listPhases.map((phase, index) => {
+                const filteredItems = listAllSteps
+                  .flat()
+                  .filter(
+                    (item) =>
+                      listPhases[index].name ===
+                      allStepNamePhase[
+                        item.stepName as keyof typeof allStepNamePhase
+                      ]
+                  );
                 return (
                   <>
                     <Grid item xs={12} sm={12} md={4}>
                       <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                        <S.Label>Fase</S.Label>
+                        {index === 0 && <S.Label>Fase</S.Label>}
                         <Input
                           required
                           disabled
@@ -395,8 +397,40 @@ export const Scenarios = () => {
                     </Grid>
                     <Grid item xs={12} sm={12} md={4}>
                       <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                        <S.Label>Data de inicio das vendas </S.Label>
-                        <LocalizationProvider
+                        {index === 0 && (
+                          <S.Label>Data de inicio das vendas </S.Label>
+                        )}
+
+                        <Select
+                          required
+                          displayEmpty
+                          disabled={
+                            totalSalesPercentes >= 100 && phase.value === 0
+                          }
+                          onChange={(e) => {
+                            const id = e.target.value as number;
+                            const updatedPhases = [...listPhases];
+                            updatedPhases[index].id = id;
+                            updatedPhases[index].projectStepId = id;
+                            updatedPhases[index].scenarioTypesId = values.start;
+                            setListPhases(updatedPhases);
+                          }}
+                          className="SelectComponent"
+                          value={phase.projectStepId}
+                          id={`phase[${index}].projectStepId`}
+                          name={`phase[${index}].projectStepId`}
+                          inputProps={{ 'aria-label': 'Without label' }}
+                        >
+                          <MenuItem value={0} disabled>
+                            <em>Selecione a opção </em>
+                          </MenuItem>
+                          {filteredItems.map((item) => (
+                            <MenuItem value={item.id}>
+                              {formatMMYYYYDate(item.date || '')}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {/* <LocalizationProvider
                           dateAdapter={AdapterDayjs}
                           adapterLocale="PT-BR"
                         >
@@ -412,15 +446,13 @@ export const Scenarios = () => {
                               }
                               views={['month', 'year']}
                               minDate={dayjs(
-                                listAllSteps.length
-                                  ? listAllSteps[index][0].date
+                                filteredItems.length
+                                  ? filteredItems[0].date
                                   : ''
                               )}
                               maxDate={dayjs(
-                                listAllSteps.length
-                                  ? listAllSteps[index][
-                                      listAllSteps[index].length - 1
-                                    ].date
+                                filteredItems.length
+                                  ? filteredItems[filteredItems.length - 1].date
                                   : ''
                               )}
                               onChange={(date) => {
@@ -435,12 +467,14 @@ export const Scenarios = () => {
                               }}
                             />
                           </DemoContainer>
-                        </LocalizationProvider>
+                        </LocalizationProvider> */}
                       </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={12} md={4}>
                       <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
-                        <S.Label>Velocidade de Vendas (%)</S.Label>
+                        {index === 0 && (
+                          <S.Label>Velocidade de Vendas (%)</S.Label>
+                        )}
                         <Input
                           required
                           id="value"
@@ -526,11 +560,14 @@ export const Scenarios = () => {
               onClick={() => {
                 isDelete
                   ? deleteScenario({
-                      id: scenariosActive.project_scenarios_hub_id,
                       setLoading,
                       setSnackbar,
                       setIsDelete,
-                      setOpenModal
+                      setOpenModal,
+                      setListAllSteps,
+                      setListScenarios,
+                      idProject: parseFloat(id),
+                      id: scenariosActive.project_scenarios_hub_id
                     })
                   : navigate(`/edit?${convertToParams({ id, name })}`);
               }}

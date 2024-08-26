@@ -130,10 +130,13 @@ export const postScenarios = async ({
 };
 export const deleteScenario = async ({
   id,
+  idProject,
   setLoading,
   setSnackbar,
   setIsDelete,
-  setOpenModal
+  setOpenModal,
+  setListAllSteps,
+  setListScenarios
 }: deleteScenarioProps) => {
   setLoading(true);
   setIsDelete(false);
@@ -160,5 +163,18 @@ export const deleteScenario = async ({
     }
   } finally {
     setLoading(false);
+
+    getListScenarios({
+      setLoading,
+      setSnackbar,
+      id: idProject,
+      setListScenarios
+    });
+    getListAllSteps({
+      setLoading,
+      setSnackbar,
+      id: idProject,
+      setListAllSteps
+    });
   }
 };

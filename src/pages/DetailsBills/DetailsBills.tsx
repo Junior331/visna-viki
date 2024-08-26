@@ -41,7 +41,8 @@ import {
   formatter,
   handleClickMenu,
   handleCloseMenu,
-  parseFormattedNumber
+  parseFormattedNumber,
+  formatterV2
 } from '@/utils/utils';
 import { useFormik } from 'formik';
 import { mocks } from '@/services/mocks';
@@ -324,6 +325,8 @@ export const DetailsBills = () => {
                         projectId: item.projectId,
                         action: 'menu'
                       }));
+                      console.log('cost ::', cost);
+
                       return (
                         <>
                           <Card
@@ -438,7 +441,7 @@ export const DetailsBills = () => {
                               <S.FooterExpense>
                                 <S.Title>Total </S.Title>
                                 <S.Text>
-                                  {formatter.format(cost?.totalValue)}
+                                  {formatter.format(cost.totalValue)}
                                 </S.Text>
                               </S.FooterExpense>
                             </S.ContainerExpenses>
@@ -488,9 +491,6 @@ export const DetailsBills = () => {
             <Button
               size="100px"
               onClick={() => {
-                console.log('state ::', state);
-                console.log('expenseActive ::', expenseActive);
-
                 isDelete
                   ? handleDeleteCost({
                       navigate,
@@ -701,15 +701,18 @@ export const DetailsBills = () => {
                         'unitValue',
                         e.target.value
                       );
-                      handleSumValues({
-                        type: unitExpenseType[
-                          `type_${formikNewExpense.values.unitExpenseTypeId}` as keyof typeof unitExpenseType
-                        ],
-                        value1: e.target.value,
-                        fieldName: 'totalValue',
-                        value2: formikNewExpense.values.quantity,
-                        setFieldValue: formikNewExpense.setFieldValue
-                      });
+
+                      if (!formikNewExpense.values.periodicityPayment) {
+                        handleSumValues({
+                          type: unitExpenseType[
+                            `type_${formikNewExpense.values.unitExpenseTypeId}` as keyof typeof unitExpenseType
+                          ],
+                          value1: e.target.value,
+                          fieldName: 'totalValue',
+                          value2: formikNewExpense.values.quantity,
+                          setFieldValue: formikNewExpense.setFieldValue
+                        });
+                      }
                     }}
                     onChange={formikNewExpense.handleChange}
                     value={
@@ -731,8 +734,8 @@ export const DetailsBills = () => {
                     placeholder="0,00"
                     aria-describedby="totalValue"
                     onChange={formikNewExpense.handleChange}
-                    value={formatCurrency(
-                      formikNewExpense.values.totalValue.toString()
+                    value={formatterV2.format(
+                      formikNewExpense.values.totalValue
                     )}
                     inputProps={{ style: { fontSize: '1.4rem' } }}
                   />

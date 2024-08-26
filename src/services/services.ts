@@ -19,21 +19,28 @@ import { ENDPOINTS } from '@/utils/endpoints';
 import { getToken } from './sessionStorage';
 import { cleanObject, parseFormattedCurrency } from '@/utils/utils';
 import { aportesProps } from '@/pages/Aportes/@types';
+import { payloadProfitability } from '@/pages/Profitability/@types';
 
 // crud Units
 export const createUnits = async (projectId: number, payload: unitType) => {
-  const formattedUnits = payload.unit.map((unit) => ({
-    unitTypeId: unit.unitTypeId,
-    totalAreaOfTheDevelopment: 1,
-    totalPrivateAreaNetOfExchange: 1,
-    unitCharacteristicsId: unit.unitCharacteristicsId,
-    netAmount: parseFloat(unit.netAmount.replace(',', '.')),
-    averageArea: parseFloat(unit.averageArea.replace(',', '.')),
-    marketAmount: parseFloat(unit.marketAmount.replace(',', '.')),
-    unitQuantity: parseFloat(unit.unitQuantity.replace(',', '.')),
-    exchangeQuantity: parseFloat(unit.exchangeQuantity.replace(',', '.')),
-    areaPrivativaTotal: parseFloat(unit.areaPrivativaTotal.replace(',', '.'))
-  }));
+  const formattedUnits = payload.unit.map((unit) => {
+    const numericMarketAmount = unit.marketAmount
+      .replace(/\./g, '')
+      .replace(',', '.');
+    const obj = {
+      unitTypeId: unit.unitTypeId,
+      totalAreaOfTheDevelopment: 1,
+      totalPrivateAreaNetOfExchange: 1,
+      marketAmount: parseFloat(numericMarketAmount),
+      unitCharacteristicsId: unit.unitCharacteristicsId,
+      netAmount: parseFloat(unit.netAmount.replace(',', '.')),
+      averageArea: parseFloat(unit.averageArea.replace(',', '.')),
+      unitQuantity: parseFloat(unit.unitQuantity.replace(',', '.')),
+      exchangeQuantity: parseFloat(unit.exchangeQuantity.replace(',', '.')),
+      areaPrivativaTotal: parseFloat(unit.areaPrivativaTotal.replace(',', '.'))
+    };
+    return obj;
+  });
 
   const formatPayload = {
     ...payload,
@@ -970,6 +977,61 @@ export const deleteScenarios = async (id: number) => {
   try {
     const response = await axios.delete(
       `${ENDPOINTS.BASE_URL}${ENDPOINTS.SCENARIOS.BASE_URL}/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+
+export const listAllProfitabilityByProject = async ({
+  projectId
+}: handleExpenseGenericProps) => {
+  try {
+    const response = await axios.get(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.PROFITABILITY.BASE_URL}/profitability/${projectId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const createProfitability = async (payload: payloadProfitability) => {
+  try {
+    const response = await axios.post(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.PROFITABILITY.BASE_URL}/profitability`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+  }
+};
+export const deleteProfitability = async (id: number) => {
+  try {
+    const response = await axios.delete(
+      `${ENDPOINTS.BASE_URL}${ENDPOINTS.SCENARIOS.BASE_URL}/profitability/${id}`,
       {
         headers: {
           Authorization: `Bearer ${getToken()}`

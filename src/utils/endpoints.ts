@@ -31,5 +31,8 @@ export const ENDPOINTS = {
   },
   SCENARIOS: {
     BASE_URL: 'project/scenarios'
+  },
+  PROFITABILITY: {
+    BASE_URL: 'project/scenarios'
   }
 };

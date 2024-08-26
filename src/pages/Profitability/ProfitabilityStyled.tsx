@@ -1,5 +1,6 @@
 import media from '@/styles/breakpoints';
 import styled from 'styled-components';
+import { styledProps } from './@types';
 
 export const GenericContainer = styled.div`
   width: 100%;
@@ -13,11 +14,7 @@ export const ProfitabilityContainer = styled(GenericContainer)`
   flex-direction: column;
 `;
 export const Header = styled(GenericContainer)`
-  gap: 10px;
-  flex-wrap: wrap;
-  padding-bottom: 10px;
-  justify-content: space-between;
-  border-bottom: 2px solid #ebe9f1;
+  justify-content: flex-end;
 `;
 export const Content = styled(GenericContainer)`
   gap: 20px;
@@ -43,6 +40,9 @@ export const Content = styled(GenericContainer)`
       padding-top: 0px;
     }
   }
+  .containerBtn {
+    justify-content: flex-start;
+  }
 `;
 export const Title = styled.h2`
   letter-spacing: 1px;
@@ -53,6 +53,7 @@ export const Title = styled.h2`
 export const ContainerMessage = styled(GenericContainer)`
   max-height: 100%;
   overflow-y: auto;
+  padding: 20px 35px;
   align-items: center;
   flex-direction: column;
   justify-content: flex-start;
@@ -70,15 +71,15 @@ export const ContainerMessage = styled(GenericContainer)`
     }
   }
 `;
-export const Text = styled.p`
+export const Text = styled.p<styledProps>`
   margin-top: 5px;
+  margin: ${({ margin }) => margin};
   color: ${({ theme }) => theme.palette.color.dark};
   font-size: ${({ theme }) => theme.typography.fontSize - 0.2}rem;
 `;
 export const Icon = styled.img``;
 export const ContainerButtons = styled(GenericContainer)`
   gap: 30px;
-  margin-bottom: 15px;
   align-items: center;
   justify-content: flex-end;
 `;
@@ -103,13 +104,14 @@ export const Form = styled.form`
   }
 `;
 export const Section = styled(GenericContainer)`
-  width: 100%;
+  width: 98.8%;
   height: auto;
-  border-radius: 8px;
-  background: #ffffff;
-  padding: 20px 0 0 20px;
   flex-direction: column;
   align-items: flex-start;
+  margin: auto 0 auto auto;
+  > h2 {
+    margin-top: 15px;
+  }
 `;
 export const ContainerInfo = styled(GenericContainer)`
   width: 100%;

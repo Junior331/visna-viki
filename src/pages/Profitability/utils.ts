@@ -1,4 +1,4 @@
-import { convertToParams } from "@/utils/utils";
+import { convertToParams } from '@/utils/utils';
 
 export const breadCrumbsItems = (id: string, name: string) => [
   {
@@ -8,10 +8,11 @@ export const breadCrumbsItems = (id: string, name: string) => [
   {
     path: `/edit?${convertToParams({ id, name })}`,
     label: 'Rentabilidade'
-
   },
   {
     path: '',
     label: 'Cenários de vendas '
   }
 ];
+export const numericMarketAmount = (value: string) =>
+  value.replace(/\./g, '').replace(',', '.');

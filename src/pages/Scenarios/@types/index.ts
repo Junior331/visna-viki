@@ -87,8 +87,11 @@ export type postScenariosProps = handleServicesProps & {
 };
 export type deleteScenarioProps = handleServicesProps & {
   id: number;
+  idProject: number;
   setIsDelete: Dispatch<SetStateAction<boolean>>;
   setOpenModal: Dispatch<SetStateAction<boolean>>;
+  setListAllSteps: Dispatch<SetStateAction<stepsProps[][]>>;
+  setListScenarios: Dispatch<SetStateAction<scenariosProps[]>>;
 };
 export type handleStartChangeProps = {
   event: SelectChangeEvent<number>;
@@ -115,4 +118,9 @@ export enum stepNamePhase {
   id_49 = 'Lançamento',
   id_50 = 'Obra',
   id_51 = 'Pós Obras'
+}
+export enum allStepNamePhase {
+  'Prazo de lançamento' = 'Lançamento',
+  'Obra' = 'Obra',
+  'Pós-obra' = 'Pós Obras'
 }

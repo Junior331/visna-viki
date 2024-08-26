@@ -42,13 +42,15 @@ export const formatterV2 = new Intl.NumberFormat('pt-BR', {
   maximumFractionDigits: 2
 });
 
-export const parseFormattedNumber = (formattedNumber: string) => {
-  // Remove os pontos de separação de milhares
-  let number = formattedNumber.replace(/\./g, '');
-  // Substitui a vírgula por um ponto para converter em número decimal
-  number = number.replace(',', '.');
-  // Converte a string para número
-  return parseFloat(number);
+export const formatStringToUpperCase = (str: string) => {
+  const withoutAccents = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const cleaned = withoutAccents.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+  return cleaned;
+};
+
+export const parseFormattedNumber = (value: string) => {
+  const numericValue = value.replace(/\./g, '').replace(',', '.');
+  return parseFloat(numericValue);
 };
 
 export const parseFormattedCurrency = (value: string = '0.00'): number => {

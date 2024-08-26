@@ -143,9 +143,6 @@ export const handleSumTotalValue = ({
   const parsedValue1 = value1.replace(/\./g, '').replace(',', '.');
   const parsedValue2 = value2.replace(/\./g, '').replace(',', '.');
 
-  console.log('parsedValue1 ::', parsedValue1);
-  console.log('parsedValue2 ::', parsedValue2);
-
   if (parsedValue1 && parsedValue2) {
     const sum = parseFloat(parsedValue1) * parseFloat(parsedValue2);
     sum.toFixed(2);
@@ -317,11 +314,12 @@ export const handleSumValues = ({
 }: handleSumValuesProps) => {
   let result = 0;
   if (type === '%' && typeof value2 !== 'string') {
-    const sum1 = parseFloat(value1.replace(/\./g, '').replace(',', '.'));
+    const sum1 = Number(value1.replace(/\./g, '').replace(',', '.'));
     const sum2 = parseFloat(
       value2.totalAmount.toString().replace(/\./g, '').replace(',', '.')
     );
     const sum = (sum1 / 100) * sum2;
+    setFieldValue(fieldName, sum.toString());
     result = sum;
   }
   if (type === 'm²' && typeof value2 !== 'string') {
@@ -331,10 +329,21 @@ export const handleSumValues = ({
     result = sum;
   }
   if (type === 'VB') {
-    result = parseFloat(value1);
-    setFieldValue(fieldName, value1);
+    result = Number(value1.replace(/\./g, '').replace(',', '.'));
+    setFieldValue(
+      fieldName,
+      Number(value1.replace(/\./g, '').replace(',', '.'))
+    );
   }
-  if (typeof value2 == 'string') {
+  if (type === 'mes' && typeof value2 == 'string') {
+    const parsedValue1 = value1.replace(/\./g, '').replace(',', '.');
+    const parsedValue2 = value2.replace(/\./g, '').replace(',', '.');
+    const sum = parseFloat(parsedValue1) * parseFloat(parsedValue2);
+    result = sum;
+    setFieldValue(fieldName, sum);
+  }
+
+  if (type !== 'mes' && typeof value2 == 'string') {
     const parsedValue1 = value1.replace(/\./g, '').replace(',', '.');
     const parsedValue2 = value2.replace(/\./g, '').replace(',', '.');
 

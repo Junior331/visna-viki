@@ -240,13 +240,9 @@ export const EditProject = () => {
       formikLand.setFieldValue(key, lands[key]);
     });
 
-    console.log('date.unitHub ::', date.unitHub);
-
     if (date.unitHub.unit) {
       const units: any = date.unitHub;
       units.unit.forEach((unit: any, index: number) => {
-        console.log('unit ::', unit);
-
         Object.keys(unit).forEach((unitKey: string) => {
           const fieldName = `unit.${index}.${unitKey}`;
           setFieldValue(fieldName, unit[unitKey]);
@@ -343,7 +339,7 @@ export const EditProject = () => {
   useEffect(() => {
     if (values.VGVTotal !== null && values.totalValueNoExchange !== null) {
       const sum = values.VGVTotal / values.totalValueNoExchange;
-      setFieldValue('averageSaleValue', sum || 0);
+      setFieldValue('averageSaleValue', sum.toFixed() || 0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.VGVTotal, values.totalValueNoExchange]);
@@ -413,7 +409,7 @@ export const EditProject = () => {
                 <Tab label="Contas" {...a11yProps(3)} />
                 <Tab label="Cenários" {...a11yProps(4)} />
                 <Tab label="Aportes" {...a11yProps(5)} />
-                <Tab disabled label="Fluxo" {...a11yProps(6)} />
+                <Tab label="Fluxo" {...a11yProps(6)} />
                 <Tab label="Rentabilidade" {...a11yProps(7)} />
               </Tabs>
             </Box>
@@ -822,7 +818,7 @@ export const EditProject = () => {
                         placeholder="Digite o valor total"
                         inputProps={{ style: { fontSize: '1.4rem' } }}
                         value={formatCurrency(
-                          formikLand.values.totalAmount.toString()
+                          formikLand.values.totalAmount.toFixed(2).toString()
                         )}
                       />
                     </FormControl>
@@ -1716,7 +1712,7 @@ export const EditProject = () => {
                             aria-describedby="averageSaleValue"
                             inputProps={{ style: { fontSize: '1.4rem' } }}
                             value={formatCurrency(
-                              values.averageSaleValue.toString() || ''
+                              values.averageSaleValue.toString()
                             )}
                             helperText={
                               touched.averageSaleValue &&

@@ -41,6 +41,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
     onSubmit: async (values) => {
       const payload = {
         ...values,
+        totalAmount: values.totalAmount / 100,
         address: {
           street: values.street,
           neighborhood: values.neighborhood,
@@ -58,6 +59,7 @@ const LandForm = ({ date, isShow, setDate, handleStep, setIsShow }: Props) => {
           ...payload
         }
       });
+
       setStepsIsDone([...stepsIsDone, '1']);
       handleStep(2);
     },
