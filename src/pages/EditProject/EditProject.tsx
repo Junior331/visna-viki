@@ -54,7 +54,7 @@ import {
 } from '@/utils/types';
 import { editProject } from '@/services/services';
 import { Tooltip } from '@/components/elements/Tooltip';
-import { Aportes, Bills, Flow, Profitability, Scenarios } from '@/pages';
+import { Bills, Profitability, Scenarios } from '@/pages';
 import unitsFormSchema from '@/components/organism/UnitsForm/UnitsFormSchema';
 import { projectNameFormSchema } from '@/components/organism/LandForm/Schema';
 import { handleSumValues as handleSumValuesV2 } from '@/components/organism/DeadlinesForm/utils';
@@ -408,9 +408,9 @@ export const EditProject = () => {
                 <Tab label="Prazos" {...a11yProps(2)} />
                 <Tab label="Contas" {...a11yProps(3)} />
                 <Tab label="Cenários" {...a11yProps(4)} />
-                <Tab label="Aportes" {...a11yProps(5)} />
-                <Tab label="Fluxo" {...a11yProps(6)} />
-                <Tab label="Rentabilidade" {...a11yProps(7)} />
+                {/* <Tab label="Aportes" {...a11yProps(5)} />
+                <Tab label="Fluxo" {...a11yProps(6)} /> */}
+                <Tab label="Rentabilidade" {...a11yProps(5)} />
               </Tabs>
             </Box>
 
@@ -2018,16 +2018,16 @@ export const EditProject = () => {
             <CustomTabPanel value={value} index={4}>
               <Scenarios />
             </CustomTabPanel>
-
+            {/* 
             <CustomTabPanel value={value} index={5}>
               <Aportes />
             </CustomTabPanel>
 
             <CustomTabPanel value={value} index={6}>
               <Flow />
-            </CustomTabPanel>
+            </CustomTabPanel> */}
 
-            <CustomTabPanel value={value} index={7}>
+            <CustomTabPanel value={value} index={5}>
               <Profitability />
             </CustomTabPanel>
           </Box>

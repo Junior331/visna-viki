@@ -1,6 +1,7 @@
 import media from '@/styles/breakpoints';
 import styled from 'styled-components';
 import { styledProps } from './@types';
+import { Card } from '@/components/modules';
 
 export const GenericContainer = styled.div`
   width: 100%;
@@ -134,4 +135,13 @@ export const Label = styled.label`
   color: ${({ theme }) => theme.palette.color.medium};
   font-size: ${({ theme }) => theme.typography.fontSize}rem;
   font-weight: ${({ theme }) => theme.typography.fontWeightLight};
+`;
+export const Message = styled(Card)`
+  max-width: 650px;
+  min-height: 240px;
+  text-align: center;
+  justify-content: center;
+  button {
+    margin-top: 20px;
+  }
 `;
