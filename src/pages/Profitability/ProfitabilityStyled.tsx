@@ -2,6 +2,7 @@ import media from '@/styles/breakpoints';
 import styled from 'styled-components';
 import { styledProps } from './@types';
 import { Card } from '@/components/modules';
+import { Grid } from '@mui/material';
 
 export const GenericContainer = styled.div`
   width: 100%;
@@ -81,8 +82,9 @@ export const Text = styled.p<styledProps>`
 export const Icon = styled.img``;
 export const ContainerButtons = styled(GenericContainer)`
   gap: 30px;
+  width: 100%;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
 `;
 export const Form = styled.form`
   gap: 15px;
@@ -144,4 +146,44 @@ export const Message = styled(Card)`
   button {
     margin-top: 20px;
   }
+`;
+export const ContainerPrint = styled(GenericContainer)`
+  gap: 20px;
+  align-items: center;
+  padding: 30px 30px 0;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+export const HeaderPrint = styled(GenericContainer)`
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid rgb(235, 233, 241);
+
+  h2 {
+    font-size: 32px;
+  }
+  p {
+    color: #ababab;
+  }
+`;
+export const ContentPrint = styled(Grid)`
+  width: 98%;
+  height: 100%;
+  border-radius: 6px;
+  padding: 12px 10px;
+  margin: 0 !important;
+  background: rgb(255 255 255 / 49%);
+  box-shadow: 0px 4px 5px rgb(0 0 0 / 5%);
+  border: 0.5px solid rgb(192 192 192 / 30%);
+  .MuiGrid-item {
+    padding: 0 !important;
+  }
+  .MuiFormControl-root {
+    width: 98% !important;
+  }
+`;
+export const Footer = styled(GenericContainer)`
+  margin-top: 20px;
+  justify-content: space-between;
+  border-top: 2px solid rgb(235, 233, 241);
 `;

@@ -5,6 +5,7 @@ export type profitabilityProps = {
   id: number;
   ret: string;
   vgv: string;
+  indexId?: number;
   discount: string;
   totalCost: string;
   projectId: number;

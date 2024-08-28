@@ -8,6 +8,7 @@ import {
 } from './types';
 import { accumulator } from '@/pages/Aportes/@types';
 import { phasesProps, scenariosProps } from '@/pages/Scenarios/@types';
+import { profitabilityProps } from '@/pages/Profitability/@types';
 
 export const emptyProject: projectType = {
   id: '',
@@ -317,4 +318,26 @@ export const emptySummaryScenarios: scenariosProps = {
       ]
     }
   ]
+};
+
+
+export const emptyprofitability: profitabilityProps = {
+  id: 0,
+  ret: '0,00',
+  vgv: '0,00',
+  projectId: 0,
+  discount: '0,00',
+  totalCost: '0,00',
+  comission: '0,00',
+  profitGmv: '0,00',
+  irrAnnual: '0,00',
+  salePrice: '0,00',
+  irrMonthly: '0,00',
+  maxExposure: '0,00',
+  nominalProfit: '0,00',
+  profitExposure: '0,00',
+  project_steps_hub_id: 0,
+  projectScenariosHubId: 0,
+  avarageSellingPrice: '0,00',
+  cenarioName: 'Não informado',
 };

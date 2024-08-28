@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ExpandMore, KeyboardArrowDownRounded } from '@mui/icons-material';
 import {
@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 
 import { icons } from '@/assets/images/icons';
-import { Layout } from '@/components/organism';
+import { Layout, PrintContent } from '@/components/organism';
 import { Button, Input } from '@/components/elements';
 
 import { numericMarketAmount } from './utils';
@@ -26,8 +26,14 @@ import {
   handleDeleteProfitability,
   postProfitability
 } from './services';
-import { convertToParams, formatCurrency, formatterV2 } from '@/utils/utils';
+import {
+  convertToParams,
+  formatCurrency,
+  formatDate,
+  formatterV2
+} from '@/utils/utils';
 import * as S from './ProfitabilityStyled';
+import { emptyprofitability } from '@/utils/emptys';
 
 export const Profitability = () => {
   const navigate = useNavigate();
@@ -35,7 +41,10 @@ export const Profitability = () => {
   const [loading, setLoading] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const { setSnackbar } = useContext(SnackbarContext);
+  const printContentRef = useRef<{ print: () => void }>(null);
   const [newProfitability, setNewProfitability] = useState(false);
+  const [profitabilityActive, setProfitabilityActive] =
+    useState<profitabilityProps>(emptyprofitability);
   const [listScenarios, setListScenarios] = useState<scenariosProps[]>([]);
   const [listProfitability, setListProfitability] = useState<
     profitabilityProps[]
@@ -88,6 +97,15 @@ export const Profitability = () => {
     setProfitabilitySelected(item);
   };
 
+  const handlePrintClick = () => {
+    printContentRef.current?.print();
+  };
+
+  useEffect(() => {
+    if(profitabilityActive.id){
+      handlePrintClick()
+    }
+  }, [profitabilityActive]);
   useEffect(() => {
     getListScenarios({
       setLoading,
@@ -115,7 +133,7 @@ export const Profitability = () => {
         <S.Content>
           {listProfitability.length ? (
             <>
-              {listProfitability.map((item) => {
+              {listProfitability.map((item, index) => {
                 return (
                   <Accordion sx={{ width: '100%' }}>
                     <AccordionSummary
@@ -483,7 +501,7 @@ export const Profitability = () => {
                         alignItems={'center'}
                       >
                         <Grid item xs={12} sm={12} md={12}>
-                          <S.ContainerButtons className="containerBtn">
+                          <S.ContainerButtons>
                             <Button
                               $isOutline
                               size="140px"
@@ -491,6 +509,14 @@ export const Profitability = () => {
                               onClick={() => handleModalDelete(item)}
                             >
                               Deletar
+                            </Button>
+                            <Button
+                              size="140px"
+                              onClick={() => {
+                                setProfitabilityActive({...item, indexId: index + 1});
+                              }}
+                            >
+                              Imprimir
                             </Button>
                           </S.ContainerButtons>
                         </Grid>
@@ -513,6 +539,264 @@ export const Profitability = () => {
           )}
         </S.Content>
       </S.ProfitabilityContainer>
+
+      <PrintContent ref={printContentRef} documentTitle={`cenario_${profitabilityActive?.indexId?profitabilityActive?.indexId : 1}_${formatDate(new Date(), true)}`}>
+        <S.ContainerPrint id="printableArea">
+          <S.HeaderPrint>
+            <S.Title>
+              Rentabilidade - {profitabilityActive?.cenarioName}
+            </S.Title>
+            <S.Text>{formatDate(new Date())}</S.Text>
+          </S.HeaderPrint>
+          <S.ContentPrint
+            container
+            alignItems={'center'}
+            spacing={{ xs: 0, sm: 2 }}
+          >
+            <Grid item xs={5.9} sm={5.9} md={5.9}>
+              <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
+                <S.Label>Cenário</S.Label>
+                <Input
+                  onChange={handleChange}
+                  value={profitabilityActive?.cenarioName}
+                  placeholder="Digite aqui"
+                  id="projectScenariosHubId"
+                  aria-describedby="projectScenariosHubId"
+                  inputProps={{ style: { fontSize: '1.4rem' } }}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={5.9} sm={5.9} md={5.9} minWidth={200}>
+              <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                <S.Label>Preço médio de vendas</S.Label>
+                <Input
+                  id="avarageSellingPrice"
+                  onChange={handleChange}
+                  placeholder="Digite aqui"
+                  aria-describedby="avarageSellingPrice"
+                  inputProps={{ style: { fontSize: '1.4rem' } }}
+                  value={formatterV2.format(
+                    parseFloat(profitabilityActive?.avarageSellingPrice || '0')
+                  )}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={5.9} sm={5.9} md={5.9}>
+              <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                <S.Label>Desconto</S.Label>
+                <Input
+                  id="discount"
+                  onChange={handleChange}
+                  value={profitabilityActive?.discount}
+                  aria-describedby="discount"
+                  placeholder="Digite aqui"
+                  inputProps={{ style: { fontSize: '1.4rem' } }}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={5.9} sm={5.9} md={5.9}>
+              <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                <S.Label>Preço de venda</S.Label>
+                <Input
+                  id="salePrice"
+                  onChange={handleChange}
+                  placeholder="Digite aqui"
+                  aria-describedby="salePrice"
+                  inputProps={{ style: { fontSize: '1.4rem' } }}
+                  value={formatterV2.format(
+                    parseFloat(profitabilityActive?.salePrice || '0')
+                  )}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={5.9} sm={5.9} md={5.9}>
+              <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                <S.Label>vgv</S.Label>
+                <Input
+                  id="vgv"
+                  aria-describedby="vgv"
+                  onChange={handleChange}
+                  placeholder="Digite aqui"
+                  inputProps={{ style: { fontSize: '1.4rem' } }}
+                  value={formatterV2.format(
+                    parseFloat(profitabilityActive?.vgv || '0')
+                  )}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={5.9} sm={5.9} md={5.9}>
+              <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                <S.Label>Comissão</S.Label>
+                <Input
+                  id="comission"
+                  onChange={handleChange}
+                  value={profitabilityActive?.comission}
+                  aria-describedby="comission"
+                  placeholder="Digite aqui"
+                  inputProps={{ style: { fontSize: '1.4rem' } }}
+                />
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={12} md={12} minWidth={250}>
+              <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                <S.Label>Regime Especial Tributário</S.Label>
+                <Input
+                  id="ret"
+                  onChange={handleChange}
+                  aria-describedby="ret"
+                  placeholder="Digite aqui"
+                  value={formatterV2.format(
+                    parseFloat(profitabilityActive?.ret || '0')
+                  )}
+                  inputProps={{ style: { fontSize: '1.4rem' } }}
+                />
+              </FormControl>
+            </Grid>
+
+            <S.Section>
+              <S.Title>Rentabilidade</S.Title>
+              <S.ContainerInfo>
+                <Grid
+                  container
+                  rowGap={2}
+                  columnGap={1}
+                  spacing={{ xs: 0, sm: 0 }}
+                >
+                  <Grid container rowGap={2} columnGap={1}>
+                    <Grid item xs={5.9} sm={5.9} md={5.9}>
+                      <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                        <S.Label>Custo total</S.Label>
+                        <Input
+                          id="totalCost"
+                          onChange={handleChange}
+                          placeholder="Digite aqui"
+                          aria-describedby="totalCost"
+                          inputProps={{
+                            style: { fontSize: '1.4rem' }
+                          }}
+                          value={formatterV2.format(
+                            parseFloat(profitabilityActive?.totalCost || '0')
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={5.9} sm={5.9} md={5.9}>
+                      <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                        <S.Label>Exposição maxima</S.Label>
+                        <Input
+                          id="maximumExposure"
+                          onChange={handleChange}
+                          placeholder="Digite aqui"
+                          aria-describedby="maximumExposure "
+                          inputProps={{
+                            style: { fontSize: '1.4rem' }
+                          }}
+                          value={formatterV2.format(
+                            parseFloat(profitabilityActive?.maxExposure || '0')
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={5.9} sm={5.9} md={5.9}>
+                      <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                        <S.Label>Lucro nominal</S.Label>
+                        <Input
+                          id="nominalProfit"
+                          onChange={handleChange}
+                          placeholder="Digite aqui"
+                          aria-describedby="nominalProfit "
+                          inputProps={{
+                            style: { fontSize: '1.4rem' }
+                          }}
+                          value={formatterV2.format(
+                            parseFloat(
+                              profitabilityActive?.nominalProfit || '0'
+                            )
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={5.9} sm={5.9} md={5.9}>
+                      <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                        <S.Label>Lucro/Exposição</S.Label>
+                        <Input
+                          id="profitExposure"
+                          onChange={handleChange}
+                          placeholder="Digite aqui"
+                          aria-describedby="profitExposure "
+                          inputProps={{
+                            style: { fontSize: '1.4rem' }
+                          }}
+                          value={formatterV2.format(
+                            parseFloat(
+                              profitabilityActive?.profitExposure || '0'
+                            )
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={5.9} sm={5.9} md={5.9}>
+                      <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                        <S.Label>Lucro/vgv</S.Label>
+                        <Input
+                          id="profitGmv"
+                          onChange={handleChange}
+                          placeholder="Digite aqui"
+                          aria-describedby="profitGmv "
+                          inputProps={{
+                            style: { fontSize: '1.4rem' }
+                          }}
+                          value={formatterV2.format(
+                            parseFloat(profitabilityActive?.profitGmv || '0')
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={5.9} sm={5.9} md={5.9}>
+                      <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                        <S.Label>TIR (a.m)</S.Label>
+                        <Input
+                          id="tirAM"
+                          onChange={handleChange}
+                          aria-describedby="tirAM "
+                          placeholder="Digite aqui"
+                          inputProps={{
+                            style: { fontSize: '1.4rem' }
+                          }}
+                          value={formatterV2.format(
+                            parseFloat(profitabilityActive?.irrMonthly || '0')
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12}>
+                      <FormControl sx={{ m: 1 }} variant="outlined" fullWidth>
+                        <S.Label>TIR (a.a)</S.Label>
+                        <Input
+                          id="tirAA"
+                          onChange={handleChange}
+                          aria-describedby="tirAA "
+                          placeholder="Digite aqui"
+                          inputProps={{
+                            style: { fontSize: '1.4rem' }
+                          }}
+                          value={formatterV2.format(
+                            parseFloat(profitabilityActive?.irrAnnual || '0')
+                          )}
+                        />
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </S.ContainerInfo>
+            </S.Section>
+          </S.ContentPrint>
+          <S.Footer>
+            <S.Text>visna-viki</S.Text>
+            <S.Text>1/1</S.Text>
+          </S.Footer>
+        </S.ContainerPrint>
+      </PrintContent>
 
       <GenericModal
         maxWidth={'850px'}

@@ -47,9 +47,10 @@ export const getListAllSteps = async ({
   setLoading(true);
   try {
     const result = await listAllStepsByProject({ projectId: id });
+    console.log('result ::', result)
 
     const groupedByStepName = result
-      .filter((item: any) => item.step_name !== 'Aprovação do projeto')
+      .filter((item: any) => item.step_name !== 'Aprovação do projeto' || item.step_name !== 'Aprova��o do projeto')
       .reduce((acc: any, item: any) => {
         if (!acc[item.step_name]) {
           acc[item.step_name] = [];
@@ -64,6 +65,7 @@ export const getListAllSteps = async ({
       }, {});
 
     const newList = Object.values(groupedByStepName) as stepsProps[][];
+    console.log('newList ::', newList)
 
     setListAllSteps(newList);
   } catch (error) {

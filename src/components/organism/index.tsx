@@ -4,6 +4,7 @@ import { Layout } from './Layout';
 import { LandForm } from './LandForm';
 import { UnitsForm } from './UnitsForm';
 import { SummaryForm } from './SummaryForm';
+import { PrintContent } from './PrintContent';
 import { DeadlinesForm } from './DeadlinesForm';
 import { LayoutAbstract } from './LayoutAbstract';
 import { HeaderBreadcrumbs } from './HeaderBreadcrumbs';
@@ -15,7 +16,8 @@ export {
   LandForm,
   UnitsForm,
   SummaryForm,
+  PrintContent,
   DeadlinesForm,
   LayoutAbstract,
-  HeaderBreadcrumbs
+  HeaderBreadcrumbs,
 };

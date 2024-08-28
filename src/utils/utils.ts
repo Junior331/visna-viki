@@ -105,7 +105,7 @@ export const formatMMYYYYDate = (dateString: string): string => {
   return `${month} - ${year}`;
 };
 
-export const formatDate = (dateInput: string | Date): string => {
+export const formatDate = (dateInput: string | Date, isSecundary?: boolean): string => {
   if (typeof dateInput === 'string' && dateInput.trim() === '') {
     return '-';
   }
@@ -119,8 +119,12 @@ export const formatDate = (dateInput: string | Date): string => {
   const day = String(date.getUTCDate()).padStart(2, '0');
   const month = String(date.getUTCMonth() + 1).padStart(2, '0');
   const year = date.getUTCFullYear();
+  if(isSecundary){
+    return `${day}_${month}_${year}`;
+  } else {
+    return `${day}/${month}/${year}`;
+  }
 
-  return `${day}/${month}/${year}`;
 };
 export const formatDateInMonth = (dateInput: string | Date): string => {
   if (typeof dateInput === 'string' && dateInput.trim() === '') {
